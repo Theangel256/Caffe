@@ -5,6 +5,10 @@ module.exports.run = async (client, message, args) => {
 	const queue = client.queue;
 	const voiceChannel = message.member.voice.channel;
 	if(!voiceChannel) return message.channel.send(client.lang.music.needJoin);
+	async function play (guild, song) {
+		const ServerQueue = await queue.get(guild.id);
+		const dispatcher 
+	}
 }
 module.exports.run = async (client, message, args) => {
 	let msg;
