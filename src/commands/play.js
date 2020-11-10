@@ -4,6 +4,7 @@ const { handleVideo } = require('../structures/functions.js'),
 module.exports.run = async (client, message, args) => {
 	const queue = client.queue;
 	const voiceChannel = message.member.voice.channel;
+	if(!voiceChannel) return message.channel.send(client.lang.music.needJoin);
 }
 module.exports.run = async (client, message, args) => {
 	let msg;
