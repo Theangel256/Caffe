@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-<%- include _head.ejs %>
+<%- include('_head.ejs') %>
   </head>
     <body data-spy="scroll" data-target="#datos">
     <header>
-<%- include panel/header.ejs %>
+<%- include ('panel/header.ejs') %>
     </header>
-<%-  include panel/datos.ejs %>
-<%- include panel/opciones.ejs %>
+<%-  include ('panel/datos.ejs') %>
+<%- include ('panel/opciones.ejs') %>
 <!-- Leaderboard -->
 <div id="section-leaderboard" class="container">
   <p>
