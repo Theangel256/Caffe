@@ -2,6 +2,10 @@ const YouTube = require('simple-youtube-api');
 const { handleVideo } = require('../structures/functions.js'),
 	youtube = new YouTube('AIzaSyC9RHQZWGh5vI01HQBe6MVWaNQQgmT12R8');
 module.exports.run = async (client, message, args) => {
+	const queue = client.queue;
+	const voiceChannel = message.member.voice.channel;
+}
+module.exports.run = async (client, message, args) => {
 	let msg;
 	const lang = client.lang.commands.play;
 	const searchString = args.join(' '),
