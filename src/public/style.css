@@ -1,0 +1,265 @@
+/* styles */
+/* called by your view template */
+
+* {
+  box-sizing: border-box;
+}
+body {
+  background-color: #23272A;
+  color: #FFFFFF;
+  font-family: 'Quicksand', sans-serif;
+  width: 100%;
+}
+input {
+  width: 50%;
+}
+.row {
+
+  margin-right: 0 ;
+  margin-left: 0;
+}
+.mover-right {
+  position: absolute;
+  right: 50px;
+}
+.floating {
+    animation-name: floating;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  
+}
+.nav-index {
+  z-index: 1;
+  padding: 15px 50px 15px 50px;
+}
+
+.body-header {
+  max-width: 720px;
+  padding-top: 72px;
+}
+.body-header p{
+  font-size: 20px;
+}
+.content-banner {
+  background-color: #23272A;
+  padding: 20px;
+  height: 250px;
+  margin-bottom: 20px;
+}
+.content-perfil {
+  margin-top: -60px;
+}
+.intro {
+  line-height: .6;
+  
+}
+.intro .username {
+  font-size: 40px;
+  margin: 0 20px;
+}
+.intro .discrim {
+  font-size: 20px;
+}
+
+.content-project {
+  margin-top: 50px;
+  color: #000000;
+  margin-bottom: 20vh;
+}
+
+.card-body .card .card-text{
+  font-size: 14px;
+}
+
+.btn-config {
+  margin-left: 10px;
+}
+
+.card-text {
+  color: #23272A;
+  font-size: 30px;
+  text-align:center;
+}
+.btn-discord-white{
+  background-color: #FFFFFF;
+}
+.btn-proyecto a{
+  margin-left: 10px;
+}
+.btn-discord-dark{
+  background-color: #2C2F33;
+  color: #FFFFFF;
+  
+}
+.btn-caffe{
+  background-color: #c69c6c;
+}
+/*body mypro*/
+
+.container-fluid {
+  padding-right: 0;
+  padding-left: 0;
+}
+.body-header {
+  padding: 60px;
+}
+
+.list-mypro {
+  background-color: #23272A;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.list-mypro .items {
+ background-color: #2c2f33;
+ color: #FFFFFF;
+  margin-bottom:5px; 
+}
+
+.nav-links:hover {
+  background: #8699df;
+  border-radius: 15px;
+  color: #FFFFFF;
+  text-decoration-line: none;
+}
+
+.nav-links {
+  display: block;
+  padding: 0.4rem 1rem;
+  color: #FFFFFF;
+  transition: 0.5s;
+}
+
+.nav-links.disabled {
+  color: #FFFFFF;
+  pointer-events: none;
+  cursor: default;
+}
+
+.list-mypro .items-list{
+  font-weight: 700;
+  color: #7289da;
+}
+.text-corte {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.h2-perfil {
+  font-size: 1.5rem;
+  color: #EE6E73;
+  margin-top: 30px;
+}
+.color-azul {
+  background-color: #6478BE;
+}
+.color-web {
+  background-color: #23272A;
+}
+.color-gris-web{
+  background-color: #2C2F33;
+}
+.padding-box {
+  padding: 10px 60px 1px 10px;
+}
+.Server-select {
+  border-radius: 150px;
+  width: 60px;
+  height: 60px;
+}
+.card {
+  background: #6478BE;
+  border-radius: 10px;
+  display: inline-block;
+  height: 250px;
+  margin: 1rem;
+  position: relative;
+  width: 250px;
+  padding: 35px;
+}
+
+.card-1 {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.card-1:hover {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+#section-opciones {
+  display: block;
+  transition: 2s;
+}
+#section-datos, #section-leaderboard {
+  display: none;
+  transition: 2s;
+}
+.dropdown-toggle:active, .open .dropdown-toggle {background:#9aaae4 !important; color:#FFF !important;}
+.dropdown .nav-link {color:#fff; text-decoration: none;}
+.dropdown .dropdown-menu a{color: #000; text-decoration: none;}
+.dropdown .btn {background: green; color:#fff;}
+.dropdown .btn:hover {background: cyan; color:#000;}
+.dropdown .btn:active {background: cyan; color:#000;}
+.dropdown .btn:focus {background: cyan; color:#000;}
+.dropdown-menu .dropdown-item {display: inline-block; width: 100%; padding: 10px 5px;}
+.container .dropdown .dropdown-menu a:hover
+{
+  color: #fff;
+  background-color: #b91773;
+  border-color: #fff;
+}
+@media (min-width: 992px) {
+  .animate {
+    animation-duration: 0.3s;
+    -webkit-animation-duration: 0.5s;
+    animation-fill-mode: both;
+    -webkit-animation-fill-mode: both;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0rem);
+    opacity: 1;
+  }
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+}
+
+.slideIn {
+  -webkit-animation-name: slideIn;
+  animation-name: slideIn;
+}
+.custom-select {
+border: none;
+border: 1px solid black;
+padding: 5px;
+}
+.custom-input {
+  width: 40%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+}
+input[type=text], select {
+  width: 20%;
+  margin: 1px 1;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+div {
+  border-radius: 5px;
+    justify-content: center;
+}
