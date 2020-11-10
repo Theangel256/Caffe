@@ -9,7 +9,9 @@ module.exports.run = async (client, message, args) => {
 	async function play (guild, song) {
 		const ServerQueue = await queue.get(guild.id);
 		const stream = await ytdl(song.url, { filter: 'audioonly' });
-		const dispatcher = await ServerQueue.connection.play(stream);
+		const dispatcher = await ServerQueue.connection.play(stream).on('finish', async () => {
+			
+		});
 	}
 }
 module.exports.run = async (client, message, args) => {
