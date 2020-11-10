@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-module.exports.run = async (client, message, args) => {
+module.exports.run = (client, message, args) => {
 	const serverQueue = client.queue.get(message.guild.id);
 
 	if (!serverQueue) return message.channel.send(client.lang.music.noQueue);
@@ -8,7 +8,7 @@ module.exports.run = async (client, message, args) => {
 
 	if (serverQueue.connection.dispatcher.paused) {return message.channel.send(client.lang.commands.pause.alreadyPaused);}
 	serverQueue.playing = false;
-	await serverQueue.connection.dispatcher.pause(true);
+	serverQueue.connection.dispatcher.pause(true);
 
 	return message.channel.send(client.lang.commands.pause.sucess);
 };

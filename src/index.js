@@ -1,11 +1,7 @@
 	const express = require('express');
 	const app = express(),
 		Discord = require('discord.js'),
-		client = new Discord.Client({
-			disableMentions: '@everyone',
-			fetchAllMembers: true,
-			disableEvents: ['TYPING_START'],
-		}),
+		client = new Discord.Client(),
 		session = require('express-session'),
 		passport = require('passport'),
 		bodyparser = require('body-parser'),
@@ -40,7 +36,7 @@
 		.engine('html', require('ejs').renderFile)
 		.use(express.static(join(__dirname, '/public')))
 		.set('view engine', 'ejs').set('views', join(__dirname, 'views'))
-		.set('port', 3000)
+		.set('port', process.env.PORT || 5000)
 		.use(session({ secret: 'caffe', resave: false, saveUninitialized: false }))
 		.use(passport.initialize())
 		.use(passport.session())
@@ -54,8 +50,8 @@
 		.use('/error404', require('./structures/rutas/error'))
 		.get('*', function(req, res) {
 			res.redirect('/error404');
-		}).listen(3000);
-	client.login(process.env.token)
+		}).listen(process.env.PORT || 5000);
+	client.login("NzM4MDU1OTU0MzQ3NTg5Njc0.XyGWKw.TGPr0Ob8gxvnROhmzIZbLaP0PUU")
 		.then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
 		.catch((err) => console.error('Error al iniciar sesión: ' + err));
 process.on('unhandledRejection', (reason, promise) => {
