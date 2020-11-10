@@ -7,7 +7,8 @@ module.exports.run = async (client, message, args) => {
 	if(!voiceChannel) return message.channel.send(client.lang.music.needJoin);
 	async function play (guild, song) {
 		const ServerQueue = await queue.get(guild.id);
-		const dispatcher 
+		const stream = await ytdl(song.url, { filter: 'audioonly' });
+		const dispatcher = await ServerQueue.connection.play(stream);
 	}
 }
 module.exports.run = async (client, message, args) => {
