@@ -3,13 +3,14 @@ const youtube = new YouTube('AIzaSyC9RHQZWGh5vI01HQBe6MVWaNQQgmT12R8');
 const ytdl = require('ytdl-core')
 module.exports.run = async (client, message, args) => {
 	let msg;
+	const queue = client.queue;
 	const lang = client.lang.commands.play;
 	const searchString = args.join(' '),
 		url = args[0] ? args[0].replace(/<(.+)>/g, '$1') : '';
-	if(!searchString) {return message.reply(lang.no_args);}
 	const voiceChannel = message.member.voice.channel;
 	if(!voiceChannel) return message.channel.send(client.lang.music.needJoin);
 	if(message.member.voice.channel !== message.guild.me.voice.channel) message.member.voice.channel.join();
+	if(!searchString) return message.reply(lang.no_args);
 
 	if(url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 		const playlist = await youtube.getPlaylist(url);
@@ -56,7 +57,7 @@ module.exports.run = async (client, message, args) => {
 	}
 async function handleVideo (voiceChannel, video, playlist = false) {
 	const lang = client.lang.commands.play;
-	const serverQueue = client.queue.get(message.guild.id);
+	const serverQueue = queue.get(message.guild.id);
 	const song = {
 		id: video.id,
 		title: client.Discord.Util.escapeMarkdown(video.title),
@@ -79,7 +80,7 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 			volume: 0.5,
 			playing: true,
 		};
-		await client.queue.set(message.guild.id, queueConstruct);
+		await queue.set(message.guild.id, queueConstruct);
 		await queueConstruct.songs.push(song);
 		try {
 			const connection = await voiceChannel.join();
@@ -87,14 +88,13 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 			await play(message.guild, queueConstruct.songs[0]);
 		}catch(error) {
 			console.error(`Ha ocurrido un error: ${error}`);
-			await client.queue.delete(message.guild.id);
+			await queue.delete(message.guild.id);
 			return message.channel.send(lang.error);
 		}
 	}else{
 		serverQueue.songs.push(song);
-		if (playlist === true) {
-			return undefined;
-		}else {
+		if (playlist) return;
+		else {
 			const embedAddQueue = new client.Discord.MessageEmbed()
 				.setColor('#a00f0f')
 				.setAuthor(lang.addQueue, 'https://i.imgur.com/htXCtPo.gif')
@@ -109,7 +109,12 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 }
 	async function play (guild, song) {
 		const lang = client.lang.commands.play;
-		const serverQueue = await client.queue.get(guild.id);
+		const serverQueue = await queue.get(guild.id);
+		if(!song) {
+			await serverQueue.voiceChannel.leave();
+			await queue.delete(guild.id);
+			return;
+		}
 		const stream = ytdl(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 });
 		const dispatcher = await serverQueue.connection.play(stream)
 		.on('finish', async () => {

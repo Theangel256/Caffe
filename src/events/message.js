@@ -37,7 +37,7 @@ module.exports = async (client, message) => {
 
 	if(cmd.requirements.userPerms && !message.member.hasPermission(cmd.requirements.userPerms)) {return message.reply(lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms)));}
 
-	if(cmd.requirements.clientPerms && !message.guild.me.hasPermission(cmd.requirements.clientPerms)) {return message.reply(lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.me, cmd.requirements.clientPerms)));}
+	if(cmd.requirements.clientPerms && !message.guild.me.hasPermission(cmd.requirements.clientPerms)) return message.reply(lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.me, cmd.requirements.clientPerms)));
 
 	if(cmd.limits) {
 		const current = client.limits.get(`${command}-${message.author.id}`);
