@@ -20,7 +20,7 @@ router.get('/', auth, async function(req, res) {
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
 		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${config.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
-		const userPermission = guild.members.cache.get(req.user.id).hasPermission('ADMINISTRATOR');
+		const userPermission = guild.members.fetch(req.user.id).hasPermission('ADMINISTRATOR');
 		if(!userPermission) return res.redirect('/error404');
 		if(!lvl.has(guild.id)) lvl.set(guild.id, {});
 
