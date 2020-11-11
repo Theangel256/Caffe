@@ -5,7 +5,7 @@ const express = require('express'),
 	config = require('../../config.js'),
 	lvl = new database('niveles'),
 	{ auth } = require('../functions.js');
-router.get('/', auth, async function(req, res) {
+router.get('/', auth, function(req, res) {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 
 	res.render('dashboard.ejs', {
