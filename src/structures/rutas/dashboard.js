@@ -7,7 +7,7 @@ const express = require('express'),
 	{ auth } = require('../functions.js');
 router.get('/', auth, function(req, res) {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
-
+	console.log(req.user);
 	res.render('dashboard.ejs', {
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
