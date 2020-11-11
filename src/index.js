@@ -18,6 +18,7 @@
 	client.Discord = Discord;
 	require('./structures/command').run(client);
 	require('./structures/event').run(client);
+	require('./structures/auto-updater').run()
 	passport.serializeUser((user, done) => done(null, user));
 	passport.deserializeUser((obj, done) => done(null, obj));
 	const scopes = ['identify', 'guilds'];
@@ -36,7 +37,7 @@
 		.engine('html', require('ejs').renderFile)
 		.use(express.static(join(__dirname, '/public')))
 		.set('view engine', 'ejs').set('views', join(__dirname, 'views'))
-		.set('port', process.env.PORT || 5000)
+		.set('port', client.config.PORT || 3000)
 		.use(session({ secret: 'caffe', resave: false, saveUninitialized: false }))
 		.use(passport.initialize())
 		.use(passport.session())
@@ -50,7 +51,7 @@
 		.use('/error404', require('./structures/rutas/error'))
 		.get('*', function(req, res) {
 			res.redirect('/error404');
-		}).listen(process.env.PORT || 5000);
+		}).listen(client.config.PORT || 3000);
 	client.login("NzM4MDU1OTU0MzQ3NTg5Njc0.XyGWKw.TGPr0Ob8gxvnROhmzIZbLaP0PUU")
 		.then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
 		.catch((err) => console.error('Error al iniciar sesión: ' + err));
