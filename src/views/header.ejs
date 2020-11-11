@@ -12,7 +12,7 @@
 <% if(login === 'si') { %>
   <li class="nav-item dropdown">
   <a class="nav-links dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">        
-    <img class="circle responsive-img" src="<%= client.users.cache.get(user.id).displayAvatarURL({format:"jpg"}) %>" width="30" height="30" style="border: 10px; border-radius: 150px;" alt="<%=user.name%>">
+    <img class="circle responsive-img" src="<%= client.user.displayAvatarURL({format:"jpg"}) %>" width="30" height="30" style="border: 10px; border-radius: 150px;" alt="<%=user.name%>">
 <%= textLogin %></a>
 <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
   <a class="dropdown-item" href="/api/logout">Salir</a>
