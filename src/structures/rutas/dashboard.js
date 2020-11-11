@@ -23,7 +23,7 @@ router.get('/', auth, function(req, res) {
 		const userPermission = guild.members.cache.get(req.user.id).hasPermission('ADMINISTRATOR');
 		if(!userPermission) return res.redirect('/error404');
 		if(!lvl.has(guild.id)) lvl.set(guild.id, {});
-
+		console.log(req.user)
 		res.render('server.ejs', {
 			login : (req.isAuthenticated() ? 'si' : 'no'),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
