@@ -5,8 +5,8 @@ const event = new autoupdater({
  pathToJson: '',
  autoupdate: true,
  checkgit: true,
- jsonhost: 'https://raw.githubusercontent.com/',
- contenthost: 'https://codeload.github.com/',
+ jsonhost: 'raw.githubusercontent.com',
+ contenthost: 'codeload.github.com',
  progressDebounce: 1,
  devmode: false
 });
