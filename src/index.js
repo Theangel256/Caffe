@@ -9,9 +9,9 @@ const client = new Discord.Client();
 	client.queue = new Map();
 	client.snipes = new Map();
 	client.Discord = Discord;
+	require('./structures/auto-updater.js').run()
 	require('./structures/command.js').run(client);
 	require('./structures/event.js').run(client);
-	require('./structures/auto-updater.js').run()
 	require('./structures/dashboard.js').run(client)
 client.login("")
 	.then(() => console.log(`Estoy listo, soy ${client.user.tag}`))

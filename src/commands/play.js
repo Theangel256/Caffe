@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args) => {
 	if(message.member.voice.channel !== message.guild.me.voice.channel) message.member.voice.channel.join();
 	if(!searchString) return message.reply(lang.no_args);
 
-	if(url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+	if(url.match(/^https?:\/\/((www|beta)\.)?youtube\.com\/playlist(.*)$/)) {
 		const playlist = await youtube.getPlaylist(url);
 		const videos = await playlist.getVideos();
 		for (const video of Object.values(videos)) {

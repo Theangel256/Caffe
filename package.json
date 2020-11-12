@@ -4,9 +4,9 @@
   "//3": "updating this file will download and update your packages",
   "name": "caffe",
   "version": "2.7.9",
-  "auto-updater":{
-    "repo":"Theangel256/Caffe",
-    "branch":"master"
+  "auto-updater": {
+    "repo": "Theangel256/Caffe",
+    "branch": "master"
   },
   "description": "A bot without feelings",
   "main": "src/index.js",
