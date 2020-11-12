@@ -41,6 +41,15 @@ build/Release
 node_modules/
 jspm_packages/
 
+#path
+.vscode/
+
+# file
+package-lock.json
+.eslintrc.json
+#cache
+.npmjs
+
 # TypeScript v1 declaration files
 typings/
 

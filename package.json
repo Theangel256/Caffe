@@ -3,9 +3,9 @@
   "//2": "https://docs.npmjs.com/files/package.json",
   "//3": "updating this file will download and update your packages",
   "name": "caffe",
-  "version": "2.7.7",
+  "version": "2.7.8",
   "auto-updater":{
-    "repo":"/Theangel256/Caffe",
+    "repo":"Theangel256/Caffe",
     "branch":"master"
   },
   "description": "A bot without feelings",
@@ -45,5 +45,8 @@
   },
   "repository": {
     "url": "https://github.com/Theangel256/Caffe.git"
+  },
+  "devDependencies": {
+    "node-fetch": ">=2.6.1"
   }
 }

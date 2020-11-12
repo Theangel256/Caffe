@@ -2,11 +2,11 @@ module.exports.run = () => {
 var AutoUpdater = require('auto-updater');
  
 var autoupdater = new AutoUpdater({
- pathToJson: 'package.json',
+ pathToJson: '',
  autoupdate: true,
  checkgit: true,
- jsonhost: 'https://raw.githubusercontent.com/Theangel256/Caffe/master/package.json?token=AKC7WJKCDJZDYKRHSDO6S3S7VOKHE',
- contenthost: 'https://codeload.github.com/Theangel256/Caffe/zip/master?token=AKC7WJL6FF4JK7CKXKDIQYC7VOKPW',
+ jsonhost: 'https://raw.githubusercontent.com/',
+ contenthost: 'https://codeload.github.com/',
  progressDebounce: 1,
  devmode: false
 });
