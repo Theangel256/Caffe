@@ -1,7 +1,7 @@
 const express = require('express'),
 	config = require('../../config.js'),
 	router = express.Router();
-router.get('/', async function(req, res) {
+router.get('/', function(req, res) {
 	res.render('premium.ejs', {
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		client: req.bot,

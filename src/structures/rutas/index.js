@@ -1,7 +1,7 @@
 const express = require('express'),
 	router = express.Router(),
 	passport = require('passport');
-router.get('/', async function(req, res) {
+router.get('/', function(req, res) {
 	res.render('index.ejs', {
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),

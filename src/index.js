@@ -1,12 +1,5 @@
-	const express = require('express');
-	const app = express(),
-		Discord = require('discord.js'),
-		client = new Discord.Client(),
-		session = require('express-session'),
-		passport = require('passport'),
-		bodyparser = require('body-parser'),
-		{ join } = require('path'),
-		{ Strategy } = require('passport-discord');
+const Discord = require('discord.js');
+const client = new Discord.Client();
 	client.config = require('./config.js');
 	client.functions = require('./structures/functions.js')
 	client.database = require('./structures/Managers/DatabaseManager');
@@ -16,46 +9,10 @@
 	client.queue = new Map();
 	client.snipes = new Map();
 	client.Discord = Discord;
-	require('./structures/command').run(client);
-	require('./structures/event').run(client);
-	require('./structures/auto-updater').run()
-	passport.serializeUser((user, done) => done(null, user));
-	passport.deserializeUser((obj, done) => done(null, obj));
-	const scopes = ['identify', 'guilds'];
-	passport.use(new Strategy({
-		clientID: client.config.CLIENT_ID,
-		clientSecret: client.config.CLIENT_SECRET,
-		callbackURL: `${client.config.URL}/api/login`,
-		scope: scopes,
-	}, function(accessToken, refreshToken, profile, done) {
-		process.nextTick(function() {
-			return done(null, profile);
-		});
-	}));
-	app.use(bodyparser.json())
-		.use(bodyparser.urlencoded({ extended: true }))
-		.engine('html', require('ejs').renderFile)
-		.use(express.static(join(__dirname, '/public')))
-		.set('view engine', 'ejs').set('views', join(__dirname, 'views'))
-		.set('port', client.config.PORT || 3000)
-		.use(session({ secret: 'caffe', resave: false, saveUninitialized: false }))
-		.use(passport.initialize())
-		.use(passport.session())
-		.use(function(req, res, next) {
-			req.bot = client;
-			next();
-		})
-		.use('/', require('./structures/rutas/index'))
-		.use('/dashboard', require('./structures/rutas/dashboard'))
-		.use('/premium', require('./structures/rutas/premium'))
-		.use('/error404', require('./structures/rutas/error'))
-		.get('*', function(req, res) {
-			res.redirect('/error404');
-		}).listen(client.config.PORT || 3000);
-	client.login("NzM4MDU1OTU0MzQ3NTg5Njc0.XyGWKw.TGPr0Ob8gxvnROhmzIZbLaP0PUU")
-		.then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
-		.catch((err) => console.error('Error al iniciar sesión: ' + err));
-process.on('unhandledRejection', (reason, promise) => {
-	console.log('Unhandled Rejection at:', promise, 'reason:', reason);
-	// Application specific logging, throwing an error, or other logic here
-  });
+	require('./structures/command.js').run(client);
+	require('./structures/event.js').run(client);
+	require('./structures/auto-updater.js').run()
+	require('./structures/dashboard.js').run(client)
+client.login("")
+	.then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
+	.catch((err) => console.error('Error al iniciar sesión: ' + err));
