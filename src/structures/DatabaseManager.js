@@ -43,11 +43,9 @@ class DatabaseManager {
 			else dataObject = dataObject[keys];
 		}
 	}
-
 	set(key, value) {
 		const args = key.split('.');
 		let dataObject = this.data;
-
 		for(const keys of args) {
 			if(keys == args[args.length - 1]) {
 				dataObject[keys] = value;
@@ -76,7 +74,6 @@ class DatabaseManager {
 	all() {
 		return this.data;
 	}
-
 	add(key, count) {
 		const args = key.split('.');
 		let dataObject = this.data;
@@ -91,7 +88,6 @@ class DatabaseManager {
 			else {dataObject = dataObject[keys];}
 		}
 	}
-
 	subtract(key, count) {
 		const args = key.split('.');
 		let dataObject = this.data;
@@ -121,7 +117,6 @@ class DatabaseManager {
 			else {dataObject = dataObject[keys];}
 		}
 	}
-
 }
 
 module.exports = DatabaseManager;
