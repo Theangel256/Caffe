@@ -1,4 +1,4 @@
-const database = require('./Managers/DatabaseManager');
+const database = require('./DatabaseManager');
 const level_db = new database('niveles');
 const cooldownmute = new database('cooldownmute');
 const opciones = new database('opciones');

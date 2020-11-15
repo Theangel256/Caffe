@@ -1,6 +1,6 @@
 const express = require('express'),
 	router = express.Router(),
-	database = require('../Managers/DatabaseManager'),
+	database = require('../DatabaseManager'),
 	opciones = new database('opciones'),
 	config = require('../../config.js'),
 	lvl = new database('niveles'),
