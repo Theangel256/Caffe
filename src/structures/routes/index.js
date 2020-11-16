@@ -1,18 +1,21 @@
-const express = require('express'),
-	router = express.Router(),
-	passport = require('passport');
-router.get('/', function(req, res) {
-	res.render('index.ejs', {
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
+router.get('/', (req, res) => {
+	res.render('index', {
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		user: req.user,
 		client: req.bot,
 	});
 })
-.get('/api/login', passport.authenticate('discord', { failureRedirect: '/' }), function(req, res) {
+.get('/about', (req, res) => {
+ res.render('about.hbs')
+})
+.get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), function(req, res) {
 		res.redirect('/dashboard');
 	})
-	.get('/api/logout', async function(req, res) {
+.get('/logout', async (req, res) => {
 		await req.logout();
 		res.redirect('/');
 	})

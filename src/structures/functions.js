@@ -39,7 +39,7 @@ module.exports = {
 	auth: async (req, res, next) => {
 		if(req.isAuthenticated()) {
 			return next();
-		} else return res.redirect('/api/login');
+		} else return res.redirect('/signin');
 	},
 	nivelesFunc: async (message) => {
 		if(cooldownniveles.has(message.guild.id + message.author.id)) {

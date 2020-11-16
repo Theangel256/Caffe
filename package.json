@@ -11,7 +11,7 @@
   "description": "A bot without feelings",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "dev": "nodemon src/index.js"
   },
   "keywords": [
     "node",
@@ -25,16 +25,18 @@
     "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
     "discord.js": "^12.4.1",
-    "ejs": "^2.7.4",
     "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
     "ffmpeg-static": "^4.2.7",
     "marsnpm": "^0.5.1",
     "mech-aki": "^0.1.4",
+    "method-override": "^3.0.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^5.10.14",
     "ms": "^2.1.2",
+    "nodemon": "^2.0.6",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "simple-youtube-api": "^5.2.1",
