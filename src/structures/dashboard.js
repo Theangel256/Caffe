@@ -32,10 +32,10 @@ module.exports.run = (client) => {
 			req.bot = client;
 			next();
 		})
-		.use('/', require('./rutas/index'))
-		.use('/dashboard', require('./rutas/dashboard'))
-		.use('/premium', require('./rutas/premium'))
-		.use('/error404', require('./rutas/error'))
+		.use('/', require('./routes/index'))
+		.use('/dashboard', require('./routes/dashboard'))
+		.use('/premium', require('./routes/premium'))
+		.use('/error404', require('./routes/error'))
 		.get('*', function(req, res) {
 			res.redirect('/error404');
 		}).listen(client.config.PORT || 3000);

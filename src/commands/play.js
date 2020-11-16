@@ -1,5 +1,5 @@
 const YouTube = require('simple-youtube-api');
-const youtube = new YouTube('AIzaSyC9RHQZWGh5vI01HQBe6MVWaNQQgmT12R8');
+const youtube = new YouTube("AIzaSyBxJ7Cw7cx8FQbC4xoDO5N8ToIsEbYEzzk");
 const ytdl = require('ytdl-core')
 module.exports.run = async (client, message, args) => {
 	let msg;

@@ -1,7 +1,8 @@
-const { getMember } = require('../structures/functions');
+
+module.exports.run = (client, message, args) => {
+	/*const { getMember } = require('../structures/functions');
 const database = require('../structures/Managers/DatabaseManager'),
 	marrys = new database('marrys');
-module.exports.run = (client, message, args) => {
 	const random = Math.ceil(Math.random() * 100),
 		member = getMember(message, args, false);
 	let love;
@@ -28,6 +29,8 @@ module.exports.run = (client, message, args) => {
 		.setDescription(`__**:heartbeat::bow_and_arrow: ${client.lang.commands.love.relations} :bow_and_arrow::heartbeat:**__\n\n:small_red_triangle_down:${message.author.username}\n:small_red_triangle:${member.user.username}\n\n${love}`)
 		.setColor('#a00f0f');
 	message.channel.send(embed);
+	
+*/
 };
 module.exports.help = {
 	name: 'love',

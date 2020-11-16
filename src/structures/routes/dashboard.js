@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+/*
 const database = require('../DatabaseManager')
 const opciones = new database('opciones')
 const config = require('../../config.js')
@@ -15,8 +16,7 @@ router.get('/', auth, function(req, res) {
 		user: req.user,
 		client: req.bot,
 	});
-})
-	.get('/:id', auth, async function(req, res) {
+}).get('/:id', auth, async function(req, res) {
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
 		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${config.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
@@ -93,5 +93,5 @@ router.get('/', auth, function(req, res) {
 			await opciones.set(`${idserver}.channels.logs`, logs_ID);
 			await res.redirect(`/dashboard/${idserver}`);
 		}
-	});
+	});*/
 module.exports = router;
