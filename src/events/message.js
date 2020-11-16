@@ -4,7 +4,7 @@ module.exports = async (client, message) => {
 	const opciones = new client.database('opciones');
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const prefix = opciones.has(`${message.guild.id}.prefix`) ? await opciones.get(`${message.guild.id}.prefix`) : client.config.prefix,
+	const prefix = opciones.has(`${message.guild.id}.prefix`) ? await opciones.get(`${message.guild.id}.prefix`) : process.env.prefix,
 		langcode = opciones.has(`${message.guild.id}.language`) ? await opciones.get(`${message.guild.id}.language`) : 'en',
 		lang = require(`../structures/languages/${langcode}.js`),
 		invite = await client.generateInvite(['ADMINISTRATOR']);
@@ -33,7 +33,7 @@ module.exports = async (client, message) => {
 	if(!cmd) return;
 	if(!message.guild.me.hasPermission('SEND_MESSAGES')) return;
 
-	if(cmd.requirements.ownerOnly && !client.config.owners.includes(message.author.id)) {return message.reply(lang.only_developers);}
+	if(cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id)) {return message.reply(lang.only_developers);}
 
 	if(cmd.requirements.userPerms && !message.member.hasPermission(cmd.requirements.userPerms)) {return message.reply(lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms)));}
 

@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 	});
 })
 .get('/about', (req, res) => {
- res.render('about.hbs')
+ res.render('about')
 })
 .get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), function(req, res) {
 		res.redirect('/dashboard');

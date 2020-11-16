@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-router.get('/premium', function(req, res) {
-	res.render('premium.ejs', {
+router.get('/error404', function(req, res) {
+	res.render('error404.ejs', {
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		client: req.bot,
 		user: req.user,

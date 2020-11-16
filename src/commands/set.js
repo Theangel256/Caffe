@@ -1,6 +1,6 @@
 module.exports.run = async (client, message, args) => {
 	const opciones = new client.database('opciones'),
-		Dashboard = `[Dashboard](${client.config.URL}/Dashboard/${message.guild.id})`;
+		Dashboard = `[Dashboard](${process.env.URL}/Dashboard/${message.guild.id})`;
 
 	const embed = new client.Discord.MessageEmbed()
 		.setAuthor(message.author.username + ' Debes de utilizarlo de la siguiente manera.', message.author.displayAvatarURL({ dynamic:true }))

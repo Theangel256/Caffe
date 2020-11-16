@@ -1,7 +1,7 @@
+require('dotenv').config()
 const Discord = require('discord.js');
 const client = new Discord.Client();
-	client.config = require('./config.js');
-	client.functions = require('./structures/functions.js')
+	client.functions = require('./structures/functions.js');
 	//client.database = require('./structures/DatabaseManager');
 	client.commands = new Discord.Collection();
 	client.aliases = new Discord.Collection();
@@ -9,10 +9,10 @@ const client = new Discord.Client();
 	client.queue = new Map();
 	client.snipes = new Map();
 	client.Discord = Discord;
-	require('./structures/auto-updater.js').run()
-	require('./structures/command.js').run(client);
-	require('./structures/event.js').run(client);
-	require('./structures/dashboard.js').run(client)
-client.login()
-	.then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
+	require('./structures/auto-updater');
+	require('./structures/database');
+	require('./structures/dashboard').run(client);
+	require('./structures/command').run(client);
+	require('./structures/event').run(client);
+	client.login(process.env.TOKEN).then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
 	.catch((err) => console.error('Error al iniciar sesión: ' + err));
