@@ -8,10 +8,12 @@ router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	console.log(req.user);
 	res.render('dashboard', {
-		login : (req.isAuthenticated() ? 'si' : 'no'),
+		login : (req.isAuthenticated() ? true : false),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		guilds,
 		user: req.user,
+		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
+		userAvatarURL: req.bot.users.cache.get(req.user.id).displayAvatarURL({format:"jpg"}),
 		client: req.bot,
 	});
 })

@@ -3,10 +3,10 @@ const router = express.Router();
 const passport = require('passport');
 router.get('/', (req, res) => {
 	res.render('index', {
-		login : (req.isAuthenticated() ? 'si' : 'no'),
+		title: "Caffe - The Discord Bot",
+		login: (req.isAuthenticated() ? true : false),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
-		user: req.user,
-		client: req.bot,
+		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
 	});
 })
 .get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {

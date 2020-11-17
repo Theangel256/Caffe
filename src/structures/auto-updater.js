@@ -5,7 +5,7 @@ const server = http.createServer((req, res) => {
     if(req.method === "POST") {
         if(req.headers["x-github-event"] === "push") {
             try {
-                console.log(execSync("cd /home/Caffe && git pull && pm2 restart index").toString());
+                console.log(execSync("cd /home/Caffe && git pull && pm2 restart default").toString());
             } catch (e) {
                 console.error(e);
             }
@@ -15,4 +15,4 @@ const server = http.createServer((req, res) => {
     res.end();
 });
 
-server.listen(2560);
+server.listen(443);
