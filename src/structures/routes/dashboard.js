@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
+/*
 const database = require('../DatabaseManager')
 const opciones = new database('opciones')
-const lvl = new database('niveles')
+const lvl = new database('niveles');
+*/
 const { auth, getRank } = require('../functions.js');
-router.get('/dashboard', auth, function(req, res) {
+router.get('dashboard/index.hbs', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	console.log(req.user);
 	res.render('dashboard.ejs', {
@@ -14,7 +16,8 @@ router.get('/dashboard', auth, function(req, res) {
 		user: req.user,
 		client: req.bot,
 	});
-}).get('/dashboard/:id', auth, async function(req, res) {
+})
+/*.get('/:id', auth, async function(req, res) {
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
 		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
@@ -33,7 +36,7 @@ router.get('/dashboard', auth, function(req, res) {
 			usuarios: getRank(await lvl.get(idserver), guild),
 		});
 	})
-	.post('/dashboard/:id/welcome', auth, async (req, res) => {
+	.post('/:id/welcome', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_channel = req.body.channel_ID;
 		if(!id_channel || id_channel === 'no_select') {
@@ -45,7 +48,7 @@ router.get('/dashboard', auth, function(req, res) {
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 	})
-	.post('/dashboard/:id/goodbye', auth, async (req, res) => {
+	.post('/:id/goodbye', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_channel = req.body.channelID;
 		if(!id_channel || id_channel === 'no_select') {
@@ -57,7 +60,7 @@ router.get('/dashboard', auth, function(req, res) {
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 	})
-	.post('/dashboard/:id/rolauto', auth, async (req, res) => {
+	.post('/:id/rolauto', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_role = req.body.rol_ID;
 		if(!id_role || id_role === 'no_select') {
@@ -69,7 +72,7 @@ router.get('/dashboard', auth, function(req, res) {
 			return await res.redirect(`/dashboard/${idserver}`);
 		}
 	})
-	.post('/dashboard/:id/prefix', auth, async (req, res) => {
+	.post('/:id/prefix', auth, async (req, res) => {
 		const idserver = req.params.id,
 			newPrefix = req.body.newPrefix;
 		if(!newPrefix || newPrefix.lenght === 0) {
@@ -92,4 +95,5 @@ router.get('/dashboard', auth, function(req, res) {
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 	});
+	*/
 module.exports = router;

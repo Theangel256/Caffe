@@ -16,3 +16,6 @@ const client = new Discord.Client();
 	require('./structures/event').run(client);
 	client.login(process.env.TOKEN).then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
 	.catch((err) => console.error('Error al iniciar sesión: ' + err));
+	process.on("unhandledRejection", (r) => {
+		console.dir(r);
+	});
