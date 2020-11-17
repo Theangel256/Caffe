@@ -1,13 +1,12 @@
-/*
 const database = require('./DatabaseManager');
 const level_db = new database('niveles');
 const cooldownmute = new database('cooldownmute');
 const opciones = new database('opciones');
 const cooldownniveles = new Map();
-*/
+
 module.exports = {
 	RegExpFunc: async (client, message) => {
-		//const warns = new client.database('warns');
+		const warns = new client.database('warns');
 		if(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord\.com\/invite)\/.+[a-z]/gim.test(message.content)) {
 			if(message.member.permissions.has(['ADMINISTRATOR'])) return;
 			const embed = new client.Discord.MessageEmbed()
@@ -15,7 +14,6 @@ module.exports = {
 				.setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
 			if(message.deletable) await message.delete().catch(e => console.error(e.message));
 			await message.channel.send(embed);
-			/*
 			if(!warns.has(`${message.guild.id}.${message.author.id}.warns`)) {
 				await warns.set(`${message.guild.id}.${message.author.id}.warns`, 0);
 			}
@@ -37,7 +35,6 @@ module.exports = {
 				.addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
 			const canal = client.channels.resolve(channelLog);
 			if(canal) return await canal.send(embed2);
-			*/
 		}
 	},
 	auth: async (req, res, next) => {
@@ -45,7 +42,6 @@ module.exports = {
 			return next();
 		} else return res.redirect('/signin');
 	},
-	/*
 	nivelesFunc: async (message) => {
 		if(cooldownniveles.has(message.guild.id + message.author.id)) {
 			const time = cooldownniveles.get(message.guild.id + message.author.id);
@@ -69,7 +65,6 @@ module.exports = {
 			return;
 		}
 	},
-	*/
 	getRank: (users, message) => {
 		const userlist = [];
 		for(const key in users) {
@@ -81,7 +76,6 @@ module.exports = {
 		});
 		return userlist;
 	},
-	/*
 	iteracion_mute: async (client) => {
 		const guilds = cooldownmute.all();
 		for(const guild_id in guilds) {
@@ -108,7 +102,6 @@ module.exports = {
 			}
 		}
 	},
-	*/
 	missingPerms: (client, member, perms) => {
 		const missingPerms = member.permissions.missing(perms)
 			.map(str => `\`${str.replace(/_/g, ' ').toLowerCase().replace(/\b(\w)/g, char => char.toUpperCase())}\``);

@@ -31,10 +31,10 @@ module.exports.run = (client) => {
 		req.bot = client;
 		next();
 	});
-	app.use('/', require('./routes/index'));
-	app.use('/dashboard', require('./routes/dashboard'));
-	app.use('/premium', require('./routes/premium'));
-	app.use('/error404', require('./routes/error'));
+	app.use(require('./routes/index'));
+	app.use(require('./routes/dashboard'));
+	app.use(require('./routes/premium'));
+	app.use(require('./routes/error'));
 	app.get('*', function(req, res) {
 			res.redirect('/error404');
 		});

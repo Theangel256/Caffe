@@ -1,15 +1,13 @@
 const express = require('express')
 const router = express.Router()
-/*
 const database = require('../DatabaseManager')
 const opciones = new database('opciones')
 const lvl = new database('niveles');
-*/
 const { auth, getRank } = require('../functions.js');
-router.get('dashboard/index.hbs', auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	console.log(req.user);
-	res.render('dashboard.ejs', {
+	res.render('dashboard', {
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		guilds,
@@ -17,7 +15,7 @@ router.get('dashboard/index.hbs', auth, async (req, res) => {
 		client: req.bot,
 	});
 })
-/*.get('/:id', auth, async function(req, res) {
+.get('/:id', auth, async function(req, res) {
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
 		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
@@ -95,5 +93,4 @@ router.get('dashboard/index.hbs', auth, async (req, res) => {
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 	});
-	*/
 module.exports = router;

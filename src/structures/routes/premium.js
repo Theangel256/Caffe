@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-router.get('/premium', (req, res) => {
-	res.render('premium.ejs', {
+router.get('/', (req, res) => {
+	res.render('premium', {
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		client: req.bot,
 		user: req.user,
