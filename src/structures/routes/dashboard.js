@@ -6,25 +6,24 @@ const lvl = new database('niveles');
 const { auth, getRank } = require('../functions.js');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
-	res.render('dashboard', {
-		title: "Caffe - The Discord Bot",
+	res.render('dashboard.ejs', {
+		title: "Caffe - Dashboard Bot",
+		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
-		signin: (req.isAuthenticated() ? true : false),
 		guilds,
 		user: req.user,
-		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
-		userAvatarURL: (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg' }),
 		client: req.bot,
 	});
 })
-.get('/:id', auth, async function(req, res) {
+.get('/:id', auth, async (req, res) => {
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
 		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
 		const userPermission = (await guild.members.fetch(req.user.id)).hasPermission('ADMINISTRATOR');
 		if(!userPermission) return res.redirect('/error404');
 		if(!lvl.has(guild.id)) lvl.set(guild.id, {});
-		res.render('guilds', {
+		res.render('guilds.ejs', {
+			login : (req.isAuthenticated() ? 'si' : 'no'),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
 			guild,
@@ -32,17 +31,7 @@ router.get('/', auth, async (req, res) => {
 			prefix: opciones.has(`${guild.id}.prefix`) ? await opciones.get(`${guild.id}.prefix`) : process.env.prefix,
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			client: req.bot,
-			channels: guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(req.bot.user).has('SEND_MESSAGES')),
 			usuarios: getRank(await lvl.get(idserver), guild),
-			iconURL: guild.iconURL({dynamic:true}),
-			guildRegion: guild.region.toUpperCase(),
-			createdAt: guild.createdAt.toDateString(),
-			canales: guild.channels.cache.filter(x => x.type !== "category").size,
-			roles: guild.roles.cache.size - 1,
-			online: guild.members.cache.filter(x => x.user.presence.status === "online").size,
-			idle: guild.members.cache.filter(x => x.user.presence.status === "idle").size,
-			dnd: guild.members.cache.filter(x => x.user.presence.status === "dnd").size,
-			offline: guild.members.cache.filter(x => x.user.presence.status === "offline").size,
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {

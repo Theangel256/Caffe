@@ -6,7 +6,6 @@ const app = express();
 const session = require('express-session');
 const passport = require('passport');
 const { join } = require('path');
-const exphbs = require('express-handlebars');
 const methodOverride = require('method-override')
 	client.functions = require('./structures/functions.js');
 	client.database = require('./structures/DatabaseManager');
@@ -23,14 +22,8 @@ const methodOverride = require('method-override')
 	.use(express.urlencoded({ extended: true }))
 	.use(methodOverride('_method'))
 	.set('views', join(__dirname, 'views'))
-	.engine(".hbs", exphbs({
-		defaultLayout: "main",
-		layoutsDir: join(app.get("views"), "layouts"),
-		partialsDir: join(app.get("views"), "partials"),
-		extname: ".hbs",
-	}))
 	.use(express.static(join(__dirname, "public")))
-	.set('view engine', '.hbs')
+	.set('view engine', 'ejs')
 	.set('port', process.env.PORT || 3000)
 	.use(session({
 		secret: 'caffe',

@@ -1,10 +1,13 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+<%- include _head.ejs %>
+  </head>
     <body data-spy="scroll" data-target="#datos">
-    <header>
-      {{>header}}
-    </header>
-    {{>datos}}
-    {{>opciones}}
-<!-- Leaderboard 
+<%- include panel/header.ejs %>
+<%-  include panel/datos.ejs %>
+<%- include panel/opciones.ejs %>
+<!-- Leaderboard -->
 <div id="section-leaderboard" class="container">
   <p>
           <div class="col s6">
@@ -19,5 +22,6 @@
           </div>
   </p>
 </div>
--->
   </body>
+      </html>
+<script src="/hidden.js"></script>
