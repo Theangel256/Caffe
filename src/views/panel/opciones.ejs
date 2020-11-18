@@ -29,7 +29,7 @@
           <div class="form-group">
             <select id="select-channel" name="channel_ID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un canal.</option> 
-              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(client.user).has('SEND_MESSAGES')).map(lc => {%>
+              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(bot.user).has('SEND_MESSAGES')).map(lc => {%>
               <option value="<%=lc.id %>">#<%=lc.name%></option>
               <% }); %>
             </select>
@@ -54,7 +54,7 @@
           <div class="form-group">
             <select id="select-channel" name="channelID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un canal.</option> 
-              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(client.user).has('SEND_MESSAGES')).map(lc => {%>
+              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(bot.user).has('SEND_MESSAGES')).map(lc => {%>
               <option value="<%=lc.id %>">#<%=lc.name%></option>
               <% }); %>
             </select>
@@ -79,7 +79,7 @@
           <div class="form-group">
             <select id="select-channel" name="logs_ID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un canal.</option> 
-              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(client.user).has('SEND_MESSAGES')).map(lc => {%>
+              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(bot.user).has('SEND_MESSAGES')).map(lc => {%>
               <option value="<%=lc.id %>">#<%=lc.name%></option>
               <% }); %>
             </select>
