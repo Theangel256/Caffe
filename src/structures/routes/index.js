@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { execSync } = require("child_process");
-router.get('/', (req, res) => {
-	res.render('index', {
+router.get('/', async (req, res) => {
+	await res.render('index', {
 		title: "Caffe - The Discord Bot",
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
-		reqlogin: (req.isAuthenticated() ? true : false) ? '/dashboard' : '/signin',
+		reqlogin: req.signin ? '/dashboard' : '/signin',
 		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
+		client: req.bot,
+		userAvatarURL: req.signin ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg' }) : null,
 	});
 })
 .get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
