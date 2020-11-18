@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 		res.redirect('/');
 	})
 // eslint-disable-next-line no-unused-vars
-.get('/github', (req, res) => {
+.post('/github', (req, res) => {
 	http.createServer((req, res) => {
 	
 		console.log(req.headers);
