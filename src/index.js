@@ -16,7 +16,6 @@ const methodOverride = require('method-override')
 	client.queue = new Map();
 	client.snipes = new Map();
 	client.Discord = Discord;
-	require('./structures/auto-updater');
 	require('./structures/command').run(client);
 	require('./structures/event').run(client);
 	require('./structures/passport')
