@@ -6,6 +6,7 @@ const lvl = new database('niveles');
 const { auth, getRank } = require('../functions.js');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
+	console.log(req.user)
 	res.render('dashboard.ejs', {
 		title: "Caffe - Dashboard Bot",
 		login : (req.isAuthenticated() ? 'si' : 'no'),
