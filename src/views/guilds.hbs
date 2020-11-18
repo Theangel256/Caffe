@@ -1,0 +1,24 @@
+    <body data-spy="scroll" data-target="#datos">
+    <header>
+      {{>header}}
+    </header>
+    {{>datos}}
+    {{>opciones}}
+<!-- Leaderboard 
+<div id="section-leaderboard" class="container">
+  <p>
+          <div class="col s6">
+            <h1>Lista de usuarios</h1>
+             <ul class="collection">
+<% usuarios.map((usuario, index) => {%>
+                <li class="collection-item">
+<%= `#${index+1} ${usuario[0]} LVL: ${usuario[1]} XP: ${usuario[2]}/${usuario[1] * 80}` %>
+               </li>
+            <% })%>
+              </ul>
+          </div>
+  </p>
+</div>
+-->
+  </body>
+<script src="/hidden.js"></script>

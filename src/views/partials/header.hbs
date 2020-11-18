@@ -17,12 +17,12 @@
     <img class="circle responsive-img" src="<%= client.users.resolve(user.id).displayAvatarURL({dynamic: true}) %>" width="30" height="30" style="border: 10px; border-radius: 150px;" alt="<%=user.name%>">
 <%= textLogin %></a>
 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-  <a class="dropdown-item" href="/api/logout">Salir</a>
+  <a class="dropdown-item" href="/logout">Salir</a>
   </div>
 </li>
 <% } else { %>
   <li class="nav-item">
-  <a class="nav-links" href="/api/login">Login</a>
+  <a class="nav-links" href="/signin">Login</a>
     </li>
 <% } %>
     </ul>
