@@ -4,13 +4,13 @@ module.exports = async (client, message) => {
 	const opciones = new client.database('opciones');
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const prefix = opciones.has(`${message.guild.id}.prefix`) ? await opciones.get(`${message.guild.id}.prefix`) : process.env.prefix,
-		langcode = opciones.has(`${message.guild.id}.language`) ? await opciones.get(`${message.guild.id}.language`) : 'en',
-		lang = require(`../structures/languages/${langcode}.js`),
-		invite = await client.generateInvite(['ADMINISTRATOR']);
+	const prefix = opciones.has(`${message.guild.id}.prefix`) ? await opciones.get(`${message.guild.id}.prefix`) : process.env.prefix;
+	const langcode = opciones.has(`${message.guild.id}.language`) ? await opciones.get(`${message.guild.id}.language`) : 'en';
+	const lang = require(`../structures/languages/${langcode}.js`);
 	client.prefix = prefix;
 	client.lang = lang;
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
+		const invite = await client.generateInvite(['ADMINISTRATOR']);
 		const embed = new client.Discord.MessageEmbed()
 			.addField(':gear: | Prefix', '> `' + prefix + '`')
 			.addField(':satellite: | `' + prefix + '`Help', lang.events.message.isMentioned.field1)
