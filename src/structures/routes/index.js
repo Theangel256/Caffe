@@ -8,7 +8,6 @@ router.get('/', (req, res) => {
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		reqlogin: (req.isAuthenticated() ? true : false) ? '/dashboard' : '/signin',
 		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
-		userAvatarURL: req.bot.users.resolve(req.user.id).displayAvatarURL({dynamic: true}),
 	});
 })
 .get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
