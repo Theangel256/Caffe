@@ -35,6 +35,8 @@ router.get('/', auth, async (req, res) => {
 			channels: guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(req.bot.user).has('SEND_MESSAGES')),
 			usuarios: getRank(await lvl.get(idserver), guild),
 			iconURL: guild.iconURL({dynamic:true}),
+			guildRegion: guild.region.toUpperCase(),
+			createdAt: guild.createdAt.toDateString(),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
