@@ -12,7 +12,7 @@ router.get('/', auth, async (req, res) => {
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		guilds,
 		user: req.user,
-		client: req.bot,
+		bot: req.bot,
 	});
 })
 .get('/:id', auth, async (req, res) => {
@@ -30,7 +30,7 @@ router.get('/', auth, async (req, res) => {
 			opciones: new req.bot.database('opciones'),
 			prefix: opciones.has(`${guild.id}.prefix`) ? await opciones.get(`${guild.id}.prefix`) : process.env.prefix,
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
-			client: req.bot,
+			bot: req.bot,
 			usuarios: getRank(await lvl.get(idserver), guild),
 		});
 	})

@@ -22,7 +22,7 @@ const methodOverride = require('method-override')
 	.use(express.urlencoded({ extended: true }))
 	.use(methodOverride('_method'))
 	.set('views', join(__dirname, 'views'))
-	.use(express.static(join(__dirname, "public")))
+	.use(express.static(join(__dirname, 'public')))
 	.set('view engine', 'ejs')
 	.set('port', process.env.PORT || 3000)
 	.use(session({

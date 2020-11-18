@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-<%- include _head.ejs %>
+<%- include('_head') -%>
   </head>
     <body data-spy="scroll" data-target="#datos">
-<%- include panel/header.ejs %>
-<%-  include panel/datos.ejs %>
-<%- include panel/opciones.ejs %>
+    <%- include('panel/header') -%>
+    <%- include('panel/datos') -%>
+    <%- include('panel/opciones') -%>
 <!-- Leaderboard -->
 <div id="section-leaderboard" class="container">
   <p>

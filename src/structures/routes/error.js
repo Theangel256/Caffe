@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 router.get('/', async (req, res) => {
 	res.render('404.ejs', {
+		async: true,
 		title: "ERROR! 404",
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
-		signin: (req.isAuthenticated() ? true : false),
-		userAvatarURL: (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg' }),
-		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
+		login: (req.isAuthenticated() ? true : false),
+		bot: req.bot,
 		invite: `https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=0&scope=bot`,
 	});
 });
