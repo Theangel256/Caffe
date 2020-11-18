@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 router.get('/', async (req, res) => {
 	res.render('404.ejs', {
-		async: true,
 		title: "ERROR! 404",
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		login: (req.isAuthenticated() ? true : false),

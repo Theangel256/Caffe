@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 router.get('/', async (req, res) => {
 	res.render('premium.ejs', {
-		async: true,
 		title: "Caffe - The Premium Bot!",
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		bot: req.bot,
