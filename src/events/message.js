@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
 	client.prefix = prefix;
 	client.lang = lang;
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
-		const invite = await client.generateInvite(['ADMINISTRATOR']);
+		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']})
 		const embed = new client.Discord.MessageEmbed()
 			.addField(':gear: | Prefix', '> `' + prefix + '`')
 			.addField(':satellite: | `' + prefix + '`Help', lang.events.message.isMentioned.field1)

@@ -3,7 +3,7 @@ const router = express.Router()
 const database = require('../DatabaseManager')
 const opciones = new database('opciones')
 const lvl = new database('niveles');
-const { auth, getRank } = require('../functions.js');
+const { auth } = require('../functions.js');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	console.log(req.user)
@@ -95,4 +95,17 @@ router.get('/', auth, async (req, res) => {
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 	});
+	function getRank(users, datoServer) {
+		const userlist = [];
+		for(const key in users) {
+			const usuario = datoServer.members.cache.has(key) ? datoServer.members.cache.get(key).user.username : `Salió (${key})`;
+			userlist.push([usuario, users[key].lvl, users[key].xp]);
+		}
+	
+		userlist.sort((user1, user2) => {
+	
+			return user2[1] - user1[1] || user2[2] - user1[2];
+		});
+		return userlist;
+	}
 module.exports = router;
