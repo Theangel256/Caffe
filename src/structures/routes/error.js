@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 	res.render('404', {
 		title: "ERROR!",
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
+		signin: (req.isAuthenticated() ? true : false),
+		userAvatarURL: (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg' }),
 		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
 		invite: `https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=0&scope=bot`,
 	});

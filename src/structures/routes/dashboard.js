@@ -9,6 +9,7 @@ router.get('/', auth, async (req, res) => {
 	res.render('dashboard', {
 		title: "Caffe - The Discord Bot",
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
+		signin: (req.isAuthenticated() ? true : false),
 		guilds,
 		user: req.user,
 		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
