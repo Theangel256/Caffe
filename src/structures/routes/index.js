@@ -24,8 +24,8 @@ router.get('/', async (req, res) => {
 			if(req.headers["x-github-event"] === "push") {
 				res.sendStatus(204)
 				try {
-					console.log("Actualizacion Encontrada")
-					console.log(execSync("cd /home/pruebas/Caffe && git pull && pm2 restart default").toString());
+					console.log("Actualizacion Encontrada.. Reiniciando")
+					console.log(execSync("cd /home/Caffe && git pull && pm2 restart default").toString());
 				} catch (e) {
 					console.error(e);
 				}
