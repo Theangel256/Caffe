@@ -5,7 +5,6 @@ router.get('/', (req, res) => {
 		title: "ERROR!",
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
-		login: (req.isAuthenticated() ? true : false),
 		invite: `https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=0&scope=bot`,
 	});
 });

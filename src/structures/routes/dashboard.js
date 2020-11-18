@@ -8,7 +8,7 @@ router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	console.log(req.user);
 	res.render('dashboard', {
-		login : (req.isAuthenticated() ? true : false),
+		title: "Caffe - The Discord Bot",
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		guilds,
 		user: req.user,
@@ -24,8 +24,7 @@ router.get('/', auth, async (req, res) => {
 		const userPermission = guild.members.cache.get(req.user.id).hasPermission('ADMINISTRATOR');
 		if(!userPermission) return res.redirect('/error404');
 		if(!lvl.has(guild.id)) lvl.set(guild.id, {});
-		res.render('server.ejs', {
-			login : (req.isAuthenticated() ? 'si' : 'no'),
+		res.render('guilds', {
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
 			guild,

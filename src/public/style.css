@@ -263,3 +263,8 @@ div {
   border-radius: 5px;
     justify-content: center;
 }
+footer {
+  text-align: center;
+  padding: 3px;
+  color: white;
+}

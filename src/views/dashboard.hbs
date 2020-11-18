@@ -4,16 +4,16 @@
         <div>
 <h1><b>PLEASE SELECT A SERVER</b></h1><br>
         </div>
-<% guilds.map(dato => { %>
-    <a class="navbar-brand" data-toggle="tooltip" data-placement="bottom" title="<%=dato.name%>" href="/dashboard/<%=dato.id%>">
-  <% if(dato.icon) { %>
-    <img class="Server-select responsive-img" src="https://cdn.discordapp.com/icons/<%=dato.id%>/<%=dato.icon%>.png" alt="<%=dato.name%>">
+{{#each guilds }}
+    <a class="navbar-brand" data-toggle="tooltip" data-placement="bottom" title="{{this.name}}" href="/dashboard/{{this.id}}">
+{{#if this.icon }}
+    <img class="Server-select responsive-img" src="https://cdn.discordapp.com/icons/{{this.id}}/{{this.icon}}.png" alt="{{this.name}}">
     </a>
-<% } else { %> 
-    <img class="Server-select responsive-img" src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" alt="<%=dato.name%>">
-  <% } %>
+{{ else }}
+    <img class="Server-select responsive-img" src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" alt="{{this.name}}">
+  {{/if}}
     </a>
-<% }) %>
+{{/each}}
         </div>
       </section>
     </center>
