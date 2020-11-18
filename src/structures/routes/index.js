@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 		await req.logout();
 		res.redirect('/');
 	})
+// eslint-disable-next-line no-unused-vars
 .get('/github', (req, res) => {
 	http.createServer((req, res) => {
 	
