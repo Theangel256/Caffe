@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
 	})
 // eslint-disable-next-line no-unused-vars
 .post('/github', (req, res) => {
-		console.log(req.headers);
 		if(req.method === "POST") {
 			if(req.headers["x-github-event"] === "push") {
 				try {
