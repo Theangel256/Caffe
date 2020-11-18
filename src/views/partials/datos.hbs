@@ -19,7 +19,7 @@
     <br>
     <br>
     <h3 class="text-center"><b>CANALES</b></h3>
-    <p class="text-center card-text">{{ guild.channels.cache.filter(x => x.type !== "category").size }}</p>
+    <p class="text-center card-text">{{ canales }}</p>
     </div>
   <div class="card card-1">
     <br>
@@ -42,10 +42,10 @@
     <section class="data-arrays">
         <div class="card card-1">
     <br>
-          <p class="text-center"><b>Conectados: {{ guild.members.cache.filter(x => x.user.presence.status === "online").size }}</b></p>
-          <p class="text-center"><b>Ausentes: {{ guild.members.cache.filter(x => x.user.presence.status === "idle").size }}</b></p>
-          <p class="text-center"><b>No Molestar: {{ guild.members.cache.filter(x => x.user.presence.status === "dnd").size }}</b></p>
-          <p class="text-center"><b>Desconectados: {{ guild.members.cache.filter(x => x.user.presence.status === "offline").size }}</b></p>
+          <p class="text-center"><b>Conectados: {{ online }}</b></p>
+          <p class="text-center"><b>Ausentes: {{ idle }}</b></p>
+          <p class="text-center"><b>No Molestar: {{ dnd }}</b></p>
+          <p class="text-center"><b>Desconectados: {{ offline }}</b></p>
   </div>
   </center>
   </section>

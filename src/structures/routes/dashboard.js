@@ -37,6 +37,11 @@ router.get('/', auth, async (req, res) => {
 			iconURL: guild.iconURL({dynamic:true}),
 			guildRegion: guild.region.toUpperCase(),
 			createdAt: guild.createdAt.toDateString(),
+			canales: guild.channels.cache.filter(x => x.type !== "category").size,
+			online: guild.members.cache.filter(x => x.user.presence.status === "online").size,
+			idle: guild.members.cache.filter(x => x.user.presence.status === "idle").size,
+			dnd: guild.members.cache.filter(x => x.user.presence.status === "dnd").size,
+			offline: guild.members.cache.filter(x => x.user.presence.status === "offline").size,
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
