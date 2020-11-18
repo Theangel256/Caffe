@@ -12,7 +12,7 @@ router.get('/', auth, async (req, res) => {
 		guilds,
 		user: req.user,
 		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
-		userAvatarURL: req.bot.users.fetch(req.user.id).displayAvatarURL({format:"jpg"}),
+		userAvatarURL: req.bot.users.resolve(req.user.id).displayAvatarURL({dynamic: true}),
 		client: req.bot,
 	});
 })
