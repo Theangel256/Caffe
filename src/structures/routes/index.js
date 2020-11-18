@@ -6,10 +6,12 @@ router.get('/', async (req, res) => {
 	await res.render('index', {
 		title: "Caffe - The Discord Bot",
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
-		reqlogin: req.signin ? '/dashboard' : '/signin',
+		signin: (req.isAuthenticated() ? true : false),
+		reqlogin: (req.isAuthenticated() ? true : false) ? '/dashboard' : '/signin',
 		clientAvatarURL: req.bot.user.displayAvatarURL({format: "jpg"}),
 		client: req.bot,
-		userAvatarURL: req.signin ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg' }) : null,
+		userAvatarURL: (req.isAuthenticated() ? true : false) ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg' }) : null,
+		
 	});
 })
 .get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {

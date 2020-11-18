@@ -41,7 +41,6 @@ const methodOverride = require('method-override')
 	.use(passport.session())
 	.use(function(req, res, next) {
 		req.bot = client;
-		req.signin = (req.isAuthenticated() ? true : false);
 		next();
 	});
 	app.use("/", require('./structures/routes/index'));
