@@ -72,32 +72,32 @@
     </div>
   </form>
 <h2 class="h2-perfil"><b>Logs: BETA</h2></b>
-<form class="col s12" method="post" id="logs" action="/dashboard/{{guild.id%>/logs">
+<form class="col s12" method="post" id="logs" action="/dashboard/{{guild.id}}%>/logs">
     <div class="row">
       <div class="input-field col s6">
         <div class="form-row">
           <div class="form-group">
             <select id="select-channel" name="logs_ID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un canal.</option> 
-              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(client.user).has('SEND_MESSAGES')).map(lc => {%>
-              <option value="{{lc.id}}">#{{lc.name%></option>
-              <% });}}
+              {{#each channels }}
+              <option value="{{this.id}}">#{{this.name}}</option>
+              {{/each}}
             </select>
             <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar" name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(opciones.has(`${guild.id}.channels.logs`)) {}}
+            {{#if opciones.has(`${guild.id}.channels.logs`) }}
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover" name="action">Remover
               <i class="material-icons right">clear</i>
             </button>
-              <% }}}
+              {{/if}}
           </div>
         </div>
       </div>
     </div>
 </form>
 <h2 class="h2-perfil"><b>Selección de un rol autoasignable para los nuevos usuarios:</h2></b>
-<form class="col s12" method="post" id="add_role" action="/dashboard/{{guild.id%>/rolauto">
+<form class="col s12" method="post" id="add_role" action="/dashboard/{{guild.id}}/rolauto">
   <div class="row">
     <div class="input-field col s6">
         <div class="form-row">
@@ -105,8 +105,8 @@
       <i class="material-icons prefix">account_circle</i>
       <select id="select-channel" name="rol_ID" class="custom-select"> 
         <option value="no_select" disabled selected>Seleccione un rol.</option> 
-        <% guild.roles.cache.map(r => {%>
-        <% if(r.comparePositionTo(guild.me.roles.highest) > 0) return;}}
+        {{ guild.roles.cache.map(r => { }}
+        {{#if r.comparePositionTo(guild.me.roles.highest) > 0 return; }}
         <option value="{{r.id}}">{{r.name%></option>
         <% });}}
       </select>
