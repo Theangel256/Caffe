@@ -6,7 +6,6 @@ const lvl = new database('niveles');
 const { auth, getRank } = require('../functions.js');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
-	console.log(req.user);
 	res.render('dashboard', {
 		title: "Caffe - The Discord Bot",
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),

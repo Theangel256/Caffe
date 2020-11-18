@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const http = require("http");
 const { execSync } = require("child_process");
 router.get('/', (req, res) => {
 	res.render('index', {
@@ -20,8 +19,6 @@ router.get('/', (req, res) => {
 	})
 // eslint-disable-next-line no-unused-vars
 .post('/github', (req, res) => {
-	http.createServer((req, res) => {
-	
 		console.log(req.headers);
 		if(req.method === "POST") {
 			if(req.headers.get["x-github-event"] === "push") {
@@ -33,7 +30,5 @@ router.get('/', (req, res) => {
 			}
 		}
 		res.sendStatus(204)
-		res.end();
-})
 })
 module.exports = router;

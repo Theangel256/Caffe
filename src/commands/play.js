@@ -1,5 +1,5 @@
 const YouTube = require('simple-youtube-api');
-const youtube = new YouTube("AIzaSyBxJ7Cw7cx8FQbC4xoDO5N8ToIsEbYEzzk");
+const youtube = new YouTube(process.env.YT_KEY);
 const ytdl = require('ytdl-core')
 module.exports.run = async (client, message, args) => {
 	let msg;
@@ -17,7 +17,7 @@ module.exports.run = async (client, message, args) => {
 		const videos = await playlist.getVideos();
 		for (const video of Object.values(videos)) {
 			const video2 = await youtube.getVideoByID(video.id);
-			await handleVideo(client, message, voiceChannel, video2, true).catch(e => console.log(e.message));
+			await handleVideo(voiceChannel, video2, true).catch(e => console.log(e.message));
 		}
 		return message.channel.send(lang.playlistAdded.replace(/{title}/gi, playlist.title));
 	}else{
@@ -115,7 +115,7 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 			await queue.delete(guild.id);
 			return;
 		}
-		const stream = ytdl(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 });
+		const stream = ytdl(song.url, { filter: 'audioonly'});
 		const dispatcher = await serverQueue.connection.play(stream)
 		.on('finish', async () => {
 			serverQueue.songs.shift();
@@ -124,7 +124,7 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 			
 		}).on('error', (error) => console.log(error));
 
-		dispatcher.setVolume(1);
+		dispatcher.setVolume(0.5);
 		let time;
 		const timeget = serverQueue.songs[0];
 		if(timeget.durationh < 1) {
