@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 .post('/github', (req, res) => {
 		console.log(req.headers);
 		if(req.method === "POST") {
-			if(req.headers.get["x-github-event"] === "push") {
+			if(req.headers["x-github-event"] === "push") {
 				try {
 					console.log(execSync("cd /home/Caffe && git pull && pm2 restart default").toString());
 				} catch (e) {

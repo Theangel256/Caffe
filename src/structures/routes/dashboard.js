@@ -31,6 +31,7 @@ router.get('/', auth, async (req, res) => {
 			prefix: opciones.has(`${guild.id}.prefix`) ? await opciones.get(`${guild.id}.prefix`) : process.env.prefix,
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			client: req.bot,
+			channels: guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(req.bot.user).has('SEND_MESSAGES')),
 			usuarios: getRank(await lvl.get(idserver), guild),
 		});
 	})
