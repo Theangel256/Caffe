@@ -4,16 +4,17 @@ const database = require('../DatabaseManager')
 const opciones = new database('opciones')
 const lvl = new database('niveles');
 const { auth } = require('../functions.js');
-router.get('/', auth, (req, res) => {
+router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
-	console.log(req.user)
+	const userAvatarURL = (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true});
 	res.render('dashboard.ejs', {
+		user: req.user,
+		bot: req.bot,
 		title: "Caffe - The Discord Bot",
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		guilds,
-		user: req.user,
-		bot: req.bot,
+		userAvatarURL
 	});
 })
 .get('/:id', auth, async (req, res) => {
