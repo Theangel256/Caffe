@@ -7,7 +7,7 @@
   "description": "A bot without feelings",
   "main": "src/index.js",
   "scripts": {
-    "dev": "pm2 start src/index.js"
+    "start": "node src/index.js"
   },
   "keywords": [
     "node",
@@ -19,7 +19,6 @@
     "@discordjs/opus": "^0.3.3",
     "canvas": "^2.6.1",
     "discord.js": "^12.4.1",
-    "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
@@ -32,7 +31,6 @@
     "ms": "^2.1.2",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
-    "pm2": "^4.5.0",
     "simple-youtube-api": "^5.2.1",
     "ytdl-core": "^4.0.3"
   },
