@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 router.get('/', async (req, res) => {
-	const userAvatarURL = (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true});
+	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
 	res.render('premium.ejs', {
 		bot: req.bot,
 		user: req.user,
