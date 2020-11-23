@@ -10,8 +10,8 @@ const get = require('../structures/functions/get');
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const prefix = get(prefixDB, message.guild);
-	const langcode = get(langDB, message.guild);
+	const prefix = await get(prefixDB, message.guild);
+	const langcode = await get(langDB, message.guild);
 	const lang = require(`../structures/languages/${langcode}.js`);
 	client.prefix = prefix;
 	client.lang = lang;
