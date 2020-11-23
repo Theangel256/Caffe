@@ -1,12 +1,11 @@
-const model = require('../models/prefix');
-
-module.exports = async function changePrefix(guildID, prefix) {
+const model = require('../models/lang');
+module.exports = async function changeLang(guildID, lang) {
     let data = await model.findOne({ guildID });
     
     if(data){
       data.updateOne({
         $set: {      
-          prefix: prefix
+            language: lang
         }
       }, (err) => err ? console.error(err) : null);
     
@@ -14,7 +13,7 @@ module.exports = async function changePrefix(guildID, prefix) {
       
       data = new model({
         guildID,
-        prefix: prefix
+        language: lang
       });
       
       await data.save();

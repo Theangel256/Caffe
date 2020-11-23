@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
 		bot: req.bot,
 		title: "ERROR! 404",
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
-		login: (req.isAuthenticated() ? true : false),
+		login: (req.isAuthenticated() ? 'si' : 'no'),
 		invite: `https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=0&scope=bot`,
 		userAvatarURL
 	});

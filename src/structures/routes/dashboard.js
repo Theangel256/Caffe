@@ -5,6 +5,8 @@ const opciones = new database('opciones')
 const lvl = new database('niveles');
 const auth = require('../functions/auth');
 const changePrefix = require('../functions/changePrefix');
+const get = require('../functions/get');
+const changeLang = require('../functions/changeLang');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
@@ -32,7 +34,7 @@ router.get('/', auth, async (req, res) => {
 			user: req.user,
 			guild,
 			opciones: new req.bot.database('opciones'),
-			prefix: opciones.has(`${guild.id}.prefix`) ? await opciones.get(`${guild.id}.prefix`) : process.env.prefix,
+			prefix: await get(require('../structures/models/prefix'), guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
 			usuarios: getRank(await lvl.get(idserver), guild),
@@ -42,36 +44,33 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_channel = req.body.channel_ID;
 		if(!id_channel || id_channel === 'no_select') {
-			await opciones.delete(`${idserver}.channels.welcome`);
-			await res.redirect(`/dashboard/${idserver}`);
-		}
-		else {
-			await opciones.set(`${idserver}.channels.welcome`, id_channel);
-			await res.redirect(`/dashboard/${idserver}`);
+			opciones.delete(`${idserver}.channels.welcome`);
+			res.redirect(`/dashboard/${idserver}`);
+		} else {
+			opciones.set(`${idserver}.channels.welcome`, id_channel);
+			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
 	.post('/:id/goodbye', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_channel = req.body.channelID;
 		if(!id_channel || id_channel === 'no_select') {
-			await opciones.delete(`${idserver}.channels.goodbye`);
-			await res.redirect(`/dashboard/${idserver}`);
-		}
-		else {
-			await opciones.set(`${idserver}.channels.goodbye`, id_channel);
-			await res.redirect(`/dashboard/${idserver}`);
+			opciones.delete(`${idserver}.channels.goodbye`);
+			res.redirect(`/dashboard/${idserver}`);
+		} else {
+			opciones.set(`${idserver}.channels.goodbye`, id_channel);
+			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
 	.post('/:id/rolauto', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_role = req.body.rol_ID;
 		if(!id_role || id_role === 'no_select') {
-			await opciones.delete(`${idserver}.role`);
-			await res.redirect(`/dashboard/${idserver}`);
-		}
-		else {
-			await opciones.set(`${idserver}.role`, id_role);
-			return await res.redirect(`/dashboard/${idserver}`);
+			opciones.delete(`${idserver}.role`);
+			res.redirect(`/dashboard/${idserver}`);
+		} else {
+			opciones.set(`${idserver}.role`, id_role);
+			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
 	.post('/:id/prefix', auth, async (req, res) => {
@@ -79,22 +78,31 @@ router.get('/', auth, async (req, res) => {
 			newPrefix = req.body.newPrefix;
 		if(!newPrefix || newPrefix.lenght === 0) {
 			await changePrefix(idserver, process.env.prefix)
-			await res.redirect(`/dashboard/${idserver}`);
-		}
-		else {
+			res.redirect(`/dashboard/${idserver}`);
+		} else {
 			await changePrefix(idserver, newPrefix)
-			await res.redirect(`/dashboard/${idserver}`);
+			res.redirect(`/dashboard/${idserver}`);
 		}
-	}).post('/dashboard/:id/logs', auth, async (req, res) => {
-		const idserver = req.params.id,
-			logs_ID = req.body.logs_ID;
+	}).post('/:id/logs', auth, async (req, res) => {
+		const idserver = req.params.id
+		const logs_ID = req.body.logs_ID;
 		if(!logs_ID || logs_ID === 'no_select') {
-			await opciones.delete(`${idserver}.channels.logs`);
-			await res.redirect(`/dashboard/${idserver}`);
-		}
-		else {
+			opciones.delete(`${idserver}.channels.logs`);
+			res.redirect(`/dashboard/${idserver}`);
+		} else {
 			await opciones.set(`${idserver}.channels.logs`, logs_ID);
-			await res.redirect(`/dashboard/${idserver}`);
+			res.redirect(`/dashboard/${idserver}`);
+		}
+	})
+	.post('/:id/lang', auth, async (req, res) => {
+		const idserver = req.params.id
+		const language = req.body.language;
+		if(!language || language === 'no_select') {
+			await changeLang(idserver, 'en');
+			res.redirect(`/dashboard/${idserver}`);
+		} else {
+			await changeLang(idserver, language);
+			res.redirect(`/dashboard/${idserver}`);
 		}
 	});
 	function getRank(users, datoServer) {

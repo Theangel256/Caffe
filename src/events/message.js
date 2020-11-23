@@ -1,8 +1,5 @@
 const moment = require('moment'); require('moment-duration-format');
-// Databases
-const prefixDB = require('../structures/models/prefix');
-const langDB = require('../structures/models/lang');
-// Functions
+
 const missingPerms = require('../structures/functions/missingPerms')
 const RegExpFunc = require('../structures/functions/regExp');
 const nivelesFunc = require('../structures/functions/niveles');
@@ -10,9 +7,10 @@ const get = require('../structures/functions/get');
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const prefix = await get(prefixDB, message.guild);
-	const langcode = await get(langDB, message.guild);
+	const prefix = await get(require('../structures/models/prefix'), message.guild);
+	const langcode = await get(require('../structures/models/lang'), message.guild);
 	const lang = require(`../structures/languages/${langcode.language}.js`);
+	console.log(lang)
 	client.prefix = prefix.prefix;
 	client.lang = lang;
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
@@ -21,7 +19,7 @@ module.exports = async (client, message) => {
 			.addField(':gear: | Prefix', '> `' + client.prefix + '`')
 			.addField(':satellite: | `' + client.prefix + '`Help', lang.events.message.isMentioned.field1)
 			.addField('❔ | ' + lang.events.message.isMentioned.field2,
-				`>>> [${lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://discord.Caffe-bot.com)\n[Twitter](https://twitter.com/Theangel256)\n[Facebook](https://www.facebook.com/Theangel256YT)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`)
+				`>>> [${lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://discord.caffe-bot.com)\n[Twitter](https://twitter.com/Theangel256)\n[Facebook](https://www.facebook.com/Theangel256YT)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`)
 			.setFooter(lang.events.message.isMentioned.footer + require('../../package.json').version, client.user.displayAvatarURL({ dynamic:true }))
 			.setTimestamp().setColor(0x00ffff);
 		message.channel.send(embed).then(e => e.delete({ timeout: 60000 })).catch(e => console.log(e.message));
