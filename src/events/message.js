@@ -8,7 +8,6 @@ const RegExpFunc = require('../structures/functions/regExp');
 const nivelesFunc = require('../structures/functions/niveles');
 const get = require('../structures/functions/get');
 module.exports = async (client, message) => {
-	const opciones = new client.database('opciones');
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
 	const prefix = get(prefixDB, message.guild);
