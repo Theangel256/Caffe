@@ -1,4 +1,4 @@
-const database = require('./DatabaseManager');
+const database = require('../DatabaseManager');
 const cooldownmute = new database('cooldownmute');
 module.exports = function iteracionMute(client)  {
     const guilds = cooldownmute.all();

@@ -1,4 +1,4 @@
-const database = require('./DatabaseManager');
+const database = require('../DatabaseManager');
 const level_db = new database('niveles');
 const cooldownniveles = new Map();
 module.exports = async function niveles(message) {
