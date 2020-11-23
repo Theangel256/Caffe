@@ -17,27 +17,17 @@ module.exports.run = async (client, message, args) => {
 			opciones.set(`${message.guild.id}.fondo.welcome`, args[2]);
 			message.channel.send('Ahora el Banner de la Bienvenida es ' + args[2]);
 		}
-		else {message.channel.send('Opción incorrecta, `$set welcome channel o banner`');}
+		else {message.channel.send('Opción incorrecta, `$set welcome banner`');}
 	}
 	else if (args[0].toLowerCase() === 'goodbye') {
-		if(!args[1]) return message.channel.send('Porfavor introduce argumentos, `/set goodbye channel o banner`');
+		if(!args[1]) return message.channel.send('Porfavor introduce argumentos, `/set goodbye banner`');
 		if (args[1].toLowerCase() === 'banner') {
 			if (!args[2]) return message.channel.send('Porfavor introduce argumentos,  `/set goodbye banner image.com` y con su respectiva medida (1920x1080)');
 			opciones.set(`${message.guild.id}.fondo.goodbye`, args[2]);
 			message.channel.send('Ahora el Banner de la Despedidad es ' + args[2]);
 		}
-		else {message.channel.send('Opción incorrecta, `$set goodbye channel o banner`');}
-	}
-	else if (args[0].toLowerCase() === 'lang') {
-		const idioma = args[1];
-		if(!idioma) return message.channel.send(client.lang.language.enterokay);
-		if(!['es', 'en'].includes(idioma.toLowerCase())) return message.channel.send(client.lang.language.has);
-		opciones.set(`${message.guild.id}.language`, idioma);
-		const langcode = opciones.has(`${message.guild.id}.language`) ? await opciones.get(`${message.guild.id}.language`) : 'en';
-		const lang = require(`../structures/languages/${langcode}.js`);
-		message.channel.send(lang.language.sucess);
-	}
-	else {message.channel.send('Opción incorrecta!');}
+		else {message.channel.send('Opción incorrecta, `$set goodbye banner`');}
+	} else {message.channel.send('Opción incorrecta!');}
 };
 module.exports.help = {
 	name: 'set',
