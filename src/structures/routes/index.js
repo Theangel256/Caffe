@@ -20,6 +20,9 @@ router.get('/', async (req, res) => {
 		await req.logout();
 		res.redirect('/');
 	})
+.post('/freshping', (req, res) => {
+	res.sendStatus(200)
+})
 /*
 .post('/github', (req, res) => {
 		if(req.method === "POST") {
