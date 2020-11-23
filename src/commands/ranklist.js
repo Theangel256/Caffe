@@ -1,4 +1,4 @@
-const { getRank } = require('../structures/functions.js');
+const getRank = require('../structures/functions/getRank');
 module.exports.run = async (client, message, args) => {
 	const level_db = new client.database('niveles');
 	let niveles = await level_db.get(`${message.guild.id}.${message.author.id}`);

@@ -1,4 +1,4 @@
-const { getMember } = require('../structures/functions');
+const getMember = require('../structures/functions/getMember');
 module.exports.run = (client, message, args) => {
 	const dinero = new client.database('economia'),
 		member = getMember(message, args, false);

@@ -1,5 +1,7 @@
-const { RegExpFunc, nivelesFunc, missingPerms } = require('../structures/functions.js'),
-	moment = require('moment'); require('moment-duration-format');
+const missingPerms = require('../structures/functions/missingPerms')
+const RegExpFunc = require('../structures/functions/regExp')
+const nivelesFunc = require('../structures/functions/niveles')
+const moment = require('moment'); require('moment-duration-format');
 module.exports = async (client, message) => {
 	const opciones = new client.database('opciones');
 	if (message.channel.type === 'dm') return;

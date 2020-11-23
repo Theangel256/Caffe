@@ -1,5 +1,5 @@
 const marsnpm = require('marsnpm');
-const { getMember } = require('../structures/functions');
+const getMember  = require('../structures/functions/getMember');
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true),
 		lang = client.lang.commands.cry,

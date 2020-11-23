@@ -1,6 +1,6 @@
-const commandcooldown = new Map(),
-	moment = require('moment');
-const { getMember } = require('../structures/functions');
+const commandcooldown = new Map();
+const moment = require('moment');
+const getMember = require('../structures/functions/getMember');
 require('moment-duration-format');
 module.exports.run = async (client, message, args) => {
 	const marrys = new client.database('marrys'),

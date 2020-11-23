@@ -1,6 +1,6 @@
 
 module.exports.run = (client, message, args) => {
-	const { getMember } = require('../structures/functions');
+	const getMember = require('../structures/functions/getMember');
 const database = require('../structures/Managers/DatabaseManager'),
 	marrys = new database('marrys');
 	const random = Math.ceil(Math.random() * 100),

@@ -6,7 +6,6 @@ const session = require('express-session');
 const passport = require('passport');
 const { join } = require('path');
 const methodOverride = require('method-override')
-	client.functions = require('./structures/functions.js');
 	client.database = require('./structures/DatabaseManager');
 	client.commands = new Discord.Collection();
 	client.aliases = new Discord.Collection();

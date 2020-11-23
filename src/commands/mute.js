@@ -1,5 +1,5 @@
-const { getMember } = require('../structures/functions'),
-	ms = require('ms');
+const getMember = require('../structures/functions/getMember');
+const ms = require('ms');
 module.exports.run = async (client, message, args) => {
 	const opciones = new client.database('opciones'),
 		cooldown = new client.database('cooldownmute'),

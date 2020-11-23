@@ -3,7 +3,8 @@ const router = express.Router()
 const database = require('../DatabaseManager')
 const opciones = new database('opciones')
 const lvl = new database('niveles');
-const { auth } = require('../functions.js');
+const auth = require('../functions/auth');
+const changePrefix = require('../functions/changePrefix');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
@@ -77,11 +78,11 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id,
 			newPrefix = req.body.newPrefix;
 		if(!newPrefix || newPrefix.lenght === 0) {
-			await opciones.delete(`${idserver}.prefix`);
+			await changePrefix(idserver, process.env.prefix)
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 		else {
-			await opciones.set(`${idserver}.prefix`, newPrefix);
+			await changePrefix(idserver, newPrefix)
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 	}).post('/dashboard/:id/logs', auth, async (req, res) => {

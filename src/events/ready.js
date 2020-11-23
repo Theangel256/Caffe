@@ -1,4 +1,4 @@
-const { iteracion_mute } = require('../structures/functions.js');
+const iteracion_mute = require('../structures/functions/iteracionMute');
 const request = require('request');
 module.exports = async (client) => {
 	setInterval(function() {

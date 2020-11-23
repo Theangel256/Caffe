@@ -1,5 +1,6 @@
+const generateKey = require('../structures/functions/generateKey');
 module.exports.run = async (client, message) => {
-    const license = client.functions.generateKey();
+    const license = generateKey();
     const premium = new client.database('premium')
         premium.set(`${message.guild.id}.license`, license)
         premium.set(`${message.guild.id}.enable`,false)
