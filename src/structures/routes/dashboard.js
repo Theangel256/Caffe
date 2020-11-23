@@ -34,7 +34,7 @@ router.get('/', auth, async (req, res) => {
 			user: req.user,
 			guild,
 			opciones: new req.bot.database('opciones'),
-			prefix: await get(require('../structures/models/prefix'), guild),
+			prefix: await get(require('../models/prefix'), guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
 			usuarios: getRank(await lvl.get(idserver), guild),
