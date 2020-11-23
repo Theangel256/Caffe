@@ -1,5 +1,8 @@
 const moment = require('moment'); require('moment-duration-format');
-
+// Databases
+const prefixDB = require('../structures/models/prefix');
+const langDB = require('../structures/models/lang');
+// Functions
 const missingPerms = require('../structures/functions/missingPerms')
 const RegExpFunc = require('../structures/functions/regExp');
 const nivelesFunc = require('../structures/functions/niveles');
@@ -7,8 +10,8 @@ const get = require('../structures/functions/get');
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const prefix = await get(require('../structures/models/prefix'), message.guild);
-	const langcode = await get(require('../structures/models/lang'), message.guild);
+	const prefix = await get(prefixDB, message.guild);
+	const langcode = await get(langDB, message.guild);
 	const lang = require(`../structures/languages/${langcode.language}.js`);
 	console.log(lang)
 	client.prefix = prefix.prefix;
