@@ -1,13 +1,18 @@
-const missingPerms = require('../structures/functions/missingPerms')
-const RegExpFunc = require('../structures/functions/regExp')
-const nivelesFunc = require('../structures/functions/niveles')
 const moment = require('moment'); require('moment-duration-format');
+// Databases
+const prefixDB = require('../structures/models/prefix');
+const langDB = require('../structures/models/lang');
+// Functions
+const missingPerms = require('../structures/functions/missingPerms')
+const RegExpFunc = require('../structures/functions/regExp');
+const nivelesFunc = require('../structures/functions/niveles');
+const get = require('../structures/functions/get');
 module.exports = async (client, message) => {
 	const opciones = new client.database('opciones');
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const prefix = opciones.has(`${message.guild.id}.prefix`) ? await opciones.get(`${message.guild.id}.prefix`) : process.env.prefix;
-	const langcode = opciones.has(`${message.guild.id}.language`) ? await opciones.get(`${message.guild.id}.language`) : 'en';
+	const prefix = get(prefixDB, message.guild);
+	const langcode = get(langDB, message.guild);
 	const lang = require(`../structures/languages/${langcode}.js`);
 	client.prefix = prefix;
 	client.lang = lang;

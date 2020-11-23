@@ -1,11 +1,11 @@
-module.exports = async function get(model, ctx) {
-    if(ctx.guild) {
+module.exports = async function get(model, guild) {
+    if(guild) {
       
-      let data = await model.findOne({ guildID: ctx.guild.id });
+      let data = await model.findOne({ guildID: guild.id });
       
       if(data) return data;
       
-      data = new model({ guildID: ctx.guild.id });
+      data = new model({ guildID: guild.id });
       
       await data.save();
       
@@ -13,7 +13,7 @@ module.exports = async function get(model, ctx) {
       
     } else {
       
-      return { guildID: ctx.guild.id }
+      return { guildID: guild.id }
     
     }
   }
