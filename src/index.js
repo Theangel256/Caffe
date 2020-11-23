@@ -13,7 +13,7 @@ const methodOverride = require('method-override')
 	client.queue = new Map();
 	client.snipes = new Map();
 	client.Discord = Discord;
-	require('./structures/database')
+	require('./structures/connection')
 	require('./structures/command').run(client);
 	require('./structures/event').run(client);
 	require('./structures/passport')

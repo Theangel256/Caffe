@@ -9,14 +9,9 @@
   <input id="icon_prefix" type="text" name="newPrefix" class="form-control" placeholder="Prefix Actual: <%= prefix.prefix %>" aria-label="Prefix" aria-describedby="button-addon2">
 </div>
       <div class="input-field col s12">
-        <button class="btn btn-secondary waves-effect waves-light" type="submit" id="prefix_Guardar" name="action">Guardar
+        <button class="btn btn-secondary waves-effect waves-light" type="submit" id="prefixSave" name="action">Guardar
           <i class="material-icons right">send</i>
         </button>
-        <% if(opciones.has(`${guild.id}.prefix`)) { %>
-        <button class="btn btn-danger waves-effect waves-light" type="submit" id="prefix_Remover" name="action">Reestablecer
-          <i class="material-icons right">clear</i>
-        </button>
-        <% } %>
       </div>
         </div>
       </div>

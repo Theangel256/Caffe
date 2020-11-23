@@ -7,5 +7,5 @@ mongoose
     useFindAndModify: false,
     useCreateIndex: true,
   })
-  .then((db) => console.log("Mongodb is connected to", db.connection.host))
-  .catch((err) => console.error(err));
+  .then((db) => console.log("MongoDB is connected to", db.connection.host))
+  .catch((err) => console.error(err.message));

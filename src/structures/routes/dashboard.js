@@ -4,9 +4,8 @@ const database = require('../DatabaseManager')
 const opciones = new database('opciones')
 const lvl = new database('niveles');
 const auth = require('../functions/auth');
-const changePrefix = require('../functions/changePrefix');
-const get = require('../functions/get');
-const changeLang = require('../functions/changeLang');
+const findOne = require('../functions/findOne');
+const {changePrefix, changeLang, changeLogs, changeWelcomeChannel, changeGoodbyeChannel} = require('../functions/changeDB');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
@@ -34,7 +33,7 @@ router.get('/', auth, async (req, res) => {
 			user: req.user,
 			guild,
 			opciones: new req.bot.database('opciones'),
-			prefix: await get(require('../models/prefix'), guild),
+			prefix: await findOne(require('../models/opciones'), guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
 			usuarios: getRank(await lvl.get(idserver), guild),
@@ -44,21 +43,21 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_channel = req.body.channel_ID;
 		if(!id_channel || id_channel === 'no_select') {
-			opciones.delete(`${idserver}.channels.welcome`);
+			await changeWelcomeChannel(idserver, undefined)
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			opciones.set(`${idserver}.channels.welcome`, id_channel);
+			await changeWelcomeChannel(idserver, id_channel);
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
 	.post('/:id/goodbye', auth, async (req, res) => {
-		const idserver = req.params.id,
-			id_channel = req.body.channelID;
+		const idserver = req.params.id;
+		const id_channel = req.body.channelID;
 		if(!id_channel || id_channel === 'no_select') {
-			opciones.delete(`${idserver}.channels.goodbye`);
+			await changeGoodbyeChannel(idserver, undefined)
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			opciones.set(`${idserver}.channels.goodbye`, id_channel);
+			await changeGoodbyeChannel(idserver, id_channel);
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
@@ -87,10 +86,10 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id
 		const logs_ID = req.body.logs_ID;
 		if(!logs_ID || logs_ID === 'no_select') {
-			opciones.delete(`${idserver}.channels.logs`);
+			await changeLogs(idserver, undefined)
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			await opciones.set(`${idserver}.channels.logs`, logs_ID);
+			await changeLogs(idserver, logs_ID)
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})

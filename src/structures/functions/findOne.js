@@ -1,4 +1,4 @@
-module.exports = async function get(model, guild) {
+module.exports = async function(model, guild) {
     if(guild) {
       
       let data = await model.findOne({ guildID: guild.id });
