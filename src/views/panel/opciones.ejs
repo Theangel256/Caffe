@@ -6,7 +6,7 @@
       <div class="form-group row">
 <div class="input-group mb-2">
   <i class="material-icons right">info_outline</i>
-  <input id="icon_prefix" type="text" name="newPrefix" class="form-control" placeholder="Prefix Actual: <%= prefix %>" aria-label="Prefix" aria-describedby="button-addon2">
+  <input id="icon_prefix" type="text" name="newPrefix" class="form-control" placeholder="Prefix Actual: <%= prefix.prefix %>" aria-label="Prefix" aria-describedby="button-addon2">
 </div>
       <div class="input-field col s12">
         <button class="btn btn-secondary waves-effect waves-light" type="submit" id="prefix_Guardar" name="action">Guardar
@@ -134,7 +134,7 @@
           <select id="select-channel" name="language" class="custom-select">
             <option value="no_select" disabled selected>Seleccione un canal.</option> 
             <option value="en">English</option>
-            <option value="en">Español</option>
+            <option value="es">Español</option>
           </select>
           <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar" name="action">Guardar
             <i class="material-icons right">done</i>
