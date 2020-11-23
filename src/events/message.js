@@ -12,14 +12,14 @@ module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
 	const prefix = await get(prefixDB, message.guild);
 	const langcode = await get(langDB, message.guild);
-	const lang = require(`../structures/languages/${langcode}.js`);
-	client.prefix = prefix;
+	const lang = require(`../structures/languages/${langcode.language}.js`);
+	client.prefix = prefix.prefix;
 	client.lang = lang;
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
 		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']})
 		const embed = new client.Discord.MessageEmbed()
-			.addField(':gear: | Prefix', '> `' + prefix + '`')
-			.addField(':satellite: | `' + prefix + '`Help', lang.events.message.isMentioned.field1)
+			.addField(':gear: | Prefix', '> `' + client.prefix + '`')
+			.addField(':satellite: | `' + client.prefix + '`Help', lang.events.message.isMentioned.field1)
 			.addField('❔ | ' + lang.events.message.isMentioned.field2,
 				`>>> [${lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://discord.Caffe-bot.com)\n[Twitter](https://twitter.com/Theangel256)\n[Facebook](https://www.facebook.com/Theangel256YT)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`)
 			.setFooter(lang.events.message.isMentioned.footer + require('../../package.json').version, client.user.displayAvatarURL({ dynamic:true }))
@@ -28,11 +28,11 @@ module.exports = async (client, message) => {
 	}
 	RegExpFunc(client, message);
 
-	const args = message.content.slice(prefix.length).trim().split(/ +/g);
+	const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 	const cmd = client.commands.get(command) || client.aliases.get(command);
 
-	if(!message.content.startsWith(prefix)) {
+	if(!message.content.startsWith(client.prefix)) {
 		nivelesFunc(message);
 		return;
 	}
