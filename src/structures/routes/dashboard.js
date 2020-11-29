@@ -104,7 +104,6 @@ router.get('/', auth, async (req, res) => {
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	});
-	// eslint-disable-next-line no-unused-vars
 	function getRank(users, datoServer) {
 		const userlist = [];
 		for(const key in users) {

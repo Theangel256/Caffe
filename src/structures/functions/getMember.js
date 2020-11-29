@@ -1,6 +1,6 @@
-module.exports = function getMember(message, args, autor = true)  {
-    let search = args.join(' '),
-        result;
+module.exports = function getMember(message, args = String, autor = true)  {
+    let search = args.join(' ');
+    let result;
     if (!search) {
         result = autor === true ? message.member : null;
     } else {
@@ -10,7 +10,7 @@ module.exports = function getMember(message, args, autor = true)  {
         message.guild.members.cache.find(e => e.user.username.toLowerCase().includes(search) ||
         e.user.tag.toLowerCase().includes(search) ||
         e.displayName.toLowerCase().includes(search)) || 
-        message.member
+        autor === true ? message.member : null;
 }
 return result;
 }

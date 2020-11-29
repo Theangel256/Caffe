@@ -1,39 +1,94 @@
-module.exports.run = (client, message, args) => {
-	if(message.deletable) message.delete();
-	if(isNaN(args[0]) || parseInt(args[0]) <= 0) {
-		return message.channel.send(client.lang.commands.clear.no_args).then(m => {
-			if(m.deletable) m.delete({ timeout: 5000 });
-		});
-	}
-	const deleteAmount = parseInt(args[0] >= 100) ? 100 : parseInt(args[0]);
-	message.channel.bulkDelete(deleteAmount === 100 ? deleteAmount : deleteAmount + 1, true).then((deleted) => {
-		message.channel.send(`he borrado ${deleted.size} mensaje(s)`).then(m => {
-			if(m.deletable) m.delete({ timeout: 1500 }).catch(e => console.log(e.message));
-		});
-	}).catch(e => {
-		switch(e.message) {
-		case('You can only bulk delete messages that are under 14 days old.'): {
-			message.channel.send('**:exclamation: |** Solo puedo borrar mensajes con menos de 2 semanas de antigüedad')
-				.then(m => { if(m.deletable) m.delete({ timeout: 5000 });});
-			break;
-		}
-		case('Unknown Message'): {
-			message.channel.send('**:exclamation: |** No hay mensajes para borrar')
-				.then(m => { if(m.deletable) m.delete({ timeout: 5000 }); });
-			break;
-		}
-		}
-		message.channel.send('**:exclamation: |** Ha ocurrido un error desconosido ' + e.message)
-			.then(m => { if(m.deletable) m.delete({ timeout: 5000 }); });
-	});
-};
+const missingPerms = require('../structures/functions/missingPerms')
+module.exports = async (client, message, args) => {
+	if (!message.channel.permissionsFor(message.member).has("MANAGE_MESSAGES")) 
+	return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, ["MANAGE_MESSAGES"])));
+	if (!message.channel.permissionsFor(message.guild.me).has("MANAGE_MESSAGES"))
+	return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.me, ["MANAGE_MESSAGES"])));
+	
+    if (!args[1] || (isNaN(args[1]) && !args[2])) return message.channel.send(client.lang.commands.clear.no_args);
+    
+    let number = args[2] ? parseInt(args[2]) : parseInt(args[1]);
+    if (!isNaN(number) && (number <= 100) && (number >= 1)) {
+      await message.delete();
+      switch (args[1]) {
+        case 'users': {
+          if (!args[3]) return message.channel.send("Mention or put the ID of the people whom you want their messages to be deleted.\n`purge users <number> <mentions>`")
+          const authors = message.mentions.users.size ? message.mentions.users.keyArray() : args.slice(3);
+          const messages = await message.channel.messages.fetch({
+            limit: number
+          }, false);
+          //.sweep quita elementos en el cual la función de true
+          messages.sweep(m => !authors.includes(m.author.id));
+          await message.channel.bulkDelete(messages, true);
+          let thing = await message.channel.send(messages.size + " messages were successfully deleted");
+          thing.delete({ timeout: 5000 });
+        }
+        break;
+        case 'bots': {
+          const messages = await message.channel.messages.fetch({
+            limit: number
+          }, false);
+          //Lo mismo pero comprobamos otras propiedades en el mensaje
+          messages.sweep(m => !m.author.bot);
+          await message.channel.bulkDelete(messages, true);
+          let thing = await message.channel.send(messages.size + " messages were successfully deleted");
+          thing.delete({ timeout: 5000 });
+        }
+        break;
+        case 'attachments': {
+          const messages = await message.channel.messages.fetch({
+            limit: number
+          }, false);
+          messages.sweep(m => !m.attachments.first());
+          await message.channel.bulkDelete(messages, true);
+          let thing = await message.channel.send(messages.size + " messages were successfully deleted");
+          thing.delete({ timeout: 5000 });
+        }
+        break;
+        case 'embeds': {
+          const messages = await message.channel.messages.fetch({
+            limit: number
+          }, false);
+          messages.sweep(m => !m.embeds[0]);
+          await message.channel.bulkDelete(messages, true);
+          let thing = await message.channel.send(messages.size + " messages were successfully deleted");
+          thing.delete({ timeout: 5000 });
+        }
+        break;
+        case 'with': {
+          //Borrar mensajes que tengan en su contenido X palabra
+          const messages = await message.channel.messages.fetch({
+            limit: number
+          }, false);
+          //Para este caso usaré un RegExp para ver con profundidad el contenido. Eres libre de usar otras opciones
+          messages.sweep(m => !(new RegExp(args.slice(3).join(" "), "gmi").test(m.content)));
+          await message.channel.bulkDelete(messages, true);
+          let thing = await message.channel.send(messages.size + " messages were successfully deleted");
+          thing.delete({ timeout: 5000 });
+        }
+        break;
+        default: {
+          if(args[2]) return message.channel.send("Invalid mode!");
+          await message.channel.bulkDelete(number, true);
+        }
+      }
+    } else {
+      if (isNaN(number)) {
+        message.channel.send('That isn\'t a number!');
+      } else if (number > 100) {
+        message.channel.send('I can only delete 100 messages at a time.');
+      } else if (number < 1) {
+        message.channel.send('I don\'t think 0 or less is what you want to delete.');
+      }
+    }
+}
 module.exports.help = {
 	name: 'clear',
-	aliases: ['purge'],
+	aliases: ['purge','prune','bulkdelete'],
 	description: 'Borra los mensajes de un canal',
 };
 module.exports.requirements = {
-	userPerms: ['MANAGE_MESSAGES'],
-	clientPerms: ['MANAGE_MESSAGES'],
+	userPerms: [],
+	clientPerms: [],
 	ownerOnly: false,
 };

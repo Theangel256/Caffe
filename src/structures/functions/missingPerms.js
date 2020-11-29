@@ -1,4 +1,4 @@
-module.exports = function missingPerms(client, member, perms) {
+module.exports = function missingPerms(client, member, perms = Array) {
     const missingPerms = member.permissions.missing(perms)
         .map(str => `\`${str.replace(/_/g, ' ').toLowerCase().replace(/\b(\w)/g, char => char.toUpperCase())}\``);
 
