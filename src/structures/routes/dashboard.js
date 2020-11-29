@@ -24,7 +24,7 @@ router.get('/', auth, async (req, res) => {
 			guild = req.bot.guilds.cache.get(idserver);
 		if(!guild) return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);
 		const userPermission = (await guild.members.fetch(req.user.id)).hasPermission('ADMINISTRATOR');
-		console.log(await get(SystemLvl, guild))
+		console.log(await SystemLvl.findOne())
 		if(!userPermission) return res.redirect('/error404');
 		res.render('guilds.ejs', {
 			title: "Caffe - Dashboard Bot",
@@ -37,7 +37,7 @@ router.get('/', auth, async (req, res) => {
 			opcionesDB: await get(opciones, guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(await get(SystemLvl, guild), guild),
+			usuarios: getRank(await SystemLvl.findOne(), guild),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
