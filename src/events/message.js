@@ -4,7 +4,7 @@ const opciones = require('../structures/models/guild');
 // Functions
 const missingPerms = require('../structures/functions/missingPerms')
 const RegExpFunc = require('../structures/functions/regExp');
-const nivelesFunc = require('../structures/functions/niveles');
+const nivelesFunc = require('../structures/functions/levels');
 const get = require('../structures/functions/get');
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;

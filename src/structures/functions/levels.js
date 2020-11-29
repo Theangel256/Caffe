@@ -1,7 +1,7 @@
 const SystemLvl = require('../models/SystemLvl');
 const cooldownniveles = new Map();
-const set = require('../functions/set')
-module.exports = async function niveles(message) {
+const set = require('./set')
+module.exports = async function (message) {
     if(cooldownniveles.has(message.guild.id + message.author.id)) {
         const time = cooldownniveles.get(message.guild.id + message.author.id);
         if(Date.now() < time) return;
@@ -10,7 +10,6 @@ module.exports = async function niveles(message) {
     if(!niveles) niveles = await set(SystemLvl, { xp: 0, lvl: 1, guildID: message.guild.id}) 
     const randomxp = Math.ceil(Math.random() * 10);
     const lvlup = niveles.lvl * 80;
-    if(message.author.bot) return;
     cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 5000);
     if((niveles.xp + randomxp) >= lvlup) {
         await SystemLvl.updateOne({ guildID: message.guild.id, userID: message.author.id}, {$set: { xp: 0, lvl: parseInt(niveles.lvl + 1)}}) 
