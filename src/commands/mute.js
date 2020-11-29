@@ -7,8 +7,7 @@ module.exports.run = async (client, message, args) => {
 		let tomute = getMember(message, args.slice(0, 1), false);
 	if(!tomute) return message.channel.send(lang.no_user);
 	let data = await MuteDB.findOne({ userID: tomute.user.id })
-    if (data) return message.channel.send("Usuario ya está Muteado")
-	if(tomute.user.id == client.user.id || (tomute.user.id == message.author.id)) return message.channel.send(lang.himself);
+    if (data) return message.channel.send("Usuario ya está Muteado");
 	let rolMute;
     if (message.guild.roles.cache.find(x => x.name == "Muted")) {
         rolMute = message.guild.roles.cache.find(x => x.name == "Muted").id
