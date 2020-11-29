@@ -33,7 +33,7 @@ router.get('/', auth, async (req, res) => {
 			guild,
 			has,
 			opciones,
-			prefix: await findOne(opciones, guild),
+			opcionesDB: await findOne(opciones, guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
 			usuarios: getRank(await findOne(SystemLvl, guild), guild),
