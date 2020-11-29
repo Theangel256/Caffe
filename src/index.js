@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({
+	ws: { intents: 32767 },
 	disableMentions: "everyone",
 	fetchAllMembers: true
 });

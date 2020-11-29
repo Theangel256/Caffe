@@ -7,8 +7,8 @@ module.exports = async function(model, json = Object) {
       }, (err) => err ? console.error(err) : null);
     
     } else {
-      await model.create(json); // Si no hay datos los creamos pos
-    const newData = await model.findOneAndUpdate({ guildID: json.guildID }, json, { new: true }); // El new sirve para que devuelva los datos o algo así era, no recuerdo bien
-    return newData;
+      if(!data) await model.create(json); // Si no hay datos los creamos pos
+      const newData = await model.findOneAndUpdate({ guildID: json.guildID }, json, { new: true }); // El new sirve para que devuelva los datos o algo así era, no recuerdo bien
+      return newData;
     }
 }
