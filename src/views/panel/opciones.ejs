@@ -56,7 +56,7 @@
             <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar" name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(has(opciones, { channelGoodbye })) { %>
+            <% if(opciones.findOne({guildID: guild.id}).exists("channelGoodbye")) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover" name="action">Reestablecer
               <i class="material-icons right">clear</i>
             </button>
@@ -81,7 +81,7 @@
             <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar" name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(has(opciones, { channelLogs })) { %>
+            <% if(opciones.findOne({guildID: guild.id}).exists("channelLogs")) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover" name="action">Reestablecer
               <i class="material-icons right">clear</i>
             </button>
@@ -109,7 +109,7 @@
         <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Guardar" name="action">Guardar
           <i class="material-icons right">send</i>
         </button>
-        <% if(has(opciones, { role })) { %>
+        <% if(opciones.findOne({guildID: guild.id}).exists("role")) { %>
         <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover" name="action">Reestablecer
           <i class="material-icons right">clear</i>
         </button>
@@ -134,7 +134,7 @@
           <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar" name="action">Guardar
             <i class="material-icons right">done</i>
           </button>
-          <% if(has(opciones, { language })) { %>
+          <% if(opciones.findOne({guildID: guild.id}).exists("language")) { %>
           <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover" name="action">Reestablecer
             <i class="material-icons right">clear</i>
           </button>
