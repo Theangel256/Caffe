@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
 	const lang = client.lang.commands.balance;
 	let balance = new client.Discord.MessageEmbed()
 	.setAuthor(lang.replace("/{user.username}/gi", member.user.username))
-	.setThumbnail(member.displayAvatarURL({format:"jpg", dyanmic: true}))
+	.setThumbnail(member.user.displayAvatarURL({format:"jpg", dyanmic: true}))
 	.addField(`Dinero`, consulta.money, true)
 	.addField(`Banco`, consulta.banco, true)
 	message.channel.send(balance)

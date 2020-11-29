@@ -36,7 +36,7 @@ module.exports = async (client, message) => {
 	if(!cmd) return;
 	if(!message.guild.me.hasPermission('SEND_MESSAGES')) return;
 
-	if(cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id)) {return message.reply(client.lang.only_developers);}
+	if(cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id)) return message.reply(client.lang.only_developers);
 
 	if(cmd.requirements.userPerms && !message.member.hasPermission(cmd.requirements.userPerms)) return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms)));
 
