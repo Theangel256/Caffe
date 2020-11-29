@@ -5,15 +5,15 @@ module.exports.run = async (client, message, args) => {
 	if (!message.channel.permissionsFor(message.guild.me).has("MANAGE_MESSAGES"))
 	return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.me, ["MANAGE_MESSAGES"])));
 	
-    if (!args[1] || (isNaN(args[1]) && !args[2])) return message.channel.send(client.lang.commands.clear.no_args);
+    if (!args[0] || (isNaN(args[0]) && !args[1])) return message.channel.send(client.lang.commands.clear.no_args);
     
-    let number = args[2] ? parseInt(args[2]) : parseInt(args[1]);
+    let number = args[1] ? parseInt(args[1]) : parseInt(args[0]);
     if (!isNaN(number) && (number <= 100) && (number >= 1)) {
       await message.delete();
       switch (args[1]) {
         case 'users': {
-          if (!args[3]) return message.channel.send("Mention or put the ID of the people whom you want their messages to be deleted.\n`purge users <number> <mentions>`")
-          const authors = message.mentions.users.size ? message.mentions.users.keyArray() : args.slice(3);
+          if (!args[2]) return message.channel.send("Mention or put the ID of the people whom you want their messages to be deleted.\n`purge users <number> <mentions>`")
+          const authors = message.mentions.users.size ? message.mentions.users.keyArray() : args.slice(2);
           const messages = await message.channel.messages.fetch({
             limit: number
           }, false);
@@ -61,7 +61,7 @@ module.exports.run = async (client, message, args) => {
             limit: number
           }, false);
           //Para este caso usaré un RegExp para ver con profundidad el contenido. Eres libre de usar otras opciones
-          messages.sweep(m => !(new RegExp(args.slice(3).join(" "), "gmi").test(m.content)));
+          messages.sweep(m => !(new RegExp(args.slice(2).join(" "), "gmi").test(m.content)));
           await message.channel.bulkDelete(messages, true);
           let thing = await message.channel.send(messages.size + " messages were successfully deleted");
           thing.delete({ timeout: 5000 });
