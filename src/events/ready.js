@@ -1,6 +1,17 @@
 const iteracion_mute = require('../structures/functions/iteracionMute');
 const request = require('request');
+const MuteDB = require('../structures/models/SystemMute');
 module.exports = async (client) => {
+	setInterval(async function () { //Inicio del intervalo
+        let allData = await MuteDB.find() //Obtenemos todos los datos del modelo
+        allData.map(async a => {
+            if (a.time < Date.now()) { //Verificamos cual ya "superó" su tiempo de mute
+                let member = client.guilds.resolve(a.guildID).member(a.userID) //Obtenemos el miembro
+                member.roles.remove(a.rolID) //le quitamos el rol
+                await MuteDB.deleteOne({ userID: a.userID }) //Eliminamos el objeto de la DB
+            }
+        })
+    }, 10000)
 	setInterval(function() {
 		iteracion_mute(client);
 	}, 1000);

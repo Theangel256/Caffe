@@ -14,5 +14,5 @@ module.exports = async (client, oldRole, newRole) => {
   if(r2.length) {
     embed.addField("Permisos removidos", r2.join(", "))
   }
-  client.channels.cache.get("694306652005859343").send(embed);
+  client.channels.cache.get("739049236259405845").send(embed);
 }

@@ -2,7 +2,7 @@ const warnSystem = require("../structures/models/warnSystem");
 const MessageModel2 = require("../structures/models/warnMembers");
 const getMember = require('../structures/functions/getMember');
 module.exports.run = async (client, message, args) => {
-    if (!args[1])
+    if (!args[0])
       return message.channel.send("You haven't said anything. Put a member or `set`");
 
     //warn <member> <reason> o warn set <role/kick/ban> <número de warns o false> <roles (sólo modo roles)>
@@ -33,8 +33,6 @@ module.exports.run = async (client, message, args) => {
             return message.channel.send("I can't update my database info. Here's a debug: " + err);
           }
         } else {
-          //Todo lo que hay aquí es pura lógica, después es actualizar a la DB...
-          //Ah, sólo un rol a la vez...
           let warnings = parseInt(args[3]);
           let roleObj = message.mentions.roles.first() ||
             message.guild.roles.cache.get(args[4]) ||
@@ -124,8 +122,7 @@ module.exports.run = async (client, message, args) => {
     } else {
 
       //Aqui viene lo importante, warn <member> <reason>.
-
-      let member = getMember(message, args, false)
+      let member = getMember(message, args.slice(0, 1), false);
       if (!member) return message.channel.send("Invalid member!");
       let document = await MessageModel2.findOne({
         guildID: message.guild.id,
