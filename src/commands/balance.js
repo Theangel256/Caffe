@@ -2,7 +2,7 @@ const economy = require('../structures/models/SystemEconomy');
 const getMember = require('../structures/functions/getMember');
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true);
-	const consulta = await economy.findOne({guildID: message.guild.id, userID: member.id})
+	const consulta = await economy.findOne({guildID: message.guild.id, userID: member.user.id})
 	const lang = client.lang.commands.balance;
 	let balance = new client.Discord.MessageEmbed()
 	.setAuthor(lang.replace("/{user.username}/gi", member.user.username))
