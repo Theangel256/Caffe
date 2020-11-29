@@ -1,6 +1,6 @@
 const moment = require('moment'); require('moment-duration-format');
 // Databases
-const opciones = require('../structures/models/opciones');
+const opciones = require('../structures/models/guild');
 // Functions
 const missingPerms = require('../structures/functions/missingPerms')
 const RegExpFunc = require('../structures/functions/regExp');

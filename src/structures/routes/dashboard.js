@@ -1,11 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const database = require('../DatabaseManager')
-const opciones = new database('opciones')
-const lvl = new database('niveles');
+const opciones = require('../models/guild');
 const auth = require('../functions/auth');
 const findOne = require('../functions/findOne');
-const {changePrefix, changeLang, changeLogs, changeWelcomeChannel, changeGoodbyeChannel} = require('../functions/changeDB');
+const set = require('../functions/set');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
@@ -25,28 +23,26 @@ router.get('/', auth, async (req, res) => {
 		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
 		const userPermission = (await guild.members.fetch(req.user.id)).hasPermission('ADMINISTRATOR');
 		if(!userPermission) return res.redirect('/error404');
-		if(!lvl.has(guild.id)) lvl.set(guild.id, {});
 		res.render('guilds.ejs', {
 			title: "Caffe - Dashboard Bot",
 			login : (req.isAuthenticated() ? 'si' : 'no'),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
 			guild,
-			opciones: new req.bot.database('opciones'),
-			prefix: await findOne(require('../models/opciones'), guild),
+			prefix: await findOne(opciones, guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(await lvl.get(idserver), guild),
+			//usuarios: getRank(await lvl.get(idserver), guild),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_channel = req.body.channel_ID;
 		if(!id_channel || id_channel === 'no_select') {
-			await changeWelcomeChannel(idserver, undefined)
+			await set(opciones, { channelWelcome: null, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			await changeWelcomeChannel(idserver, id_channel);
+			await set(opciones, { channelWelcome: id_channel, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
@@ -54,10 +50,10 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id;
 		const id_channel = req.body.channelID;
 		if(!id_channel || id_channel === 'no_select') {
-			await changeGoodbyeChannel(idserver, undefined)
+			await set(opciones, { channelGoodbye: null, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			await changeGoodbyeChannel(idserver, id_channel);
+			await set(opciones, { channelGoodbye: id_channel, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
@@ -65,10 +61,10 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id,
 			id_role = req.body.rol_ID;
 		if(!id_role || id_role === 'no_select') {
-			opciones.delete(`${idserver}.role`);
+			await set(opciones, { role: null, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			opciones.set(`${idserver}.role`, id_role);
+			await set(opciones, { role: id_role, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
@@ -76,20 +72,20 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id,
 			newPrefix = req.body.newPrefix;
 		if(!newPrefix || newPrefix.lenght === 0) {
-			await changePrefix(idserver, process.env.prefix)
+			await set(opciones, { prefix: process.env.prefix, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			await changePrefix(idserver, newPrefix)
+			await set(opciones, { prefix: newPrefix, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	}).post('/:id/logs', auth, async (req, res) => {
 		const idserver = req.params.id
 		const logs_ID = req.body.logs_ID;
 		if(!logs_ID || logs_ID === 'no_select') {
-			await changeLogs(idserver, undefined)
+			await set(opciones, { channelLogs: null, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			await changeLogs(idserver, logs_ID)
+			await set(opciones, { channelLogs: logs_ID, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
@@ -97,13 +93,14 @@ router.get('/', auth, async (req, res) => {
 		const idserver = req.params.id
 		const language = req.body.language;
 		if(!language || language === 'no_select') {
-			await changeLang(idserver, 'en');
+			await set(opciones, { language: "en", guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
-			await changeLang(idserver, language);
+			await set(opciones, { language, guildID: idserver})
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	});
+	// eslint-disable-next-line no-unused-vars
 	function getRank(users, datoServer) {
 		const userlist = [];
 		for(const key in users) {

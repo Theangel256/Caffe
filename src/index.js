@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Discord.Client({
+	disableMentions: true,
+	fetchAllMembers: true
+});
 const express = require('express');
 const app = express();
 const session = require('express-session');
