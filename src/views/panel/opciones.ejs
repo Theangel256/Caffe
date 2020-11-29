@@ -31,7 +31,7 @@
             <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar" name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(has(opciones, { channelWelcome })) { %>
+            <% if(opciones.findOne({guildID: guild.id}).exists("channelWelcome")) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover" name="action">Reestablecer
               <i class="material-icons right">clear</i>
             </button>
