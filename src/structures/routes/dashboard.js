@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const opciones = require('../models/guild');
+const SystemLvl = require('../models/SystemLvl')
 const auth = require('../functions/auth');
-const findOne = require('../functions/findOne');
+const findOne = require('../functions/get');
+const has = require('../functions/has')
 const set = require('../functions/set');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
@@ -29,10 +31,12 @@ router.get('/', auth, async (req, res) => {
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
 			guild,
+			has,
+			opciones,
 			prefix: await findOne(opciones, guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			//usuarios: getRank(await lvl.get(idserver), guild),
+			usuarios: getRank(await findOne(SystemLvl, guild), guild),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
