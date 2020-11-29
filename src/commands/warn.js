@@ -138,7 +138,6 @@ module.exports.run = async (client, message, args) => {
       } else {
         dbMsgModel2 = document;
       }
-      console.log(dbMsgModel2);
       if (dbMsgModel2) {
         try {
           let { warnings } = dbMsgModel2;
