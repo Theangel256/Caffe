@@ -6,6 +6,7 @@ module.exports = async function niveles(message) {
         if(Date.now() < time) return;
     }
     let niveles = await SystemLvl.findOne({ guildID: message.guild.id, userID: message.author.id});
+    console.log(niveles)
     if(!niveles) await SystemLvl.updateOne({ guildID: message.guild.id, userID: message.author.id}, {$set: { xp: 0, lvl: 1}}) 
     const randomxp = Math.ceil(Math.random() * 10);
     const lvlup = niveles.lvl * 80;
