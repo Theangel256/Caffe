@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({
-	disableMentions: true,
+	disableMentions: "everyone",
 	fetchAllMembers: true
 });
 const express = require('express');
