@@ -3,7 +3,7 @@ const router = express.Router()
 const opciones = require('../models/guild');
 const SystemLvl = require('../models/SystemLvl')
 const auth = require('../functions/auth');
-const get = require('../functions/get');
+const findOne = require('../functions/get');
 const has = require('../functions/has')
 const set = require('../functions/set');
 router.get('/', auth, async (req, res) => {
@@ -22,9 +22,8 @@ router.get('/', auth, async (req, res) => {
 .get('/:id', auth, async (req, res) => {
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
-		if(!guild) return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);
+		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
 		const userPermission = (await guild.members.fetch(req.user.id)).hasPermission('ADMINISTRATOR');
-		console.log(await SystemLvl.findOne())
 		if(!userPermission) return res.redirect('/error404');
 		res.render('guilds.ejs', {
 			title: "Caffe - Dashboard Bot",
@@ -34,10 +33,10 @@ router.get('/', auth, async (req, res) => {
 			guild,
 			has,
 			opciones,
-			opcionesDB: await get(opciones, guild),
+			opcionesDB: await findOne(opciones, guild),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(await SystemLvl.findOne(), guild),
+			usuarios: getRank(await SystemLvl.findOne({ guildID: guild.id, userID: req.user.id}), guild),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {

@@ -4,7 +4,7 @@ const model = new Model('systemlvl', new Schema({
   guildID: { type: String, unique: true },
   userID: { type: String },
   xp: { type: Number },
-  lvl: { type: Number },
+  lvl: { type: Number, default: 1 },
 }));
 
 module.exports = model;
