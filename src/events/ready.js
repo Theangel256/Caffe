@@ -16,7 +16,7 @@ module.exports = async (client) => {
 	const canal3 = client.channels.cache.get('606317624401592331'),
 		canal4 = client.channels.cache.get('606534123795906570');
 	if(!canal && !(guild) && !(canal2) && !(canal3) && !(canal4)) return;
-	if(guild.member(client.user).hasPermission(["MANAGE_CHANNELS"])) return;
+	if(!guild.member(client.user).hasPermission(["MANAGE_CHANNELS"])) return;
 	setInterval(() => {
 		canal.setName(`Discord Online: ${guild.members.cache.filter(x => x.user.presence.status !== 'offline').size}`);
 		canal2.setName(`Discord Total: ${guild.memberCount}`);
