@@ -1,6 +1,6 @@
 const { model: Model, Schema } = require('mongoose');
 
-const model = new Model('systemlvl', new Schema({
+const model = new Model('systemeconomy', new Schema({
   guildID: { type: String, unique: true },
   userID: { type: String },
   daily: { type: Number },

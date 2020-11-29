@@ -15,8 +15,7 @@ module.exports = async function niveles(message) {
         await SystemLvl.updateOne({ guildID: message.guild.id, userID: message.author.id}, {$set: { xp: 0, lvl: parseInt(niveles.lvl + 1)}}) 
         return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(niveles.lvl + 1)}!`);
     } else {
-        await SystemLvl.updateOne({ guildID: message.guild.id, userID: message.author.id}, {$inc: { xp: randomxp}}) 
-        SystemLvl.add(`${message.guild.id}.${message.author.id}.xp`, randomxp);
+        await SystemLvl.updateOne({ guildID: message.guild.id, userID: message.author.id}, {$inc: { xp: randomxp}});
         return;
     }
 }
