@@ -1,5 +1,5 @@
 const economy = require('../structures/models/SystemEconomy');
-module.exports = async (client, message) => {
+module.exports.run = async (client, message) => {
 	const user = message.author.id
 	const moneyUserServer = await economy.findOne({ userID: user});
 	let elements = ['100','75', '50'];
