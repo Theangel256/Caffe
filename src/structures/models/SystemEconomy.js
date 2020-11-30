@@ -1,8 +1,7 @@
 const { model: Model, Schema } = require('mongoose');
 
 const model = new Model('systemeconomy', new Schema({
-  guildID: { type: String, unique: true },
-  userID: { type: String },
+  userID: { type: String, unique: true },
   daily: { type: Number },
   money: { type: Number, default: 200 },
   banco: { type: String, default: "BBVA" }
