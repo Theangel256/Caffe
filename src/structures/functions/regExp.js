@@ -40,7 +40,7 @@ module.exports = async function regExp(client, message) {
             .setDescription('**Warn**')
             .addField('「:boy:」' + client.lang.events.message.ant.author, message.author.tag)
             .addField('「:speech_balloon:」' + client.lang.events.message.ant.reason, client.lang.events.message.ant.warn)
-            .addField('「:closed_book:」' + client.lang.events.message.ant.warns, count)
+            .addField('「:closed_book:」' + client.lang.events.message.ant.warns, count.warnings)
             .addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
         const canal = client.channels.cache.get(opciones.channelLogs);
         if(canal) return await canal.send(embed2);
