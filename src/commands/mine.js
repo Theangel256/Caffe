@@ -1,6 +1,5 @@
 const { getData } = require('../structures/functions/databaseManager.js');
-const path = require('path')
-const economy = require(path.join(__dirname, '/../structures/models/systemEconomy.js'))
+const economy = require('../structures/models/systemEconomy');
 module.exports.run = async(client, message) => {
 let consulta = await getData({ guildID: message.guild.id, userID: message.author.id}, "systemEconomy");
 let embed = new client.Discord.MessageEmbed()
