@@ -2,7 +2,7 @@ const {getData} = require('../structures/functions/databaseManager');
 const getMember = require('../structures/functions/getMember')
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true);
-	const consulta = await getData({guildID: message.guild.id, userID: member.user.id}, 'systemEconomy')
+	const consulta = await getData({guildID: message.guild.id, userID: member.user.id}, 'SystemEconomy')
 	const lang = client.lang.commands.inv;
 	let oro = (lang.oro)
 if(consulta.oro) oro = (`\n**Oro:** ${consulta.oro}`)

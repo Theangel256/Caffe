@@ -1,7 +1,7 @@
-const economy = require('../structures/models/systemEconomy');
+const economy = require('../structures/models/SystemEconomy');
 const { getData } = require('../structures/functions/databaseManager');
 module.exports.run = async (client, message) => {
-	const moneyUserServer = await getData({guildID: message.guild.id, userID: message.author.id}, 'systemEconomy')
+	const moneyUserServer = await getData({guildID: message.guild.id, userID: message.author.id}, 'SystemEconomy')
 	let elements = ['100','75', '50'];
 	let cacthElements = elements[Math.floor(elements.length * Math.random())];
 	let jobs = ['Trabajas en una cafeteria y ganaste $', 'Trabajaste de repartidor de pizas y recibiste $', "Editaste un video de un YouTuber y te pago $"]
