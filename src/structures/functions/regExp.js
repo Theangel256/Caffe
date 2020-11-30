@@ -34,8 +34,7 @@ module.exports = async function regExp(client, message) {
         }
         message.channel.send(embed);
         const count = await getData({guildID: message.guild.id, userID: message.author.id }, 'warnMembers');
-        const channelLog = await getData({guildID: message.guild.id }, 'guild');
-        console.log(channelLog)
+        const opciones = await getData({guildID: message.guild.id }, 'guild');
         const embed2 = new client.Discord.MessageEmbed()
             .setColor('RED')
             .setDescription('**Warn**')
@@ -43,7 +42,7 @@ module.exports = async function regExp(client, message) {
             .addField('「:speech_balloon:」' + client.lang.events.message.ant.reason, client.lang.events.message.ant.warn)
             .addField('「:closed_book:」' + client.lang.events.message.ant.warns, count)
             .addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
-        const canal = client.channels.cache.get(channelLog);
+        const canal = client.channels.cache.get(opciones.channelLogs);
         if(canal) return await canal.send(embed2);
     }
 }
