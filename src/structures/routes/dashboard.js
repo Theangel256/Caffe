@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const opciones = require('../models/guild');
-const SystemLvl = require('../models/SystemLvl')
 const auth = require('../functions/auth');
 const has = require('../functions/has')
 const set = require('../functions/set');

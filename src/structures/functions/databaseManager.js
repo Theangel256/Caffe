@@ -1,7 +1,7 @@
 const { readdir } = require("fs").promises;
 module.exports = {
  getData: async ({ ...find }, model) => {
-    const db_files = await readdir(require("path").join(__dirname, "/structures/models/"));
+    const db_files = await readdir(require("path").join(__dirname, "../models/"));
 
     const available_models = db_files.map(elem => elem.endsWith("js") ? elem.slice(0, -3) : elem);
 
@@ -21,7 +21,7 @@ module.exports = {
 
 },
 updateData: async ({ ...find }, { ...newValue }, model) => {
-    const db_files = await readdir(require("path").join(__dirname, "/structures/models/"));
+    const db_files = await readdir(require("path").join(__dirname, "../models/"));
      const available_models = db_files.map(elem => elem.endsWith("js") ? elem.slice(0, -3) : elem);
       
      if (!available_models.includes(model)) return console.error('[UPDATE_DATA] Model no encontrado!')
