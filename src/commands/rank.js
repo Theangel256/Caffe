@@ -3,8 +3,7 @@ const getRank = require('../structures/functions/getRank');
 const getMember = require('../structures/functions/getMember');
 const { getData, updateData } = require('../structures/functions/databaseManager');
 module.exports.run = async (client, message, args) => {
-	const db = new client.database('niveles'),
-		member = getMember(message, args, true);
+	const member = getMember(message, args, true);
 	if(member.user.bot) return message.channel.send('los bots no tienen niveles');
 	let niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, "SystemLvl");
 	if(!niveles) {
