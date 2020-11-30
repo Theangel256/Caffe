@@ -120,7 +120,6 @@ module.exports.run = async (client, message, args) => {
         message.channel.send("Usage: `warn set <role, kick, ban> <number or false> <role id (only role option)>`");
       }
     } else {
-
       //Aqui viene lo importante, warn <member> <reason>.
       let member = getMember(message, args.slice(0, 1), false);
       if (!member) return message.channel.send("Invalid member!");
