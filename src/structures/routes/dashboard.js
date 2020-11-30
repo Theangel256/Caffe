@@ -37,7 +37,7 @@ router.get('/', auth, async (req, res) => {
 			opcionesDB: await getData({guildID: guild.id}, 'guild'),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(await await getData({guildID: guild.id, userID: req.user.id }, 'SystemLvl'),
+			usuarios: getRank(await getData({guildID: guild.id, userID: req.user.id }, 'SystemLvl')),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
