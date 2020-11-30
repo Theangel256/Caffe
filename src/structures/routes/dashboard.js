@@ -22,7 +22,7 @@ router.get('/', auth, async (req, res) => {
 	getData()
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
-		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
+		if(!guild) return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);
 		const userPermission = (await guild.members.fetch(req.user.id)).hasPermission('ADMINISTRATOR');
 		if(!userPermission) return res.redirect('/error404');
 		res.render('guilds.ejs', {
