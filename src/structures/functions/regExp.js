@@ -34,7 +34,7 @@ module.exports = async function regExp(client, message) {
         }
         message.channel.send(embed);
         const count = await getData({guildID: message.guild.id, userID: message.author.id }, 'warnMembers');
-        const channelLog = await getData({guildID: message.guild.id }, 'guild').channelLog;
+        const channelLog = await getData({guildID: message.guild.id }, 'guild');
         console.log(channelLog)
         const embed2 = new client.Discord.MessageEmbed()
             .setColor('RED')
