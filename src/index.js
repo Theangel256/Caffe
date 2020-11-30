@@ -51,6 +51,6 @@ const methodOverride = require('method-override')
 	});
 	client.login(process.env.TOKEN).then(() => console.log(`Estoy listo, soy ${client.user.tag}`))
 	.catch((err) => console.error('Error al iniciar sesión: ' + err));
-	process.on("unhandledRejection", (r) => {
-		console.dir(r);
+	process.on('unhandledRejection', error => {
+		console.error('Unhandled promise rejection:', error);
 	});
