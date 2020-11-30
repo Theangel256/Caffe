@@ -7,7 +7,7 @@ module.exports = {
 
     if (!available_models.includes(model)) return console.error('[GET_DATA] Model no encontrado!')
 
-    let db = require(db_files + model + '.js');
+    let db = require('./models/' + model + '.js');
 
     let getModel = (await db.findOne(find));
 
