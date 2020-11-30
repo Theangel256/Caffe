@@ -26,7 +26,7 @@ updateData: async ({ ...find }, { ...newValue }, model) => {
       
      if (!available_models.includes(model)) return console.error('[UPDATE_DATA] Model no encontrado!')
 
-    let db = require(db_files + model + '.js');
+    let db = require('../models/' + model + '.js');
 
     let getModel = (await db.findOne(find));
 
@@ -35,12 +35,9 @@ updateData: async ({ ...find }, { ...newValue }, model) => {
         await db.create(find)
         //DATO: findOneAndUpdate() te devuelve el dato despues de establecerlo si pones {new :true} en el tercer parametro
         return await db.findOneAndUpdate(find, newValue, { new: true });
-
     }
     else {
-
         return await db.findOneAndUpdate(find, newValue, { new: true });
-
     }
 }
 
