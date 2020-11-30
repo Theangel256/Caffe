@@ -77,6 +77,10 @@ module.exports = {
 			himself: '{user.username} se abrazó a sí mismo',
 			another_person: '{author.username} Abrazó a {user.username}',
 		},
+		inventory: {
+			oro: "No tienes ningun objeto en el inventario, ve a minar o explorar.",
+			inv: "Inventario de {user.username}"
+		},
 		kick: {
 			no_args: '**:grey_exclamation: |** Proporcione una persona para expulsar.',
 			no_user: '**:grey_exclamation: |** No se pudo encontrar ese miembro, intente nuevamente.',
