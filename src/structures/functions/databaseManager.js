@@ -1,6 +1,6 @@
-const { readdir } = require("fs").promises;
 module.exports = {
  getData: async ({ ...find }, model) => {
+    const { readdir } = require("fs").promises;
     const db_files = await readdir(require("path").join(__dirname, "../models/"));
 
     const available_models = db_files.map(elem => elem.endsWith("js") ? elem.slice(0, -3) : elem);
@@ -20,6 +20,7 @@ module.exports = {
 
 },
 updateData: async ({ ...find }, { ...newValue }, model) => {
+    const { readdir } = require("fs").promises;
     const db_files = await readdir(require("path").join(__dirname, "../models/"));
      const available_models = db_files.map(elem => elem.endsWith("js") ? elem.slice(0, -3) : elem);
       
