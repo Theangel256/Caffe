@@ -1,10 +1,7 @@
 const MessageModel2 = require("../models/warnMembers");
-const database = require('../DatabaseManager');
 const { getData } = require('../functions/databaseManager');
-const opciones = new database('opciones');
 
 module.exports = async function regExp(client, message) {
-    const warns = new client.database('warns');
     if(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord\.com\/invite)\/.+[a-z]/gim.test(message.content)) {
         const embed = new client.Discord.MessageEmbed()
             .setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), message.author.displayAvatarURL({ dynamic:true }))
