@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args) => {
 		updateData({guildID: message.guild.id, userID: member.user.id }, {xp: 0, lvl: 1}, 'SystemLvl')
 		niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, "SystemLvl");
 	}
-	const usuarios = getRank(await getData({ guildID: message.guild.id, userID: member.user.id }, "SystemLvl"), message);
+	const usuarios = await getRank(await getData({ guildID: message.guild.id, userID: member.user.id }, "SystemLvl"), message);
 	let rank = usuarios.findIndex(u => u[0] == member.user.tag);
 	if(rank === -1) rank = `#${usuarios.length}`;
 	else rank = `#${rank + 1}`;

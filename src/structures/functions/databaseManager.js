@@ -26,7 +26,7 @@ updateData: async ({ ...find }, { ...newValue }, model) => {
       
      if (!available_models.includes(model)) return console.error('[UPDATE_DATA] Model no encontrado!')
 
-    let db = require('../models/' + model + '.js');
+    let db = require("../models/" + model + '.js');
 
     let getModel = (await db.findOne(find));
 
