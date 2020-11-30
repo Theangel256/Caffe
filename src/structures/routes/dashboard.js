@@ -4,7 +4,8 @@ const opciones = require('../models/guild');
 const auth = require('../functions/auth');
 const has = require('../functions/has')
 const set = require('../functions/set');
-const { getData } = require('../functions/databaseManager')
+const { getData } = require('../functions/databaseManager');
+const SystemLvl = require('../models/SystemLvl')
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
@@ -36,7 +37,7 @@ router.get('/', auth, async (req, res) => {
 			opcionesDB: await getData({guildID: guild.id}, 'guild'),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(await getData({guildID: guild.id, userID: req.user.id }, 'SystemLvl')),
+			usuarios: getRank(await SystemLvl.find({ guildID: guild.id }, 'SystemLvl')),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
