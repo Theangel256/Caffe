@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const opciones = require('../models/guild');
-const SystemLvl = require('../models/SystemLvl')
+const SystemLvl = require('../models/systemLvl')
 const auth = require('../functions/auth');
-const findOne = require('../functions/get');
 const has = require('../functions/has')
 const set = require('../functions/set');
+const { getData } = require('../functions/databaseManager')
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
@@ -20,6 +20,7 @@ router.get('/', auth, async (req, res) => {
 	});
 })
 .get('/:id', auth, async (req, res) => {
+	getData()
 		const idserver = req.params.id,
 			guild = req.bot.guilds.cache.get(idserver);
 		if(!guild) {return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);}
@@ -33,10 +34,10 @@ router.get('/', auth, async (req, res) => {
 			guild,
 			has,
 			opciones,
-			opcionesDB: await findOne(opciones, guild),
+			opcionesDB: await getData({guildID: guild.id}, 'guild'),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(await SystemLvl.findOne({ guildID: guild.id, userID: req.user.id}), guild),
+			usuarios: getRank(await await getData({guildID: guild.id, userID: req.user.id }, 'systemLvl'),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {

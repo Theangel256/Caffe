@@ -1,6 +1,6 @@
 const iteracion_mute = require('../structures/functions/iteracionMute');
 const request = require('request');
-const MuteDB = require('../structures/models/SystemMute');
+const MuteDB = require('../structures/models/systemMute');
 module.exports = async (client) => {
 	setInterval(async function () {
         let allData = await MuteDB.find()

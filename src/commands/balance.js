@@ -1,4 +1,4 @@
-const economy = require('../structures/models/SystemEconomy');
+const economy = require('../structures/models/systemEconomy');
 const getMember = require('../structures/functions/getMember');
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true);

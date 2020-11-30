@@ -1,4 +1,4 @@
-const economy = require('../structures/models/SystemEconomy');
+const economy = require('../structures/models/systemEconomy');
 module.exports.run = async (client, message) => {
 	const user = message.author.id
 	const moneyUserServer = await economy.findOne({ userID: user});
