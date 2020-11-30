@@ -1,4 +1,3 @@
-const iteracion_mute = require('../structures/functions/iteracionMute');
 const request = require('request');
 const MuteDB = require('../structures/models/SystemMute');
 module.exports = async (client) => {
@@ -12,9 +11,6 @@ module.exports = async (client) => {
             }
         })
     }, 10000)
-	setInterval(function() {
-		iteracion_mute(client);
-	}, 1000);
 	const statues = [`/help | ${client.users.cache.size.toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version, 'discord.caffe-bot.com', 'add.caffe-bot.com'];
 	setInterval(function() {
