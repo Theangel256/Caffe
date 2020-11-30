@@ -1,5 +1,5 @@
 module.exports.run = async (client, message, args) => {
-	const opciones = new client.database('opciones'),
+	const guilds = new db.table('guilds');,
 		Dashboard = `[Dashboard](${process.env.URL}/Dashboard/${message.guild.id})`;
 
 	const embed = new client.Discord.MessageEmbed()

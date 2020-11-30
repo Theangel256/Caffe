@@ -1,6 +1,6 @@
 const moment = require('moment');
 require('moment-duration-format');
-const getMember = require('../structures/functions/getMember');
+const {getMember} = require('../structures/functions.js');
 module.exports.run = async (client, message, args) => {
 	const economia = new client.database('economia'),
 		cooldown = new client.database('cooldown');

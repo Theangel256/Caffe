@@ -1,7 +1,8 @@
+const db = require('quick.db');
 module.exports = async (client, oldMember, newMember) => {
-	const opciones = new client.database('opciones');
+	const guilds = new db.table('guilds');
 	if(!oldMember.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
-	const logchannel = await opciones.get(`${oldMember.guild.id}.channels.logs`),
+	const logchannel = await guilds.get(`${oldMember.guild.id}.channels.logs`),
 		entry = await oldMember.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(audit => audit.entries.first()),
 		channel = client.channels.resolve(logchannel);
 	if(!channel) return;

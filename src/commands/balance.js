@@ -1,4 +1,4 @@
-const getMember = require('../structures/functions/getMember');
+const {getMember} = require('../structures/functions.js');
 const { getData } = require('../structures/functions/databaseManager')
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true);

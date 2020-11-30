@@ -1,8 +1,8 @@
-const getMember = require('../structures/functions/getMember');
+const {getMember} = require('../structures/functions.js');
 const MuteDB = require('../structures/models/SystemMute');
 const ms = require('ms');
 module.exports.run = async (client, message, args) => {
-	const opciones = new client.database('opciones'),
+	const guilds = new db.table('guilds');,
 		lang = client.lang.commands.mute;
 		let tomute = getMember(message, args.slice(0, 1), false);
 	if(!tomute) return message.channel.send(lang.no_user);

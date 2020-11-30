@@ -1,4 +1,4 @@
-const getMember = require('../structures/functions/getMember');
+const {getMember} = require('../structures/functions.js');
 module.exports.run = async (client, message, args) => {
 	const level_db = new client.database('niveles'),
 		profile = new client.database('profile'),

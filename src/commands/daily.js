@@ -1,4 +1,5 @@
-const moment = require('moment');const { getData } = require('../structures/functions/databaseManager');
+const moment = require('moment');
+const { getData } = require('../structures/functions/databaseManager');
  require('moment-duration-format');
 const SystsemEconomy = require('../structures/models/SystemEconomy');
 module.exports.run = async (client, message) => {

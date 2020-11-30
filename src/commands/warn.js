@@ -1,6 +1,6 @@
 const warnSystem = require("../structures/models/warnSystem");
 const MessageModel2 = require("../structures/models/warnMembers");
-const getMember = require('../structures/functions/getMember');
+const {getMember} = require('../structures/functions.js');
 module.exports.run = async (client, message, args) => {
     if (!args[0])
       return message.channel.send("You haven't said anything. Put a member or `set`");

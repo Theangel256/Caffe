@@ -8,7 +8,6 @@ router.get('/', async (req, res) => {
 		title: "Caffe - The Premium Bot!",
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		login: (req.isAuthenticated() ? 'si' : 'no'),
-		invite: `https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=0&scope=bot`,
 		userAvatarURL
 	});
 });

@@ -1,8 +1,9 @@
-module.exports = async (client, channel) => {
-	const opciones = new client.database('opciones');
+const db = require('quick.db')
+module.exports = (client, channel) => {
+	const guilds = new db.table('guilds')
 	if (channel.type === 'dm') return;
-	const logchannel = await opciones.get(`${channel.guild.id}.channels.logs`),
-		canal = client.channels.resolve(logchannel);
+	const logchannel = guilds.get(`${channel.guild.id}.channels.logs`);
+	const canal = client.channels.resolve(logchannel);
 	if(!canal) return;
 	const logEmbed = new client.Discord.MessageEmbed()
 		.setTitle('**「:white_check_mark: 」• Canal Creado**')

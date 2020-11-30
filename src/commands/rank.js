@@ -1,6 +1,6 @@
 const Canvas = require('canvas')
 const getRank = require('../structures/functions/getRank');
-const getMember = require('../structures/functions/getMember');
+const {getMember} = require('../structures/functions.js');
 const { getData, updateData } = require('../structures/functions/databaseManager');
 const SystemLvl = require('../structures/models/SystemLvl')
 module.exports.run = async (client, message, args) => {

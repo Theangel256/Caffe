@@ -1,11 +1,12 @@
+const db = require('quick.db');
 module.exports = async (client, message) => {
-	const opciones = new client.database('opciones');
+	const guilds = new db.table('guilds');
 	client.snipes.set(message.channel.id, {
 		content: message.content,
 		author: message.author,
 		image: message.attachments.first() ? message.attachments.first().proxyURL : null,
 	});
-	const logchannel = await opciones.get(`${message.guild.id}.channels.logs`),
+	const logchannel = await guilds.get(`${message.guild.id}.channels.logs`),
 		logginChannel = client.channels.resolve(logchannel);
 	if(!logginChannel) return;
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;

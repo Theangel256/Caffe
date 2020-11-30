@@ -1,4 +1,4 @@
-const getMember = require('../structures/functions/getMember');
+const {getMember} = require('../structures/functions.js');
 
 const commandcooldown = new Map(),
 	moment = require('moment');

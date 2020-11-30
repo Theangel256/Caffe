@@ -1,17 +1,13 @@
 const moment = require('moment'); require('moment-duration-format');
-// Databases
-const opciones = require('../structures/models/guild');
-// Functions
-const missingPerms = require('../structures/functions/missingPerms')
-const RegExpFunc = require('../structures/functions/regExp');
-const nivelesFunc = require('../structures/functions/levels');
-const get = require('../structures/functions/get');
+const {levels, regExp, missingPerms } = require('../structures/functions');
+const db = require('quick.db')
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const db = await get(opciones, message.guild);
-	client.prefix = db.prefix;
-	client.lang = require(`../structures/languages/${db.language}.js`);
+	const guild = new db.table('guilds')
+	client.prefix = guild.has(`${message.guild.id}.prefix`) ? guild.get(`${message.guild.id}.prefix`) : process.env.prefix;
+	const lang = guild.has(`${message.guild.id}.language`) ?  guild.get(`${message.guild.id}.language`) : 'en';
+	client.lang = require(`../structures/languages/${lang}.js`);
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
 		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']})
 		const embed = new client.Discord.MessageEmbed()
@@ -23,14 +19,14 @@ module.exports = async (client, message) => {
 			.setTimestamp().setColor(0x00ffff);
 		message.channel.send(embed).then(e => e.delete({ timeout: 60000 })).catch(e => console.log(e.message));
 	}
-	RegExpFunc(client, message);
+	regExp(client, message);
 
 	const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 	const cmd = client.commands.get(command) || client.aliases.get(command);
 
 	if(!message.content.startsWith(client.prefix)) {
-		nivelesFunc(message);
+		levels(message);
 		return;
 	}
 	if(!cmd) return;

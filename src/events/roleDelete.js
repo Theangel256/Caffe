@@ -1,6 +1,7 @@
+const db = require('quick.db');
 module.exports = async (client, role) => {
-	const opciones = new client.database('opciones');
-	const logchannel = await opciones.get(`${role.guild.id}.channels.logs`);
+	const guilds = new db.table('guilds');
+	const logchannel = await guilds.get(`${role.guild.id}.channels.logs`);
 	const traduccion = { false: 'No', true: 'Si' };
 	const logginChannel = client.channels.resolve(logchannel);
 	if(!logginChannel) return;

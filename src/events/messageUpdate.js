@@ -1,7 +1,8 @@
+const db = require('quick.db');
 module.exports = async (client, oldMessage, newMessage) => {
-	const opciones = new client.database('opciones');
+	const guilds = new db.table('guilds');
 	if (oldMessage.content === newMessage.content) return;
-	const logchannel = await opciones.get(`${newMessage.guild.id}.channels.logs`),
+	const logchannel = await guilds.get(`${newMessage.guild.id}.channels.logs`),
 		canal = client.channels.resolve(logchannel);
 	if(!canal) return;
 	const logEmbed = new client.Discord.MessageEmbed()
