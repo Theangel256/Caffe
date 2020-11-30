@@ -1,6 +1,7 @@
-const economy = require('../structures/models/systemEconomy.js');
+const { getData } = require('../structures/functions/databaseManager.js');
+const economy = require(__dirname + './structures/models/systemEconomy.js');
 module.exports.run = async(client, message) => {
-let consulta = await economy.findOne({ guildID: message.guild.id, userID: message.author.id});
+let consulta = await getData({ guildID: message.guild.id, userID: message.author.id}, "systemEconomy");
 let embed = new client.Discord.MessageEmbed()
 if(!consulta){
 await economy.insertOne({
