@@ -5,7 +5,7 @@ module.exports.run = async (client, message, args) => {
 	const consulta = await getData({guildID: message.guild.id, userID: member.user.id}, 'SystemEconomy')
 	const lang = client.lang.commands.balance;
 	let balance = new client.Discord.MessageEmbed()
-	.setAuthor(lang.replace("/{user.username}/gi", member.user.username))
+	.setAuthor(lang.replace(/{user.username}/gi, member.user.username))
 	.setThumbnail(member.user.displayAvatarURL({format:"jpg", dyanmic: true}))
 	.addField(`Dinero`, consulta.money, true)
 	.addField(`Banco`, consulta.banco, true)
