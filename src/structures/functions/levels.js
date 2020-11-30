@@ -1,4 +1,4 @@
-const SystemLvl = require('../models/systemLvl');
+const SystemLvl = require('../models/SystemLvl');
 const cooldownniveles = new Map();
 const set = require('./set')
 module.exports = async function (message) {

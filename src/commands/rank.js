@@ -6,12 +6,12 @@ module.exports.run = async (client, message, args) => {
 	const db = new client.database('niveles'),
 		member = getMember(message, args, true);
 	if(member.user.bot) return message.channel.send('los bots no tienen niveles');
-	let niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, "systemLvl");
+	let niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, "SystemLvl");
 	if(!niveles) {
-		updateData({guildID: message.guild.id, userID: member.user.id }, {xp: 0, lvl: 1}, 'systemLvl')
-		niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, "systemLvl");
+		updateData({guildID: message.guild.id, userID: member.user.id }, {xp: 0, lvl: 1}, 'SystemLvl')
+		niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, "SystemLvl");
 	}
-	const usuarios = getRank(await getData({ guildID: message.guild.id }, "systemLvl"), message);
+	const usuarios = getRank(await getData({ guildID: message.guild.id }, "SystemLvl"), message);
 	let rank = usuarios.findIndex(u => u[0] == member.user.tag);
 	if(rank === -1) rank = `#${usuarios.length}`;
 	else rank = `#${rank + 1}`;

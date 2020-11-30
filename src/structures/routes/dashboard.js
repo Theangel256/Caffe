@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const opciones = require('../models/guild');
-const SystemLvl = require('../models/systemLvl')
+const SystemLvl = require('../models/SystemLvl')
 const auth = require('../functions/auth');
 const has = require('../functions/has')
 const set = require('../functions/set');
@@ -37,7 +37,7 @@ router.get('/', auth, async (req, res) => {
 			opcionesDB: await getData({guildID: guild.id}, 'guild'),
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(await await getData({guildID: guild.id, userID: req.user.id }, 'systemLvl'),
+			usuarios: getRank(await await getData({guildID: guild.id, userID: req.user.id }, 'SystemLvl'),
 		});
 	})
 	.post('/:id/welcome', auth, async (req, res) => {
