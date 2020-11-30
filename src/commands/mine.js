@@ -1,4 +1,4 @@
-const economy = require('./structures/models/systemEconomy');
+const economy = require('../structures/models/systemEconomy.js');
 module.exports.run = async(client, message) => {
 let consulta = await economy.findOne({ guildID: message.guild.id, userID: message.author.id});
 let embed = new client.Discord.MessageEmbed()
