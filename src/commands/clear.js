@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args) => {
     let number = args[1] ? parseInt(args[1]) : parseInt(args[0]);
     if (!isNaN(number) && (number <= 100) && (number >= 1)) {
       await message.delete();
-      switch (args[0]) {
+      switch (args[0].toLowerCase()) {
         case 'users': {
           if (!args[2]) return message.channel.send("Mention or put the ID of the people whom you want their messages to be deleted.\n`purge users <number> <mentions>`")
           const authors = message.mentions.users.size ? message.mentions.users.keyArray() : args.slice(2);

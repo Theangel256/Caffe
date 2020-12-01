@@ -8,7 +8,7 @@ module.exports.run = (client, message, args) => {
 		else x;
 	});
 	const roleColor = message.guild.me.displayHexColor;
-	switch (args[0]) {
+	switch (args[0].toLowerCase()) {
 		case 'image': {
 			if (!args[1]) {return message.channel.send('Nada para ver? `Ej: /say image url.com`')
 			.then(m => m.delete({ timeout: 5000 }));}

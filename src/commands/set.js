@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
 		\`set goodbye banner\`
 		\`set lang es ó es\``);
 	if (!args[0]) return message.channel.send(embed);
-	switch (args[0]) {
+	switch (args[0].toLowerCase()) {
 		case 'welcome': {
 			if(!args[1]) return message.channel.send('Porfavor introduce argumentos, `/set welcome banner`');
 			if (args[1].toLowerCase() === 'banner') {
