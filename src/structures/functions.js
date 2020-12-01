@@ -72,7 +72,7 @@ regExp: (client, message) => {
     }
 },
 
-niveles: async (message) => {
+levels: async (message) => {
   const levels = new db.table('levels');
     if(cooldownniveles.has(message.guild.id + message.author.id)) {
         const time = cooldownniveles.get(message.guild.id + message.author.id);
