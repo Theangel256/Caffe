@@ -6,16 +6,16 @@ module.exports.run = async (client, message, args) => {
 	const embed = new client.Discord.MessageEmbed()
 		.setAuthor(message.author.username + ' Debes de utilizarlo de la siguiente manera.', message.author.displayAvatarURL({ dynamic:true }))
 		.setColor(message.guild.me.displayHexColor)
-		.setDescription(`\`${client.prefix}set <acción> <dato>\`\n
-		\n
-		**Acciones disponibles**:\n
-		~~set prefix~~ ${Dashboard}\n
-		~~set logs~~ ${Dashboard}\n
-		~~set autorole @Rol o remove~~ ${Dashboard}\n
-		~~set welcome channel~~ ${Dashboard }\n
-		\`set welcome banner\`\n
-		~~set goodbye channel~~ ${Dashboard}\n
-		\`set goodbye banner\`\n
+		.setDescription(`\`${client.prefix}set <acción> <dato>\`
+
+		**Acciones disponibles**:
+		~~set prefix~~ ${Dashboard}
+		~~set logs~~ ${Dashboard}
+		~~set autorole @Rol o remove~~ ${Dashboard}
+		~~set welcome channel~~ ${Dashboard }
+		\`set welcome banner\`
+		~~set goodbye channel~~ ${Dashboard}
+		\`set goodbye banner\`
 		\`set lang es ó es\``);
 	if (!args[0]) return message.channel.send(embed);
 	switch (args[0]) {
