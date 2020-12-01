@@ -1,5 +1,5 @@
 const Canvas = require('canvas')
-const getRank = require('../structures/functions');
+const {getRank} = require('../structures/functions');
 const {getMember} = require('../structures/functions.js');
 const db = require('quick.db')
 module.exports.run = async (client, message, args) => {
