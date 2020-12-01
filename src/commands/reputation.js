@@ -13,7 +13,7 @@ module.exports.run = async (client, message, args) => {
 	if(!member) return message.channel.send(client.lang.no_user);
 	if(member.user.id === message.author.id) return message.channel.send('No puedes darte reputacion ati mismo');
 	if(member.user.bot) return message.channel.send('No puedes darle reputacion a un bot');
-	economy.add(`${member.user.id}`, { rep: 1 });
+	economy.add(`${member.user.id}.rep`, 1);
 	message.channel.send(`<:rep:741355268625006694>Punto de reputacion agregado a: **${member.user.username}**`);
 	economy.set(`${message.author.id}`, { repCooldown: Date.now() + 86400000 });
 };

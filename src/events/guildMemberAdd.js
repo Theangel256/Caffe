@@ -1,9 +1,6 @@
 const db = require('quick.db');
 const marsnpm = require('marsnpm');
 module.exports = async (client, member) => {
-	const cooldown = new client.database('cooldown');
-	const mutedRole = member.guild.roles.cache.find(r => r.name == 'Muted');
-	if(cooldown.has(member.id)) member.roles.add(mutedRole.id)
 	const guilds = new db.table('guilds');
 	const logchannel = await guilds.get(`${member.guild.id}.channels.logs`),
 		robot = { true: 'Si', false: 'No' },
@@ -21,7 +18,7 @@ module.exports = async (client, member) => {
 	channel.send(logEmbed);
 	const role = guilds.get(`${member.guild.id}.role`);
 	try {
-		member.roles.add(role);
+		if(role) member.roles.add(role);
 	}
 	catch (e) { console.log(e.message); }
 

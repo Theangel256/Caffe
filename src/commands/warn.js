@@ -76,7 +76,7 @@ module.exports.run = async (_client, message, args) => {
       if (!member) return message.channel.send("Invalid member!");
       let { warnings } = warnMembers.get(`${message.guild.id}.${member.user.id}`);
       let newWarnings = warnings + 1;
-      warnMembers.add(`${message.guild.id}.${member.user.id}`, { warnings: newWarnings })
+      warnMembers.add(`${message.guild.id}.${member.user.id}.warnings`, newWarnings)
       if (args[2]) {
         member.send(`"You've been warned on ${message.guild.name} with reason: ${args.slice(2).join(" ")}. You have ${newWarnings} warning(s).`)
         .catch(() => {});

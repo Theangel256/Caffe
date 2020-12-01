@@ -56,7 +56,7 @@ regExp: (client, message) => {
       .setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), message.author.displayAvatarURL({ dynamic:true }))
       .setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
       if(message.deletable) message.delete().catch(e => console.error(e.message));
-      warns.add(`${message.guild.id}.${message.author.id}`, { warns: 1 });
+      warns.add(`${message.guild.id}.${message.author.id}.warnings`, 1);
       message.channel.send(embed);
         const count = warns.get(`${message.guild.id}.${message.author.id}`);
         const channelLog = guilds.get(`${message.guild.id}.channels.logs`);
@@ -91,7 +91,7 @@ levels: async (message) => {
       levels.set(`${message.guild.id}.${message.author.id}`, { xp: 0, lvl: parseInt(niveles.lvl + 1) });
       return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(niveles.lvl + 1)}!`);
     } else {
-      levels.add(`${message.guild.id}.${message.author.id}`, { xp: randomxp });
+      levels.add(`${message.guild.id}.${message.author.id}.xp`, randomxp);
       return;
     }
 },

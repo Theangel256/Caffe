@@ -5,7 +5,7 @@ module.exports.run = async (client, message) => {
 	let cacthElements = elements[Math.floor(elements.length * Math.random())];
 	let jobs = ['Trabajas en una cafeteria y ganaste $', 'Trabajaste de repartidor de pizas y recibiste $', "Editaste un video de un YouTuber y te pago $"]
 	let cacthJobs = jobs[Math.floor(elements.length * Math.random())];
-	economy.add(`${message.author.id}`, { money: cacthElements });
+	economy.add(`${message.author.id}.money`, cacthElements);
 	return message.channel.send(`> ${cacthJobs}${cacthElements}`)
 }
 module.exports.help = {
