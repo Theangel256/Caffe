@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "ffmpeg-static": "^4.2.7",
+    "jimp": "^0.16.1",
     "marsnpm": "^0.5.1",
     "mech-aki": "^0.1.4",
     "method-override": "^3.0.0",

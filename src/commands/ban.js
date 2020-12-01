@@ -1,4 +1,4 @@
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../structures/functions');
 module.exports.run = (client, message, args) => {
 	const member = getMember(message, args, false),
 		lang = client.lang.commands.ban;

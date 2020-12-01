@@ -22,7 +22,10 @@ module.exports = {
 			no_user: 'Tu Avatar, {user.username}',
 			user: 'Avatar de {user.username}',
 		},
-		balance: 'Dinero de: {user.username}',
+		balance: {
+			no_user: ':moneybag: Tienes: **{money}**',
+			user: ':moneybag: {user.username} Tiene: **{money}**',
+		},
 		ban: {
 			no_args: '**:grey_exclamation:** | Proporcione una persona para banear.',
 			no_user: '**:grey_exclamation:** | No se pudo encontrar ese miembro, intente nuevamente.',

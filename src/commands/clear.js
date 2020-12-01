@@ -1,4 +1,4 @@
-const missingPerms = require('../structures/functions/missingPerms')
+const missingPerms = require('../structures/functions')
 module.exports.run = async (client, message, args) => {
 	if (!message.channel.permissionsFor(message.member).has("MANAGE_MESSAGES")) 
 	return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, ["MANAGE_MESSAGES"])));
@@ -17,7 +17,6 @@ module.exports.run = async (client, message, args) => {
           const messages = await message.channel.messages.fetch({
             limit: number
           }, false);
-          //.sweep quita elementos en el cual la función de true
           messages.sweep(m => !authors.includes(m.author.id));
           await message.channel.bulkDelete(messages, true);
           let thing = await message.channel.send(messages.size + " messages were successfully deleted");
@@ -28,7 +27,6 @@ module.exports.run = async (client, message, args) => {
           const messages = await message.channel.messages.fetch({
             limit: number
           }, false);
-          //Lo mismo pero comprobamos otras propiedades en el mensaje
           messages.sweep(m => !m.author.bot);
           await message.channel.bulkDelete(messages, true);
           let thing = await message.channel.send(messages.size + " messages were successfully deleted");
@@ -56,11 +54,9 @@ module.exports.run = async (client, message, args) => {
         }
         break;
         case 'with': {
-          //Borrar mensajes que tengan en su contenido X palabra
           const messages = await message.channel.messages.fetch({
             limit: number
           }, false);
-          //Para este caso usaré un RegExp para ver con profundidad el contenido. Eres libre de usar otras opciones
           messages.sweep(m => !(new RegExp(args.slice(2).join(" "), "gmi").test(m.content)));
           await message.channel.bulkDelete(messages, true);
           let thing = await message.channel.send(messages.size + " messages were successfully deleted");

@@ -1,11 +1,10 @@
-const { getData } = require("../structures/functions/databaseManager");
-const marrySystem = require('../structures/models/marrySystem')
-module.exports.run = async (client, message) => {
-	let db = await getData({ userID: message.author.id}, "marrySystem");
-	let data = await marrySystem.findOne({ userID: message.author.id })
-	if(!data) return message.channel.send(client.lang.commands.divorce.nothing);
-	message.channel.send(client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, db.marryTag));
-	marrySystem.deleteMany( { "marryTag" : db.marryTag, "marryId" : db.marryId } );
+const db = require('quick.db')
+module.exports.run = (client, message) => {
+	const marrys = new db.table('marrys')
+	let data = marrys.get(`${message.author.id}`);
+	if(!marrys.has(`${message.author.id}`)) return message.channel.send(client.lang.commands.divorce.nothing);
+	message.channel.send(client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, data.tag));
+	data.delete(`${message.author.id}`, { tag: data.tag, id: data.id});
 };
 module.exports.help = {
 	name: 'divorce',

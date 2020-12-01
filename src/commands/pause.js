@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-module.exports.run = (client, message, args) => {
+module.exports.run = (client, message) => {
 	const serverQueue = client.queue.get(message.guild.id);
 
 	if (!serverQueue) return message.channel.send(client.lang.music.noQueue);

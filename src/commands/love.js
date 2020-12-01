@@ -1,8 +1,7 @@
-
+const db = require('quick.db');
 module.exports.run = (client, message, args) => {
 	const {getMember} = require('../structures/functions.js');
-const database = require('../structures/Managers/DatabaseManager'),
-	marrys = new database('marrys');
+	const marrys = new db.table('marrys');
 	const random = Math.ceil(Math.random() * 100),
 		member = getMember(message, args, false);
 	let love;

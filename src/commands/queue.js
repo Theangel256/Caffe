@@ -7,7 +7,7 @@ module.exports.run = (client, message, args) => {
 		embed = new client.Discord.MessageEmbed()
 			.setTitle(client.lang.commands.queue.embed.title.replace(/{guild.name}/gi, message.guild.name))
 			.setColor('#0099ff')
-			.setThumbnail(message.guild.iconURL({ dynamic:true }));
+			.setThumbnail(message.guild.iconURL({ format: 'jpg', dynamic:true }));
 	if(queue.length < 10) {
 		const lista = [];
 		for(let i = 0; i < queue.length; i++) {

@@ -1,8 +1,8 @@
-const {getData} = require('../structures/functions/databaseManager');
-const getMember = require('../structures/functions/getMember')
+const db = require('quick.db');
+const {getMember} = require('../structures/functions');
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true);
-	const consulta = await getData({guildID: message.guild.id, userID: member.user.id}, 'SystemEconomy')
+	const consulta = db.get(`${message.author.id}`)
 	const lang = client.lang.commands.inv;
 	let oro = (lang.oro)
 if(consulta.oro) oro = (`\n**Oro:** ${consulta.oro}`)

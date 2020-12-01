@@ -1,6 +1,7 @@
+const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
 module.exports.run = (client, message, args) => {
-	const dinero = new client.database('economia'),
+	const economy = new db.table('economy'),
 		member = getMember(message, args, false);
 
 	if (!member) return message.channel.send('Debe mencionar a un usuario.');
@@ -13,13 +14,13 @@ module.exports.run = (client, message, args) => {
 
 	const iva = cantidad / 100 * 6,
 		total = cantidad - iva,
-		all = dinero.get(`${message.author.id}.dinero`);
+		all = economy.get(`${message.author.id}.money`);
 
 	if(cantidad >= 100) {
 		if(all < cantidad) return message.channel.send('No tienes dinero suficiente ocupas: $**100**');
-		if(!dinero.has(`${member.user.id}.dinero`)) dinero.set(`${member.user.id}.dinero`, 200);
-		dinero.add(`${member.user.id}.dinero`, total);
-		dinero.subtract(`${message.author.id}.dinero`, cantidad);
+		if(!economy.has(`${member.user.id}.money`)) economy.set(`${member.user.id}`, { money: 200 });
+		economy.add(`${member.user.id}.dinero`, total);
+		economy.subtract(`${message.author.id}.dinero`, cantidad);
 		message.channel.send(`Has transferido $${cantidad.toLocaleString()} *(${total.toLocaleString()} despues de 6% de impuestos)* a **${member.user.username}** correctamente.`);
 	}
 	else {

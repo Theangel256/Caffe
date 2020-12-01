@@ -1,12 +1,12 @@
-const getRank = require('../structures/functions/getRank');
-module.exports.run = async (client, message, args) => {
-	const level_db = new client.database('niveles');
-	let niveles = await level_db.get(`${message.guild.id}.${message.author.id}`);
+const {getRank} = require('../structures/functions');
+module.exports.run = (client, message, args) => {
+	const levels = new client.database('levels');
+	let niveles = levels.get(`${message.guild.id}.${message.author.id}`);
 	if(!niveles) {
-		level_db.set(`${message.guild.id}.${message.author.id}`, { xp: 0, lvl: 1 });
-		niveles = await level_db.get(`${message.guild.id}.${message.author.id}`);
+		levels.set(`${message.guild.id}.${message.author.id}`, { xp: 0, lvl: 1 });
+		niveles = levels.get(`${message.guild.id}.${message.author.id}`);
 	}
-	const usuarios = getRank(await level_db.get(message.guild.id), message);
+	const usuarios = getRank(levels.get(message.guild.id), message);
 	usuarios.map((usuario, index) => usuarios[index] = `> #${index + 1} ${usuario[0]} | LVL: ${usuario[1]} | XP: ${usuario[2]}/${usuario[1] * 80}`);
 	const paginas = [];
 	const cantidad = 15;

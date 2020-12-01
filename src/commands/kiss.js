@@ -1,5 +1,5 @@
 const marsnpm = require('marsnpm');
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../structures/functions');
 module.exports.run = async (client, message, args) => {
 	const img = await marsnpm.kiss();
 

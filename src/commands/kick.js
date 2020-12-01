@@ -1,4 +1,4 @@
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../structures/functions');
 module.exports.run = (client, message, args) => {
 	let member = getMember(message, args, false),
 		reason = args.slice(1).join(' ');

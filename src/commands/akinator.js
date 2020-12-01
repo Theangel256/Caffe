@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const mech_aki = require('mech-aki');
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message) => {
 	const embed = new client.Discord.MessageEmbed()
 		.setColor('RANDOM');
 	const akinator = new mech_aki('es');
@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
 				resolve(r.emoji.name);
 				collector.stop();
 			});
-			collector.on('end', collected => resolve(null));
+			collector.on('end', () => resolve(null));
 		});
 		if (!respuesta) return msg.delete();
 		const respuesta_num = respuestas.get(respuesta);

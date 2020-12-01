@@ -1,4 +1,4 @@
-const getRank = require('../structures/functions/getRank');
+const getRank = require('../structures/functions');
 module.exports.run = (client, message, args) => {
 	const warns = new client.database('warns');
 

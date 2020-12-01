@@ -3,8 +3,7 @@ const { join } = require('path');
 const filePath = join(__dirname, '..', 'events');
 const eventFiles = readdirSync(filePath);
 const moment = require('moment'); require('moment-duration-format');
-// eslint-disable-next-line no-unused-vars
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message) => {
 	const actividad = moment.duration(client.uptime).format(' D [d], H [hrs], m [m], s [s]'),
 		servers = client.guilds.cache.size,
 		lang = client.lang.commands.stats,
@@ -25,7 +24,7 @@ module.exports.run = async (client, message, args) => {
 };
 module.exports.help = {
 	name: 'stats',
-	aliases: ['botinfo', 'info'],
+	aliases: ['botinfo', 'info','bot', 'botstats'],
 	description: 've mi estadisticas para estar al tanto de mi cuidado <3',
 };
 module.exports.requirements = {

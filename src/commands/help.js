@@ -10,7 +10,7 @@ module.exports.run = (client, message, args) => {
 
 	const embed = new client.Discord.MessageEmbed()
 		.setAuthor(`Help | ${client.user.username} `, client.user.displayAvatarURL())
-		.setFooter('•Caffe-bot.com• V' + require('../../package.json').version, client.user.displayAvatarURL({ dynamic:true }))
+		.setFooter(`•Caffe-bot.com• V ${require('../../package.json').version} Powered By CentralHost.es`, client.user.displayAvatarURL({ dynamic:true }))
 		.setDescription(client.commands.map(cmd => cmd.help.name).join(', '));
 	return message.channel.send(embed);
 };

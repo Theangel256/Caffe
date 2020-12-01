@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message) => {
 	const lang = client.lang.commands.move,
 		serverQueue = client.queue.get(message.guild.id);
 

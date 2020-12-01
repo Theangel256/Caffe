@@ -1,12 +1,13 @@
+const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
-const MuteDB = require('../structures/models/SystemMute');
 const ms = require('ms');
 module.exports.run = async (client, message, args) => {
-	const guilds = new db.table('guilds');,
-		lang = client.lang.commands.mute;
+	const MuteDB = new db.table('systemMute');
+	const guilds = new db.table('guilds');
+	const lang = client.lang.commands.mute;
 		let tomute = getMember(message, args.slice(0, 1), false);
 	if(!tomute) return message.channel.send(lang.no_user);
-	let data = await MuteDB.findOne({ userID: tomute.user.id })
+	let data = MuteDB.has(`${message.guild.id}.${tomute.author.id}`)
     if (data) return message.channel.send("Usuario ya está Muteado");
 	let rolMute;
     if (message.guild.roles.cache.find(x => x.name == "Muted")) {
@@ -39,16 +40,15 @@ module.exports.run = async (client, message, args) => {
 		.addField(lang.muteembed.by, args[1], true)
 		.addField(lang.muteembed.reason, reason, true);
 
-	if(opciones.has(`${message.guild.id}.channels.logs`)) {
-		const logchannel = await opciones.get(`${message.guild.id}.channels.logs`);
+	if(guilds.has(`${message.guild.id}.channels.logs`)) {
+		const logchannel = guilds.get(`${message.guild.id}.channels.logs`);
 		const incidentschannel = message.guild.channels.resolve(logchannel);
 		if(!incidentschannel) return;
 		incidentschannel.send(muteembed);
 	}
-	tomute.roles.add(rolMute)
+	tomute.roles.add(rolMute);
 	message.channel.send(lang.sucess.replace(/{user.tag}/gi, tomute.user.tag).replace(/{reason}/gi, reason).replace(/{by}/gi, args[1]));
-    let wc = new MuteDB({ guildID: message.guild.id, userID: tomute.user.id, rolID: rolMute, time: Date.now() + mutetime })
-    await wc.save();
+	MuteDB.set(`${message.guild.id}.${message.author.id}`, { rolID: rolMute, time: Date.now() + mutetime })
 	};
 module.exports.help = {
 	name: 'mute',

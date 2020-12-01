@@ -1,17 +1,14 @@
 const Canvas = require('canvas')
-const getRank = require('../structures/functions/getRank');
+const getRank = require('../structures/functions');
 const {getMember} = require('../structures/functions.js');
-const { getData, updateData } = require('../structures/functions/databaseManager');
-const SystemLvl = require('../structures/models/SystemLvl')
+const db = require('quick.db')
 module.exports.run = async (client, message, args) => {
+	const levels = new db.table('levels')
 	const member = getMember(message, args, true);
 	if(member.user.bot) return message.channel.send('los bots no tienen niveles');
-	let niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, 'SystemLvl');
-	if(!niveles) {
-		updateData({guildID: message.guild.id, userID: member.user.id }, {xp: 0, lvl: 1}, 'SystemLvl')
-		niveles = await getData({ guildID: message.guild.id, userID: member.user.id}, 'SystemLvl');
-	}
-	const usuarios = getRank(await SystemLvl.find({ guildID: message.guild.id }), message);
+	if(!levels.has(`${message.guild.id}.${message.author.id}`)) levels.set(`${message.guild.id}.${message.author.id}`, {xp: 0, lvl: 1});
+	const usuarios = getRank(levels.get(message.guild.id), message);
+	const { xp, lvl } = levels.get(`${message.guild.id}.${member.user.id}`);
 	let rank = usuarios.findIndex(u => u[0] == member.user.tag);
 	if(rank === -1) rank = `#${usuarios.length}`;
 	else rank = `#${rank + 1}`;
@@ -35,14 +32,14 @@ module.exports.run = async (client, message, args) => {
 
 	ctx.fillStyle = '#7289DA';
 	ctx.globalAlpha = 0.5;
-	ctx.fillRect(216, 150, ((100 / (niveles.lvl * 80)) * niveles.xp) * 7.7, 60);
+	ctx.fillRect(216, 150, ((100 / (lvl * 80)) * xp) * 7.7, 60);
 	ctx.fill();
 	ctx.globalAlpha = 1;
 
 	ctx.font = '30px Arial';
 	ctx.textAlign = 'center';
 	ctx.fillStyle = '#ffffff';
-	ctx.fillText(`${niveles.xp} / ${niveles.lvl * 80} XP`, 750, 140);
+	ctx.fillText(`${xp} / ${lvl * 80} XP`, 750, 140);
 
 	ctx.font = '25px Arial';
 	ctx.fillStyle = 'rgb(255, 255, 255)';
@@ -56,8 +53,6 @@ module.exports.run = async (client, message, args) => {
 	ctx.fillText('LEVEL', 770, 70);
 	ctx.font = '50px Arial';
 	ctx.fillStyle = 'rgb(255, 255, 255)';
-	ctx.fillText(niveles.lvl, 850, 70);
-
 	ctx.font = '25px Arial';
 	ctx.textAlign = 'left';
 	ctx.fillText(member.user.tag, 220, 140);

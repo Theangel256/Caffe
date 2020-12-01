@@ -1,15 +1,14 @@
-const {getMember} = require('../structures/functions.js');
-const { getData } = require('../structures/functions/databaseManager')
+const db = require('quick.db')
+const { getMember } = require('../structures/functions');
 module.exports.run = async (client, message, args) => {
-	const member = getMember(message, args, true);
-	const consulta = await getData({guildID: message.guild.id, userID: member.user.id}, 'SystemEconomy')
-	const lang = client.lang.commands.balance;
-	let balance = new client.Discord.MessageEmbed()
-	.setAuthor(lang.replace(/{user.username}/gi, member.user.username))
-	.setThumbnail(member.user.displayAvatarURL({format:"jpg", dyanmic: true}))
-	.addField(`Dinero`, consulta.money, true)
-	.addField(`Banco`, consulta.banco, true)
-	message.channel.send(balance)
+	const economia = new db.table('economy'),
+		member = getMember(message, args, true);
+	if(!economia.has(`${member.user.id}.dinero`)) economia.set(`${member.user.id}.dinero`, 200);
+	const dinero = await economia.get(`${member.user.id}.dinero`),
+		lang = client.lang.commands.balance;
+	message.channel.send(message.author.id === member.user.id
+		? lang.no_user.replace(/{money}/gi, dinero.toLocaleString())
+		: lang.user.replace(/{user.username}/gi, member.user.username).replace(/{money}/gi, dinero.toLocaleString()));
 };
 module.exports.help = {
 	name: 'balance',

@@ -1,10 +1,11 @@
 const commandcooldown = new Map();
 const moment = require('moment');
+const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
 require('moment-duration-format');
 module.exports.run = async (client, message, args) => {
-	const marrys = new client.database('marrys'),
-		lang = client.lang.commands.marry;
+	const marrys = new db.table('marrys');
+	const lang = client.lang.commands.marry;
 	if (commandcooldown.has(message.author.id)) {
 		const cooldown = commandcooldown.get(message.author.id),
 			duracion = moment.duration(cooldown - Date.now()).format('m [m], s [s]');
@@ -20,10 +21,10 @@ module.exports.run = async (client, message, args) => {
 	const filter = m => m.author.id === member.user.id && (m.content && (m.content.toLowerCase().startsWith('yes') || m.content.toLowerCase().startsWith('no')));
 	message.channel.awaitMessages(filter, { max: 1, time: 120000, errors: ['time'] }).then(collected => {
 		if (collected.first().content.toLowerCase() === 'yes') {
-			marrys.set(`${member.user.id}.id`, message.author.id);
-			marrys.set(`${message.author.id}.id`, member.user.id);
-			marrys.set(`${member.user.id}.tag`, message.author.tag);
-			marrys.set(`${message.author.id}.tag`, member.user.tag);
+			marrys.set(`${member.user.id}`, { id: message.author.id });
+			marrys.set(`${message.author.id}`, { id: member.user.id});
+			marrys.set(`${member.user.id}`, { tag: message.author.tag });
+			marrys.set(`${message.author.id}`, { tag: member.user.tag });
 			return message.channel.send(lang.sucess.replace(/{user.username}/gi, member.user.username).replace(/{author.username}/gi, message.author.username));
 		}
 		else if (collected.first().content.toLowerCase() === 'no') {

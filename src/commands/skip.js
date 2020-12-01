@@ -1,9 +1,8 @@
 module.exports.run = async (client, message) => {
-
 	const fetched = client.queue.get(message.guild.id);
 
-	if (!message.member.voice.channel) {return message.channel.send('debes unirte a un canal de voz.');}
-	if (!fetched) {return message.channel.send('No hay ninguna cancion en la cola');}
+	if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
+	if (!fetched) return message.channel.send('No hay ninguna cancion en la cola');
 
 	const userCount = message.member.voice.channel.members.size;
 

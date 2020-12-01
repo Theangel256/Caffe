@@ -1,30 +1,13 @@
-const economy = require('../structures/models/SystemEconomy');
-const { getData } = require('../structures/functions/databaseManager');
+const db = require('quick.db')
 module.exports.run = async (client, message) => {
-	const moneyUserServer = await getData({guildID: message.guild.id, userID: message.author.id}, 'SystemEconomy')
+	const economy = new db.table('economy')
 	let elements = ['100','75', '50'];
 	let cacthElements = elements[Math.floor(elements.length * Math.random())];
 	let jobs = ['Trabajas en una cafeteria y ganaste $', 'Trabajaste de repartidor de pizas y recibiste $', "Editaste un video de un YouTuber y te pago $"]
 	let cacthJobs = jobs[Math.floor(elements.length * Math.random())];
-	if(moneyUserServer != null){
-        let currentTotalMoney = parseInt(moneyUserServer.money);
-        let moreMoney = parseInt(cacthElements);
-        moneyUserServer.money = currentTotalMoney + moreMoney;
-        await moneyUserServer.save(err => {
-          if(err) return console.log(err);    
-        })
-		return message.channel.send(`> ${cacthJobs}${cacthElements}`)
-	} else {
-        let newMoneyUserServer = new economy({
-          userID: message.author.id,
-          money: cacthElements
-        });
-        await newMoneyUserServer.save(err => {
-          if(err) return console.log(err); 
-        })
-		return message.channel.send(`> ${cacthJobs}${cacthElements}`)
-	}
-	}
+	economy.add(`${message.author.id}`, { money: cacthElements });
+	return message.channel.send(`> ${cacthJobs}${cacthElements}`)
+}
 module.exports.help = {
 	name: 'work',
 	aliases: ['w'],

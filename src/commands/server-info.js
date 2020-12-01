@@ -55,7 +55,7 @@ module.exports.run = (client, message, args) => {
 			.addField('_Bots_', guild.members.cache.filter(member => member.user.bot).size, true).addField('_Roles_', guild.roles.cache.size, true)
 			.addField('_Nivel de verificación_', verifLevels[guild.verificationLevel], true).addField('_Nivel de Boost_', nivel[guild.premiumTier], true)
 			.addField('_Miembros boosteando_', guild.premiumSubscriptionCount === 0 ? 'Sin boosts' : `${guild.premiumSubscriptionCount} ${guild.bscriptionCount === 1 ? 'miembro' : 'miembros'}`, true)
-			.addField('_Ventajas del servidor_', guild.features.length <= 0 ? 'Ninguna' : `${guild.features.map(f => features[f]).join('`, `')}`, true)
+			.addField('_Ventajas del servidor_', guild.features.length <= 0 ? 'Ninguna' : `${guild.features.filter(x => features[x] === features['NEWS']).map(f => features[f]).join('`, `')}`, true)
 			.setThumbnail(!guild.splashURL({ size: 2048, format: 'jpg' }) ? guild.iconURL({ size: 2048, format: 'jpg' }) : guild.splashURL({ size: 2048, format: 'jpg' }))
 			.setDescription(`_creado el_ **_${guild.createdAt.toDateString().split(' ')[2]}/${guild.createdAt.toDateString().split(' ')[1]}/${guild.createdAt.toDateString().split(' ')[3]}_**`)
 			.setImage(guild.bannerURL({ size: 2048, format: 'jpg' })).setTimestamp().setColor(0x00ffff);

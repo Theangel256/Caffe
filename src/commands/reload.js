@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message) => {
 	const reload = new client.Discord.MessageEmbed()
 		.setTitle(':arrows_counterclockwise: | **Recargando el sistema**')
 		.setDescription('`Espera 5 Segundos`')

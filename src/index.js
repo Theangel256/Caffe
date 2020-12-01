@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const Discord = require('discord.js');
 const client = new Discord.Client({
 	ws: { intents: 32767 },
@@ -11,7 +11,6 @@ const session = require('express-session');
 const passport = require('passport');
 const { join } = require('path');
 const methodOverride = require('method-override')
-	client.database = require('./structures/DatabaseManager');
 	client.commands = new Discord.Collection();
 	client.aliases = new Discord.Collection();
 	client.limits = new Map();

@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
 	if(!member) return message.channel.send(client.lang.no_user);
 
 	const embed = new client.Discord.MessageEmbed()
-		.setDescription(message.author.id === member.user.id
+		.setDescription(message.author.id === member.user.id 
 			? client.lang.commands.kill.himself.replace(/{user.username}/gi, member.user.username)
 			: client.lang.commands.kill.another_person.replace(/{author.username}/gi, message.author.username).replace(/{user.username}/gi, member.user.username))
 		.setImage(img);

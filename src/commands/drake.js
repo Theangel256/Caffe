@@ -1,4 +1,4 @@
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../structures/functions');
 const Canvas = require('canvas')
 const request = require('node-fetch');
 module.exports.run = async (client, message, args) => {
