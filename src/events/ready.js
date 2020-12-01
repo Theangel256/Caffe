@@ -1,15 +1,8 @@
 const request = require('request');
-const MuteDB = require('../structures/models/SystemMute');
+const { iteracion_mute } = require('../structures/functions')
 module.exports = async (client) => {
 	setInterval(async function () {
-        let allData = await MuteDB.find()
-        allData.map(async a => {
-            if (a.time < Date.now()) {
-                let member = client.guilds.resolve(a.guildID).member(a.userID);
-                member.roles.remove(a.rolID);
-                await MuteDB.deleteOne({ userID: a.userID });
-            }
-        })
+		iteracion_mute(client);
     }, 10000)
 	const statues = [`/help | ${client.users.cache.size.toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version, 'discord.caffe-bot.com', 'add.caffe-bot.com',"Powered By CentralHost.es"];

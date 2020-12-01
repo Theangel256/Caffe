@@ -94,5 +94,31 @@ niveles: async (message) => {
       levels.add(`${message.guild.id}.${message.author.id}`, { xp: randomxp });
       return;
     }
+},
+iteracion_mute: (client) => {
+  const MuteDB = new db.table('systemMute');
+  const guilds = MuteDB.all();
+for(const guild_id in guilds) {
+  const servidor = client.guilds.cache.get(guild_id);
+  if(!servidor) {
+    MuteDB.delete(guild_id);
+    continue;
+  }
+  for(const user_id in guilds[guild_id]) {
+    const member = servidor.members.cache.get(user_id);
+    if(!member) {
+      MuteDB.delete(`${guild_id}.${user_id}`);
+      continue;
+    }
+  const muted_role = servidor.roles.cache.get(guilds[guild_id][user_id].rolID);
+    if(Date.now() >= guilds[guild_id][user_id]) {
+      if(muted_role && member.roles.cache.has(muted_role)) {
+        member.roles.remove(muted_role.id).catch(err => console.log(err.message));
+        console.log("asd");
+      }
+      MuteDB.delete(`${guild_id}.${user_id}`);
+    }
+  }
+}
 }
 }
