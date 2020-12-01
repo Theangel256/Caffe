@@ -10,11 +10,11 @@ module.exports = async (client) => {
 		const status = statues[Math.ceil(Math.random() * (statues.length - 1))];
 		client.user.setPresence({ activity: { name: status }, status: 'online' });
 	}, 20000);
-	const canal = client.channels.cache.get('606251126244900874'),
-		guild = client.guilds.cache.get('498164647833239563'),
-		canal2 = client.channels.cache.get('607007646704205855');
-	const canal3 = client.channels.cache.get('606317624401592331'),
-		canal4 = client.channels.cache.get('606534123795906570');
+	const guild = client.guilds.cache.get('738692537329516565');
+	const canal = client.channels.cache.get('775822323093602314'),
+		canal2 = client.channels.cache.get('783450458609680424');
+	const canal3 = client.channels.cache.get('783450505832562688'),
+		canal4 = client.channels.cache.get('783450524154331152');
 	if(!canal && !(guild) && !(canal2) && !(canal3) && !(canal4)) return;
 	if(!guild.member(client.user).hasPermission(["MANAGE_CHANNELS"])) return;
 	setInterval(() => {

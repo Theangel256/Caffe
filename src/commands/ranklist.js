@@ -1,6 +1,7 @@
+const db = require('quick.db');
 const {getRank} = require('../structures/functions');
 module.exports.run = (client, message, args) => {
-	const levels = new client.database('levels');
+	const levels = new db.table('levels');
 	let niveles = levels.get(`${message.guild.id}.${message.author.id}`);
 	if(!niveles) {
 		levels.set(`${message.guild.id}.${message.author.id}`, { xp: 0, lvl: 1 });
