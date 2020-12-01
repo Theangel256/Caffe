@@ -1,7 +1,7 @@
 const db = require('quick.db')
 module.exports.run = (client, message) => {
 	const economy = new db.table('economy');
-let consulta = economy.get(`${message.author.id}`);
+let consulta = economy.fetch(`${message.author.id}`);
 if(!consulta) economy.set(`${message.author.id}`, { money: 200, oro: 2 })
 
 economy.add(`${message.author.id}.money`, 50) 

@@ -19,7 +19,7 @@ module.exports.run = (client, message, args) => {
 	else if(random === 100) love = `**${random}%** :heart::heart::heart::heart::heart::heart::heart::heart::heart::heart: **${random}%**`;
 	else love = `**${random}%** :heart::heart::heart::heart::heart::heart::heart::heart::heart::heart: **${random}%**`;
 	if(marrys.has(`${message.author.id}.id`)) {
-		if(marrys.get(`${message.author.id}.id`) === member.user.id) love = '**200%** :sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart: **200%**';
+		if(marrys.fetch(`${message.author.id}.id`) === member.user.id) love = '**200%** :sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart: **200%**';
 	}
 	if(member.user.id === message.author.id) love = '**200%** :sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart: **200%**';
 	if(member.user.bot) return message.channel.send(client.lang.commands.love.bot);

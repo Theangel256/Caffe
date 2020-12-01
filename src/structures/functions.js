@@ -58,8 +58,8 @@ regExp: (client, message) => {
       if(message.deletable) message.delete().catch(e => console.error(e.message));
       warns.add(`${message.guild.id}.${message.author.id}.warnings`, 1);
       message.channel.send(embed);
-        const count = warns.get(`${message.guild.id}.${message.author.id}`);
-        const channelLog = guilds.get(`${message.guild.id}.channels.logs`);
+        const count = warns.fetch(`${message.guild.id}.${message.author.id}`);
+        const channelLog = guilds.fetch(`${message.guild.id}.channels.logs`);
         const embed2 = new client.Discord.MessageEmbed()
             .setColor('RED')
             .setDescription('**Warn**')
@@ -78,10 +78,10 @@ levels: async (message) => {
         const time = cooldownniveles.get(message.guild.id + message.author.id);
         if(Date.now() < time) return;
     }
-    let niveles = levels.get(`${message.guild.id}.${message.author.id}`);
+    let niveles = levels.fetch(`${message.guild.id}.${message.author.id}`);
     if(!niveles) {
       levels.set(`${message.guild.id}.${message.author.id}`, { xp: 0, lvl: 1 });
-        niveles = levels.get(`${message.guild.id}.${message.author.id}`);
+        niveles = levels.fetch(`${message.guild.id}.${message.author.id}`);
     }
     const randomxp = Math.ceil(Math.random() * 10);
     const lvlup = niveles.lvl * 80;

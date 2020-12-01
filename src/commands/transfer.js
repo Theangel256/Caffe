@@ -14,7 +14,7 @@ module.exports.run = (client, message, args) => {
 
 	const iva = cantidad / 100 * 6,
 		total = cantidad - iva,
-		all = economy.get(`${message.author.id}.money`);
+		all = economy.fetch(`${message.author.id}.money`);
 
 	if(cantidad >= 100) {
 		if(all < cantidad) return message.channel.send('No tienes dinero suficiente ocupas: $**100**');

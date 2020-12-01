@@ -1,7 +1,7 @@
 const db = require('quick.db');
 module.exports = async (client, role) => {
 	const guilds = new db.table('guilds');
-	const logchannel = await guilds.get(`${role.guild.id}.channels.logs`);
+	const logchannel = await guilds.fetch(`${role.guild.id}.channels.logs`);
 	const logginChannel = client.channels.resolve(logchannel);
 	if(!logginChannel) return;
 	const rolembed = new client.Discord.MessageEmbed()

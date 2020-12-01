@@ -2,7 +2,7 @@ const db = require('quick.db');
 module.exports = (client, channel) => {
 	if (channel.type === 'dm') return;
 	const guilds = new db.table('guilds');
-	const logchannel = guilds.get(`${channel.guild.id}.channels.logs`);
+	const logchannel = guilds.fetch(`${channel.guild.id}.channels.logs`);
 	const canal = client.channels.resolve(logchannel);
 	if(!canal) return;
 	const logEmbed = new client.Discord.MessageEmbed()

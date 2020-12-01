@@ -7,8 +7,8 @@ module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true);
 	if(member.user.bot) return message.channel.send('los bots no tienen niveles');
 	if(!levels.has(`${message.guild.id}.${message.author.id}`)) levels.set(`${message.guild.id}.${message.author.id}`, {xp: 0, lvl: 1});
-	const usuarios = getRank(await levels.get(message.guild.id), message);
-	const { xp, lvl } = levels.get(`${message.guild.id}.${member.user.id}`);
+	const usuarios = getRank(await levels.fetch(message.guild.id), message);
+	const { xp, lvl } = levels.fetch(`${message.guild.id}.${member.user.id}`);
 	let rank = usuarios.findIndex(u => u[0] == member.user.tag);
 	if(rank === -1) rank = `#${usuarios.length}`;
 	else rank = `#${rank + 1}`;

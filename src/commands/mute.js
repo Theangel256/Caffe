@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args) => {
 		.addField(lang.muteembed.reason, reason, true);
 
 	if(guilds.has(`${message.guild.id}.channels.logs`)) {
-		const logchannel = guilds.get(`${message.guild.id}.channels.logs`);
+		const logchannel = guilds.fetch(`${message.guild.id}.channels.logs`);
 		const incidentschannel = message.guild.channels.resolve(logchannel);
 		if(!incidentschannel) return;
 		incidentschannel.send(muteembed);

@@ -5,8 +5,8 @@ module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
 	const guild = new db.table('guilds');
-	client.prefix = guild.has(`${message.guild.id}.prefix`) ? guild.get(`${message.guild.id}.prefix`) : process.env.prefix;
-	const lang = guild.has(`${message.guild.id}.language`) ?  guild.get(`${message.guild.id}.language`) : 'en';
+	client.prefix = guild.has(`${message.guild.id}.prefix`) ? guild.fetch(`${message.guild.id}.prefix`) : process.env.prefix;
+	const lang = guild.has(`${message.guild.id}.language`) ?  guild.fetch(`${message.guild.id}.language`) : 'en';
 	client.lang = require(`../structures/languages/${lang}.js`);
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
 		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']})

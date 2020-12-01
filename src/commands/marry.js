@@ -1,18 +1,10 @@
-const commandcooldown = new Map();
-const moment = require('moment');
 const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
-require('moment-duration-format');
 module.exports.run = async (client, message, args) => {
 	const marrys = new db.table('marrys');
 	const lang = client.lang.commands.marry;
-	if (commandcooldown.has(message.author.id)) {
-		const cooldown = commandcooldown.get(message.author.id),
-			duracion = moment.duration(cooldown - Date.now()).format('m [m], s [s]');
-		if (Date.now() < cooldown) return message.channel.send(lang.cooldown.replace(/{duration}/gi, duracion));
-	}
 	const member = getMember(message, args, false);
-	if(marrys.has(message.author.id)) return message.channel.send(lang.married.replace(/{esposaTag}/gi, await marrys.get(`${message.author.id}.tag`)));
+	if(marrys.has(message.author.id)) return message.channel.send(lang.married.replace(/{esposaTag}/gi, await marrys.fetch(`${message.author.id}.tag`)));
 	if(!member) return message.channel.send(client.lang.no_user);
 	if(member.user.bot) return message.channel.send(lang.bot);
 	if(member.user.id === message.author.id) return message.channel.send(lang.yourself);
@@ -31,7 +23,6 @@ module.exports.run = async (client, message, args) => {
 			return message.channel.send(lang.unsucess.replace(/{user.username}/gi, member.user.username).replace(/{author.username}/gi, message.author.username));
 		}
 	}).catch(() => message.channel.send(client.lang.commands.marry.expired.replace(/{user.username}/gi, member.user.username)));
-	commandcooldown.set(message.author.id, Date.now() + 120000);
 };
 module.exports.help = {
 	name: 'marry',
@@ -41,4 +32,8 @@ module.exports.requirements = {
 	userPerms: [],
 	clientPerms: [],
 	ownerOnly: false,
+};
+module.exports.limits = {
+	rateLimit: 1,
+	cooldown: 120000,
 };

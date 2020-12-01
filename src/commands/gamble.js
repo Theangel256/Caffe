@@ -4,7 +4,7 @@ module.exports.run = async (client, message, args) => {
 	if(!economy.has(`${message.author.id}.money`)) economy.set(`${message.author.id}`, { dinero: 200 });
 	const cantidad = args.join(' '),
 		random = Math.ceil(Math.random() * 8),
-		all = economy.get(`${message.author.id}.money`);
+		all = economy.fetch(`${message.author.id}.money`);
 	if(!cantidad) return message.channel.send(client.lang.commands.gamble.no_quantity);
 	if (cantidad.toLowerCase() === 'all' || cantidad.toLowerCase() === 'todo') {
 		if(all < 50) return message.channel.send(client.lang.commands.gamble.insufficient_money);

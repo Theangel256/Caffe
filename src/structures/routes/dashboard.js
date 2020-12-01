@@ -32,7 +32,7 @@ router.get('/', auth, async (req, res) => {
 			guilds,
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
-			usuarios: getRank(lvl.get(idserver), guild),
+			usuarios: getRank(lvl.fetch(idserver), guild),
 		});
 	})
 	.post('/:id/welcome', auth, (req, res) => {

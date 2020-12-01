@@ -1,7 +1,7 @@
 const db = require('quick.db');
 module.exports = async (client, oldRole, newRole) => {
   const guilds = new db.table('guilds')
-  const logchannel = guilds.get(`${oldRole.guild.id}.channels.logs`);
+  const logchannel = guilds.fetch(`${oldRole.guild.id}.channels.logs`);
 	const canal = client.channels.resolve(logchannel);
 	if(!canal) return;
   const p1 = oldRole.permissions;

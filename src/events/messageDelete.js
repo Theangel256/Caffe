@@ -6,7 +6,7 @@ module.exports = async (client, message) => {
 		author: message.author,
 		image: message.attachments.first() ? message.attachments.first().proxyURL : null,
 	});
-	const logchannel = await guilds.get(`${message.guild.id}.channels.logs`),
+	const logchannel = await guilds.fetch(`${message.guild.id}.channels.logs`),
 		logginChannel = client.channels.resolve(logchannel);
 	if(!logginChannel) return;
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;

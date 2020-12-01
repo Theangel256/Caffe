@@ -109,7 +109,6 @@ module.exports = {
 			yourself: 'You can\'t marry yourself ..',
 			another_married: 'That user is already married.',
 			request: ':mega:**{user.username}** write **yes** or **no** to respond to the marriage proposal of **{author.username}**\n:stopwatch: This expires in 2 minutes.',
-			cooldown: 'You must wait **{duration}** to be able to ask for marriage again',
 			sucess: 'Congratulations! {author.username} got married with {user.username}!',
 			unsucess: 'Uhh, {user.username} I cruelly reject you {author.username}',
 			expired: '**{user.username}** did not answer, the wait is over',

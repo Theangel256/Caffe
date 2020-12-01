@@ -2,7 +2,7 @@ const db = require('quick.db');
 const marsnpm = require('marsnpm');
 module.exports = async (client, member) => {
 	const guilds = new db.table('guilds');
-	const logchannel = await guilds.get(`${member.guild.id}.channels.logs`),
+	const logchannel = await guilds.fetch(`${member.guild.id}.channels.logs`),
 		robot = { true: 'Si', false: 'No' },
 		channel = client.channels.resolve(logchannel);
 	if(!channel) return;
@@ -19,9 +19,9 @@ module.exports = async (client, member) => {
 	channel.send(logEmbed);
 
 	const fondo = guilds.has(`${member.guild.id}.fondo.goodbye`)
-		? guilds.get(`${member.guild.id}.fondo.goodbye`)
+		? guilds.fetch(`${member.guild.id}.fondo.goodbye`)
 		: 'http://i.imgur.com/0YrfJgx.jpg';
-	const goodbyeChannel = guilds.get(`${member.guild.id}.channels.goodbye`);
+	const goodbyeChannel = guilds.fetch(`${member.guild.id}.channels.goodbye`);
 	if(!goodbyeChannel) return;
 	const img = await marsnpm.bienvenida2(member.user.displayAvatarURL({ format: 'jpg' }), member.user.username, 'Adios, Esperemos que la hayas pasado bien', fondo);
 	goodbyeChannel.send({ files: [img] });

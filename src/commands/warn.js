@@ -74,7 +74,7 @@ module.exports.run = async (_client, message, args) => {
       //Aqui viene lo importante, warn <member> <reason>.
       let member = getMember(message, args.slice(0, 1), false);
       if (!member) return message.channel.send("Invalid member!");
-      let { warnings } = warnMembers.get(`${message.guild.id}.${member.user.id}`);
+      let { warnings } = warnMembers.fetch(`${message.guild.id}.${member.user.id}`);
       let newWarnings = warnings + 1;
       warnMembers.add(`${message.guild.id}.${member.user.id}.warnings`, newWarnings)
       if (args[2]) {
@@ -87,7 +87,7 @@ module.exports.run = async (_client, message, args) => {
         .catch(() => {});
         message.channel.send(`I've warned ${member.user.tag}. They now have ${newWarnings} warnings.`);
       }
-      let { role, roletime, roleid, kick, kicktime, ban, bantime } = warnSystem.get(`${message.guild.id}`);
+      let { role, roletime, roleid, kick, kicktime, ban, bantime } = warnSystem.fetch(message.guild.id);
           if (role) {
             if (roletime <= newWarnings) {
               member.roles.add(roleid, "Too many warnings");

@@ -2,12 +2,12 @@ const db = require('quick.db');
 const {getRank} = require('../structures/functions');
 module.exports.run = (client, message, args) => {
 	const levels = new db.table('levels');
-	let niveles = levels.get(`${message.guild.id}.${message.author.id}`);
+	let niveles = levels.fetch(`${message.guild.id}.${message.author.id}`);
 	if(!niveles) {
 		levels.set(`${message.guild.id}.${message.author.id}`, { xp: 0, lvl: 1 });
-		niveles = levels.get(`${message.guild.id}.${message.author.id}`);
+		niveles = levels.fetch(`${message.guild.id}.${message.author.id}`);
 	}
-	const usuarios = getRank(levels.get(message.guild.id), message);
+	const usuarios = getRank(levels.fetch(message.guild.id), message);
 	usuarios.map((usuario, index) => usuarios[index] = `> #${index + 1} ${usuario[0]} | LVL: ${usuario[1]} | XP: ${usuario[2]}/${usuario[1] * 80}`);
 	const paginas = [];
 	const cantidad = 15;
