@@ -15,7 +15,7 @@ module.exports = async (client) => {
 	const discTotalCh = (await client.channels.fetch('607007646704205855'));
 	const minecraftInline = (await client.channels.fetch('783450505832562688'));
 	const minecraftOn = (await client.channels.fetch('783450524154331152'));
-	if(!(guild) && !(discTotalCh) && !(discOnlineCh) && !(minecraftInline) && !(minecraftOn)) return;
+	if(!discOnlineCh && !(guild) && !(discTotalCh) && !(minecraftInline) && !(minecraftOn)) return;
 	if(!guild.member(client.user).hasPermission(["MANAGE_CHANNELS"])) return;
 	setInterval(() => {
 		discOnlineCh.setName(`Discord Online: ${guild.members.cache.filter(x => x.user.presence.status !== 'offline').size}`);
