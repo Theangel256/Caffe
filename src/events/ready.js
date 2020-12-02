@@ -10,14 +10,13 @@ module.exports = async (client) => {
 		const status = statues[Math.ceil(Math.random() * (statues.length - 1))];
 		client.user.setPresence({ activity: { name: status }, status: 'online' });
 	}, 20000);
-	const guild = client.guilds.cache.get('738692537329516565');
-	const discOnlineCh = client.channels.cache.get('606251126244900874');
-	const discTotalCh = client.channels.cache.get('607007646704205855');
-	const minecraftInline = client.channels.cache.get('783450505832562688');
-	const minecraftOn = client.channels.cache.get('783450524154331152');
+	const guild = (await client.guilds.fetch('738692537329516565'));
+	const discOnlineCh = (await client.channels.fetch('606251126244900874'));
+	const discTotalCh = (await client.channels.fetch('607007646704205855'));
+	const minecraftInline = (await client.channels.fetch('783450505832562688'));
+	const minecraftOn = (await client.channels.fetch('783450524154331152'));
 	if(!(guild) && !(discTotalCh) && !(discOnlineCh) && !(minecraftInline) && !(minecraftOn)) return;
-	const channels = guild.channels.cache.filter((x) => [discOnlineCh.id, discTotalCh.id, minecraftInline.id, minecraftOn.id].includes(x.id));
-	if(!channels.permissionsFor(guild.me).has('MANAGE_CHANNELS')) return;
+	if(!guild.member(client.user).hasPermission(["MANAGE_CHANNELS"])) return;
 	setInterval(() => {
 		discOnlineCh.setName(`Discord Online: ${guild.members.cache.filter(x => x.user.presence.status !== 'offline').size}`);
 		discTotalCh.setName(`Discord Total: ${guild.memberCount}`);
