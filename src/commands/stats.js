@@ -14,7 +14,7 @@ module.exports.run = async (client, message) => {
 		modulos = require('../../package.json'),
 		cpu = `${Math.round(process.cpuUsage().user / 1024 / 1024)}%`,
 		memory = `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024).toString().slice(0, 6))} MB`,
-		invite = await client.generateInvite(['ADMINISTRATOR']),
+		invite = await client.generateInvite({permissions: ['ADMINISTRATOR']}),
 		main = new client.Discord.MessageEmbed()
 			.setAuthor(client.user.username, client.user.displayAvatarURL({ dynamic:true })).setColor(0x00ffff).setTimestamp()
 			.addField('⁉️ ' + lang.statistics, `>>> **Theangel256 Studios** ${lang.owner}\n**${servers.toLocaleString()}** ${lang.guilds}\n**${users.toLocaleString()}** ${lang.users}\n**${canales.toLocaleString()}** ${lang.channels}\n**${emojis.toLocaleString()}** Emojis\n**${client.commands.size.toLocaleString()}** ${lang.commands}\n**${eventFiles.length.toLocaleString()}** ${lang.events}\n**${actividad}** ${lang.uptime}\n**${Math.round(message.client.ws.ping)}ms** Ping\n**${voz}** ${lang.connections.toLocaleString()}\n**${modulos.version}** ${lang.version}\n**${client.Discord.version}** Discord.JS\n**${client.prefix}** Prefix\n**${memory}** ${lang.usage}\n**${cpu}** CPU\n**${modulos.engines.node}** Node`, true)
