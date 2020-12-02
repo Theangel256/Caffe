@@ -16,7 +16,9 @@ module.exports = async (client) => {
 	const minecraftInline = (await client.channels.fetch('783450505832562688'));
 	const minecraftOn = (await client.channels.fetch('783450524154331152'));
 	if(!discOnlineCh && !(guild) && !(discTotalCh) && !(minecraftInline) && !(minecraftOn)) return;
-	if(!guild.member(client.user).hasPermission(["MANAGE_CHANNELS"])) return;
+	const canales = guild.channels.cache.filter((x) => [discOnlineCh.id, discTotalCh.id, minecraftInline.id, minecraftOn.id].includes(x.id)).filter((x) => x.permissionsFor(guild.me).has('MANAGE_CHANNELS'));
+	if(canales.size < 4) return console.log('Hay uno o mas canales en los que no tengo permisos');
+	if(!canales) return;
 	setInterval(() => {
 		discOnlineCh.setName(`Discord Online: ${guild.members.cache.filter(x => x.user.presence.status !== 'offline').size}`);
 		discTotalCh.setName(`Discord Total: ${guild.memberCount}`);
