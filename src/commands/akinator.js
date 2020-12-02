@@ -20,6 +20,7 @@ module.exports.run = async (client, message) => {
             reaction.message.channel.id === msg.channel.id, { time: 60000 });
 			collector.on('collect', r => {
 				resolve(r.emoji.name);
+				r.users.remove(message.author);
 				collector.stop();
 			});
 			collector.on('end', () => resolve(null));
