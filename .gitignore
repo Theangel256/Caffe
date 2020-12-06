@@ -40,12 +40,13 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-
+.idea/
 #path
 .vscode/
 
 # file
 package-lock.json
+json.sqlite
 .eslintrc.json
 #cache
 .npmjs

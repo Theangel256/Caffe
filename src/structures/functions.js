@@ -17,7 +17,7 @@ module.exports = {
     });
     return list;
 },
-  getMember: (message, args = String, autor = true) => {
+  getMember: (message, args, autor = true) => {
     let search = args.join(' ');
     let result;
     if (!search) {
@@ -29,7 +29,7 @@ module.exports = {
         message.guild.members.cache.find(e => e.user.username.toLowerCase().includes(search) ||
         e.user.tag.toLowerCase().includes(search) ||
         e.displayName.toLowerCase().includes(search)) || 
-        autor === true ? message.member : null;
+        message.member
   }
   return result;
 },
