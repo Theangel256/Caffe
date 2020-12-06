@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-//const { execSync } = require("child_process");
+const { execSync } = require("child_process");
 router.get('/', async (req, res) => {
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
 	res.render('index.ejs', {
@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
 		await req.logout();
 		res.redirect('/');
 	})
-/*
 .post('/github', (req, res) => {
 		if(req.method === "POST") {
 			if(req.headers["x-github-event"] === "push") {
@@ -33,6 +32,5 @@ router.get('/', async (req, res) => {
 				}
 			}
 		}
-})
-*/
+});
 module.exports = router;
