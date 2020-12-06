@@ -36,7 +36,7 @@ module.exports.run = async (client, message, args) => {
 					.setFooter(lang.embed.footer.replace(/{author.username}/gi, message.author.username), message.author.displayAvatarURL());
 				msg = await message.channel.send(embed);
 				try {
-					var response = await message.channel.awaitMessages(x => x.content > 0 && x.content <= cantidad && x.author.id == message.author.id, { max: 1, time: 60000, errors: ['time'] });
+					var response = await message.channel.awaitMessages(x => x.content > 0 && x.content <= cantidad && x.author.id === message.author.id, { max: 1, time: 60000, errors: ['time'] });
 				}
 				catch (err) {
 					console.error(err);
@@ -83,7 +83,7 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 		await queue.set(message.guild.id, queueConstruct);
 		await queueConstruct.songs.push(song);
 		try {
-			const connection = await voiceChannel.join();
+			let [connection] = await Promise.all([voiceChannel.join()]);
 			queueConstruct.connection = connection;
 			await play(message.guild, queueConstruct.songs[0]);
 		}catch(error) {
@@ -122,7 +122,7 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 			
 			await play(guild, serverQueue.songs[0]);
 			
-		}).on('error', (error) => console.log(error));
+		}).on('error', (error) => console.error(error));
 
 		dispatcher.setVolume(0.5);
 		let time;

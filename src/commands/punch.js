@@ -1,6 +1,5 @@
 const marsnpm = require('marsnpm');
 const {getMember} = require('../structures/functions.js');
-
 module.exports.run = async (client, message, args) => {
 	const img = await marsnpm.punch(),
 		lang = client.lang.commands.punch,
@@ -9,7 +8,7 @@ module.exports.run = async (client, message, args) => {
 	if(!member) return message.channel.send(client.lang.no_user);
 
 	const embed = new client.Discord.MessageEmbed();
-	embed.setDescription(message.author.id === member.user.id ? lang.no_user.replace(/{user.username}/gi, member.user.username)
+	embed.setDescription(member.user.id === message.author.id ? lang.no_user.replace(/{user.username}/gi, member.user.username)
 		: lang.user.replace(/{author.username}/gi, message.author.username).replace(/{user.username}/gi, member.user.username));
 	embed.setImage(img);
 

@@ -3,8 +3,8 @@ const { getMember } = require('../structures/functions');
 module.exports.run = async (client, message, args) => {
 	const economy = new db.table('economy'),
 		member = getMember(message, args, true);
-	if(!economy.has(`${member.user.id}.money`)) economy.set(`${member.user.id}`, { dinero: 200});
-	const dinero = await economy.fetch(`${member.user.id}.dinero`),
+	if(!economy.has(`${member.user.id}.money`)) economy.set(`${member.user.id}`, { money: 200});
+	const dinero = await economy.fetch(`${member.user.id}.money`),
 		lang = client.lang.commands.balance;
 	message.channel.send(message.author.id === member.user.id
 		? lang.no_user.replace(/{money}/gi, dinero.toLocaleString())

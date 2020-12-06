@@ -1,18 +1,18 @@
 const moment = require('moment'); require('moment-duration-format');
 const db = require('quick.db');
-module.exports.run = (client, message) => {
+module.exports.run = async (client, message) => {
 	const economy = new db.table('economy');
 	const lang = client.lang.commands.daily;
 	const total = 1200;
-	if(!economy.has(`${message.author.id}.daily`)) economy.set(`${message.author.id}`, { daily: Date.now() + 86400000 }) 
+	if(!economy.has(`${message.author.id}.daily`)) await economy.set(`${message.author.id}`, { daily: Date.now() + 86400000 }) 
 	else{	
-		const tiempo =  economy.fetch(`${message.author.id}.daily`),	
+		const tiempo =  await economy.fetch(`${message.author.id}.daily`),	
 			duracion = moment.duration(tiempo - Date.now()).format(' D [d], H [hrs], m [m], s [s]');	
 		if (Date.now() < tiempo) return message.channel.send(client.lang.wait.replace(/{duration}/gi, duracion));	
 	}
 	let data = economy.has(`${message.author.id}.money`);
-	if(!data) economy.set(`${message.author.id}`, { money: 200 })
-	economy.add(`${message.author.id}`, { money: total })
+	if(!data) await economy.set(`${message.author.id}.money`, 200)
+	economy.add(`${message.author.id}.money`, total)
 	message.channel.send(lang.sucess.replace(/{total}/gi, total.toLocaleString()));
 
 };

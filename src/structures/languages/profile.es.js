@@ -6,24 +6,24 @@ module.exports = {
     },
     desc: {
         noArgs: '**:grey_exclamation: |** Escribe la descripción a ver en tu perfil',
-        success: 'Descripción personal establecido a: ${args}'
+        success: 'Descripción personal establecido a: {args}'
     },
     lang: {
         noArgs: '**:grey_exclamation: |** Escribe el lenguaje a ver en tu perfil',
         helper: '**:grey_exclamation: |** Debe ser `es` ó `en`.',
-        success: 'Lenguaje del perfil establecido a: ${args}'
-    },
-    wrongChoice: 'Opción Incorrecta!',
-    bot: 'Los bots no tienen pefil',
-    profile: 'Perfil de {user.username}',
-    profileDesc: 'Sin Descripción.',
-    currencies: ':dollar: Monedas',
-    lvl: ':sparkles: Nivel',
-    rep: '<:rep:741355268625006694> Reputación',
-    married: ':heart: Casado con',
-    marriedOf: 'Nadie',
-    trophies: '<:trofeo:741356106353213560>  Trofeos',
-    trophiesOf: 'Ninguno',
-    beta: ':information_source: Sistema en beta'
-}
+        success: 'Lenguaje del perfil establecido a: {args}'
+    }
+},
+wrongChoice: 'Opción Incorrecta!',
+bot: 'Los bots no tienen pefil',
+profile: 'Perfil de {user.username}',
+profileDesc: 'Sin Descripción.',
+currencies: ':dollar: Monedas',
+lvl: ':sparkles: Nivel',
+rep: '<:rep:741355268625006694> Reputación',
+married: ':heart: Casado con',
+marriedOf: 'Nadie',
+trophies: '<:trofeo:741356106353213560>  Trofeos',
+trophiesOf: 'Ninguno',
+beta: 'Sistema en beta'
 }

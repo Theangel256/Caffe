@@ -1,4 +1,4 @@
-const missingPerms = require('../structures/functions')
+const {missingPerms} = require('../structures/functions')
 module.exports.run = async (client, message, args) => {
 	if (!message.channel.permissionsFor(message.member).has("MANAGE_MESSAGES")) 
 	return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, ["MANAGE_MESSAGES"])));

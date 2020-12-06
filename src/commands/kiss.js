@@ -7,7 +7,7 @@ module.exports.run = async (client, message, args) => {
 
 	if(!member) return message.channel.send(client.lang.no_user);
 
-	if (member.user.id === message.author.id) {return message.channel.send(client.lang.commands.kiss.yourself);}
+	if (member.user.id === message.author.id) return message.channel.send(client.lang.commands.kiss.yourself);
 
 	const embed = new client.Discord.MessageEmbed();
 	embed.setDescription(client.lang.commands.kiss.sucess.replace(/{user.username}/gi, member.user.username).replace(/{author.username}/gi, message.author.username));

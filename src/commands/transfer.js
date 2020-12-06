@@ -19,8 +19,8 @@ module.exports.run = (client, message, args) => {
 	if(cantidad >= 100) {
 		if(all < cantidad) return message.channel.send('No tienes dinero suficiente ocupas: $**100**');
 		if(!economy.has(`${member.user.id}.money`)) economy.set(`${member.user.id}`, { money: 200 });
-		economy.add(`${member.user.id}.dinero`, total);
-		economy.subtract(`${message.author.id}.dinero`, cantidad);
+		economy.add(`${member.user.id}.money`, total);
+		economy.subtract(`${message.author.id}.money`, cantidad);
 		message.channel.send(`Has transferido $${cantidad.toLocaleString()} *(${total.toLocaleString()} despues de 6% de impuestos)* a **${member.user.username}** correctamente.`);
 	}
 	else {

@@ -1,6 +1,6 @@
 const moment = require('moment'); require('moment-duration-format');
 const {levels, regExp, missingPerms } = require('../structures/functions');
-const db = require('quick.db')
+const db = require('quick.idb');
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
 			.addField(':satellite: | `' + client.prefix + '`Help', client.lang.events.message.isMentioned.field1)
 			.addField('❔ | ' + client.lang.events.message.isMentioned.field2,
 				`>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://discord.caffe-bot.com)\n[Twitter](https://twitter.com/Theangel256)\n[Facebook](https://www.facebook.com/Theangel256YT)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`)
-			.setFooter(client.lang.events.message.isMentioned.footer + require('../../package.json').version + "Powered By CentralHost.es", client.user.displayAvatarURL({ dynamic:true }))
+			.setFooter(client.lang.events.message.isMentioned.footer + require('../../package.json').version + "\nPowered By CentralHost.es", client.user.displayAvatarURL({ dynamic:true }))
 			.setTimestamp().setColor(0x00ffff);
 		message.channel.send(embed).then(e => e.delete({ timeout: 60000 })).catch(e => console.log(e.message));
 	}

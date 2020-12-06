@@ -173,7 +173,7 @@ M => For months.
 			playlistAdded: 'Playlist: **{title}** has been added to the queue!',
 		},
 		punch: {
-			no_user: '**{user.username}** was hit the same ...',
+			no_user: '**{user.username}** he was hit himself ...',
 			user: '**{author.username}** hit {user.username}',
 		},
 		queue: {

@@ -1,14 +1,14 @@
 const { MessageAttachment } = require('discord.js');
 const Jimp = require("jimp");
 module.exports.run = async (client, message, args) => {
-    if(!args[1]) return message.channel.send("Pon algo");
+    if(!args[0]) return message.channel.send("Pon algo");
     //Cargamos una fuente. La fuente que acabo de cargar es una fuente por default de JIMP. Este método devuelve promesa con la fuente
     let font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
     //Cargamos la imagen (en este caso la imagen de Trump sosteniendo un libro). Devuelve promesa con los métodos para manipular la imagen
     //Esta es sólo una URL de prueba. Te recomiendo usar FS y sacar el buffer de un archivo de esa manera siempre tenerlo.
     let meme = await Jimp.read("https://media.discordapp.net/attachments/359425464885837827/593819763797393438/TrumpApi.png");
     //Para hacer una nueva linea cada vez que "una sóla palabra" exceda X límite usaremos esta función.
-    const realtext = getWellText(args.slice(1).join(" "), 14, 88);
+    const realtext = getWellText(args.slice(0).join(" "), 14, 88);
     //Para hacer que el texto vaya a la misma dirección que la posición del libro voy a rotar la imagen 7 grados a la izquierda
     meme.rotate(7);
     //Imprimimos este texto. Las dimensiones que se ven aquí están adaptadas a la imagen de la URL puesta arriba.

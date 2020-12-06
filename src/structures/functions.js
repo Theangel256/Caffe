@@ -7,15 +7,15 @@ module.exports = {
     } else return res.redirect('/signin');
 },
   getRank: async (users, message)  => {
-    const userlist = [];
-    for(const key in users) {
-        const usuario = message.guild.members.cache.has(key) ? message.guild.members.cache.get(key).user.tag : message.client.users.fetch(key).tag;
-        userlist.push([usuario, users[key].lvl, users[key].xp]);
+    const list = [];
+    for(const id in users) {
+        const user = message.guild.members.cache.has(id) ? message.guild.members.cache.get(id).user.tag : message.client.users.fetch(id).tag;
+      list.push([user, users[id].lvl, users[id].xp]);
     }
-    userlist.sort((user1, user2) => {
+    list.sort((user1, user2) => {
         return user2[1] - user1[1] || user2[2] - user1[2];
     });
-    return userlist;
+    return list;
 },
   getMember: (message, args = String, autor = true) => {
     let search = args.join(' ');
@@ -29,7 +29,7 @@ module.exports = {
         message.guild.members.cache.find(e => e.user.username.toLowerCase().includes(search) ||
         e.user.tag.toLowerCase().includes(search) ||
         e.displayName.toLowerCase().includes(search)) || 
-        message.member 
+        autor === true ? message.member : null;
   }
   return result;
 },
@@ -43,7 +43,7 @@ module.exports = {
 
 },
   generateKey: (length = 20, wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$') => { 
-    const crypto = require('crypto')
+    const crypto = require('crypto');
     return Array.from(crypto.randomFillSync(new Uint32Array(length)))
     .map((x) => wishlist[x % wishlist.length])
     .join(''); 
@@ -91,11 +91,10 @@ levels: async (message) => {
       levels.set(`${message.guild.id}.${message.author.id}`, { xp: 0, lvl: parseInt(niveles.lvl + 1) });
       return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(niveles.lvl + 1)}!`);
     } else {
-      levels.add(`${message.guild.id}.${message.author.id}.xp`, randomxp);
-      return;
+      return levels.add(`${message.guild.id}.${message.author.id}.xp`, randomxp);
     }
 },
-iteracion_mute: (client) => {
+muteSystem: (client) => {
   const MuteDB = new db.table('systemMute');
   const guilds = MuteDB.all();
 for(const guild_id in guilds) {

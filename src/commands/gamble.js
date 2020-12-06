@@ -1,7 +1,7 @@
 const db = require('quick.db')
 module.exports.run = async (client, message, args) => {
 	const economy = new db.table('economy');
-	if(!economy.has(`${message.author.id}.money`)) economy.set(`${message.author.id}`, { dinero: 200 });
+	if(!economy.has(`${message.author.id}.money`)) economy.set(`${message.author.id}`, { money: 200 });
 	const cantidad = args.join(' '),
 		random = Math.ceil(Math.random() * 8),
 		all = economy.fetch(`${message.author.id}.money`);
