@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 				res.sendStatus(204)
 				try {
 					console.log("Actualizacion Encontrada.. Reiniciando")
-					console.log(execSync("cd /home/Caffe && git pull && pm2 restart src/index.js").toString());
+					console.log(execSync("cd /home/Caffe && git pull && pm2 restart default").toString());
 				} catch (e) {
 					console.error(e);
 				}
