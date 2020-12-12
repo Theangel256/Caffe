@@ -9,7 +9,7 @@ module.exports = async (client, message) => {
 	const lang = guild.has(`${message.guild.id}.language`) ?  await guild.fetch(`${message.guild.id}.language`) : 'en';
 	client.lang = require(`../structures/languages/${lang}.js`);
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
-		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']})
+		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']});
 		const embed = new client.Discord.MessageEmbed()
 			.addField(':gear: | Prefix', '> `' + client.prefix + '`')
 			.addField(':satellite: | `' + client.prefix + '`Help', client.lang.events.message.isMentioned.field1)
@@ -26,7 +26,7 @@ module.exports = async (client, message) => {
 	const cmd = client.commands.get(command) || client.aliases.get(command);
 
 	if(!message.content.startsWith(client.prefix)) {
-		levels(message);
+		await levels(message);
 		return;
 	}
 	if(!cmd) return;

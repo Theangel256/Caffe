@@ -1,9 +1,8 @@
 const Canvas = require('canvas')
-const {getRank} = require('../structures/functions');
-const {getMember} = require('../structures/functions.js');
+const {getMember, getRank} = require('../structures/functions.js');
 const db = require('quick.db')
 module.exports.run = async (client, message, args) => {
-	const levels = new db.table('levels')
+	const levels = new db.table('levels');
 	const member = getMember(message, args, true);
 	if(member.user.bot) return message.channel.send('los bots no tienen niveles');
 	if(!levels.has(`${message.guild.id}.${message.author.id}`)) levels.set(`${message.guild.id}.${message.author.id}`, {xp: 0, lvl: 1});
