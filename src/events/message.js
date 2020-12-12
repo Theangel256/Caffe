@@ -1,6 +1,7 @@
 const moment = require('moment'); require('moment-duration-format');
 const {levels, regExp, missingPerms } = require('../structures/functions');
 const db = require('quick.db');
+
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
