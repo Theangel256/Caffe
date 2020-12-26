@@ -11,8 +11,3 @@ $('#datos').click(function(e) {
 	$('#section-datos').css('display', 'block');
 	$('#section-leaderboard').css('display', 'none');
 });
-$('#leaderboard').click(function(e) {
-	$('#section-leaderboard').css('display', 'block');
-	$('#section-opciones').css('display', 'none');
-	$('#section-datos').css('display', 'none');
-});

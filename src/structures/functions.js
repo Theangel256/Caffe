@@ -121,7 +121,7 @@ for(const guild_id in guilds) {
   }
 }
 },
-landiacraft: (client) => {
+Landiacraft: (client) => {
   const guild = client.guilds.cache.get('498164647833239563');
 	const discTotalCh = client.channels.cache.get('607007646704205855');
 	const discOnlineCh = client.channels.cache.get('606251126244900874');

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <%- include('_head') -%>
+</head>
+
+<body class="body-index">
+  <%- include('navbar') -%>
+  <center>
+    <div class="container-fluid">
+      <section class="body-header">
+        <div>
+          <h1><b>PLEASE SELECT A SERVER</b></h1><br>
+        </div>
+        <% guilds.map(dato => { %>
+        <a class="navbar-brand" data-toggle="tooltip" data-placement="bottom" title="<%=dato.name%>"
+          href="/dashboard/<%=dato.id%>">
+          <% if(dato.icon) { %>
+          <img class="Server-select responsive-img"
+            src="https://cdn.discordapp.com/icons/<%=dato.id%>/<%=dato.icon%>.png" alt="<%=dato.name%>">
+        </a>
+        <% } else { %>
+        <img class="Server-select responsive-img"
+          src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" alt="<%=dato.name%>">
+        <% } %>
+        </a>
+        <% }) %>
+    </div>
+    </section>
+    </div>
+  </center>
+</body>
+
+</html>
+<script src="/tooltip.js"></script>

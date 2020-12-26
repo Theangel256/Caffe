@@ -1,0 +1,56 @@
+<div id="section-datos" class="col s12">
+  <br>
+  <br>
+  <center>
+    <h3><b>Datos del servidor:</b></h3>
+    <p> Nombre: <%=guild.name%></p>
+    <p>ID: <%=guild.id%></p>
+    <p>Dueño: <%=guild.owner.user.tag%></p>
+    <p>Region: <%=guild.region.toUpperCase()%></p>
+    <p>Fecha de Creacion: <%=guild.createdAt.toDateString()%></p>
+    <section class="data-arrays">
+      <div class="card card-1">
+        <br>
+        <br>
+        <h3 class="text-center"><b>MIEMBROS</b></h3>
+        <p class="text-center card-text"><%= guild.memberCount%></p>
+      </div>
+      <div class="card card-1">
+        <br>
+        <br>
+        <h3 class="text-center"><b>CANALES</b></h3>
+        <p class="text-center card-text"><%=guild.channels.cache.filter(x => x.type !== "category").size%></p>
+      </div>
+      <div class="card card-1">
+        <br>
+        <br>
+        <h3 class="text-center"><b>ROLES</b></h3>
+        <p class="text-center card-text"><%=guild.roles.cache.size - 1%></p>
+      </div>
+      <% if(bans) { %>
+      <div class="card card-1">
+        <br>
+        <br>
+        <h3 class="text-center"><b>BANEADOS</b></h3>
+        <p class="text-center card-text"><%= bans %></p>
+      </div>
+      <% } %>
+    </section>
+    <br>
+    <br>
+    <h3><b>Estados del servidor</b></h3>
+    <section class="data-arrays">
+      <div class="card card-1">
+        <br>
+        <p class="text-center"><b>Conectados:
+            <%=guild.members.cache.filter(x => x.user.presence.status === "online").size%></b></p>
+        <p class="text-center"><b>Ausentes:
+            <%=guild.members.cache.filter(x => x.user.presence.status === "idle").size%></b></p>
+        <p class="text-center"><b>No Molestar:
+            <%=guild.members.cache.filter(x => x.user.presence.status === "dnd").size%></b></p>
+        <p class="text-center"><b>Desconectados:
+            <%=guild.members.cache.filter(x => x.user.presence.status === "offline").size%></b></p>
+      </div>
+  </center>
+  </section>
+</div>

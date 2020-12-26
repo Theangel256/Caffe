@@ -19,7 +19,7 @@ module.exports.run = async (client, message) => {
 			.setAuthor(client.user.username, client.user.displayAvatarURL({ dynamic:true })).setColor(0x00ffff).setTimestamp()
 			.addField('⁉️ ' + lang.statistics, `>>> **Theangel256 Studios** ${lang.owner}\n**${servers.toLocaleString()}** ${lang.guilds}\n**${users.toLocaleString()}** ${lang.users}\n**${canales.toLocaleString()}** ${lang.channels}\n**${emojis.toLocaleString()}** Emojis\n**${client.commands.size.toLocaleString()}** ${lang.commands}\n**${eventFiles.length.toLocaleString()}** ${lang.events}\n**${actividad}** ${lang.uptime}\n**${Math.round(message.client.ws.ping)}ms** Ping\n**${voz}** ${lang.connections.toLocaleString()}\n**${modulos.version}** ${lang.version}\n**${client.Discord.version}** Discord.JS\n**${client.prefix}** Prefix\n**${memory}** ${lang.usage}\n**${cpu}** CPU\n**${modulos.engines.node}** Node`, true)
 			.addField('❔ LINKS', `>>> [Invite](${invite})\n[Discord](https://discord.Caffe-bot.com)\n[Twitter](https://twitter.com/Theangel256)\n[Facebook](https://www.facebook.com/Theangel256YT)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`, true)
-			.setFooter(client.lang.events.message.isMentioned.footer + modulos.version, client.user.displayAvatarURL());
+			.setFooter(client.lang.events.message.isMentioned.footer + modulos.version, client.user.displayAvatarURL({format: 'jpg', dynamic: true}));
 	message.channel.send(main);
 };
 module.exports.help = {

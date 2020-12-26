@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <%- include('_head') -%>
+</head>
+
+<body class="body-index">
+  <%- include('navbar') -%>
+  <center>
+    <div class="container-fluid">
+      <section class="body-header">
+        <h1><b>Caffe</b></h1><br>
+        <p>Construye el mejor servidor de discord con el bot caffe, podras cambiar el prefix por default, configurar los
+          eventos de registro comunmente llamados "Logs", estbalecer el canal de bienvenida, y establecer un rol
+          autoasignable para los nuevos usuarios
+        </p>
+        <div>
+          <a class=" btn btn-discord-white btn-lg" href="<%= login === 'si' ? '/dashboard' : '/signin' %>" role="button"
+            style="font-size:130%;"><i class="fab fa-discord" style="font-size:110%;"></i><b> Add to Discord</b></a>
+          <a class="btn btn-success btn-lg" href="#features" role="button" style="font-size:130%;"><b>See
+              Features</b></a>
+        </div>
+      </section>
+    </div>
+    <div id="features">
+
+    </div>
+  </center>
+</body>
+
+</html>
