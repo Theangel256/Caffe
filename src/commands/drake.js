@@ -1,6 +1,5 @@
 const { getMember } = require('../structures/functions');
-const Canvas = require('canvas')
-const axios = require('axios');
+const Canvas = require('canvas');
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, false);
 	if (!member) return message.channel.send(client.lang.no_user);
@@ -8,14 +7,11 @@ module.exports.run = async (client, message, args) => {
 	const canvas = Canvas.createCanvas(1080, 970);
 	const ctx = canvas.getContext('2d');
 
-	const a = await axios.get('https://i.imgur.com/j5gNEmh.jpg');
-	const fondo = await Canvas.loadImage(a);
+	const fondo = await Canvas.loadImage('https://i.imgur.com/j5gNEmh.jpg');
 	ctx.drawImage(fondo, 10, 10, 1080, 970);
-	const b = await axios(member.user.displayAvatarURL({ format: 'jpg' }));
-	const avatar = await Canvas.loadImage(b);
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
 	ctx.drawImage(avatar, 570, 10, 500, 460);
-	const c = await axios(message.author.displayAvatarURL({ format: 'jpg' }));
-	const avatar1 = await Canvas.loadImage(c);
+	const avatar1 = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg' }));
 	ctx.drawImage(avatar1, 570, 465, 500, 510);
 	const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'rankcard.png');
 	message.channel.send(attachment);

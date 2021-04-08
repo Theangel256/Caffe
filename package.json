@@ -7,8 +7,7 @@
   "description": "A bot without feelings",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
   "keywords": [
     "node",
@@ -37,6 +36,7 @@
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "simple-youtube-api": "^5.2.1",
+    "sqlite3": "^5.0.2",
     "ytdl-core": "^4.0.3"
   },
   "engines": {

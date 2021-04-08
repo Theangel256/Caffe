@@ -81,8 +81,8 @@ module.exports = {
 			another_person: '{author.username} Hug to {user.username}',
 		},
 		inventory: {
-			oro: "You don't have any items in your inventory, go mining or exploring.",
-			inv: "Inventory form {user.username}"
+			oro: 'You don\'t have any items in your inventory, go mining or exploring.',
+			inv: 'Inventory form {user.username}',
 		},
 		kick: {
 			no_args: '**:grey_exclamation: |** Provide a person to eject.',

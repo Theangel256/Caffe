@@ -1,38 +1,45 @@
-
 const moment = require('moment'); require('moment-duration-format');
-// const {levels, regExp, missingPerms } = require('../structures/functions');
-// const db = require('quick.db');
-
+const { levels, missingPerms } = require('../structures/functions');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('../data.sqlite');
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
-	if (!message.guild || message.author.bot) return;
-	// const guild = new db.table('guilds');
-	// client.prefix = guild.has(`${message.guild.id}.prefix`) ? await guild.fetch(`${message.guild.id}.prefix`) : process.env.prefix;
-	// const lang = guild.has(`${message.guild.id}.language`) ?  await guild.fetch(`${message.guild.id}.language`) : 'en';
-	// client.lang = require(`../structures/languages/${lang}.js`);
+	if (!message.guild) return;
+	if(message.author.bot) return;
+	db.get(`SELECT * FROM guilds WHERE idguild = ${message.guild.id}`, (err, filas) => {
+		if (err) return console.error('message.js file\n' + err.message);
+		if(!filas) {
+			db.run(`INSERT INTO guilds(idguild, prefix, language) VALUES(${message.guild.id}, ${process.env.prefix}, 'en')`, function(err) {
+				if (err) return console.error('message.js file\n' + err.message);
+			});
+		}
+		else{
+			client.prefix = filas.prefix;
+			client.lang = require(`../structures/languages/${filas.language}.js`);
+		}
+	});
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
-		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']})
+		const invite = await client.generateInvite({ permissions: ['ADMINISTRATOR'] });
 		const embed = new client.Discord.MessageEmbed()
-			.addField(':gear: | Prefix', '> `' + client.prefix + '`')
-			.addField(':satellite: | `' + client.prefix + '`Help', client.lang.events.message.isMentioned.field1)
-			.addField('❔ | ' + client.lang.events.message.isMentioned.field2,
-				`>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://discord.caffe-bot.com)\n[Twitter](https://twitter.com/Theangel256)\n[Facebook](https://www.facebook.com/Theangel256YT)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`)
-			.setFooter(client.lang.events.message.isMentioned.footer + require('../../package.json').version, client.user.displayAvatarURL({format: 'jpg', dynamic:true }))
-			.setTimestamp().setColor(0x00ffff);
-		message.channel.send(embed).then(e => e.delete({ timeout: 60000 })).catch(e => console.log(e.message));
+			.addField(':gear: | Prefix', `> \`${client.prefix}\``)
+			.addField(`:satellite: | \`${client.prefix}\`Help`, client.lang.events.message.isMentioned.field1)
+			.addField(`❔ | ${client.lang.events.message.isMentioned.field2}`, `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://discord.gg/65Bf73867r)\n[Twitter](https://twitter.com/Theangel256)`)
+			.setFooter(client.lang.events.message.isMentioned.footer + require('../../package.json').version, client.user.displayAvatarURL({ format: 'jpg', dynamic:true }))
+			.setTimestamp()
+			.setColor(0x00ffff);
+		message.channel.send(embed).then(e => e.delete({ timeout: 120000 })).catch(e => console.log(e.message));
 	}
-	/*regExp(client, message);
-
-	 const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
-	const command = args.shift().toLowerCase();
-	const cmd = client.commands.get(command) || client.aliases.get(command);
-
 	if(!message.content.startsWith(client.prefix)) {
 		levels(message);
 		return;
 	}
+	// regExp(client, message);
+
+	const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
+	const command = args.shift().toLowerCase();
+	const cmd = client.commands.get(command) || client.aliases.get(command);
+
 	if(!cmd) return;
-	*/
 	if(!message.guild.me.hasPermission('SEND_MESSAGES')) return;
 
 	if(cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id)) return message.reply(client.lang.only_developers);
