@@ -20,7 +20,13 @@ const client = new Discord.Client({
 	require('./structures/command').run(client);
 	require('./structures/event').run(client);
 	require('./structures/passport');
+	var RateLimit = require('express-rate-limit');
+	var limiter = new RateLimit({
+		windowMs: 1*60*1000, // 1 minute
+		max: 5
+});
 	app.use(express.json())
+.use(limiter)
 .use(express.urlencoded({ extended: true }))
 .use(methodOverride('_method'))
 .set('views', join(__dirname, 'dashboard/views'))
@@ -28,7 +34,7 @@ const client = new Discord.Client({
 .set('view engine', 'ejs')
 .set('port', process.env.PORT || 3000)
 .use(session({
-  secret: 'caffe',
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false
 }))
@@ -45,6 +51,7 @@ app.use("/error404", require('./dashboard/routes/error'));
 app.get('*', function(req, res) {
     res.redirect('/error404');
   });
+
 app.listen(app.get('port'), () => { 
   console.log("Server on PORT", app.get('port'))
 });
