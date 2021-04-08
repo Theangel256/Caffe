@@ -1,4 +1,5 @@
-const db = require('quick.db')
+/* 
+const db = require('quick.db');
 module.exports.run = (client, message) => {
 	const marrys = new db.table('marrys')
 	let data = marrys.fetch(`${message.author.id}`);
@@ -6,6 +7,7 @@ module.exports.run = (client, message) => {
 	message.channel.send(client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, data.tag));
 	data.delete(`${message.author.id}`, { tag: data.tag, id: data.id});
 };
+*/
 module.exports.help = {
 	name: 'divorce',
 	description: 'Usa este comando para divorciarte de quien te hirio, si tienes a alguien que te hirio',

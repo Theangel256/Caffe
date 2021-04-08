@@ -1,4 +1,5 @@
-const db = require('quick.db')
+/*
+const db = require('quick.db');
 module.exports.run = async (client, message) => {
 	const economy = new db.table('economy')
 	let elements = ['100','75', '50'];
@@ -8,6 +9,7 @@ module.exports.run = async (client, message) => {
 	economy.add(`${message.author.id}.money`, cacthElements);
 	return message.channel.send(`> ${cacthJobs}${cacthElements}`)
 }
+*/
 module.exports.help = {
 	name: 'work',
 	aliases: ['w'],

@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 const {getMember} = require('../structures/functions');
 module.exports.run = async (client, message, args) => {
@@ -14,6 +15,7 @@ let inventario = new client.Discord.MessageEmbed()
 message.channel.send(inventario);
 
 }
+*/
 module.exports.help = {
 	name: 'inventory',
 	aliases: ["inv"],

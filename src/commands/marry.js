@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
 module.exports.run = async (client, message, args) => {
@@ -24,6 +25,7 @@ module.exports.run = async (client, message, args) => {
 		}
 	}).catch(() => message.channel.send(client.lang.commands.marry.expired.replace(/{user.username}/gi, member.user.username)));
 };
+*/
 module.exports.help = {
 	name: 'marry',
 	description: 'Podras casarte con un miembro con este comando',

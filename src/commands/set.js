@@ -1,4 +1,5 @@
-const db = require('quick.db')
+/*
+const db = require('quick.db');
 module.exports.run = async (client, message, args) => {
 	const guilds = new db.table('guilds');
 	const Dashboard = `[Dashboard](${process.env.URL}/Dashboard/${message.guild.id})`;
@@ -44,6 +45,7 @@ module.exports.run = async (client, message, args) => {
 	}
 }
 };
+*/
 module.exports.help = {
 	name: 'set',
 	description: 'establece todas las opciones que hay para disfrutar de un servidor configurado!',

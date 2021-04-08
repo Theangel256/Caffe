@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
 module.exports.run = async (_client, message, args) => {
@@ -105,6 +106,7 @@ module.exports.run = async (_client, message, args) => {
           }
     }
 };
+*/
 module.exports.help = {
 	name: 'warn',
 	description: 'Sanciona a un miembro mal portado :/',

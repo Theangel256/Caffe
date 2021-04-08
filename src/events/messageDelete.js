@@ -1,14 +1,15 @@
-const db = require('quick.db');
+
+// const db = require('quick.db');
 module.exports = async (client, message) => {
-	const guilds = new db.table('guilds');
+	// const guilds = new db.table('guilds');
 	client.snipes.set(message.channel.id, {
 		content: message.content,
 		author: message.author,
 		image: message.attachments.first() ? message.attachments.first().proxyURL : null,
 	});
-	const logchannel = await guilds.fetch(`${message.guild.id}.channels.logs`),
-		logginChannel = client.channels.resolve(logchannel);
-	if(!logginChannel) return;
+	// const logchannel = await guilds.fetch(`${message.guild.id}.channels.logs`),
+		// logginChannel = client.channels.resolve(logchannel);
+	// if(!logginChannel) return;
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
 	const entry = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first());
 	let user = '';
@@ -32,7 +33,7 @@ module.exports = async (client, message) => {
 			logEmbed.addField('Por', `<@${user.id}>`, true);
 		}
 		logEmbed.addField('Mensaje', message.content, true);
-		logginChannel.send(logEmbed);
+		// logginChannel.send(logEmbed);
 	}
 	else if(message.attachments.size > 0) {
 		const Attachs = (message.attachments).array();
@@ -45,7 +46,7 @@ module.exports = async (client, message) => {
 				.addField('En', message.channel, true)
 				.addField('Por', `<@${user.id}>`, true)
 				.setImage(m.proxyURL);
-			logginChannel.send(embed);
+			// logginChannel.send(embed);
 		});
 	}
 };

@@ -1,9 +1,9 @@
-const db = require('quick.db');
+//const db = require('quick.db');
 module.exports = async (client, oldRole, newRole) => {
-  const guilds = new db.table('guilds')
-  const logchannel = guilds.fetch(`${oldRole.guild.id}.channels.logs`);
-	const canal = client.channels.resolve(logchannel);
-	if(!canal) return;
+  // const guilds = new db.table('guilds')
+  // const logchannel = guilds.fetch(`${oldRole.guild.id}.channels.logs`);
+	// const canal = client.channels.resolve(logchannel);
+	// if(!canal) return;
   const p1 = oldRole.permissions;
   const p2 = newRole.permissions;
   if(p1.equals(p2)) return;
@@ -19,5 +19,5 @@ module.exports = async (client, oldRole, newRole) => {
   if(r2.length) {
     embed.addField("Permisos removidos", r2.join(", "))
   }
-  canal.send(embed);
+  // canal.send(embed);
 }

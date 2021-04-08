@@ -1,6 +1,6 @@
-const Canvas = require('canvas')
+/*const Canvas = require('canvas');
 const {getMember, getRank} = require('../structures/functions.js');
-const db = require('quick.db')
+const db = require('quick.db');
 module.exports.run = async (client, message, args) => {
 	const levels = new db.table('levels');
 	const member = getMember(message, args, true);
@@ -68,6 +68,7 @@ module.exports.run = async (client, message, args) => {
 
 	message.channel.send(attachment);
 };
+*/
 module.exports.help = {
 	name: 'rank',
 	description: 'Muestra una carta con todos los datos de tu nivel',

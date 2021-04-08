@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
 const ms = require('ms');
@@ -50,6 +51,7 @@ module.exports.run = async (client, message, args) => {
 	message.channel.send(lang.sucess.replace(/{user.tag}/gi, tomute.user.tag).replace(/{reason}/gi, reason).replace(/{by}/gi, args[1]));
 	MuteDB.set(`${message.guild.id}.${message.author.id}`, { rolID: rolMute, time: Date.now() + mutetime })
 	};
+	*/
 module.exports.help = {
 	name: 'mute',
 	description: 'Silencia a un miembro del servidor',

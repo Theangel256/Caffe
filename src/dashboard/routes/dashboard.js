@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+/*
 const { auth } = require('../../structures/functions');
 const db = require('quick.db');
 const guildsDB = new db.table('guilds');
@@ -98,4 +99,5 @@ router.get('/', auth, async (req, res) => {
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	});
+	*/
 module.exports = router;

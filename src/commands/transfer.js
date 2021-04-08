@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 const {getMember} = require('../structures/functions.js');
 module.exports.run = (client, message, args) => {
@@ -27,6 +28,7 @@ module.exports.run = (client, message, args) => {
 		message.channel.send('lo minimo para poder transferir es $**100**');
 	}
 };
+*/
 module.exports.help = {
 	name: 'transfer',
 	aliases: ['pay'],

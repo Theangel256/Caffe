@@ -1,4 +1,5 @@
-const db = require('quick.db')
+/*
+const db = require('quick.db');
 module.exports.run = async (client, message, args) => {
 	const economy = new db.table('economy');
 	if(!economy.has(`${message.author.id}.money`)) economy.set(`${message.author.id}`, { money: 200 });
@@ -34,6 +35,7 @@ module.exports.run = async (client, message, args) => {
 		}
 	}
 };
+*/
 module.exports.help = {
 	name: 'gamble',
 	description: 'Apuesta todo tu dinero, o lo cuanto quieras!',

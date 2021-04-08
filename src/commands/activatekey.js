@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db')
 module.exports.run = async (client, message, args) => {
     const premium = new db.table('premium');
@@ -12,6 +13,7 @@ module.exports.run = async (client, message, args) => {
         return message.channel.send('Licencia invalida!');
     }
 }
+*/
 module.exports.help = {
 	name: 'activatekey',
 	description: '',

@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 const {generateKey} = require('../structures/functions');
 module.exports.run = async (client, message) => {
@@ -8,6 +9,7 @@ module.exports.run = async (client, message) => {
     message.channel.send("Generada! (La licencia es de 30 dias)\nNo se contaran los dias mientras no la actives, revisa tu md")
     message.author.send(license)
 }
+*/
 module.exports.help = {
 	name: 'generatekey',
 	description: '',

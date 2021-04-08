@@ -1,4 +1,5 @@
-const db = require('quick.db')
+/*
+const db = require('quick.db');
 module.exports.run = async (client, message) => {
 	const economy = new db.table('economy');
 let consulta = await economy.fetch(`${message.author.id}`);
@@ -15,6 +16,7 @@ const embed = new client.Discord.MessageEmbed()
 message.channel.send(embed);
 
 }
+*/
 module.exports.help = {
 	name: 'mine',
 	description: 'trabaja duro para conseguir dinero!',

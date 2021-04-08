@@ -1,3 +1,4 @@
+/*
 const moment = require('moment'); require('moment-duration-format');
 const db = require('quick.db');
 module.exports.run = async (client, message) => {
@@ -16,6 +17,7 @@ module.exports.run = async (client, message) => {
 	message.channel.send(lang.sucess.replace(/{total}/gi, total.toLocaleString()));
 
 };
+*/
 module.exports.help = {
 	name: 'daily',
 	description: 'Cada 24h usa este comando para ganar una paga diaria!',

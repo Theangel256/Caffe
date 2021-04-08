@@ -1,7 +1,8 @@
+/*
 const moment = require('moment');
 require('moment-duration-format');
 const {getMember} = require('../structures/functions.js');
-const db = require('quick.db')
+const db = require('quick.db');
 module.exports.run = async (client, message, args) => {
 	const economy = new db.table('economy');
 	if(economy.has(`${message.author.id}.repCooldown`)) {
@@ -17,6 +18,7 @@ module.exports.run = async (client, message, args) => {
 	message.channel.send(`<:rep:741355268625006694>Punto de reputacion agregado a: **${member.user.username}**`);
 	economy.set(`${message.author.id}`, { repCooldown: Date.now() + 86400000 });
 };
+*/
 module.exports.help = {
 	name: 'reputation',
 	aliases: ['rep'],

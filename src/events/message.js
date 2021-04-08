@@ -1,14 +1,15 @@
+
 const moment = require('moment'); require('moment-duration-format');
-const {levels, regExp, missingPerms } = require('../structures/functions');
-const db = require('quick.db');
+// const {levels, regExp, missingPerms } = require('../structures/functions');
+// const db = require('quick.db');
 
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild || message.author.bot) return;
-	const guild = new db.table('guilds');
-	client.prefix = guild.has(`${message.guild.id}.prefix`) ? await guild.fetch(`${message.guild.id}.prefix`) : process.env.prefix;
-	const lang = guild.has(`${message.guild.id}.language`) ?  await guild.fetch(`${message.guild.id}.language`) : 'en';
-	client.lang = require(`../structures/languages/${lang}.js`);
+	// const guild = new db.table('guilds');
+	// client.prefix = guild.has(`${message.guild.id}.prefix`) ? await guild.fetch(`${message.guild.id}.prefix`) : process.env.prefix;
+	// const lang = guild.has(`${message.guild.id}.language`) ?  await guild.fetch(`${message.guild.id}.language`) : 'en';
+	// client.lang = require(`../structures/languages/${lang}.js`);
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
 		const invite = await client.generateInvite({permissions: ['ADMINISTRATOR']})
 		const embed = new client.Discord.MessageEmbed()
@@ -20,9 +21,9 @@ module.exports = async (client, message) => {
 			.setTimestamp().setColor(0x00ffff);
 		message.channel.send(embed).then(e => e.delete({ timeout: 60000 })).catch(e => console.log(e.message));
 	}
-	regExp(client, message);
+	/*regExp(client, message);
 
-	const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
+	 const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 	const cmd = client.commands.get(command) || client.aliases.get(command);
 
@@ -31,6 +32,7 @@ module.exports = async (client, message) => {
 		return;
 	}
 	if(!cmd) return;
+	*/
 	if(!message.guild.me.hasPermission('SEND_MESSAGES')) return;
 
 	if(cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id)) return message.reply(client.lang.only_developers);

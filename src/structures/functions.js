@@ -1,6 +1,6 @@
-const db = require('quick.db');
+/*const db = require('quick.db');
 const cooldownniveles = new Map();
-const axios = require('axios')
+const axios = require('axios');
 module.exports = {
   auth: (req, res, next) => {
     if(req.isAuthenticated()) {
@@ -147,4 +147,4 @@ Landiacraft: (client) => {
       }).catch(err => { return console.log(err);});
 	}, 10000);
 }
-}
+}*/

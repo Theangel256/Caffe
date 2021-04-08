@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db')
 const {getMember} = require('../structures/functions.js');
 module.exports.run = async (client, message, args) => {
@@ -52,6 +53,7 @@ module.exports.run = async (client, message, args) => {
   .setFooter(lang.beta);
   return message.channel.send(embed);
 };
+*/
 module.exports.help = {
 	name: 'profile',
 	description: 'Muestra tu logros a los demas!',

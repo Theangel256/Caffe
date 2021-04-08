@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 module.exports.run = (client, message, args) => {
 	const {getMember} = require('../structures/functions.js');
@@ -29,6 +30,7 @@ module.exports.run = (client, message, args) => {
 		.setColor('#a00f0f');
 	message.channel.send(embed);
 };
+*/
 module.exports.help = {
 	name: 'love',
 	description: 'Usa este medidor de amor con otro miembro para saber si le eres fiel :3',

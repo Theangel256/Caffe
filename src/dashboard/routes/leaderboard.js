@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+/*
 const db = require('quick.db');
 const levels = new db.table('levels');
 router.get('/:id', async (req, res) => {
@@ -30,5 +31,5 @@ function getRank(users) {
 	});
 	return userlist;
 }
-
+*/
 module.exports = router;

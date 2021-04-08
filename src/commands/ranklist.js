@@ -1,3 +1,4 @@
+/*
 const db = require('quick.db');
 const {getRank} = require('../structures/functions');
 module.exports.run = async (client, message, args) => {
@@ -26,6 +27,7 @@ module.exports.run = async (client, message, args) => {
 	embed.setDescription(`Ranklist del servidor ${message.guild.name} (pagina ${seleccion} de ${paginas.length})\n\n${paginas[seleccion - 1].join('\n')}`);
 	return message.channel.send(embed);
 };
+*/
 module.exports.help = {
 	name: 'ranklist',
 	aliases: ['leaderboard'],

@@ -1,4 +1,5 @@
-const db = require('quick.db')
+/*
+const db = require('quick.db');
 const { getMember } = require('../structures/functions');
 module.exports.run = async (client, message, args) => {
 	const economy = new db.table('economy'),
@@ -10,6 +11,7 @@ module.exports.run = async (client, message, args) => {
 		? lang.no_user.replace(/{money}/gi, dinero.toLocaleString())
 		: lang.user.replace(/{user.username}/gi, member.user.username).replace(/{money}/gi, dinero.toLocaleString()));
 };
+*/
 module.exports.help = {
 	name: 'balance',
 	aliases: ['bal', 'money'],

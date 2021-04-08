@@ -1,10 +1,10 @@
-const db = require('quick.db');
+// const db = require('quick.db');
 module.exports = async (client, guild, user) => {
-	const guilds = new db.table('guilds');
-	const logchannel = await guilds.fetch(`${guild.id}.channels.logs`),
-		robot = { true: 'Si', false: 'No' };
-	const logginChannel = client.channels.resolve(logchannel);
-	if(!logginChannel) return;
+	// const guilds = new db.table('guilds');
+	// const logchannel = await guilds.fetch(`${guild.id}.channels.logs`),
+		// robot = { true: 'Si', false: 'No' };
+	// const logginChannel = client.channels.resolve(logchannel);
+	// if(!logginChannel) return;
 	if (!guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
 	guild.fetchAuditLogs({ type: 'MEMBER_BAN_REMOVE' }).then(logs => {
 		const userID = logs.entries.first().executor.id;
@@ -17,7 +17,6 @@ module.exports = async (client, guild, user) => {
 			.addField('Por', `<@${userID}>`, true)
 			.setTimestamp()
 			.setFooter(guild.name, guild.iconURL({ dynamic:true }));
-		logginChannel.send(msgChannel);
+		// logginChannel.send(msgChannel);
 	});
 };
-
