@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
 	if (!message.guild) return;
 	if(message.author.bot) return;
 	db.get(`SELECT * FROM guilds WHERE idguild = ${message.guild.id}`, (err, filas) => {
-		if (err) return console.error('message.js file\n' + err.message);
+		if (err) return console.error(err.message);
 		if(!filas) {
 			db.run(`INSERT INTO guilds(idguild, prefix, language) VALUES(${message.guild.id}, ${process.env.prefix}, 'en')`, function(err) {
 				if (err) return console.error('message.js file\n' + err.message);
