@@ -90,16 +90,16 @@ module.exports = {
 				});
 			}
 			else{
-				const randomxp = Math.ceil(Math.random() * 10);
-				const lvlup = filas.lvl * 100;
+				const randomxp = Math.floor(0.2 * Math.sqrt(400 + 1));
+				const lvlup = filas.lvl * 60;
 				if((filas.exp + randomxp) >= lvlup) {
-					const update = `UPDATE levelSystem SET exp = ${parseInt(filas.exp + randomxp)}, lvl = ${parseInt(filas.lvl + 1)} WHERE idusuario = ${message.author.id}`;
+					const update = `UPDATE levelSystem SET exp = 0, lvl = ${parseInt(filas.lvl + 1)} WHERE idusuario = ${message.author.id}`;
 					db.run(update, function(err) {
 						if (err) return console.error('function levels\n' + err.message);
 						return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(filas.lvl + 1)}!`);
 					});
 				}
-				const update = `UPDATE levelSystem SET exp = ${filas.exp + randomxp} WHERE idusuario = ${message.author.id}`;
+				const update = `UPDATE levelSystem SET exp = ${parseInt(filas.exp + randomxp)} WHERE idusuario = ${message.author.id}`;
 				db.run(update, function(err) {
 					if (err) return console.error('function levels\n' + err.message);
 				});

@@ -1,22 +1,23 @@
 const express = require('express');
 const router = express.Router();
-/*
 const { auth } = require('../../structures/functions');
-const db = require('quick.db');
-const guildsDB = new db.table('guilds');
+
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
-	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg', dynamic: true}) : null) 
+	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg', dynamic: true }) : null);
 	res.render('dashboard.ejs', {
 		user: req.user,
 		bot: req.bot,
-		title: "Caffe - The Discord Bot",
+		title: 'Caffe - The Discord Bot',
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		guilds,
-		userAvatarURL
+		userAvatarURL,
 	});
-})
+});
+/*
+const db = require('quick.db');
+const guildsDB = new db.table('guilds');
 .get('/:id', auth, async (req, res) => {
 		const idserver = req.params.id
 		const guild = req.bot.guilds.cache.get(idserver);

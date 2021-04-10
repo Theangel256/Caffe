@@ -33,14 +33,14 @@ module.exports.run = async (client, message, args) => {
 
 		ctx.fillStyle = '#7289DA';
 		ctx.globalAlpha = 0.5;
-		ctx.fillRect(216, 150, ((100 / (filas.lvl * 100)) * filas.exp) * 7.1, 60);
+		ctx.fillRect(216, 150, ((100 / (filas.lvl * 60)) * filas.exp) * 6.5, 60);
 		ctx.fill();
 		ctx.globalAlpha = 1;
 
 		ctx.font = '30px Arial';
 		ctx.textAlign = 'center';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText(`${filas.exp} / ${filas.lvl * 100} XP`, 750, 140);
+		ctx.fillText(`${filas.exp} / ${filas.lvl * 60} XP`, 750, 140);
 
 		ctx.font = '25px Arial';
 		ctx.fillStyle = 'rgb(255, 255, 255)';
@@ -64,6 +64,7 @@ module.exports.run = async (client, message, args) => {
 		ctx.fillText('LEVEL', 770, 70);
 		ctx.font = '50px Arial';
 		ctx.fillStyle = 'rgb(255, 255, 255)';
+		ctx.fillText(filas.lvl, 850, 70);
 		ctx.font = '25px Arial';
 		ctx.textAlign = 'left';
 		ctx.fillText(member.user.tag, 220, 140);

@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 router.get('/', async (req, res) => {
-	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
+	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true }) : null);
 	res.render('404.ejs', {
 		bot: req.bot,
 		user: req.user,
-		title: "ERROR! 404",
+		title: 'ERROR! 404',
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		login: (req.isAuthenticated() ? 'si' : 'no'),
-		userAvatarURL
+		userAvatarURL,
 	});
 });
 

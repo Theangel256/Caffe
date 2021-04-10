@@ -1,26 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-//const { execSync } = require("child_process");
+// const { execSync } = require("child_process");
 router.get('/', async (req, res) => {
-	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
+	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true }) : null);
 	res.render('index.ejs', {
 		user: req.user,
 		bot: req.bot,
-		title: "Caffe - The Discord Bot",
+		title: 'Caffe - The Discord Bot',
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
-		userAvatarURL
+		userAvatarURL,
 	});
 })
-.get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
+	.get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
 		res.redirect('/dashboard');
 	})
-.get('/logout', async (req, res) => {
-		await req.logout();
+	.get('/logout', (req, res) => {
+		req.logout();
 		res.redirect('/');
 	})
-
+	.get('/discord', (req, res) => {
+		res.redirect('https://discord.gg/65Bf73867r');
+	})
+	.get('/add', (req, res) => {
+		res.redirect('https://discord.gg/65Bf73867r');
+	});
 /*
 .post('/github', (req, res) => {
 		if(req.method === "POST") {

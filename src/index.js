@@ -22,8 +22,9 @@ require('./structures/event').run(client);
 require('./structures/passport');
 const RateLimit = require('express-rate-limit');
 const limiter = new RateLimit({
-	windowMs: 15 * 60 * 1000,
-	max: 70,
+	windowMs: 2 * 60 * 1000,
+	max: 100,
+	message: 'Hay demasiadas peticiones desde su IP. Por favor inténtelo más tarde.',
 });
 app.use(express.json())
 	.use(limiter)

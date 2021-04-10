@@ -7,7 +7,7 @@ router.get('/:id', async (req, res) => {
 	const idserver = req.params.id
 	const guild = req.bot.guilds.cache.get(idserver);
 	if(!guild) return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);
-	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null) 
+	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'png', dynamic: true}) : null);
 	res.render('leaderboard.ejs', {
 		bot: req.bot,
 		user: req.user,

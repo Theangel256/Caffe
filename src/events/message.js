@@ -23,7 +23,7 @@ module.exports = async (client, message) => {
 		const embed = new client.Discord.MessageEmbed()
 			.addField(':gear: | Prefix', `> \`${client.prefix}\``)
 			.addField(`:satellite: | \`${client.prefix}\`Help`, client.lang.events.message.isMentioned.field1)
-			.addField(`❔ | ${client.lang.events.message.isMentioned.field2}`, `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://discord.gg/65Bf73867r)\n[Twitter](https://twitter.com/Theangel256)`)
+			.addField(`❔ | ${client.lang.events.message.isMentioned.field2}`, `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](https://caffe-bot.sirnice.xyz/discord)\n[Twitter](https://twitter.com/Theangel256)`)
 			.setFooter(client.lang.events.message.isMentioned.footer + require('../../package.json').version, client.user.displayAvatarURL({ format: 'jpg', dynamic:true }))
 			.setTimestamp()
 			.setColor(0x00ffff);
