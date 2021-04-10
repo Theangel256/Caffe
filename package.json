@@ -3,7 +3,7 @@
   "//2": "https://docs.npmjs.com/files/package.json",
   "//3": "updating this file will download and update your packages",
   "name": "caffe",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A bot without feelings",
   "main": "src/index.js",
   "scripts": {
