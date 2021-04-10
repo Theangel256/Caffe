@@ -1,7 +1,7 @@
 module.exports.run = (client, message, args) => {
-	const lang = client.lang.commands.eightBall
+	const lang = client.lang.commands.eightBall;
 	const pregunta = args.join(' '),
-		result = Math.floor(Math.random() * lang.ball.length),
+		result = Math.ceil(Math.random() * lang.ball.length),
 		embed = new client.Discord.MessageEmbed();
 	if (!pregunta[0]) return message.channel.send(lang.no_args);
 	embed.setTitle(lang.title)

@@ -1,7 +1,7 @@
-const {getMember} = require('../structures/functions');
+const { getMember } = require('../structures/functions');
 module.exports.run = (client, message, args) => {
-	let member = getMember(message, args, false),
-		reason = args.slice(1).join(' ');
+	const member = getMember(message, args, false);
+	let reason = args.slice(1).join(' ');
 
 	if (!args[0]) return message.reply(client.lang.commands.kick.no_args);
 

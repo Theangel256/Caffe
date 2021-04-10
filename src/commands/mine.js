@@ -7,7 +7,7 @@ if(!consulta) {
 	await economy.set(`${message.author.id}.money`, 200)
 	await economy.set(`${message.author.id}.oro`, 2)
 }
-economy.add(`${message.author.id}.money`, 50) 
+economy.add(`${message.author.id}.money`, 50)
 economy.add(`${message.author.id}.oro`, 2)
 const embed = new client.Discord.MessageEmbed()
 .setAuthor('Mina Rueca', message.author.displayAvatarURL({format:'jpg', dynamic:true}))

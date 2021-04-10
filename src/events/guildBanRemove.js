@@ -2,7 +2,7 @@
 module.exports = async (client, guild, user) => {
 	// const guilds = new db.table('guilds');
 	// const logchannel = await guilds.fetch(`${guild.id}.channels.logs`),
-		// robot = { true: 'Si', false: 'No' };
+	// robot = { true: 'Si', false: 'No' };
 	// const logginChannel = client.channels.resolve(logchannel);
 	// if(!logginChannel) return;
 	if (!guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;

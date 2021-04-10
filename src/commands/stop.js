@@ -20,7 +20,8 @@ module.exports.run = async (client, message) => {
 	if(message.member.hasPermission('MANAGE_MESSAGES')) {
 		skip(serverQueue);
 		return message.channel.send(':white_check_mark:Un DJ a Borrado la lista de Canciones!');
-	}else if (serverQueue.songs[0].voteStop.length >= required) {
+	}
+	else if (serverQueue.songs[0].voteStop.length >= required) {
 		skip(serverQueue);
 		return message.channel.send(`:white_check_mark: Votos ${serverQueue.songs[0].voteStop.length}/${required} requeridos, cola finalizada!`);
 	}

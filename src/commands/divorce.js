@@ -1,4 +1,4 @@
-/* 
+/*
 const db = require('quick.db');
 module.exports.run = (client, message) => {
 	const marrys = new db.table('marrys')

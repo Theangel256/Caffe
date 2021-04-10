@@ -1,6 +1,6 @@
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube(process.env.YT_KEY);
-const ytdl = require('ytdl-core')
+const ytdl = require('ytdl-core');
 module.exports.run = async (client, message, args) => {
 	let msg;
 	const queue = client.queue;
@@ -20,7 +20,8 @@ module.exports.run = async (client, message, args) => {
 			await handleVideo(voiceChannel, video2, true).catch(e => console.log(e.message));
 		}
 		return message.channel.send(lang.playlistAdded.replace(/{title}/gi, playlist.title));
-	}else{
+	}
+	else{
 		try {
 			var video = await youtube.getVideo(url);
 		}
@@ -53,76 +54,76 @@ module.exports.run = async (client, message, args) => {
 				return message.channel.send(lang.invalidArgs).then(m => m.delete({ timeout: 5000 }));
 			}
 		}
-		return handleVideo(voiceChannel, video, false);
+		return handleVideo(video, false);
 	}
-async function handleVideo (voiceChannel, video, playlist = false) {
-	const lang = client.lang.commands.play;
-	const serverQueue = queue.get(message.guild.id);
-	const song = {
-		id: video.id,
-		title: client.Discord.Util.escapeMarkdown(video.title),
-		url: `https://www.youtube.com/watch?v=${video.id}`,
-		thumbnail: `https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`,
-		channel: video.channel.title,
-		durationh: video.duration.hours,
-		durationm: video.duration.minutes,
-		durations: video.duration.seconds,
-		description: video.description,
-		author: message.author,
-		channelid: video.channel.id,
-	};
-	if (!serverQueue) {
-		const queueConstruct = {
-			textChannel: message.channel,
-			voiceChannel: voiceChannel,
-			connection: null,
-			songs: [],
-			volume: 0.5,
-			playing: true,
+	async function handleVideo(info, playlist = false) {
+		const serverQueue = queue.get(message.guild.id);
+		const song = {
+			id: info.id,
+			title: client.Discord.Util.escapeMarkdown(info.title),
+			url: `https://www.youtube.com/watch?v=${info.id}`,
+			thumbnail: `https://i.ytimg.com/vi/${info.id}/mqdefault.jpg`,
+			channel: info.channel.title,
+			durationh: info.duration.hours,
+			durationm: info.duration.minutes,
+			durations: info.duration.seconds,
+			description: info.description,
+			author: message.author,
+			channelid: info.channel.id,
 		};
-		await queue.set(message.guild.id, queueConstruct);
-		await queueConstruct.songs.push(song);
-		try {
-			let [connection] = await Promise.all([voiceChannel.join()]);
-			queueConstruct.connection = connection;
-			await play(message.guild, queueConstruct.songs[0]);
-		}catch(error) {
-			console.error(`Ha ocurrido un error: ${error}`);
-			await queue.delete(message.guild.id);
-			return message.channel.send(lang.error);
+		if (!serverQueue) {
+			const queueConstruct = {
+				textChannel: message.channel,
+				voiceChannel,
+				connection: null,
+				songs: [],
+				volume: 0.5,
+				playing: true,
+			};
+			await queue.set(message.guild.id, queueConstruct);
+			queueConstruct.songs.push(song);
+			try {
+				const [connection] = await Promise.all([voiceChannel.join()]);
+				queueConstruct.connection = connection;
+				await play(message.guild, queueConstruct.songs[0]);
+			}
+			catch(error) {
+				console.error(`Ha ocurrido un error: ${error}`);
+				await queue.delete(message.guild.id);
+				return message.channel.send(lang.error);
+			}
 		}
-	}else{
-		serverQueue.songs.push(song);
-		if (playlist) return;
-		else {
-			const embedAddQueue = new client.Discord.MessageEmbed()
-				.setColor('#a00f0f')
-				.setAuthor(lang.addQueue, 'https://i.imgur.com/htXCtPo.gif')
-				.setDescription(`[${song.title}](${song.url})`)
-				.setImage(song.thumbnail)
-				.setFooter(message.guild.name, message.guild.iconURL())
-				.setTimestamp();
-			return message.channel.send(embedAddQueue);
+		else{
+			serverQueue.songs.push(song);
+			if (playlist) {return;}
+			else {
+				const embedAddQueue = new client.Discord.MessageEmbed()
+					.setColor('#a00f0f')
+					.setAuthor(lang.addQueue, 'https://i.imgur.com/htXCtPo.gif')
+					.setDescription(`[${song.title}](${song.url})`)
+					.setImage(song.thumbnail)
+					.setFooter(message.guild.name, message.guild.iconURL())
+					.setTimestamp();
+				return message.channel.send(embedAddQueue);
+			}
 		}
+		return undefined;
 	}
-	return undefined;
-}
-	async function play (guild, song) {
-		const lang = client.lang.commands.play;
+	async function play(guild, song) {
 		const serverQueue = await queue.get(guild.id);
 		if(!song) {
 			await serverQueue.voiceChannel.leave();
 			await queue.delete(guild.id);
 			return;
 		}
-		const stream = ytdl(song.url, { filter: 'audioonly'});
+		const stream = ytdl(song.url, { filter: 'audioonly' });
 		const dispatcher = await serverQueue.connection.play(stream)
-		.on('finish', async () => {
-			serverQueue.songs.shift();
-			
-			await play(guild, serverQueue.songs[0]);
-			
-		}).on('error', (error) => console.error(error));
+			.on('finish', async () => {
+				serverQueue.songs.shift();
+
+				await play(guild, serverQueue.songs[0]);
+
+			}).on('error', (error) => console.error(error));
 
 		dispatcher.setVolume(0.5);
 		let time;
@@ -145,7 +146,7 @@ async function handleVideo (voiceChannel, video, playlist = false) {
 		return message.channel.send(embedPlay);
 
 	}
-}
+};
 module.exports.help = {
 	name: 'play',
 	description: 'Reproduce playlist, URL o titulo de tu musica favorita!',

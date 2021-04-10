@@ -21,7 +21,7 @@ const guildsDB = new db.table('guilds');
 .get('/:id', auth, async (req, res) => {
 		const idserver = req.params.id
 		const guild = req.bot.guilds.cache.get(idserver);
-		if(!guild) return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);
+		if(!guild) return res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}`&scope=bot&permissions=8&response_type=code&guild_id=${idserver}`);
 		const userPermission = (await guild.members.fetch(req.user.id)).hasPermission('ADMINISTRATOR');
 		if(!userPermission) return res.redirect('/error404');
 		res.render('guilds.ejs', {

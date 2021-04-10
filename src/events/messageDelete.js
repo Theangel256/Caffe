@@ -1,4 +1,3 @@
-
 // const db = require('quick.db');
 module.exports = async (client, message) => {
 	// const guilds = new db.table('guilds');
@@ -8,7 +7,7 @@ module.exports = async (client, message) => {
 		image: message.attachments.first() ? message.attachments.first().proxyURL : null,
 	});
 	// const logchannel = await guilds.fetch(`${message.guild.id}.channels.logs`),
-		// logginChannel = client.channels.resolve(logchannel);
+	// logginChannel = client.channels.resolve(logchannel);
 	// if(!logginChannel) return;
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
 	const entry = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first());

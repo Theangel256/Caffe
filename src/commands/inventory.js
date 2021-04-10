@@ -18,7 +18,7 @@ message.channel.send(inventario);
 */
 module.exports.help = {
 	name: 'inventory',
-	aliases: ["inv"],
+	aliases: ['inv'],
 	description: 've lo que te has ganado trabajando duro!',
 };
 module.exports.requirements = {

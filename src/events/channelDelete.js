@@ -1,10 +1,10 @@
-//const db = require('quick.db');
+// const db = require('quick.db');
 module.exports = (client, channel) => {
 	if (channel.type === 'dm') return;
-	//const guilds = new db.table('guilds');
-	//const logchannel = guilds.fetch(`${channel.guild.id}.channels.logs`);
-	///const canal = client.channels.resolve(logchannel);
-	//if(!canal) return;
+	// const guilds = new db.table('guilds');
+	// const logchannel = guilds.fetch(`${channel.guild.id}.channels.logs`);
+	// /const canal = client.channels.resolve(logchannel);
+	// if(!canal) return;
 	const logEmbed = new client.Discord.MessageEmbed()
 		.setTitle('**「:x:」• Canal Removido**')
 		.setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
@@ -15,5 +15,5 @@ module.exports = (client, channel) => {
 		.addField('ID', '`' + channel.id + '`', true)
 		.setTimestamp()
 		.setFooter(`•${channel.guild.name}•`, client.user.displayAvatarURL({ dynamic:true }), true);
-	//canal.send(logEmbed);
+	// canal.send(logEmbed);
 };

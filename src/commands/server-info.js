@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-module.exports.run = (client, message, args) => {
+module.exports.run = (client, message) => {
 	const guild = message.guild,
 		features = {
 			ANIMATED_ICON: 'Icono animado',

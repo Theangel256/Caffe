@@ -3,8 +3,8 @@ module.exports = async (client, oldMember, newMember) => {
 	// const guilds = new db.table('guilds');
 	if(!oldMember.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
 	// const logchannel = await guilds.fetch(`${oldMember.guild.id}.channels.logs`),
-		// entry = await oldMember.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(audit => audit.entries.first()),
-		// channel = client.channels.resolve(logchannel);
+	// entry = await oldMember.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(audit => audit.entries.first()),
+	// channel = client.channels.resolve(logchannel);
 	// if(!channel) return;
 	if(oldMember.nickname !== newMember.nickname) {
 		const user = entry.executor;

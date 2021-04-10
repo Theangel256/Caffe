@@ -1,18 +1,18 @@
-const {getMember} = require('../structures/functions');
+const { getMember } = require('../structures/functions');
 module.exports.run = (client, message, args) => {
 	const usuario = getMember(message, args, true),
 		color = {
-			online: "#00c903",
-			idle: "#ff9a00",
-			dnd: "#ff0000",
-			offline: "#d8d8d8"
+			online: '#00c903',
+			idle: '#ff9a00',
+			dnd: '#ff0000',
+			offline: '#d8d8d8',
 		},
 		estados = {
-			online: "En Línea",
-			idle: "Ausente",
-			dnd: "No Molestar",
-			offline: "Desconectado/invisible"
-		}
+			online: 'En Línea',
+			idle: 'Ausente',
+			dnd: 'No Molestar',
+			offline: 'Desconectado/invisible',
+		};
 	const permissions = [];
 	if(usuario.hasPermission('ADMINISTRATOR')) {
 		permissions.push('Administrator');

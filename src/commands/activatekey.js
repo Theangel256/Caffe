@@ -2,7 +2,7 @@
 const db = require('quick.db')
 module.exports.run = async (client, message, args) => {
     const premium = new db.table('premium');
-    if(!args[0]) 
+    if(!args[0])
     return message.channel.send(`Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla en: ${process.env.URL}/premium`);
     const key = await premium.fetch(`${message.guild.id}.license`)
     if(key === args[0]) {

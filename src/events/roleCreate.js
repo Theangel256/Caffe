@@ -1,4 +1,4 @@
-//const db = require('quick.db');
+// const db = require('quick.db');
 module.exports = async (client, role) => {
 	// const guilds = new db.table('guilds');
 	// const logchannel = await guilds.fetch(`${role.guild.id}.channels.logs`);
