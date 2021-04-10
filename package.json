@@ -16,7 +16,7 @@
   "author": "Theangel256",
   "license" : "Apache-2.0",
   "dependencies": {
-    "@discordjs/opus": "^0.3.3",
+    "@discordjs/opus": "^0.5.0",
     "axios": "^0.21.0",
     "canvas": "^2.6.1",
     "discord.js": "^12.4.1",
