@@ -34,11 +34,12 @@ app.use(express.json())
 	.use(express.static(join(__dirname, 'dashboard/public')))
 	.set('view engine', 'ejs')
 	.set('port', process.env.PORT || 3000)
+	.set('trust proxy', 1)
 	.use(session({
 		secret: process.env.SECRET,
 		resave: false,
 		saveUninitialized: false,
-		cookie: { secure: true },
+		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: 'caffe-bot.sirnice.xyz' },
 	}))
 	.use(passport.initialize())
 	.use(passport.session())
