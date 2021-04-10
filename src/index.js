@@ -22,8 +22,8 @@ require('./structures/event').run(client);
 require('./structures/passport');
 const RateLimit = require('express-rate-limit');
 const limiter = new RateLimit({
-	windowMs: 1 * 60 * 1000,
-	max: 5,
+	windowMs: 15 * 60 * 1000,
+	max: 70,
 });
 app.use(express.json())
 	.use(limiter)
