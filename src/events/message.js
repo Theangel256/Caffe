@@ -6,14 +6,14 @@ module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild) return;
 	if(message.author.bot) return;
-	db.get('SELECT * FROM guilds WHERE idguild = ?', (message.guild.id), (err, filas) => {
+	db.get('SELECT * FROM guilds WHERE idguild = $idguild', { $idguild: message.guild.id }, (err, filas) => {
 		if (err) return console.error(err.message);
 		if(!filas) {
 			db.run('INSERT INTO guilds(idguild, prefix, language) VALUES($idguild, $prefix, $language)', { $idguild: message.guild.id, $prefix: process.env.prefix, $languague: 'en' }, function(err) {
 				if (err) return console.error(err.message);
 			});
 		}
-		client.prefix = filas.prefix;
+		client.prefix = filas.prefix || '$';
 		client.lang = require(`../structures/languages/${filas.language}.js`);
 	});
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
