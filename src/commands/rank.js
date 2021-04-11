@@ -46,7 +46,8 @@ module.exports.run = async (client, message, args) => {
 		ctx.fillStyle = 'rgb(255, 255, 255)';
 		ctx.fillText('RANK', 580, 70);
 
-		db.all('SELECT idguild, idusuario, lvl, exp FROM levelSystem ORDER BY lvl DESC LIMIT 10', async (err, users) => {
+		db.all('SELECT idguild, idusuario, lvl, exp FROM levelSystem ORDER BY lvl', async (err, users) => {
+			console.log(users);
 			if (err) return console.error(err.message);
 			console.log(users);
 			const usuarios = await getRank(users, message);

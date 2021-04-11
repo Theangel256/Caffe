@@ -6,17 +6,15 @@ module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild) return;
 	if(message.author.bot) return;
-	db.get(`SELECT * FROM guilds WHERE idguild = ${message.guild.id}`, (err, filas) => {
+	db.get('SELECT * FROM guilds WHERE idguild = ?', (message.guild.id), (err, filas) => {
 		if (err) return console.error(err.message);
 		if(!filas) {
-			db.run(`INSERT INTO guilds(idguild, prefix, language) VALUES(${message.guild.id}, ${process.env.prefix}, 'en')`, function(err) {
-				if (err) return console.error('message.js file\n' + err.message);
+			db.run('INSERT INTO guilds(idguild, prefix, language) VALUES($idguild, $prefix, $language)', { $idguild: message.guild.id, $prefix: process.env.prefix, $languague: 'en' }, function(err) {
+				if (err) return console.error(err.message);
 			});
 		}
-		else{
-			client.prefix = filas.prefix;
-			client.lang = require(`../structures/languages/${filas.language}.js`);
-		}
+		client.prefix = filas.prefix;
+		client.lang = require(`../structures/languages/${filas.language}.js`);
 	});
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
 		const invite = await client.generateInvite({ permissions: ['ADMINISTRATOR'] });

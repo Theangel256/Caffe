@@ -46,11 +46,23 @@ module.exports = {
 			: missingPerms[0];
 
 	},
-	generateKey: (length = 20, wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$') => {
-		const crypto = require('crypto');
-		return Array.from(crypto.randomFillSync(new Uint32Array(length)))
-			.map((x) => wishlist[x % wishlist.length])
-			.join('');
+	generateKey: (length = 30) => {
+		var lowercase = "abcdefghijklmnopqrstuvwxyz";
+		var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		var digits = "0123456789";
+		var punctuation = "()[]{}.:,:<>/|'\"?+=-_`~!@#$%^&* ";
+
+		var characters = lowercase + uppercase + digits + punctuation;
+		var charactersCount = characters.length;
+		var password = '';
+
+		for (var i = 0; i < length; i++) {
+			var randomPos = Math.floor(Math.random() * charactersCount);
+			password += characters.charAt(randomPos);
+		}
+
+		return password;
+
 	},
 	regExp: (client, message) => {
 		const warns = new db.table('warns');
