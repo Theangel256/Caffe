@@ -1,7 +1,8 @@
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('../data.sqlite');
 const cooldownniveles = new Map();
 const axios = require('axios');
+const levels = require("../structures/models/levels");
+const warns = require("../structures/models/warns");
+const guildSystem = require('../structures/models/guilds');
 module.exports = {
 	auth: (req, res, next) => {
 		if(req.isAuthenticated()) {
@@ -60,31 +61,93 @@ module.exports = {
 			var randomPos = Math.floor(Math.random() * charactersCount);
 			password += characters.charAt(randomPos);
 		}
-
 		return password;
-
 	},
-	regExp: (client, message) => {
-		const warns = new db.table('warns');
-		const guilds = new db.table('guilds');
+	regExp: async (client, message) => {
 		if(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord\.com\/invite)\/.+[a-z]/gim.test(message.content)) {
-			const embed = new client.Discord.MessageEmbed()
-				.setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), message.author.displayAvatarURL({ dynamic:true }))
-				.setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
-			if(message.deletable) message.delete().catch(e => console.error(e.message));
-			warns.add(`${message.guild.id}.${message.author.id}.warnings`, 1);
-			message.channel.send(embed);
-			const count = warns.fetch(`${message.guild.id}.${message.author.id}`);
-			const channelLog = guilds.fetch(`${message.guild.id}.channels.logs`);
-			const embed2 = new client.Discord.MessageEmbed()
-				.setColor('RED')
-				.setDescription('**Warn**')
-				.addField('「:boy:」' + client.lang.events.message.ant.author, message.author.tag)
-				.addField('「:speech_balloon:」' + client.lang.events.message.ant.reason, client.lang.events.message.ant.warn)
-				.addField('「:closed_book:」' + client.lang.events.message.ant.warns, count.warnings)
-				.addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
-			const canal = client.channels.cache.get(channelLog);
-			if(canal) return canal.send(embed2);
+			const msgDocument = await warns.findOne({
+				guildID: message.guild.id,
+				userID: message.author.id,
+			}).catch(err => console.log(err));
+			if (!msgDocument) {
+				try {
+					const dbMsg2 = await new warns({ guildID: message.guild.id, userID: message.author.id, warnings: 0, rolID: '0', time: 0 });
+					var dbMsgModel = await dbMsg2.save();
+				}
+				catch (err) {
+					console.log(err);
+				}
+			}
+			else {
+				dbMsgModel = msgDocument;
+			}
+			const msgDocument2 = await guildSystem.findOne({
+				guildID: message.guild.id,
+			}).catch(err => console.log(err));
+			if (!msgDocument2) {
+				try {
+					const dbMsg2 = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+					var dbMsgModel2 = await dbMsg2.save();
+				}
+				catch (err) {
+					console.log(err);
+				}
+			}
+			else {
+				dbMsgModel2 = msgDocument2;
+			}
+			if (dbMsgModel) {
+				try {
+					const {
+						channelLogs,
+						kick,
+						kicktime,
+						ban,
+						bantime,
+						role,
+						roletime,
+					} = dbMsgModel2;
+
+					const { warnings, rolID } = dbMsgModel;
+					const newWarnings = warnings + 1;
+					const embed = new client.Discord.MessageEmbed()
+						.setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), message.author.displayAvatarURL({ dynamic:true }))
+						.setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
+					if(message.deletable) message.delete().catch(() => { null; });
+					await dbMsgModel.updateOne({ warnings: newWarnings });
+					message.channel.send(embed);
+					const embed2 = new client.Discord.MessageEmbed()
+						.setColor('RED')
+						.setDescription('**Warn**')
+						.addField('「:boy:」' + client.lang.events.message.ant.author, message.author.tag)
+						.addField('「:speech_balloon:」' + client.lang.events.message.ant.reason, client.lang.events.message.ant.warn)
+						.addField('「:closed_book:」' + client.lang.events.message.ant.warns, warnings)
+						.addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
+					const canal = client.channels.cache.get(channelLogs);
+					if(canal) return canal.send(embed2);
+					message.author.send(`"You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`)
+						.catch(() => { null; });
+					// El único error es que si el usuario tenga DMs desactivados.
+					if (role) {
+						if (roletime <= newWarnings) {
+							message.member.roles.add(rolID, "Too many warnings");
+						}
+					}
+					if (kick) {
+						if (kicktime == newWarnings) {
+							message.member.kick("Too many warnings");
+						}
+					}
+					if (ban) {
+						if (bantime == newWarnings) {
+							message.member.ban({ reason: "Too many warnings" });
+						}
+					}
+				}
+				catch (error) {
+					console.log(error);
+				}
+			}
 		}
 	},
 
@@ -93,58 +156,30 @@ module.exports = {
 			const time = cooldownniveles.get(message.guild.id + message.author.id);
 			if(Date.now() < time) return;
 		}
-
-		db.get(`SELECT * FROM levelSystem WHERE idguild = ${message.guild.id}`, (err, filas) => {
-			if (err) return console.error(err.message);
-			if(!filas) {
-				db.run(`INSERT INTO levelSystem(idguild, idusuario, lvl, exp) VALUES(${message.guild.id}, ${message.author.id} 0, 1)`, function(err) {
-					if (err) return console.error(err.message);
-				});
+		const msgDocument = await levels.findOne({
+			guildID: message.guild.id,
+		}).catch(err => console.log(err));
+		if (!msgDocument) {
+			try {
+				const dbMsg = await new levels({ guildID: message.guild.id, userID: message.author.id, xp: 1, lvl: 0 });
+				var dbMsgModel = await dbMsg.save();
 			}
-			else{
-				const randomxp = Math.floor(0.2 * Math.sqrt(400 + 1));
-				const lvlup = filas.lvl * 60;
-				if((filas.exp + randomxp) >= lvlup) {
-					const update = `UPDATE levelSystem SET exp = 0, lvl = ${parseInt(filas.lvl + 1)} WHERE idusuario = ${message.author.id}`;
-					db.run(update, function(err) {
-						if (err) return console.error('function levels\n' + err.message);
-						return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(filas.lvl + 1)}!`);
-					});
-				}
-				const update = `UPDATE levelSystem SET exp = ${parseInt(filas.exp + randomxp)} WHERE idusuario = ${message.author.id}`;
-				db.run(update, function(err) {
-					if (err) return console.error('function levels\n' + err.message);
-				});
-
-			}
-		});
-		cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 5000);
-	},
-	muteSystem: (client) => {
-		const MuteDB = new db.table('systemMute');
-		const guilds = MuteDB.all();
-		for(const guild_id in guilds) {
-			const servidor = client.guilds.cache.get(guild_id);
-			if(!servidor) {
-				MuteDB.delete(guild_id);
-				continue;
-			}
-			for(const user_id in guilds[guild_id]) {
-				const member = servidor.members.cache.get(user_id);
-				if(!member) {
-					MuteDB.delete(`${guild_id}.${user_id}`);
-					continue;
-				}
-				const muted_role = servidor.roles.cache.get(guilds[guild_id][user_id].rolID);
-				if(Date.now() >= guilds[guild_id][user_id]) {
-					if(muted_role && member.roles.cache.has(muted_role)) {
-						member.roles.remove(muted_role.id).catch(err => console.log(err.message));
-						console.log('asd');
-					}
-					MuteDB.delete(`${guild_id}.${user_id}`);
-				}
+			catch (err) {
+				console.log(err);
 			}
 		}
+		else {
+			dbMsgModel = msgDocument;
+		}
+		const { lvl, xp } = dbMsgModel;
+		const randomxp = Math.floor(0.2 * Math.sqrt(400 + 1));
+		const lvlup = lvl * 60;
+		if((xp + randomxp) >= lvlup) {
+			await dbMsgModel.updateOne({ lvl: lvl + 1, xp: 0 });
+			return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(lvl + 1)}!`);
+		}
+		await dbMsgModel.updateOne({ xp: xp + randomxp });
+		cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 10000);
 	},
 	Landiacraft: (client) => {
 		const guild = client.guilds.cache.get('498164647833239563');

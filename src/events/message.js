@@ -1,21 +1,28 @@
 const moment = require('moment'); require('moment-duration-format');
 const { levels, missingPerms } = require('../structures/functions');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('../data.sqlite');
+const guilds = require("../structures/models/guilds");
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild) return;
 	if(message.author.bot) return;
-	db.get('SELECT * FROM guilds WHERE idguild = $idguild', { $idguild: message.guild.id }, (err, filas) => {
-		if (err) return console.error(err.message);
-		if(!filas) {
-			db.run('INSERT INTO guilds(idguild, prefix, language) VALUES($idguild, $prefix, $language)', { $idguild: message.guild.id, $prefix: process.env.prefix, $languague: 'en' }, function(err) {
-				if (err) return console.error(err.message);
-			});
+	const msgDocument = await guilds.findOne({
+		guildID: message.guild.id,
+	}).catch(err => console.log(err));
+	if (!msgDocument) {
+		try {
+			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0' });
+			var dbMsgModel = await dbMsg.save();
 		}
-		client.prefix = filas.prefix || '$';
-		client.lang = require(`../structures/languages/${filas.language}.js`);
-	});
+		catch (err) {
+			console.log(err);
+		}
+	}
+	else {
+		dbMsgModel = msgDocument;
+	}
+	const { prefix, language } = dbMsgModel;
+	client.prefix = prefix;
+	client.lang = require(`../structures/languages/${language}.js`);
 	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
 		const invite = await client.generateInvite({ permissions: ['ADMINISTRATOR'] });
 		const embed = new client.Discord.MessageEmbed()

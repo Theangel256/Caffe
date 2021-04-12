@@ -1,16 +1,16 @@
-// const { muteSystem, Landiacraft } = require('../structures/functions');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('../data.sqlite');
+const warns = require('../structures/models/warns');
+// const {  Landiacraft } = require('../structures/functions');
 module.exports = async (client) => {
-	db.run('CREATE TABLE IF NOT EXISTS levelSystem (idguild TEXT, idusuario TEXT, lvl INTEGER, exp INTEGER)', function(err) {
-		if (err) return console.error('Ready.js file\n' + err.message);
-	});
-	db.run('CREATE TABLE IF NOT EXISTS guilds (idguild TEXT, prefix TEXT, language TEXT)', function(err) {
-		if (err) return console.error('Ready.js file\n' + err.message);
-	});
-	/* setInterval(() => {
-		muteSystem(client)
-	}, 10000); */
+	setInterval(async function() {
+		const allData = await warns.find();
+		allData.map(async a => {
+			if (a.time < Date.now()) {
+				const member = client.guilds.resolve(a.guildID).member(a.userID);
+				member.roles.remove(a.rolID);
+				await warns.deleteOne({ userID: a.userID });
+			}
+		});
+	}, 10000);
 	const statues = [`$help | ${client.users.cache.size.toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version,
 		'caffe-bot.sirnice.xyz/discord', 'caffe-bot.sirnice.xyz/add'];
