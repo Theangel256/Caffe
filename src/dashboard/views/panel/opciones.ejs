@@ -33,7 +33,7 @@
               name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(guildsDB.has(`${guild.id}.channels.welcome`)) { %>
+            <% if(welcomeChannel) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
               name="action">Reestablecer
               <i class="material-icons right">clear</i>
@@ -60,7 +60,7 @@
               name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(guildsDB.has(`${guild.id}.channels.goodbye`)) { %>
+            <% if(goodbyeChannel) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
               name="action">Reestablecer
               <i class="material-icons right">clear</i>
@@ -87,7 +87,7 @@
               name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(guildsDB.has(`${guild.id}.channels.logs`)) { %>
+            <% if(logsChannel) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
               name="action">Reestablecer
               <i class="material-icons right">clear</i>
@@ -117,7 +117,7 @@
                 name="action">Guardar
                 <i class="material-icons right">send</i>
               </button>
-              <% if(guildsDB.has(`${guild.id}.role`)) { %>
+              <% if(idrol)) { %>
               <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
                 name="action">Reestablecer
                 <i class="material-icons right">clear</i>
@@ -144,12 +144,6 @@
               name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(guildsDB.has(`${guild.id}.language`)) { %>
-            <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
-              name="action">Reestablecer
-              <i class="material-icons right">clear</i>
-            </button>
-            <% } %>
           </div>
         </div>
       </div>

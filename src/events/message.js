@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+			const dbMsg = await new guilds({ guildID:  message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', roleid: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
 			var dbMsgModel = await dbMsg.save();
 		}
 		catch (err) {
