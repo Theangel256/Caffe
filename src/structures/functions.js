@@ -12,9 +12,9 @@ module.exports = {
 	},
 	getRank: async (users, message) => {
 		const list = [];
-		for(const id in users) {
-			const user = message.guild.members.cache.has(id) ? message.guild.members.cache.get(id).user.tag : message.client.users.fetch(id).tag;
-			list.push([user, users[id].lvl, users[id].exp]);
+		for(const id of users) {
+			const user = message.guild.members.cache.has(id.userID) ? message.guild.members.cache.get(id.userID).user.tag : await message.client.users.fetch(id.userID).tag;
+			list.push([user, id.lvl, id.xp]);
 		}
 		list.sort((user1, user2) => {
 			return user2[1] - user1[1] || user2[2] - user1[2];
