@@ -28,14 +28,11 @@ router.get('/', auth, async (req, res) => {
 		if (!msgDocument) {
 			try {
 				const dbMsg = await new guildSystem({ guildID: idserver, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', roleid: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
-				var dbMsgModel = await dbMsg.save();
+				await dbMsg.save();
 			}
 			catch (err) {
 				console.log(err);
 			}
-		}
-		else {
-			dbMsgModel = msgDocument;
 		}
 		const welcomeChannel = await guildSystem.get('channelWelcome').catch(err => console.log(err));
 		const goodbyeChannel = await guildSystem.get('channelGoodbye').catch(err => console.log(err));
@@ -54,9 +51,12 @@ router.get('/', auth, async (req, res) => {
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
 		});
-		var { channelWelcome, channelGoodbye, roleid, channelLogs, lang } = dbMsgModel;
 	})
-	.post('/:id/welcome', auth, (req, res) => {
+	.post('/:id/welcome', auth, async (req, res) => {
+		const msgDocument = await guildSystem.findOne({
+			guildID: idserver,
+		}).catch(err => console.log(err));
+		const { channelWelcome } = msgDocument;
 		const idserver = req.params.id,
 			id_channel = req.body.channel_ID;
 		if(!id_channel || id_channel === 'no_select') {
@@ -68,7 +68,11 @@ router.get('/', auth, async (req, res) => {
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
-	.post('/:id/goodbye', auth, (req, res) => {
+	.post('/:id/goodbye', auth, async (req, res) => {
+		const msgDocument = await guildSystem.findOne({
+			guildID: idserver,
+		}).catch(err => console.log(err));
+		const { channelGoodbye } = msgDocument;
 		const idserver = req.params.id;
 		const id_channel = req.body.channelID;
 		if(!id_channel || id_channel === 'no_select') {
@@ -81,6 +85,10 @@ router.get('/', auth, async (req, res) => {
 		}
 	})
 	.post('/:id/rolauto', auth, async (req, res) => {
+		const msgDocument = await guildSystem.findOne({
+			guildID: idserver,
+		}).catch(err => console.log(err));
+		const { roleid } = msgDocument;
 		const idserver = req.params.id,
 			id_role = req.body.rol_ID;
 		if(!id_role || id_role === 'no_select') {
@@ -104,6 +112,10 @@ router.get('/', auth, async (req, res) => {
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	}).post('/:id/logs', auth, async (req, res) => {
+		const msgDocument = await guildSystem.findOne({
+			guildID: idserver,
+		}).catch(err => console.log(err));
+		const { channelLogs } = msgDocument;
 		const idserver = req.params.id;
 		const logs_ID = req.body.logs_ID;
 		if(!logs_ID || logs_ID === 'no_select') {
@@ -116,10 +128,14 @@ router.get('/', auth, async (req, res) => {
 		}
 	})
 	.post('/:id/lang', auth, async (req, res) => {
+		const msgDocument = await guildSystem.findOne({
+			guildID: idserver,
+		}).catch(err => console.log(err));
+		const { language } = msgDocument;
 		const idserver = req.params.id;
-		const language = req.body.language;
-		if(!language || language === 'no_select') {
-			guildSystem.deleteOne(language);
+		const lang = req.body.language;
+		if(!lang || lang === 'no_select') {
+			guildSystem.deleteOne(lang);
 			res.redirect(`/dashboard/${idserver}`);
 		}
 		else {
