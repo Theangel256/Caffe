@@ -1,10 +1,23 @@
-// const db = require('quick.db');
-module.exports = (client, channel) => {
-	// const guilds = new db.table('guilds')
+const guildSystem = require("../structures/models/guilds");
+module.exports = async (client, channel) => {
 	if (channel.type === 'dm') return;
-	// const logchannel = guilds.fetch(`${channel.guild.id}.channels.logs`);
-	// const canal = client.channels.resolve(logchannel);
-	// if(!canal) return;
+	const msgDocument = await guildSystem.findOne({
+		guildID: channel.guild.id,
+	}).catch(err => console.log(err));
+	if (!msgDocument) {
+		try {
+			const dbMsg = await new guildSystem({ guildID: channel.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+			var dbMsgModel = await dbMsg.save();
+		}
+		catch (err) {
+			console.log(err);
+		}
+	}
+	else {
+		dbMsgModel = msgDocument;
+	}
+	const { channelLogs } = dbMsgModel;
+	const canal = client.channels.resolve(channelLogs);
 	const logEmbed = new client.Discord.MessageEmbed()
 		.setTitle('**「:white_check_mark: 」• Canal Creado**')
 		.setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
@@ -15,5 +28,5 @@ module.exports = (client, channel) => {
 		.addField('ID', '`' + channel.id + '`', true)
 		.setTimestamp()
 		.setFooter(`•${channel.guild.name}•`, client.user.displayAvatarURL({ dynamic:true }), true);
-	// canal.send(logEmbed);
+	if(canal) return canal.send(logEmbed);
 };

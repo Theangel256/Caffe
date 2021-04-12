@@ -1,5 +1,5 @@
 const moment = require('moment'); require('moment-duration-format');
-const { levels, missingPerms } = require('../structures/functions');
+const { levels, missingPerms, regExp } = require('../structures/functions');
 const guilds = require("../structures/models/guilds");
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0' });
+			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
 			var dbMsgModel = await dbMsg.save();
 		}
 		catch (err) {
@@ -38,7 +38,7 @@ module.exports = async (client, message) => {
 		levels(message);
 		return;
 	}
-	// regExp(client, message);
+	regExp(client, message);
 
 	const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();

@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
 	else {
 		dbMsgModel = msgDocument;
 	}
-	const usuarios = getRank(await levels.find({}), message);
+	const usuarios = getRank(await levels.find(), message);
 	let rank = usuarios.findIndex(u => u[0] == member.user.tag);
 	if(rank === -1) rank = `#${usuarios.length}`;
 	else rank = `#${rank + 1}`;
