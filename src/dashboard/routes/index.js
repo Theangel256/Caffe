@@ -4,7 +4,7 @@ const passport = require('passport');
 // const { execSync } = require("child_process");
 router.get('/', async (req, res) => {
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ dynamic: true }) : null);
-	const botAvatarURL = await req.bot.user.displayAvatarURL({ format: 'png', dynamic: true });
+	const botAvatarURL = req.bot.user.displayAvatarURL({ format: 'png', dynamic: true });
 	res.render('index.ejs', {
 		user: req.user,
 		bot: req.bot,

@@ -6,7 +6,7 @@ const guildSystem = require('../../structures/models/guilds');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ format: 'jpg', dynamic: true }) : null);
-	const botAvatarURL = await req.bot.user.displayAvatarURL({ format: 'png', dynamic: true });
+	const botAvatarURL = req.bot.user.displayAvatarURL({ format: 'png', dynamic: true });
 	res.render('dashboard.ejs', {
 		user: req.user,
 		bot: req.bot,
