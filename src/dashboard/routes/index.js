@@ -4,7 +4,6 @@ const passport = require('passport');
 // const { execSync } = require("child_process");
 router.get('/', async (req, res) => {
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ dynamic: true }) : null);
-	const botAvatarURL = req.bot.user.displayAvatarURL({ format: 'png', dynamic: true });
 	res.render('index.ejs', {
 		user: req.user,
 		bot: req.bot,
@@ -12,7 +11,6 @@ router.get('/', async (req, res) => {
 		login : (req.isAuthenticated() ? 'si' : 'no'),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		userAvatarURL,
-		botAvatarURL,
 	});
 })
 	.get('/signin', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
