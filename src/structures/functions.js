@@ -1,7 +1,7 @@
 const cooldownniveles = new Map();
 const axios = require('axios');
-const levels = require("../structures/models/levels");
-const warns = require("../structures/models/warns");
+const levels = require('../structures/models/levels');
+const warns = require('../structures/models/warns');
 const guildSystem = require('../structures/models/guilds');
 module.exports = {
 	auth: (req, res, next) => {
@@ -48,10 +48,10 @@ module.exports = {
 
 	},
 	generateKey: (length = 30) => {
-		var lowercase = "abcdefghijklmnopqrstuvwxyz";
-		var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		var digits = "0123456789";
-		var punctuation = "()[]{}.:,:<>/|'\"?+=-_`~!@#$%^&* ";
+		var lowercase = 'abcdefghijklmnopqrstuvwxyz';
+		var uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		var digits = '0123456789';
+		var punctuation = '()[]{}.:,:<>/|\'"?+=-_`~!@#$%^&* ';
 
 		var characters = lowercase + uppercase + digits + punctuation;
 		var charactersCount = characters.length;
@@ -86,7 +86,7 @@ module.exports = {
 			}).catch(err => console.log(err));
 			if (!msgDocument2) {
 				try {
-					const dbMsg2 = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+					const dbMsg2 = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
 					var dbMsgModel2 = await dbMsg2.save();
 				}
 				catch (err) {
@@ -125,22 +125,22 @@ module.exports = {
 						.addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
 					const canal = client.channels.cache.get(channelLogs);
 					if(canal) return canal.send(embed2);
-					message.author.send(`"You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`)
+					message.author.send(`You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`)
 						.catch(() => { null; });
 					// El único error es que si el usuario tenga DMs desactivados.
 					if (role) {
 						if (roletime <= newWarnings) {
-							message.member.roles.add(rolID, "Too many warnings");
+							message.member.roles.add(rolID, 'Too many warnings');
 						}
 					}
 					if (kick) {
 						if (kicktime == newWarnings) {
-							message.member.kick("Too many warnings");
+							message.member.kick('Too many warnings');
 						}
 					}
 					if (ban) {
 						if (bantime == newWarnings) {
-							message.member.ban({ reason: "Too many warnings" });
+							message.member.ban({ reason: 'Too many warnings' });
 						}
 					}
 				}
@@ -158,6 +158,7 @@ module.exports = {
 		}
 		const msgDocument = await levels.findOne({
 			guildID: message.guild.id,
+			userID: message.author.id,
 		}).catch(err => console.log(err));
 		if (!msgDocument) {
 			try {

@@ -5,6 +5,7 @@ const model = new Model('guilds', new Schema({
 	prefix: { type: String, default: process.env.prefix },
 	channelLogs: { type: String },
 	channelWelcome: { type: String },
+	roleid: { type: String },
 	language: { type: String, default: "en" },
 	channelGoodbye: { type: String },
 	kick: { type: Boolean, required: true },

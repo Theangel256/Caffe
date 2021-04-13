@@ -1,4 +1,4 @@
-const levels = require("../structures/models/levels");
+const levels = require('../structures/models/levels');
 const Canvas = require('canvas');
 const { getMember, getRank } = require('../structures/functions.js');
 Canvas.registerFont('Arial.ttf', { family: 'Arial' });
@@ -7,6 +7,7 @@ module.exports.run = async (client, message, args) => {
 	if(member.user.bot) return message.channel.send('los bots no tienen niveles');
 	const msgDocument = await levels.findOne({
 		guildID: message.guild.id,
+		userID: member.user.id,
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {

@@ -1,6 +1,6 @@
 const moment = require('moment'); require('moment-duration-format');
 const { levels, missingPerms, regExp } = require('../structures/functions');
-const guilds = require("../structures/models/guilds");
+const guilds = require('../structures/models/guilds');
 module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild) return;
@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new guilds({ guildID:  message.guild.id, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', roleid: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+			const dbMsg = await new guilds({ guildID:  message.guild.id, prefix: process.env.prefix, language: 'en', role: false, kick: false, ban: false });
 			var dbMsgModel = await dbMsg.save();
 		}
 		catch (err) {
@@ -34,12 +34,12 @@ module.exports = async (client, message) => {
 			.setColor(0x00ffff);
 		message.channel.send(embed).then(e => e.delete({ timeout: 120000 })).catch(e => console.log(e.message));
 	}
+	regExp(client, message);
+
 	if(!message.content.startsWith(client.prefix)) {
 		levels(message);
 		return;
 	}
-	regExp(client, message);
-
 	const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 	const cmd = client.commands.get(command) || client.aliases.get(command);
