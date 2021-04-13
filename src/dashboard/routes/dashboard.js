@@ -28,26 +28,24 @@ router.get('/', auth, async (req, res) => {
 		if (!msgDocument) {
 			try {
 				const dbMsg = await new guildSystem({ guildID: idserver, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', roleid: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
-				await dbMsg.save();
+				var dbMsgModel = await dbMsg.save();
 			}
 			catch (err) {
 				console.log(err);
 			}
 		}
-		const welcomeChannel = await guildSystem.get('channelWelcome').catch(err => console.log(err));
-		const goodbyeChannel = await guildSystem.get('channelGoodbye').catch(err => console.log(err));
-		const logsChannel = await guildSystem.get('channelLogs').catch(err => console.log(err));
-		const idrol = await guildSystem.get('roleid').catch(err => console.log(err));
+		else {
+			dbMsgModel = msgDocument;
+		}
+		console.log(dbMsgModel);
+		const { prefix } = dbMsgModel;
 		res.render('guilds.ejs', {
 			title: "Caffe - Dashboard Bot",
 			login : (req.isAuthenticated() ? 'si' : 'no'),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
 			guild,
-			welcomeChannel,
-			goodbyeChannel,
-			logsChannel,
-			idrol,
+			prefix,
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
 		});
