@@ -28,24 +28,23 @@ router.get('/', auth, async (req, res) => {
 		if (!msgDocument) {
 			try {
 				const dbMsg = await new guildSystem({ guildID: idserver, prefix: process.env.prefix, language: 'en', channelLogs: '0', channelWelcome: '0', channelGoodbye: '0', roleid: '0', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
-				var dbMsgModel = await dbMsg.save();
+				var db = await dbMsg.save();
 			}
 			catch (err) {
 				console.log(err);
 			}
 		}
 		else {
-			dbMsgModel = msgDocument;
+			db = msgDocument;
 		}
-		console.log(dbMsgModel);
-		const { prefix } = dbMsgModel;
 		res.render('guilds.ejs', {
 			title: "Caffe - Dashboard Bot",
 			login : (req.isAuthenticated() ? 'si' : 'no'),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
 			guild,
-			prefix,
+			guildSystem,
+			db,
 			bans: guild.me.hasPermission('BAN_MEMBERS') ? await guild.fetchBans().then(x => x.size) : false,
 			bot: req.bot,
 		});
@@ -126,11 +125,11 @@ router.get('/', auth, async (req, res) => {
 		}
 	})
 	.post('/:id/lang', auth, async (req, res) => {
+		const idserver = req.params.id;
 		const msgDocument = await guildSystem.findOne({
 			guildID: idserver,
 		}).catch(err => console.log(err));
 		const { language } = msgDocument;
-		const idserver = req.params.id;
 		const lang = req.body.language;
 		if(!lang || lang === 'no_select') {
 			guildSystem.deleteOne(lang);
