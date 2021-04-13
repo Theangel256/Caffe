@@ -9,10 +9,10 @@ module.exports.run = async (client, message, args) => {
 
 	const fondo = await Canvas.loadImage('https://i.imgur.com/j5gNEmh.jpg');
 	ctx.drawImage(fondo, 10, 10, 1080, 970);
-	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
-	ctx.drawImage(avatar, 570, 10, 500, 460);
-	const avatar1 = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg' }));
-	ctx.drawImage(avatar1, 570, 465, 500, 510);
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'png' }));
+	ctx.drawImage(avatar, 570, 10, 515, 460);
+	const avatar1 = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'png' }));
+	ctx.drawImage(avatar1, 570, 465, 515, 510);
 	const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'rankcard.png');
 	message.channel.send(attachment);
 };

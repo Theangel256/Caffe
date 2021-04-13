@@ -1,7 +1,7 @@
 const levels = require("../structures/models/levels");
 const Canvas = require('canvas');
 const { getMember, getRank } = require('../structures/functions.js');
-
+Canvas.registerFont('Arial.ttf', { family: 'Arial' });
 module.exports.run = async (client, message, args) => {
 	const member = getMember(message, args, true);
 	if(member.user.bot) return message.channel.send('los bots no tienen niveles');
@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args) => {
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new levels({ guildID: message.guild.id, userID: message.author.id, xp: 1, lvl: 0 });
+			const dbMsg = await new levels({ guildID: message.guild.id, userID: member.user.id, xp: 1, lvl: 0 });
 			var dbMsgModel = await dbMsg.save();
 		}
 		catch (err) {
@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args) => {
 	ctx.fillStyle = 'rgb(0, 0, 0)';
 	ctx.fillRect(0, 0, 934, 282);
 	const fondo = await Canvas.loadImage('https://i.imgur.com/fM93m9e.png');
-	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg', dynamic: true }));
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'png' }));
 	ctx.drawImage(fondo, 10, 10, 914, 262);
 
 	ctx.lineWidth = 3;
@@ -62,7 +62,7 @@ module.exports.run = async (client, message, args) => {
 	ctx.fillStyle = 'rgb(255, 255, 255)';
 	ctx.fillText(rank, 670, 70);
 
-	ctx.font = '25px Sans';
+	ctx.font = '25px Arial';
 	ctx.fillStyle = 'rgb(255, 255, 255)';
 	ctx.fillText('LEVEL', 770, 70);
 
