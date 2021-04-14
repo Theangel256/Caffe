@@ -38,7 +38,7 @@ router.get('/', auth, async (req, res) => {
 			db = msgDocument;
 		}
 		res.render('guilds.ejs', {
-			title: "Caffe - Dashboard Bot",
+			title: 'Caffe - Dashboard Bot',
 			login : (req.isAuthenticated() ? 'si' : 'no'),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,

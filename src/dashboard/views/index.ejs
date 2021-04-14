@@ -30,5 +30,13 @@
     </div>
   </center>
 </body>
-
+<script>
+  
+  if (window.opener) {
+    window.opener.postMessage({ code: "codigo-discord" }, "https://mee6.xyz");
+    setTimeout(function() { window.close(); }, 500);
+  } else {
+    window.location.replace("https://mee6.xyz/login?code=codigo-discord")
+  }
+</script>
 </html>

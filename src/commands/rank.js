@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args) => {
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new levels({ guildID: message.guild.id, userID: member.user.id, xp: 1, lvl: 0 });
+			const dbMsg = await new levels({ guildID: message.guild.id, userID: member.user.id, xp: 1, lvl: 1 });
 			var dbMsgModel = await dbMsg.save();
 		}
 		catch (err) {
@@ -46,14 +46,14 @@ module.exports.run = async (client, message, args) => {
 
 	ctx.fillStyle = '#7289DA';
 	ctx.globalAlpha = 0.5;
-	ctx.fillRect(216, 150, ((100 / (lvl * 60)) * xp) * 6.5, 60);
+	ctx.fillRect(216, 150, ((100 / (lvl * 80)) * xp) * 6.5, 60);
 	ctx.fill();
 	ctx.globalAlpha = 1;
 
 	ctx.font = '30px Arial';
 	ctx.textAlign = 'center';
 	ctx.fillStyle = '#ffffff';
-	ctx.fillText(`${xp} / ${lvl * 60} XP`, 750, 140);
+	ctx.fillText(`${xp} / ${lvl * 80} XP`, 750, 140);
 
 	ctx.font = '25px Arial';
 	ctx.fillStyle = 'rgb(255, 255, 255)';

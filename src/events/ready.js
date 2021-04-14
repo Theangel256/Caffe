@@ -13,7 +13,7 @@ module.exports = async (client) => {
 	}, 10000);
 	const statues = [`$help | ${client.users.cache.size.toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version,
-		'caffe-bot.sirnice.xyz/discord', 'caffe-bot.sirnice.xyz/add'];
+		'caffe.sirnice.xyz/discord', 'caffe.sirnice.xyz/add'];
 	setInterval(function() {
 		const status = statues[Math.ceil(Math.random() * (statues.length - 1))];
 		client.user.setPresence({ activity: { name: status }, status: 'online' });

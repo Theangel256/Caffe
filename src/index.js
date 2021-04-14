@@ -40,7 +40,7 @@ app.use(express.json())
 		secret: process.env.SECRET,
 		resave: false,
 		saveUninitialized: false,
-		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: 'caffe-bot.sirnice.xyz' },
+		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: 'caffe.sirnice.xyz' },
 	}))
 	.use(passport.initialize())
 	.use(passport.session())

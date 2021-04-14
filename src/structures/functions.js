@@ -8,7 +8,10 @@ module.exports = {
 		if(req.isAuthenticated()) {
 			return next();
 		}
-		else {return res.redirect('/signin');}
+		else {
+			// eslint-disable-next-line no-undef
+			return res.redirect(window.open(`${process.env.URL}/signin`, 'Login to Caffe', 'menubar=no,width=500,height=777,location=no,resizable=no,scrollbars=yes,status=no'));
+		}
 	},
 	getRank: async (users, message) => {
 		const list = [];
@@ -71,7 +74,7 @@ module.exports = {
 			}).catch(err => console.log(err));
 			if (!msgDocument) {
 				try {
-					const dbMsg2 = await new warns({ guildID: message.guild.id, userID: message.author.id, warnings: 0, rolID: '0', time: 0 });
+					const dbMsg2 = await new warns({ guildID: message.guild.id, userID: message.author.id, warnings: 0, time: 0 });
 					var dbMsgModel = await dbMsg2.save();
 				}
 				catch (err) {
@@ -162,7 +165,7 @@ module.exports = {
 		}).catch(err => console.log(err));
 		if (!msgDocument) {
 			try {
-				const dbMsg = await new levels({ guildID: message.guild.id, userID: message.author.id, xp: 1, lvl: 0 });
+				const dbMsg = await new levels({ guildID: message.guild.id, userID: message.author.id, xp: 1, lvl: 1 });
 				var dbMsgModel = await dbMsg.save();
 			}
 			catch (err) {
@@ -173,14 +176,14 @@ module.exports = {
 			dbMsgModel = msgDocument;
 		}
 		const { lvl, xp } = dbMsgModel;
-		const randomxp = Math.floor(0.2 * Math.sqrt(400 + 1));
-		const lvlup = lvl * 60;
+		const randomxp = Math.floor(1.0 * Math.sqrt(xp + 1));
+		const lvlup = lvl * 80;
 		if((xp + randomxp) >= lvlup) {
 			await dbMsgModel.updateOne({ lvl: lvl + 1, xp: 0 });
 			return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(lvl + 1)}!`);
 		}
 		await dbMsgModel.updateOne({ xp: xp + randomxp });
-		cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 10000);
+		cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 5000);
 	},
 	Landiacraft: (client) => {
 		const guild = client.guilds.cache.get('498164647833239563');
