@@ -18,7 +18,7 @@
           autoasignable para los nuevos usuarios
         </p>
         <div>
-          <a class=" btn btn-discord-white btn-lg" href="<%= login === 'si' ? '/dashboard' : '/signin' %>" role="button"
+          <a class="btn btn-discord-white btn-lg discord-auth" onclick='windowOpen()' role="button"
             style="font-size:130%;"><i class="fab fa-discord" style="font-size:110%;"></i><b> Add to Discord</b></a>
           <a class="btn btn-success btn-lg" href="#features" role="button" style="font-size:130%;"><b>See
               Features</b></a>
@@ -30,13 +30,5 @@
     </div>
   </center>
 </body>
-<script>
-  
-  if (window.opener) {
-    window.opener.postMessage({ code: "codigo-discord" }, "https://mee6.xyz");
-    setTimeout(function() { window.close(); }, 500);
-  } else {
-    window.location.replace("https://mee6.xyz/login?code=codigo-discord")
-  }
-</script>
+<script src="/main.js"></script>
 </html>

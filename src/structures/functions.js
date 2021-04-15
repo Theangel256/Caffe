@@ -9,8 +9,7 @@ module.exports = {
 			return next();
 		}
 		else {
-			// eslint-disable-next-line no-undef
-			return res.redirect(window.open(`${process.env.URL}/signin`, 'Login to Caffe', 'menubar=no,width=500,height=777,location=no,resizable=no,scrollbars=yes,status=no'));
+			return res.redirect('/signin');
 		}
 	},
 	getRank: async (users, message) => {
