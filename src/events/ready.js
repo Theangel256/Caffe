@@ -2,7 +2,7 @@ const warns = require('../structures/models/warns');
 // const {  Landiacraft } = require('../structures/functions');
 module.exports = async (client) => {
 	setInterval(async function() {
-		const allData = await warns.find();
+		const allData = await warns.find().catch(e => console.error(e.message));
 		allData.map(async a => {
 			if (a.time < Date.now()) {
 				const member = client.guilds.resolve(a.guildID).member(a.userID);
@@ -10,7 +10,7 @@ module.exports = async (client) => {
 				await warns.deleteOne({ userID: a.userID });
 			}
 		});
-	}, 10000);
+	}, 15000);
 	const statues = [`$help | ${client.users.cache.size.toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version,
 		'caffe.sirnice.xyz/discord', 'caffe.sirnice.xyz/add'];

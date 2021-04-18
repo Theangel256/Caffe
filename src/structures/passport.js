@@ -1,4 +1,16 @@
+const express = require('express');
+const app = express();
+const Discord = require('discord.js');
+const client = new Discord.Client({
+	ws: { intents: 32767 },
+	disableMentions: 'everyone',
+	fetchAllMembers: true,
+});
+const session = require('express-session');
+const { join } = require('path');
+const methodOverride = require('method-override');
 const passport = require('passport');
+const RateLimit = require('express-rate-limit');
 const { Strategy } = require('passport-discord');
 passport.serializeUser((user, done) => {
 	done(null, user);
@@ -18,3 +30,40 @@ passport.use(new Strategy({
 		return done(null, profile);
 	});
 }));
+const limiter = new RateLimit({
+	windowMs: 2 * 60 * 1000,
+	max: 100,
+	message: 'Hay demasiadas peticiones desde su IP. Por favor inténtelo más tarde.',
+});
+app.use(express.json())
+	.use(limiter)
+	.use(express.urlencoded({ extended: true }))
+	.use(methodOverride('_method'))
+	.set('views', join(__dirname, '..', 'dashboard/views'))
+	.use(express.static(join(__dirname, '..', 'dashboard/public')))
+	.set('view engine', 'ejs')
+	.set('port', process.env.PORT || 3000)
+	.set('trust proxy', 1)
+	.use(session({
+		secret: process.env.SECRET,
+		resave: false,
+		saveUninitialized: false,
+		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: 'caffe.sirnice.xyz' },
+	}))
+	.use(passport.initialize())
+	.use(passport.session())
+	.use(function(req, res, next) {
+		req.bot = client;
+		next();
+	});
+app.use('/', require('../dashboard/routes/index'));
+app.use('/dashboard', require('../dashboard/routes/dashboard'));
+app.use('/leaderboard', require('../dashboard/routes/leaderboard'));
+app.use('/error404', require('../dashboard/routes/error'));
+app.get('*', function(req, res) {
+	res.redirect('/error404');
+});
+
+app.listen(app.get('port'), () => {
+	console.log('PORT', app.get('port'));
+});
