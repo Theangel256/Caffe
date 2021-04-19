@@ -1,11 +1,12 @@
-// const db = require('quick.db');
-const marsnpm = require('marsnpm');
+const guildSystem = require('../structures/models/guilds');
+const Zeew = require('Zeew');
 module.exports = async (client, member) => {
-	// const guilds = new db.table('guilds');
-	// const logchannel = await guilds.fetch(`${member.guild.id}.channels.logs`),
-	// robot = { true: 'Si', false: 'No' },
-	// channel = client.channels.resolve(logchannel);
-	// if(!channel) return;
+	const dbMsgModel = await guildSystem.findOne({
+		guildID: member.guild.id,
+	}).catch(err => console.log(err));
+	const { channelLogs, roleid, channelWelcome, welcomeBackground } = dbMsgModel;
+	const canal = client.channels.resolve(channelLogs);
+	const robot = { true: 'Si', false: 'No' };
 	const logEmbed = new client.Discord.MessageEmbed()
 		.setTitle('**「:white_check_mark:」 • Miembro Unido**')
 		.setColor('BLUE').setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
@@ -15,18 +16,26 @@ module.exports = async (client, member) => {
 		.addField('**「:family_wwg:」• Total de miembros**', member.guild.members.cache.filter(x => !x.user.bot).size, true)
 		.addField('**「:calendar:」• Creado el**', member.user.createdAt.toDateString(), true)
 		.addField('**「:robot:」• Bot?**', robot[member.user.bot], true);
-	// channel.send(logEmbed);
-	// const role = guilds.fetch(`${member.guild.id}.role`);
-	// try {
-		// if(role) member.roles.add(role);
-	// }
-	// catch (e) { console.log(e.message); }
+	if(canal) return canal.send(logEmbed);
+	try {
+		if(roleid) member.roles.add(roleid);
+	}
+	catch (e) { console.log(e.message); }
 
-	// const fondo = guilds.has(`${member.guild.id}.fondo.welcome`)
-	// ?  guilds.fetch(`${member.guild.id}.fondo.welcome`)
-	// : 'http://i.imgur.com/0YrfJgx.jpg';
-	const img = await marsnpm.bienvenida2(member.user.displayAvatarURL({ format: 'jpg' }), member.user.username, 'Bienvenid@ a nuestra comunidad!', fondo);
-	// const welcome = guilds.fetch(`${member.guild.id}.channels.welcome`);
-	// if(!welcome) return;
-	// welcome.send({ files: [img] });
+	const fondo = welcomeBackground.exists()
+		? welcomeBackground
+		: 'https://i.imgur.com/yS9KGBK.jpg';
+	const wel = new Zeew.Bienvenida()
+		.token('607cd872697aa7ff1648578e')
+		.estilo('classic')
+		.avatar(member.user.displayAvatarURL({ format: 'png' }))
+		.fondo(fondo)
+		.colorTit('#FF3DB0')
+		.titulo('Bienvenid@')
+		.colorDesc('#fff')
+		.descripcion('Tenemos un nuevo usuario');
+	const img = await Zeew.WelcomeZeew(wel);
+	const attachment = new client.Discord.MessageAttachment(img, 'img.gif');
+	const welcome = client.channels.resolve(channelWelcome);
+	if(welcome) return welcome.send(attachment);
 };

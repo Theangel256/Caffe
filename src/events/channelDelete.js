@@ -1,10 +1,11 @@
-// const db = require('quick.db');
-module.exports = (client, channel) => {
+const guildSystem = require('../structures/models/guilds');
+module.exports = async (client, channel) => {
 	if (channel.type === 'dm') return;
-	// const guilds = new db.table('guilds');
-	// const logchannel = guilds.fetch(`${channel.guild.id}.channels.logs`);
-	// /const canal = client.channels.resolve(logchannel);
-	// if(!canal) return;
+	const dbMsgModel = await guildSystem.findOne({
+		guildID: channel.guild.id,
+	}).catch(err => console.log(err));
+	const { channelLogs } = dbMsgModel;
+	const canal = client.channels.resolve(channelLogs);
 	const logEmbed = new client.Discord.MessageEmbed()
 		.setTitle('**「:x:」• Canal Removido**')
 		.setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
@@ -15,5 +16,5 @@ module.exports = (client, channel) => {
 		.addField('ID', '`' + channel.id + '`', true)
 		.setTimestamp()
 		.setFooter(`•${channel.guild.name}•`, client.user.displayAvatarURL({ dynamic:true }), true);
-	// canal.send(logEmbed);
+	if(canal) return canal.send(logEmbed);
 };

@@ -2,7 +2,7 @@ const warns = require('../structures/models/warns');
 // const {  Landiacraft } = require('../structures/functions');
 module.exports = async (client) => {
 	setInterval(async function() {
-		const allData = await warns.find().catch(e => console.error(e.message));
+		const allData = await warns.find();
 		allData.map(async a => {
 			if (a.time < Date.now()) {
 				const member = client.guilds.resolve(a.guildID).member(a.userID);

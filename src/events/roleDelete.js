@@ -1,10 +1,11 @@
-// const db = require('quick.db');
+const guildSystem = require('../structures/models/guilds');
 module.exports = async (client, role) => {
-	// const guilds = new db.table('guilds');
-	// const logchannel = await guilds.fetch(`${role.guild.id}.channels.logs`);
+	const dbMsgModel = await guildSystem.findOne({
+		guildID: role.guild.id,
+	}).catch(err => console.log(err));
+	const { channelLogs } = dbMsgModel;
 	const traduccion = { false: 'No', true: 'Si' };
-	// const logginChannel = client.channels.resolve(logchannel);
-	// if(!logginChannel) return;
+	const logginChannel = client.channels.resolve(channelLogs);
 	const rolembed = new client.Discord.MessageEmbed()
 		.setTitle('**「:x: 」Rol Borrado**')
 		.setColor('RED')
@@ -16,5 +17,5 @@ module.exports = async (client, role) => {
 		.addField('Creado:', role.createdAt.toDateString(), true)
 		.setTimestamp()
 		.setFooter(`•${role.guild.name}•`, client.user.displayAvatarURL({ dynamic:true }), true);
-	// logginChannel.send(rolembed);
+	if(logginChannel) return logginChannel.send(rolembed);
 };

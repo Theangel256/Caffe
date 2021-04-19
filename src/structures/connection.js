@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 mongoose
 	.connect(process.env.mongoDB_URI, {
 		useNewUrlParser: true,
@@ -6,5 +6,5 @@ mongoose
 		useFindAndModify: false,
 		useCreateIndex: true,
 	})
-	.then((db) => console.log("MongoDB is connected to", db.connection.host))
+	.then((db) => console.log('MongoDB is connected to', db.connection.host))
 	.catch((err) => console.error(err.message));

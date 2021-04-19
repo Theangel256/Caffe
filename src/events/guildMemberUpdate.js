@@ -1,11 +1,12 @@
-// const db = require('quick.db');
+const guildSystem = require('../structures/models/guilds');
 module.exports = async (client, oldMember, newMember) => {
-	// const guilds = new db.table('guilds');
+	const dbMsgModel = await guildSystem.findOne({
+		guildID: oldMember.guild.id,
+	}).catch(err => console.log(err));
+	const { channelLogs } = dbMsgModel;
 	if(!oldMember.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
-	// const logchannel = await guilds.fetch(`${oldMember.guild.id}.channels.logs`),
-	// entry = await oldMember.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(audit => audit.entries.first()),
-	// channel = client.channels.resolve(logchannel);
-	// if(!channel) return;
+	const entry = await oldMember.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(audit => audit.entries.first());
+	const channel = client.channels.resolve(channelLogs);
 	if(oldMember.nickname !== newMember.nickname) {
 		const user = entry.executor;
 		const msgChannel = new client.Discord.MessageEmbed()
@@ -20,6 +21,6 @@ module.exports = async (client, oldMember, newMember) => {
 		msgChannel.addField('Nickname Actual', newMember.nickname === null ? newMember.user.username : newMember.nickname, true)
 			.addField('Por', `<@${user.id}>`, true)
 			.setTimestamp();
-		// channel.send(msgChannel);
+		if(channel) return channel.send(msgChannel);
 	}
 };

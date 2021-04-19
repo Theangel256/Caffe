@@ -1,9 +1,10 @@
-// const db = require('quick.db');
+const guildSystem = require('../structures/models/guilds');
 module.exports = async (client, message) => {
-	// const guilds = new db.table('guilds');
-	// const logchannel = await guilds.fetch(`${message.guild.id}.channels.logs`),
-	// logginChannel = client.channels.resolve(logchannel);
-	// if(!logginChannel) return;
+	const dbMsgModel = await guildSystem.findOne({
+		guildID: message.guild.id,
+	}).catch(err => console.log(err));
+	const { channelLogs } = dbMsgModel;
+	const logginChannel = client.channels.resolve(channelLogs);
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
 	const entry = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first());
 	let user = '';
@@ -14,33 +15,26 @@ module.exports = async (client, message) => {
 	else {
 		user = message.author;
 	}
-	if(message.content) {
-		const logEmbed = new client.Discord.MessageEmbed()
-			.setTitle('**「:wastebasket:」** Mensaje Borrado')
-			.setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
-			.setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic:true }))
-			.setFooter(`ID: ${message.author.id}`, message.author.displayAvatarURL({ dynamic:true }))
-			.setTimestamp()
-			.setColor('RED')
-			.addField('En', message.channel, true);
-		if(!user.bot) {
-			logEmbed.addField('Por', `<@${user.id}>`, true);
-		}
-		logEmbed.addField('Mensaje', message.content, true);
-		// logginChannel.send(logEmbed);
+	const embed = new client.Discord.MessageEmbed()
+		.setTitle('**「:wastebasket:」** Mensaje Borrado')
+		.setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
+		.setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic:true }))
+		.setFooter(`ID: ${message.author.id}`, message.author.displayAvatarURL({ dynamic:true }))
+		.setTimestamp()
+		.setColor('RED')
+		.addField('En', message.channel, true);
+	if(!user.bot) {
+		embed.addField('Por', `<@${user.id}>`, true);
 	}
-	else if(message.attachments.size > 0) {
+	if(message.content) {
+		embed.addField('Mensaje', message.content, true);
+	}
+	if(message.attachments.size > 0) {
 		const Attachs = (message.attachments).array();
 		Attachs.forEach(m => {
-			const embed = new client.Discord.MessageEmbed()
-				.setTitle('**「:wastebasket:」** Imagen Borrada')
-				.setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic:true }))
-				.setFooter(`ID: ${message.author.id}`, message.author.displayAvatarURL({ dynamic:true }))
-				.setColor('RED')
-				.addField('En', message.channel, true)
-				.addField('Por', `<@${user.id}>`, true)
+			embed.setTitle('**「:wastebasket:」** Imagen Borrada')
 				.setImage(m.proxyURL);
-			// logginChannel.send(embed);
+			if(logginChannel) return logginChannel.send(embed);
 		});
 	}
 };

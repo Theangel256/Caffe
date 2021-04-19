@@ -10,8 +10,7 @@ client.aliases = new Discord.Collection();
 client.limits = new Map();
 client.queue = new Map();
 client.Discord = Discord;
-
 require('./structures/connection');
 require('./structures/handler').run(client);
 require('./structures/passport');
-client.login(client.DISCORD_TOKEN).catch((err) => console.error(err.message));
+client.login().catch((err) => console.error(err.message));

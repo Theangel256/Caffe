@@ -1,10 +1,10 @@
 const { model: Model, Schema } = require('mongoose');
 
-const model = new Model('systemlvl', new Schema({
+const model = new Model('economy', new Schema({
 	guildID: { type: String, unique: true },
 	userID: { type: String },
-	xp: { type: Number },
-	lvl: { type: Number, default: 1 },
+	daily: { type: Number },
+	money: { type: Number, default: 200 },
 }));
 
 module.exports = model;

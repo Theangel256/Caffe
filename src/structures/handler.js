@@ -14,11 +14,11 @@ module.exports.run = (client) => {
 		}
 	}
 	const eventPath = join(__dirname, '..', 'events');
-	const eventFiles = readdirSync(eventPath)
+	const eventFiles = readdirSync(eventPath);
 	for(const eventFile of eventFiles) {
 		const event = require(`${eventPath}/${eventFile}`);
 		const eventName = eventFile.split('.').shift();
 		client.on(eventName, event.bind(null, client));
 	}
-	console.log(`Loaded ${eventFiles.length + client.commands.size } files in total!`);
+	console.log(`Loaded ${eventFiles.length + client.commands.size } files in total`);
 };

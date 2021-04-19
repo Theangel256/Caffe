@@ -1,10 +1,11 @@
-// const db = require('quick.db');
+const guildSystem = require('../structures/models/guilds');
 module.exports = async (client, oldMessage, newMessage) => {
-	// const guilds = new db.table('guilds');
+	const dbMsgModel = await guildSystem.findOne({
+		guildID: oldMessage.guild.id,
+	}).catch(err => console.log(err));
+	const { channelLogs } = dbMsgModel;
 	if (oldMessage.content === newMessage.content) return;
-	// const logchannel = await guilds.fetch(`${newMessage.guild.id}.channels.logs`),
-	// canal = client.channels.resolve(logchannel);
-	// if(!canal) return;
+	const logginChannel = client.channels.resolve(channelLogs);
 	const logEmbed = new client.Discord.MessageEmbed()
 		.setTitle('**「:writing_hand:」** Mensaje Editado (Click para ir al mensaje)')
 		.setColor('BLUE').setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
@@ -19,5 +20,5 @@ module.exports = async (client, oldMessage, newMessage) => {
 	}
 	logEmbed.setTimestamp()
 		.setFooter(`ID: ${oldMessage.author.id}`);
-	// canal.send(logEmbed);
+	if(logginChannel) return logginChannel.send(logEmbed);
 };

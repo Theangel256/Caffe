@@ -1,9 +1,10 @@
-// const db = require('quick.db');
+const guildSystem = require('../structures/models/guilds');
 module.exports = async (client, role) => {
-	// const guilds = new db.table('guilds');
-	// const logchannel = await guilds.fetch(`${role.guild.id}.channels.logs`);
-	// const logginChannel = client.channels.resolve(logchannel);
-	// if(!logginChannel) return;
+	const dbMsgModel = await guildSystem.findOne({
+		guildID: role.guild.id,
+	}).catch(err => console.log(err));
+	const { channelLogs } = dbMsgModel;
+	const logginChannel = client.channels.resolve(channelLogs);
 	const rolembed = new client.Discord.MessageEmbed()
 		.setTitle('**「:white_check_mark: 」Rol Creado**')
 		.setColor('GREEN')
@@ -11,5 +12,5 @@ module.exports = async (client, role) => {
 		.addField('ID:', role.id, true)
 		.setTimestamp()
 		.setFooter(`•${role.guild.name}•`, client.user.displayAvatarURL({ dynamic:true }), true);
-	// logginChannel.send(rolembed);
+	if(logginChannel) return logginChannel.send(rolembed);
 };

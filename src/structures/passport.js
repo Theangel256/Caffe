@@ -18,13 +18,11 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((obj, done) => {
 	done(null, obj);
 });
-
-const scopes = ['identify', 'guilds'];
 passport.use(new Strategy({
 	clientID: process.env.CLIENT_ID,
 	clientSecret: process.env.CLIENT_SECRET,
 	callbackURL: `${process.env.URL}/signin`,
-	scope: scopes,
+	scope: ['identify', 'guilds'],
 }, function(accessToken, refreshToken, profile, done) {
 	process.nextTick(function() {
 		return done(null, profile);
