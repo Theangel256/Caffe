@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-// const { execSync } = require("child_process");
+const { execSync } = require('child_process');
 router.get('/', async (req, res) => {
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ dynamic: true }) : null);
 	res.render('index.ejs', {
 		user: req.user,
 		bot: req.bot,
 		title: 'Caffe - The Discord Bot',
-		login : (req.isAuthenticated() ? 'si' : 'no'),
+		login : (req.isAuthenticated() ? true : false),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		userAvatarURL,
 	});
@@ -25,20 +25,19 @@ router.get('/', async (req, res) => {
 	})
 	.get('/add', (req, res) => {
 		res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code`);
-	});
-/*
-.post('/github', (req, res) => {
-		if(req.method === "POST") {
-			if(req.headers["x-github-event"] === "push") {
+	})
+	.post('/github', (req, res) => {
+		if(req.method === 'POST') {
+			if(req.headers['x-github-event'] === 'push') {
 				try {
-					console.log("Actualizacion Encontrada.. Reiniciando");
-					res.sendStatus(204)
-					console.log(execSync("cd /home/Caffe && git pull && pm2 restart default").toString());
-				} catch (e) {
+					console.log('Actualizacion Encontrada.. Reiniciando');
+					res.sendStatus(204);
+					console.log(execSync('cd /home/Caffe && git pull').toString());
+				}
+				catch (e) {
 					console.error(e);
 				}
 			}
 		}
-});
-*/
+	});
 module.exports = router;

@@ -1,4 +1,4 @@
-const Zeew = require('Zeew');
+const Zeew = require('zeew');
 const guildSystem = require('../structures/models/guilds');
 module.exports = async (client, member) => {
 	const dbMsgModel = await guildSystem.findOne({

@@ -10,7 +10,7 @@ router.get('/', auth, async (req, res) => {
 		user: req.user,
 		bot: req.bot,
 		title: 'Caffe - The Discord Bot',
-		login : (req.isAuthenticated() ? 'si' : 'no'),
+		login : (req.isAuthenticated() ? true : false),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 		guilds,
 		userAvatarURL,
@@ -39,7 +39,7 @@ router.get('/', auth, async (req, res) => {
 		}
 		res.render('guilds.ejs', {
 			title: 'Caffe - Dashboard Bot',
-			login : (req.isAuthenticated() ? 'si' : 'no'),
+			login : (req.isAuthenticated() ? true : false),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
 			guild,

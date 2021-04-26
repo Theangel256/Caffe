@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
 		user: req.user,
 		title: 'ERROR! 404',
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
-		login: (req.isAuthenticated() ? 'si' : 'no'),
+		login: (req.isAuthenticated() ? true : false),
 		userAvatarURL,
 	});
 });

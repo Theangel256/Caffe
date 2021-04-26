@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const levels = require("../../structures/models/levels");
+const levels = require('../../structures/models/levels');
 router.get('/:id', async (req, res) => {
 	const idserver = req.params.id;
 	const guild = req.bot.guilds.cache.get(idserver);
@@ -9,9 +9,9 @@ router.get('/:id', async (req, res) => {
 	res.render('leaderboard.ejs', {
 		bot: req.bot,
 		user: req.user,
-		title: "Caffe - The Discord Bot!",
+		title: 'Caffe - The Discord Bot!',
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
-		login: (req.isAuthenticated() ? 'si' : 'no'),
+		login: (req.isAuthenticated() ? true : false),
 		userAvatarURL,
 		guild,
 		usuarios: getRank(await levels.find()),
