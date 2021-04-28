@@ -1,6 +1,5 @@
-const YouTube = require('simple-youtube-api');
-const youtube = new YouTube(process.env.YT_KEY);
 const ytdl = require('ytdl-core');
+const axios = require('axios');
 module.exports.run = async (client, message, args) => {
 	let msg;
 	const queue = client.queue;
@@ -12,6 +11,7 @@ module.exports.run = async (client, message, args) => {
 	if(message.member.voice.channel !== message.guild.me.voice.channel) message.member.voice.channel.join();
 	if(!searchString) return message.reply(lang.no_args);
 
+	/*
 	if(url.match(/^https?:\/\/((www|beta)\.)?youtube\.com\/playlist(.*)$/)) {
 		const playlist = await youtube.getPlaylist(url);
 		const videos = await playlist.getVideos();
@@ -22,40 +22,59 @@ module.exports.run = async (client, message, args) => {
 		return message.channel.send(lang.playlistAdded.replace(/{title}/gi, playlist.title));
 	}
 	else{
+		*/
+	try {
+		const api = `hhttps://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${url}&key=${process.env.YT_KEY}`;
+		let response;
 		try {
-			var video = await youtube.getVideo(url);
+			response = await axios.get(api, { Headers: { Authorization: `Bearer ${process.env.YT_KEY}` } });
+			var video = response.data;
 		}
-		catch(error) {
-			try {
-				const cantidad = 5;
-				const videos = await youtube.searchVideos(searchString, cantidad);
-				let index = 0;
-				const embed = new client.Discord.MessageEmbed()
-					.setTitle(lang.embed.title)
-					.setDescription(`${videos.map(x => `**${++index}. [${x.title}](https://www.youtube.com/watch?v=${x.id})**`).join('\n')}`)
-					.setColor('BLUE').setTimestamp()
-					.setFooter(lang.embed.footer.replace(/{author.username}/gi, message.author.username), message.author.displayAvatarURL());
-				msg = await message.channel.send(embed);
-				try {
-					var response = await message.channel.awaitMessages(x => x.content > 0 && x.content <= cantidad && x.author.id === message.author.id, { max: 1, time: 60000, errors: ['time'] });
-				}
-				catch (err) {
-					console.error(err);
-					if(msg.deletable) msg.delete({ timeout: 100 });
-					return message.channel.send(lang.expired).then(m => m.delete({ timeout: 5000 }));
-				}
-				const videoIndex = parseInt(response.first().content);
-				if(msg.deletable) msg.delete({ timeout: 100 });
-				video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-				response.first().delete();
-			}
-			catch(err) {
-				console.error(err);
-				return message.channel.send(lang.invalidArgs).then(m => m.delete({ timeout: 5000 }));
-			}
+		catch(e) {
+			console.log(e);
 		}
-		return handleVideo(video, false);
+		// var video = await youtube.getVideo(url);
 	}
+	catch(error) {
+		try {
+			const cantidad = 5;
+			let api;
+			try {
+				api = await axios.get(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=${cantidad}&q=${searchString}&key=${process.env.YT_KEY}`, { Headers: { Authorization: `Bearer ${process.env.YT_KEY}` } });
+				var videos = api.data;
+			}
+			catch(e) {
+				console.log(e);
+			}
+			// const videos = await youtube.searchVideos(searchString, cantidad);
+			let index = 0;
+			const embed = new client.Discord.MessageEmbed()
+				.setTitle(lang.embed.title)
+				.setDescription(`${videos.map(x => `**${++index}. [${x.title}](https://www.youtube.com/watch?v=${x.id})**`).join('\n')}`)
+				.setColor('BLUE').setTimestamp()
+				.setFooter(lang.embed.footer.replace(/{author.username}/gi, message.author.username), message.author.displayAvatarURL());
+			msg = await message.channel.send(embed);
+			try {
+				var response = await message.channel.awaitMessages(x => x.content > 0 && x.content <= cantidad && x.author.id === message.author.id, { max: 1, time: 60000, errors: ['time'] });
+			}
+			catch (err) {
+				console.error(err);
+				if(msg.deletable) msg.delete({ timeout: 100 });
+				return message.channel.send(lang.expired).then(m => m.delete({ timeout: 5000 }));
+			}
+			const videoIndex = parseInt(response.first().content);
+			if(msg.deletable) msg.delete({ timeout: 100 });
+			video = await ytdl.getInfo(videos[videoIndex - 1].id);
+			console.log(video);
+			response.first().delete();
+		}
+		catch(err) {
+			console.error(err);
+			return message.channel.send(lang.invalidArgs).then(m => m.delete({ timeout: 5000 }));
+		}
+	}
+	return handleVideo(video, false);
+	// }
 	async function handleVideo(info, playlist = false) {
 		const serverQueue = queue.get(message.guild.id);
 		const song = {

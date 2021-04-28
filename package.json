@@ -36,7 +36,6 @@
     "mongoose": "^5.12.3",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
-    "simple-youtube-api": "^5.2.1",
     "ytdl-core": "^4.0.3",
     "zeew": "^0.1.11"
   },
