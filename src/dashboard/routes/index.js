@@ -27,13 +27,12 @@ router.get('/', async (req, res) => {
 		res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code`);
 	})
 	.post('/github', (req, res) => {
-		console.log(req.headers);
 		if(req.method === 'POST') {
 			if(req.headers['x-github-event'] === 'push') {
 				try {
 					console.log('Actualizacion Encontrada');
 					res.sendStatus(204);
-					console.log(execSync('cd /Caffe && git pull').toString());
+					console.log(execSync('cd /root/Caffe && git pull').toString());
 				}
 				catch (e) {
 					console.error(e);
