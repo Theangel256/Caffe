@@ -50,7 +50,7 @@ module.exports.run = async (client, message, args) => {
 			let index = 0;
 			const embed = new client.Discord.MessageEmbed()
 				.setTitle(lang.embed.title)
-				.setDescription(`${videos.map(x => `**${++index}. [${x.title}](https://www.youtube.com/watch?v=${x.id})**`).join('\n')}`)
+				.setDescription(`${videos.map(x => `**${++index}. [${x.snippet.title}](https://www.youtube.com/watch?v=${x.id.videoId})**`).join('\n')}`)
 				.setColor('BLUE').setTimestamp()
 				.setFooter(lang.embed.footer.replace(/{author.username}/gi, message.author.username), message.author.displayAvatarURL());
 			msg = await message.channel.send(embed);
@@ -78,17 +78,16 @@ module.exports.run = async (client, message, args) => {
 	async function handleVideo(info, playlist = false) {
 		const serverQueue = queue.get(message.guild.id);
 		const song = {
-			id: info.id,
-			title: client.Discord.Util.escapeMarkdown(info.title),
-			url: `https://www.youtube.com/watch?v=${info.id}`,
-			thumbnail: `https://i.ytimg.com/vi/${info.id}/mqdefault.jpg`,
-			channel: info.channel.title,
+			id: info.id.videoId,
+			title: client.Discord.Util.escapeMarkdown(info.snippet.title),
+			url: `https://www.youtube.com/watch?v=${this.id}`,
+			thumbnail: `https://i.ytimg.com/vi/${this.id}/mqdefault.jpg`,
+			channel: info.snippet.channelTitle,
 			durationh: info.duration.hours,
 			durationm: info.duration.minutes,
 			durations: info.duration.seconds,
-			description: info.description,
+			description: info.snippet.description,
 			author: message.author,
-			channelid: info.channel.id,
 		};
 		if (!serverQueue) {
 			const queueConstruct = {
