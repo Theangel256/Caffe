@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
 				try {
 					console.log('Actualizacion Encontrada');
 					res.sendStatus(204);
-					console.log(execSync('cd /home/Caffe && git pull').toString());
+					console.log(execSync('cd /Caffe && git pull').toString());
 				}
 				catch (e) {
 					console.error(e);
