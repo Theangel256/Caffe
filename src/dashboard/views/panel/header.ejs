@@ -15,7 +15,7 @@
         <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           <img class="circle responsive-img"
-            src="<%= bot.users.resolve(user.id).displayAvatarURL({format:'jpg', dynamic: true}) %>" width="30"
+            src="<%= bot.users.resolve(user.id).displayAvatarURL({ dynamic: true}) %>" width="30"
             height="30" style="border: 10px; border-radius: 150px;" alt="<%=user.name%>">
           <%= textLogin %></a>
         <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
