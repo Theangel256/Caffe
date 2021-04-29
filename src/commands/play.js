@@ -2,15 +2,14 @@ const ytdl = require('ytdl-core');
 const axios = require('axios');
 module.exports.run = async (client, message, args) => {
 	let msg;
-	const queue = client.queue;
-	const lang = client.lang.commands.play;
-	const searchString = args.join(' '),
-		url = args[0] ? args[0].replace(/<(.+)>/g, '$1') : '';
-	const voiceChannel = message.member.voice.channel;
+	const queue = client.queue,
+		lang = client.lang.commands.play,
+		searchString = args.join(' '),
+		url = args[0] ? args[0].replace(/<(.+)>/g, '$1') : '',
+		voiceChannel = message.member.voice.channel;
 	if(!voiceChannel) return message.channel.send(client.lang.music.needJoin);
 	if(message.member.voice.channel !== message.guild.me.voice.channel) message.member.voice.channel.join();
 	if(!searchString) return message.reply(lang.no_args);
-
 	/*
 	if(url.match(/^https?:\/\/((www|beta)\.)?youtube\.com\/playlist(.*)$/)) {
 		const playlist = await youtube.getPlaylist(url);
@@ -24,15 +23,7 @@ module.exports.run = async (client, message, args) => {
 	else{
 		*/
 	try {
-		let api;
-		try {
-			api = await axios.get(`hhttps://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${url}&key=${process.env.YT_KEY}`, { Headers: { Authorization: `Bearer ${process.env.YT_KEY}` } });
-			var video = api.data;
-		}
-		catch(e) {
-			console.log(e);
-		}
-		// var video = await youtube.getVideo(url);
+		var video = ytdl.getURLVideoID(url);
 	}
 	catch(error) {
 		try {
@@ -63,7 +54,7 @@ module.exports.run = async (client, message, args) => {
 			}
 			const videoIndex = parseInt(response.first().content);
 			if(msg.deletable) msg.delete({ timeout: 100 });
-			video = await ytdl.getInfo(videos[videoIndex - 1].items[0].id.videoId);
+			video = videos[videoIndex - 1];
 			response.first().delete();
 		}
 		catch(err) {
@@ -74,6 +65,7 @@ module.exports.run = async (client, message, args) => {
 	return handleVideo(false);
 	// }
 	async function handleVideo(playlist = false) {
+		console.log(video);
 		const serverQueue = queue.get(message.guild.id);
 		const song = {
 			id: video.items[0].id.videoId,
@@ -129,7 +121,7 @@ module.exports.run = async (client, message, args) => {
 			await queue.delete(guild.id);
 			return;
 		}
-		const stream = ytdl(song.url, { filter: 'audioonly' });
+		const stream = ytdl(song.url, { filter: 'audioonly', quality: 'highestaudio' });
 		const dispatcher = await serverQueue.connection.play(stream)
 			.on('finish', async () => {
 				serverQueue.songs.shift();

@@ -5,8 +5,8 @@ const { execSync } = require('child_process');
 router.get('/', async (req, res) => {
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ dynamic: true }) : null);
 	res.render('index.ejs', {
-		user: req.user,
 		bot: req.bot,
+		user: req.user,
 		title: 'Caffe - The Discord Bot',
 		login : (req.isAuthenticated() ? true : false),
 		textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
