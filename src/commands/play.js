@@ -24,11 +24,10 @@ module.exports.run = async (client, message, args) => {
 	else{
 		*/
 	try {
-		const api = `hhttps://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${url}&key=${process.env.YT_KEY}`;
-		let response;
+		let api;
 		try {
-			response = await axios.get(api, { Headers: { Authorization: `Bearer ${process.env.YT_KEY}` } });
-			var video = response.data;
+			api = await axios.get(`hhttps://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${url}&key=${process.env.YT_KEY}`, { Headers: { Authorization: `Bearer ${process.env.YT_KEY}` } });
+			var video = api.data;
 		}
 		catch(e) {
 			console.log(e);
@@ -50,7 +49,7 @@ module.exports.run = async (client, message, args) => {
 			let index = 0;
 			const embed = new client.Discord.MessageEmbed()
 				.setTitle(lang.embed.title)
-				.setDescription(`${videos.map(x => `**${++index}. [${x.snippet.title}](https://www.youtube.com/watch?v=${x.snippet.videoId})**`).join('\n')}`)
+				.setDescription(`${videos.map(x => `**${++index}. [${x.items[0].snippet.title}](https://www.youtube.com/watch?v=${x.items[0].snippet.videoId})**`).join('\n')}`)
 				.setColor('BLUE').setTimestamp()
 				.setFooter(lang.embed.footer.replace(/{author.username}/gi, message.author.username), message.author.displayAvatarURL());
 			msg = await message.channel.send(embed);
@@ -64,8 +63,7 @@ module.exports.run = async (client, message, args) => {
 			}
 			const videoIndex = parseInt(response.first().content);
 			if(msg.deletable) msg.delete({ timeout: 100 });
-			video = await ytdl.getInfo(videos[videoIndex - 1].id.videoId);
-			console.log(video);
+			video = await ytdl.getInfo(videos[videoIndex - 1].items[0].id.videoId);
 			response.first().delete();
 		}
 		catch(err) {
@@ -73,22 +71,18 @@ module.exports.run = async (client, message, args) => {
 			return message.channel.send(lang.invalidArgs).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
-	return handleVideo(video, false);
+	return handleVideo(false);
 	// }
-	async function handleVideo(info, playlist = false) {
+	async function handleVideo(playlist = false) {
 		const serverQueue = queue.get(message.guild.id);
 		const song = {
-			id: info.id,
-			title: client.Discord.Util.escapeMarkdown(info.title),
-			url: `https://www.youtube.com/watch?v=${this.id}`,
-			thumbnail: `https://i.ytimg.com/vi/${this.id}/mqdefault.jpg`,
-			channel: info.channel.title,
-			durationh: info.duration.hours,
-			durationm: info.duration.minutes,
-			durations: info.duration.seconds,
-			description: info.description,
+			id: video.items[0].id.videoId,
+			title: video.items[0].snippet.title,
+			url: `https://www.youtube.com/watch?v=${video.items[0].id.videoId}`,
+			thumbnail: `https://i.ytimg.com/vi/${video.items[0].id.videoId}/mqdefault.jpg`,
+			channel: video.items[0].snippet.channelTitle,
+			description: video.items[0].snippet.description,
 			author: message.author,
-			channelid: info.channel.id,
 		};
 		if (!serverQueue) {
 			const queueConstruct = {
@@ -145,6 +139,7 @@ module.exports.run = async (client, message, args) => {
 			}).on('error', (error) => console.error(error));
 
 		dispatcher.setVolume(0.5);
+		/*
 		let time;
 		const timeget = serverQueue.songs[0];
 		if(timeget.durationh < 1) {
@@ -153,12 +148,13 @@ module.exports.run = async (client, message, args) => {
 		else if(timeget.durationh > 0) {
 			time = `${timeget.durationh}:${timeget.durationm}:${timeget.durations}`;
 		}
+		*/
 		const embedPlay = new client.Discord.MessageEmbed()
 			.setAuthor(lang.embed.nowPlaying, 'https://i.imgur.com/htXCtPo.gif')
 			.setDescription(`[${serverQueue.songs[0].title}](${serverQueue.songs[0].url})`)
 			.setImage(serverQueue.songs[0].thumbnail)
 			.setColor('#a00f0f')
-			.addField(lang.embed.time, time, true)
+			// .addField(lang.embed.time, time, true)
 			.addField(lang.embed.channel, serverQueue.songs[0].channel, true)
 			.setFooter(message.guild.name, message.guild.iconURL())
 			.setTimestamp();
