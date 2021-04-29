@@ -16,14 +16,14 @@ module.exports.run = async (client, message, args) => {
 		const videos = await playlist.getVideos();
 		for (const video of Object.values(videos)) {
 			const video2 = await youtube.getVideoByID(video.id);
-			await handleVideo(voiceChannel, video2, true).catch(e => console.log(e.message));
+			await handleVideo(video2, true);
 		}
 		return message.channel.send(lang.playlistAdded.replace(/{title}/gi, playlist.title));
 	}
 	else{
 		*/
 	try {
-		var video = ytdl.getURLVideoID(url);
+		var video = await ytdl.getBasicInfo(url);
 	}
 	catch(error) {
 		try {
@@ -34,46 +34,45 @@ module.exports.run = async (client, message, args) => {
 				var videos = api.data;
 			}
 			catch(e) {
-				console.log(e);
+				console.log(e.message);
 			}
-			// const videos = await youtube.searchVideos(searchString, cantidad);
 			let index = 0;
 			const embed = new client.Discord.MessageEmbed()
 				.setTitle(lang.embed.title)
-				.setDescription(`${videos.map(x => `**${++index}. [${x.items[0].snippet.title}](https://www.youtube.com/watch?v=${x.items[0].snippet.videoId})**`).join('\n')}`)
+				.setDescription(videos.items.map(x => `**${++index}. [${x.snippet.title}](https://www.youtube.com/watch?v=${x.snippet.videoId})**`).join('\n'))
 				.setColor('BLUE').setTimestamp()
-				.setFooter(lang.embed.footer.replace(/{author.username}/gi, message.author.username), message.author.displayAvatarURL());
+				.setFooter(lang.embed.footer.replace(/{author.username}/gi, message.author.username), message.author.displayAvatarURL({ dynamic: true }));
 			msg = await message.channel.send(embed);
 			try {
 				var response = await message.channel.awaitMessages(x => x.content > 0 && x.content <= cantidad && x.author.id === message.author.id, { max: 1, time: 60000, errors: ['time'] });
 			}
-			catch (err) {
-				console.error(err);
+			catch (e) {
+				console.error(e.message);
 				if(msg.deletable) msg.delete({ timeout: 100 });
 				return message.channel.send(lang.expired).then(m => m.delete({ timeout: 5000 }));
 			}
 			const videoIndex = parseInt(response.first().content);
 			if(msg.deletable) msg.delete({ timeout: 100 });
-			video = videos[videoIndex - 1];
+			video = await ytdl.getBasicInfo(videos.items[videoIndex - 1].id.videoId);
 			response.first().delete();
 		}
-		catch(err) {
-			console.error(err);
+		catch(e) {
+			console.error(e.message);
 			return message.channel.send(lang.invalidArgs).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
-	return handleVideo(false);
+	return handleVideo(video, false);
 	// }
-	async function handleVideo(playlist = false) {
-		console.log(video);
+	async function handleVideo(info, playlist = false) {
 		const serverQueue = queue.get(message.guild.id);
 		const song = {
-			id: video.items[0].id.videoId,
-			title: video.items[0].snippet.title,
-			url: `https://www.youtube.com/watch?v=${video.items[0].id.videoId}`,
-			thumbnail: `https://i.ytimg.com/vi/${video.items[0].id.videoId}/mqdefault.jpg`,
-			channel: video.items[0].snippet.channelTitle,
-			description: video.items[0].snippet.description,
+			id: info.videoDetails.videoId,
+			title: info.videoDetails.title,
+			url: `https://www.youtube.com/watch?v=${info.videoDetails.videoId}`,
+			thumbnail: info.videoDetails.thumbnails[3].url,
+			duration: info.videoDetails.lengthSeconds,
+			channel: info.videoDetails.ownerChannelName,
+			description: info.videoDetails.description,
 			author: message.author,
 		};
 		if (!serverQueue) {
@@ -95,7 +94,7 @@ module.exports.run = async (client, message, args) => {
 			catch(error) {
 				console.error(`Ha ocurrido un error: ${error}`);
 				await queue.delete(message.guild.id);
-				return message.channel.send(lang.error);
+				return message.channel.send(lang.error.replace('{url}', process.env.URL));
 			}
 		}
 		else{
@@ -129,29 +128,17 @@ module.exports.run = async (client, message, args) => {
 				await play(guild, serverQueue.songs[0]);
 
 			}).on('error', (error) => console.error(error));
-
 		dispatcher.setVolume(0.5);
-		/*
-		let time;
-		const timeget = serverQueue.songs[0];
-		if(timeget.durationh < 1) {
-			time = `${timeget.durationm}:${timeget.durations}`;
-		}
-		else if(timeget.durationh > 0) {
-			time = `${timeget.durationh}:${timeget.durationm}:${timeget.durations}`;
-		}
-		*/
 		const embedPlay = new client.Discord.MessageEmbed()
 			.setAuthor(lang.embed.nowPlaying, 'https://i.imgur.com/htXCtPo.gif')
 			.setDescription(`[${serverQueue.songs[0].title}](${serverQueue.songs[0].url})`)
 			.setImage(serverQueue.songs[0].thumbnail)
 			.setColor('#a00f0f')
-			// .addField(lang.embed.time, time, true)
+			.addField(lang.embed.time, serverQueue.songs[0].duration, true)
 			.addField(lang.embed.channel, serverQueue.songs[0].channel, true)
 			.setFooter(message.guild.name, message.guild.iconURL())
 			.setTimestamp();
 		return message.channel.send(embedPlay);
-
 	}
 };
 module.exports.help = {

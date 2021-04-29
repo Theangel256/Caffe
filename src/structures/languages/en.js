@@ -169,7 +169,7 @@ M => For months.
 			expired: 'The wait is over, canceling selection.',
 			invalidArgs: 'No song with that Name was found.',
 			addQueue: 'Added to queue',
-			error: 'An error has occurred please contact an administrator, caffe-bot.glitch.me',
+			error: 'An error has occurred please contact an administrator, {url}',
 			playlistAdded: 'Playlist: **{title}** has been added to the queue!',
 		},
 		punch: {

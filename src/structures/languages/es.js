@@ -169,7 +169,7 @@ M => Para meses.
 			expired: 'La espera termino, cancelando selección.',
 			invalidArgs: 'No se ha encontrado ninguna canción con ese Nombre.',
 			addQueue: 'Se ha agregado a la cola',
-			error: 'Ha ocurrido un error porfavor contacta con un desarrollador, caffe-bot.glitch.me',
+			error: 'Ha ocurrido un error porfavor contacta con un desarrollador, {url}',
 			playlistAdded: 'Playlist: **{title}** a sido añadida ala cola!',
 		},
 		punch: {
