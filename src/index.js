@@ -1,6 +1,6 @@
 const { ShardingManager } = require('discord.js');
 
-const manager = new ShardingManager(`${__dirname}/server.js`, { token: '' });
+const manager = new ShardingManager(`${__dirname}/server.js`);
 
 manager.spawn('auto');
 
