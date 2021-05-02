@@ -1,16 +1,7 @@
-require('dotenv').config();
-const Discord = require('discord.js');
-const client = new Discord.Client({
-	ws: { intents: 32767 },
-	disableMentions: 'everyone',
-	fetchAllMembers: true,
-});
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
-client.limits = new Map();
-client.queue = new Map();
-client.Discord = Discord;
-require('./structures/connection');
-require('./structures/handler').run(client);
-require('./structures/passport');
-client.login().catch((err) => console.error(err.message));
+const { ShardingManager } = require('discord.js');
+
+const manager = new ShardingManager(`${__dirname}/server.js`, { token: '' });
+
+manager.spawn('auto');
+
+manager.on('ShardCreate', shard => console.log(`Shard ${shard.id} launched`));

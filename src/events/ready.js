@@ -11,7 +11,7 @@ module.exports = async (client) => {
 			}
 		});
 	}, 15000);
-	const statues = [`$help | ${client.users.cache.size.toLocaleString()} users!`,
+	const statues = [`$help | ${(await client.shard.fetchClientValues('users.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0).toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version,
 		'caffe.sirnice.xyz/discord', 'caffe.sirnice.xyz/add'];
 	setInterval(function() {

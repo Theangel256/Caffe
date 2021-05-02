@@ -5,12 +5,12 @@ const eventFiles = readdirSync(filePath);
 const moment = require('moment'); require('moment-duration-format');
 module.exports.run = async (client, message) => {
 	const actividad = moment.duration(client.uptime).format(' D [d], H [hrs], m [m], s [s]'),
-		servers = client.guilds.cache.size,
+		servers = (await client.shard.fetchClientValues('guilds.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0),
 		lang = client.lang.commands.stats,
-		users = client.users.cache.size,
-		canales = client.channels.cache.size,
+		users = (await client.shard.fetchClientValues('users.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0),
+		canales = (await client.shard.fetchClientValues('channels.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0),
 		voz = client.voice.connections.size,
-		emojis = client.emojis.cache.size,
+		emojis = (await client.shard.fetchClientValues('emojis.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0),
 		modulos = require('../../package.json'),
 		cpu = `${Math.round(process.cpuUsage().user / 1024 / 1024)}%`,
 		memory = `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024).toString().slice(0, 6))} MB`,
