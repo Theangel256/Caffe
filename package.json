@@ -37,7 +37,7 @@
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "ytdl-core": "^4.0.3",
-    "zeew": "^0.1.11"
+    "zeew": "^1.2.1"
   },
   "engines": {
     "node": "15.x"
