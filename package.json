@@ -39,13 +39,11 @@
     "ytdl-core": "^4.0.3",
     "zeew": "^1.2.1"
   },
-  "engines": {
-    "node": "15.x"
-  },
   "repository": {
     "url": "https://github.com/Theangel256/Caffe.git"
   },
   "devDependencies": {
+    "pm2": "^5.1.0",
     "eslint": "^7.24.0",
     "nodemon": "^2.0.7"
   }
