@@ -19,7 +19,7 @@
     "@discordjs/opus": "^0.5.0",
     "@fabricio-191/ms": "*",
     "axios": "^0.21.0",
-    "canvas": "^2.6.1",
+    "canvas": "^2.8.0",
     "discord.js": "^12.4.1",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.5",
@@ -35,8 +35,11 @@
     "mongoose": "^5.12.3",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
-    "ytdl-core": "^4.0.3",
+    "ytdl-core": "^4.8.3",
     "zeew": "^1.2.1"
+  },
+  "engines": {
+    "node": "15"
   },
   "repository": {
     "url": "https://github.com/Theangel256/Caffe.git"
