@@ -46,7 +46,7 @@ app.use(express.json())
 		secret: process.env.SECRET,
 		resave: false,
 		saveUninitialized: false,
-		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: 'caffe.sirnice.xyz' },
+		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: process.env.URL.replace('https://', '') },
 	}))
 	.use(passport.initialize())
 	.use(passport.session())
@@ -61,7 +61,6 @@ app.use('/error404', require('../dashboard/routes/error'));
 app.get('*', function(req, res) {
 	res.redirect('/error404');
 });
-
 app.listen(app.get('port'), () => {
 	console.log('PORT', app.get('port'));
 });

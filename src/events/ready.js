@@ -13,7 +13,7 @@ module.exports = async (client) => {
 	}, 15000);
 	const statues = [`$help | ${(await client.shard.fetchClientValues('users.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0).toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version,
-		'caffe.sirnice.xyz/discord', 'caffe.sirnice.xyz/add'];
+		'caffe.theangel256.repl.co/discord', 'caffe.theangel256.repl.co/add'];
 	setInterval(function() {
 		const status = statues[Math.ceil(Math.random() * (statues.length - 1))];
 		client.user.setPresence({ activity: { name: status }, status: 'online' });

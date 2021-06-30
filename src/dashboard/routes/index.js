@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
 	.get('/add', (req, res) => {
 		res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code`);
 	})
+	/*
 	.post('/github', (req, res) => {
 		if(req.method === 'POST') {
 			if(req.headers['x-github-event'] === 'push') {
@@ -40,4 +41,5 @@ router.get('/', async (req, res) => {
 			}
 		}
 	});
+	*/
 module.exports = router;
