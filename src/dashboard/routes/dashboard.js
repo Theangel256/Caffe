@@ -6,7 +6,7 @@ const guildSystem = require('../../structures/models/guilds');
 router.get('/', auth, async (req, res) => {
 	const guilds = req.user.guilds.filter(p => (p.permissions & 8) === 8);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ dynamic: true }) : null);
-	res.render('dashboard.ejs', {
+	res.render('dashboard', {
 		bot: req.bot,
 		user: req.user,
 		title: 'Caffe - The Discord Bot',
@@ -37,7 +37,7 @@ router.get('/', auth, async (req, res) => {
 		else {
 			db = msgDocument;
 		}
-		res.render('guilds.ejs', {
+		res.render('guilds', {
 			title: 'Caffe - Dashboard Bot',
 			login : (req.isAuthenticated() ? true : false),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),

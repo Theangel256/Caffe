@@ -6,7 +6,7 @@ router.get('/:id', async (req, res) => {
 	const guild = req.bot.guilds.cache.get(idserver);
 	if(!guild) return res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${req.bot.user.id}&permissions=8&scope=bot&response_type=code&guild_id=${idserver}`);
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ dynamic: true }) : null);
-	res.render('leaderboard.ejs', {
+	res.render('leaderboard', {
 		bot: req.bot,
 		user: req.user,
 		title: 'Caffe - The Discord Bot!',

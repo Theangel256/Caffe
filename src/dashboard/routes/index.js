@@ -4,7 +4,7 @@ const passport = require('passport');
 const { execSync } = require('child_process');
 router.get('/', async (req, res) => {
 	const userAvatarURL = (req.isAuthenticated() ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ dynamic: true }) : null);
-	res.render('index.ejs', {
+	res.render('index', {
 		bot: req.bot,
 		user: req.user,
 		title: 'Caffe - The Discord Bot',
