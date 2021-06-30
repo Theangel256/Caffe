@@ -46,7 +46,7 @@ app.use(express.json())
 		secret: process.env.SECRET,
 		resave: false,
 		saveUninitialized: false,
-		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: process.env.URL.replace('https://') },
+		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: process.env.URL.substr(8) },
 	}))
 	.use(passport.initialize())
 	.use(passport.session())
