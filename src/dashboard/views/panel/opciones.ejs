@@ -53,7 +53,7 @@
               name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(guildSystem.find({guildID: db.guildID}).exists('channelWelcome')) { %>
+            <% if(guildSystem.exists({ channelWelcome: db.channelWelcome})) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
               name="action">Reestablecer
               <i class="material-icons right">clear</i>

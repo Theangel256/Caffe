@@ -7,7 +7,7 @@
   "description": "A bot without feelings",
   "main": "src/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node src/index.js",
     "dev": "pm2 start src/index.js --watch"
   },
   "keywords": [
