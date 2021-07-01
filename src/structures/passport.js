@@ -38,16 +38,16 @@ app.use(express.json())
 	.set('port', process.env.PORT || 3000)
 	.set('trust proxy', 1)
 	.use(session({
+		secret: 'secret',
+		resave: false,
+		saveUninitialized: false,
 		cookie:{
 			secure: true,
 			maxAge: null,
 			sameSite: 'lax',
 			path: '/',
 			domain: process.env.URL.substr(8)
-			   },
-		secret: 'secret',
-		resave: false,
-		saveUninitialized: false,
+		},
 	}))
 	.use(passport.initialize())
 	.use(passport.session())
