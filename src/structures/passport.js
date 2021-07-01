@@ -40,7 +40,7 @@ app.use(express.json())
 	.use(session({
 		cookie:{
 			secure: true,
-			maxAge: 60000,
+			maxAge: null,
 			sameSite: 'lax',
 			path: '/',
 			domain: process.env.URL.substr(8)
