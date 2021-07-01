@@ -9,7 +9,7 @@ router.get('/:id', async (req, res) => {
 	res.render('leaderboard', {
 		bot: req.bot,
 		user: req.user,
-		title: 'Caffe - The Discord Bot!',
+		title: 'Caffe - The Discord Bot',
 		textLogin: (req.isAuthenticated() ? `${req.user.username}` : 'Login'),
 		login: (req.isAuthenticated() ? true : false),
 		userAvatarURL,
