@@ -38,7 +38,7 @@ app.use(express.json())
 	.set('port', process.env.PORT || 3000)
 	.set('trust proxy', 1)
 	.use(session({
-		secret: 'secret',
+		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: false,
 		cookie:{
