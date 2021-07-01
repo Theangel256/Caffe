@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const session = require('express-session');
+const session = require('cookie-session');
 const { join } = require('path');
 const methodOverride = require('method-override');
 const passport = require('passport');
@@ -38,14 +38,23 @@ app.use(express.json())
 	.set('port', process.env.PORT || 3000)
 	.set('trust proxy', 1)
 	.use(session({
-		secret: process.env.SECRET,
+		cookie:{
+			secure: true,
+			maxAge: 60000,
+			sameSite: 'lax',
+			path: '/',
+			domain: process.env.URL.substr(8)
+			   },
+		secret: 'secret',
 		resave: false,
 		saveUninitialized: false,
-		cookie: { secure: true, sameSite: 'lax', maxAge: null, path: '/', domain: process.env.URL.substr(8) },
 	}))
 	.use(passport.initialize())
 	.use(passport.session())
 	.use(function(req, res, next) {
+		if(!req.session){
+			return next(new Error('Oh no')) //handle error
+		}
 		req.bot = client;
 		next();
 	});

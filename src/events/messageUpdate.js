@@ -6,6 +6,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 	const { channelLogs } = dbMsgModel;
 	if (oldMessage.content === newMessage.content) return;
 	const logginChannel = client.channels.resolve(channelLogs);
+	if(!logginChannel) return
 	const logEmbed = new client.Discord.MessageEmbed()
 		.setTitle('**「:writing_hand:」** Mensaje Editado (Click para ir al mensaje)')
 		.setColor('BLUE').setDescription('▬▬▬▬▬▬▬▬▬▬▬▬▬▬')
@@ -20,5 +21,5 @@ module.exports = async (client, oldMessage, newMessage) => {
 	}
 	logEmbed.setTimestamp()
 		.setFooter(`ID: ${oldMessage.author.id}`);
-	if(logginChannel) return logginChannel.send(logEmbed);
+	 logginChannel.send(logEmbed);
 };

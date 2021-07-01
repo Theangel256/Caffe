@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
 	const logginChannel = client.channels.resolve(channelLogs);
   if(!logginChannel) return;
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
-	const entry = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first())
+	console.log(message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first()))
   .catch(console.error);
 	let user = '';
 	if (entry.extra.channel.id === message.channel.id && (entry.target.id === message.author.id)

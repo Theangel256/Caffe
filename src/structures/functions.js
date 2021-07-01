@@ -152,7 +152,6 @@ module.exports = {
 			}
 		}
 	},
-
 	levels: async (message) => {
 		if(cooldownniveles.has(message.guild.id + message.author.id)) {
 			const time = cooldownniveles.get(message.guild.id + message.author.id);
@@ -183,32 +182,5 @@ module.exports = {
 		}
 		await dbMsgModel.updateOne({ xp: xp + randomxp });
 		cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 5000);
-	},
-	Landiacraft: (client) => {
-		const guild = client.guilds.cache.get('498164647833239563');
-		const discTotalCh = client.channels.cache.get('607007646704205855');
-		const discOnlineCh = client.channels.cache.get('606251126244900874');
-		const minecraftOn = client.channels.cache.get('606534123795906570');
-		const minecraftInline = client.channels.cache.get('606317624401592331');
-		if(!discOnlineCh && !(guild) && !(discTotalCh) && !(minecraftInline) && !(minecraftOn)) return;
-		const canales = guild.channels.cache.filter((x) => [discOnlineCh.id, discTotalCh.id, minecraftInline.id, minecraftOn.id].includes(x.id)).filter((x) => x.permissionsFor(guild.me).has('MANAGE_CHANNELS'));
-		if(canales.size < 4) return console.error('Hay uno o mas canales en los que no tengo permisos');
-		setInterval(function() {
-			discOnlineCh.setName(`Discord Online: ${guild.members.cache.filter(x => x.user.presence.status !== 'offline').size}`);
-			discTotalCh.setName(`Discord Total: ${guild.memberCount}`);
-			axios.get('https://api.mcsrvstat.us/2/landiacraft.com:25565').then(data => {
-				console.log(data);
-				data = JSON.parse(data);
-				if(!data.ping) return console.log('Error | Servidor fuera de linea o no disponible.');
-				if(data.online) {
-					minecraftInline.setName(`Minecraft: ${data.players.online}/${data.players.max}`);
-					minecraftOn.setName('Minecraft: Encendido');
-				}
-				else {
-					minecraftOn.setName('Minecraft: Apagado');
-					minecraftInline.setName('Minecraft: 0');
-				}
-			}).catch(err => { return console.log(err);});
-		}, 10000);
 	},
 };

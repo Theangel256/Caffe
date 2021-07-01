@@ -1,5 +1,4 @@
 const warns = require('../structures/models/warns');
-// const {  Landiacraft } = require('../structures/functions');
 module.exports = async (client) => {
 	setInterval(async function() {
 		const allData = await warns.find();
@@ -13,10 +12,9 @@ module.exports = async (client) => {
 	}, 15000);
 	const statues = [`$help | ${(await client.shard.fetchClientValues('users.cache.size')).reduce((acc, guildCount) => acc + guildCount, 0).toLocaleString()} users!`,
 		'Theangel256 Studios V' + require('../../package.json').version,
-		'caffe.theangel256.repl.co/discord', 'caffe.theangel256.repl.co/add'];
+		'caffe-bot.herokuapp.com/discord', 'caffe-bot.herokuapp.com/add'];
 	setInterval(function() {
 		const status = statues[Math.ceil(Math.random() * (statues.length - 1))];
 		client.user.setPresence({ activity: { name: status }, status: 'online' });
 	}, 20000);
-	// Landiacraft(client);
 };
