@@ -1,7 +1,7 @@
 <div id="section-opciones" class="container">
   <br>
   <h2 class="h2-perfil"><b>Prefix del servidor</b></h2>
-  <form class="col s12 needs-validation" method="post" action="/dashboard/<%=guild.id%>/prefix" novalidate>
+  <form class="col s12 needs-validation" method="post" id="prefix" action="/dashboard/<%=guild.id%>/prefix" novalidate>
     <div class="form-row">
       <div class="form-group row">
         <div class="input-group mb-2">
@@ -17,8 +17,28 @@
       </div>
     </div>
   </form>
+  <h2 class="h2-perfil"><b>Language</b></h2>
+  <form class="col s12" method="post" id="lang" action="/dashboard/<%=guild.id%>/lang">
+    <div class="row">
+      <div class="input-field col s6">
+        <div class="form-row">
+          <div class="form-group">
+            <select id="select-channel" name="language" class="custom-select">
+              <option value="no_select" disabled selected>Lenguaje Actual: <%= db.language === "en" ? "English" : "Español" %></option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+            <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
+              name="action">Guardar
+              <i class="material-icons right">done</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
   <h2 class="h2-perfil"><b>Bienvenida</b></h2>
-  <form class="col s12" method="post" id="enviar_Welcome" action="/dashboard/<%=guild.id%>/welcome">
+  <form class="col s12" method="post" id="welcome" action="/dashboard/<%=guild.id%>/welcome">
     <div class="row">
       <div class="input-field col s6">
         <div class="form-row">
@@ -45,7 +65,7 @@
     </div>
   </form>
   <h2 class="h2-perfil"><b>Despedida</b></h2>
-  <form class="col s12" method="post" id="enviar_Goodbye" action="/dashboard/<%=guild.id%>/goodbye">
+  <form class="col s12" method="post" id="goodbye" action="/dashboard/<%=guild.id%>/goodbye">
     <div class="row">
       <div class="input-field col s6">
         <div class="form-row">
@@ -99,7 +119,7 @@
     </div>
   </form>
   <h2 class="h2-perfil"><b>Selección de un rol autoasignable para los nuevos usuarios</b></h2>
-  <form class="col s12" method="post" id="add_role" action="/dashboard/<%=guild.id%>/rolauto">
+  <form class="col s12" method="post" id="rolauto" action="/dashboard/<%=guild.id%>/rolauto">
     <div class="row">
       <div class="input-field col s6">
         <div class="form-row">
@@ -107,7 +127,7 @@
             <i class="material-icons prefix">account_circle</i>
             <select id="select-channel" name="rol_ID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un rol.</option>
-              <% guild.roles.cache.map(r => {%>
+              <% guild.roles.cache.filter(rol => rol.id !== guild.id).map(r => { %>
               <% if(r.comparePositionTo(guild.me.roles.highest) > 0) return; %>
               <option value="<%=r.id %>"><%=r.name%></option>
               <% }); %>
@@ -124,26 +144,6 @@
               </button>
               <% } %>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-  <h2 class="h2-perfil"><b>Language</b></h2>
-  <form class="col s12" method="post" id="logs" action="/dashboard/<%=guild.id%>/lang">
-    <div class="row">
-      <div class="input-field col s6">
-        <div class="form-row">
-          <div class="form-group">
-            <select id="select-channel" name="language" class="custom-select">
-              <option value="no_select" disabled selected>Lenguaje Actual: <%= db.language === "en" ? "English" : "Español" %></option>
-              <option value="en">English</option>
-              <option value="es">Español</option>
-            </select>
-            <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
-              name="action">Guardar
-              <i class="material-icons right">done</i>
-            </button>
           </div>
         </div>
       </div>
