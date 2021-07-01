@@ -5,8 +5,10 @@ module.exports = async (client, message) => {
 	}).catch(err => console.log(err));
 	const { channelLogs } = dbMsgModel;
 	const logginChannel = client.channels.resolve(channelLogs);
+  if(!logginChannel) return;
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
-	const entry = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first());
+	const entry = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first())
+  .catch(console.error);
 	let user = '';
 	if (entry.extra.channel.id === message.channel.id && (entry.target.id === message.author.id)
 && (entry.createdTimestamp > (Date.now() - 5000)) && entry.extra.count >= 1) {
@@ -34,7 +36,7 @@ module.exports = async (client, message) => {
 		Attachs.forEach(m => {
 			embed.setTitle('**「:wastebasket:」** Imagen Borrada')
 				.setImage(m.proxyURL);
-			if(logginChannel) return logginChannel.send(embed);
+			logginChannel.send(embed);
 		});
 	}
 };

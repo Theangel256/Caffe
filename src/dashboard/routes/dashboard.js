@@ -38,7 +38,7 @@ router.get('/', auth, async (req, res) => {
 			db = msgDocument;
 		}
 		res.render('guilds', {
-			title: 'Caffe - Dashboard Bot',
+			title: 'Caffe - Dashboard',
 			login : (req.isAuthenticated() ? true : false),
 			textLogin: (req.isAuthenticated() ? req.user.username : 'Login'),
 			user: req.user,
@@ -129,14 +129,21 @@ router.get('/', auth, async (req, res) => {
 		const msgDocument = await guildSystem.findOne({
 			guildID: idserver,
 		}).catch(err => console.log(err));
-		const { language } = msgDocument;
-		const lang = req.body.language;
-		if(!lang || lang === 'no_select') {
-			guildSystem.deleteOne(lang);
-			res.redirect(`/dashboard/${idserver}`);
+		if (!msgDocument) {
+			try {
+				const dbMsg = await new guildSystem({ guildID: idserver, prefix: process.env.prefix, language: 'en', role: false, kick: false, ban: false });
+				var db = await dbMsg.save();
+			}
+			catch (err) {
+				console.log(err);
+			}
 		}
 		else {
-			guildSystem.updateOne({ language: language });
+			db = msgDocument;
+		}
+		const lang = req.body.language;
+		if(lang || lang !== 'no_select') {
+			guildSystem.updateOne({ language: lang });
 			res.redirect(`/dashboard/${idserver}`);
 		}
 	});

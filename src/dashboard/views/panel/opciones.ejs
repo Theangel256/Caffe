@@ -33,7 +33,7 @@
               name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            <% if(guildSystem.where('channelWelcome').exists()) { %>
+            <% if(guildSystem.find({guildID: db.guildID}).exists('channelWelcome')) { %>
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
               name="action">Reestablecer
               <i class="material-icons right">clear</i>
@@ -136,7 +136,7 @@
         <div class="form-row">
           <div class="form-group">
             <select id="select-channel" name="language" class="custom-select">
-              <option value="no_select" disabled selected>Seleccione un lenguaje.</option>
+              <option value="no_select" disabled selected>Lenguaje Actual: <%= db.language === "en" ? "English" : "Español" %></option>
               <option value="en">English</option>
               <option value="es">Español</option>
             </select>

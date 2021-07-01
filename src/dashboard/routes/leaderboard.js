@@ -14,7 +14,7 @@ router.get('/:id', async (req, res) => {
 		login: (req.isAuthenticated() ? true : false),
 		userAvatarURL,
 		guild,
-		usuarios: getRank(await levels.find()),
+		usuarios: getRank(await levels.find({ guildID: idserver})),
 	});
 });
 function getRank(users) {

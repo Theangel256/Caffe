@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 		res.redirect('/');
 	})
 	.get('/discord', (req, res) => {
-		res.redirect('https://discord.gg/65Bf73867r');
+		res.redirect('https://discord.gg/pEfSMsF5Ad');
 	})
 	.get('/add', (req, res) => {
 		res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code`);
