@@ -165,15 +165,14 @@ module.exports = {
 			try {
 				const dbMsg = await new levels({ guildID: message.guild.id, userID: message.author.id, xp: 1, lvl: 1 });
 				var dbMsgModel = await dbMsg.save();
-			}
-			catch (err) {
+			} catch (err) {
 				console.log(err);
 			}
 		}
 		else {
 			dbMsgModel = msgDocument;
 		}
-		const { lvl, xp } = dbMsgModel;
+		const { xp, lvl } = dbMsgModel;
 		const randomxp = Math.floor(1.0 * Math.sqrt(xp + 1));
 		const lvlup = lvl * 80;
 		if((xp + randomxp) >= lvlup) {
