@@ -5,19 +5,15 @@ module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild) return;
 	if(message.author.bot) return;
-	const msgDocument = await guilds.findOne({
+	const msgDocument = await guildSystem.findOne({
 		guildID: message.guild.id,
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
 			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, kick: false, ban: false });
 			var dbMsgModel = await dbMsg.save();
-		}
-		catch (err) {
-			console.log(err);
-		}
-	}
-	else {
+		} catch (err) { console.log(err); }
+	} else {
 		dbMsgModel = msgDocument;
 	}
 	const { prefix, language } = dbMsgModel;

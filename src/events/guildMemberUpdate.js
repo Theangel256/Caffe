@@ -1,8 +1,16 @@
 const guildSystem = require('../structures/models/guilds');
 module.exports = async (client, oldMember, newMember) => {
-	const dbMsgModel = await guildSystem.findOne({
+	const msgDocument = await guildSystem.findOne({
 		guildID: oldMember.guild.id,
 	}).catch(err => console.log(err));
+	if (!msgDocument) {
+		try {
+			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, kick: false, ban: false });
+			var dbMsgModel = await dbMsg.save();
+		} catch (err) { console.log(err); }
+	} else {
+		dbMsgModel = msgDocument;
+	}
 	const { channelLogs } = dbMsgModel;
 	if(!oldMember.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
 	const entry = await oldMember.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(audit => audit.entries.first());

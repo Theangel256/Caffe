@@ -1,9 +1,17 @@
 const guildSystem = require('../structures/models/guilds');
 const Zeew = require('zeew');
 module.exports = async (client, member) => {
-	const dbMsgModel = await guildSystem.findOne({
+	const msgDocument = await guildSystem.findOne({
 		guildID: member.guild.id,
 	}).catch(err => console.log(err));
+	if (!msgDocument) {
+		try {
+			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, kick: false, ban: false });
+			var dbMsgModel = await dbMsg.save();
+		} catch (err) { console.log(err); }
+	} else {
+		dbMsgModel = msgDocument;
+	}
 	const { channelLogs, roleid, channelWelcome, welcomeBackground } = dbMsgModel;
 	const canal = client.channels.resolve(channelLogs);
 	const robot = { true: 'Si', false: 'No' };
