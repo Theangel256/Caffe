@@ -23,7 +23,7 @@ module.exports = {
 		});
 		return list;
 	},
-	getMember: (message, args, autor = true) => {
+	getMember: (message, args, autor = Boolean) => {
 		let search = args.join(' ');
 		let result;
 		if (!search) {
