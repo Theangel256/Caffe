@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args) => {
 				if (args[2] === "false") {
 					try {
 						await guilds.updateOne({ role: false });
-						message.channel.send("Okay, I'll not put a role.");
+						return message.channel.send("Okay, I'll not put a role.");
 					}
 					catch (err) {
 						console.log(err);
@@ -46,7 +46,7 @@ module.exports.run = async (client, message, args) => {
 								await warns.updateONe({
 									roleid: roleObj.id,
 								});
-								message.channel.send("Now I am going to put the role " + roleObj.name + " to the members that have " +
+								return message.channel.send("Now I am going to put the role " + roleObj.name + " to the members that have " +
                  warnings + " warning(s)");
 							}
 							catch (err) {
@@ -70,7 +70,7 @@ module.exports.run = async (client, message, args) => {
 				if (args[2] === "false") {
 					try {
 						await guilds.updateOne({ kick: false });
-						message.channel.send("I'll not kick anyone.");
+						return message.channel.send("I'll not kick anyone.");
 					}
 					catch (err) {
 						console.log(err);
@@ -85,7 +85,7 @@ module.exports.run = async (client, message, args) => {
 								kick: true,
 								kicktime: warnings,
 							});
-							message.channel.send("Now I'll kick members who have " + warnings + " warnings.");
+							return message.channel.send("Now I'll kick members who have " + warnings + " warnings.");
 						}
 						catch (err) {
 							console.log(err);
@@ -104,7 +104,7 @@ module.exports.run = async (client, message, args) => {
 				if (args[2] === "false") {
 					try {
 						await guilds.updateOne({ ban: false });
-						message.channel.send("I'll not kick anyone.");
+						return message.channel.send("I'll not kick anyone.");
 					}
 					catch (err) {
 						console.log(err);
@@ -119,7 +119,7 @@ module.exports.run = async (client, message, args) => {
 								ban: true,
 								bantime: warnings,
 							});
-							message.channel.send("Now I'll ban members who have " + warnings + " warnings.");
+							return message.channel.send("Now I'll ban members who have " + warnings + " warnings.");
 						}
 						catch (err) {
 							console.log(err);
