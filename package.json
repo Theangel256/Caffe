@@ -46,7 +46,7 @@
     "url": "https://github.com/Theangel256/Caffe.git"
   },
   "devDependencies": {
-    "eslint": "^7.24.0",
+    "eslint": "^7.29.0",
     "pm2": "^5.1.0"
   }
 }
