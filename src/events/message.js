@@ -19,7 +19,7 @@ module.exports = async (client, message) => {
 	const { prefix, language } = dbMsgModel;
 	client.prefix = prefix;
 	client.lang = require(`../structures/languages/${language}.js`);
-	if(message.content.match(new RegExp("^<@!?${client.user.id}>( |)$"))) {
+	if(message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
 		const invite = await client.generateInvite({ permissions: ["ADMINISTRATOR"] });
 		const embed = new client.Discord.MessageEmbed()
 			.addField(":gear: | Prefix", `> \`${client.prefix}\``)
