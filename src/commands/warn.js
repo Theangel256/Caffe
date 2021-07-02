@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
 	}
 	if (args[0].toLowerCase() === 'set') {
 		try{
-			switch(args[1].toLowerCase()) {
+			switch(args[1]) {
 			case 'role': {
 			// warn set roles <warns o false> <roles>
 				if (!args[2]) return message.channel.send('First put the number of warnings to put the role, and then mention the role, write its ID or write its name. Set "false" to not use roles in this system.');
