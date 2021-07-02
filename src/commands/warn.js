@@ -43,13 +43,12 @@ module.exports.run = async (client, message, args) => {
 									role: true,
 									roletime: warnings,
 								});
-								await warns.updateONe({
+								await warns.updateOne({
 									roleid: roleObj.id,
 								});
 								return message.channel.send("Now I am going to put the role " + roleObj.name + " to the members that have " +
                  warnings + " warning(s)");
-							}
-							catch (err) {
+							} catch (err) {
 								console.log(err);
 								return message.channel.send("I can't update my database info. Here's a debug: " + err);
 							}
