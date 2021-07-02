@@ -3,7 +3,6 @@ const warnMembers = require("../structures/models/warns");
 const { getMember } = require("../structures/functions.js");
 module.exports.run = async (client, message, args) => {
 	if (!args[0]) return message.channel.send("You haven't said anything. Put a member or `set`");
-	// warn <member> <reason> o warn set <role/kick/ban> <número de warns o false> <roles (sólo modo roles)>
 	const msgDocument = await guildSystem.findOne({
 		guildID: message.guild.id,
 	}).catch(err => console.log(err));
@@ -19,7 +18,6 @@ module.exports.run = async (client, message, args) => {
 		try{
 			switch(args[1]) {
 			case "role": {
-			// warn set roles <warns o false> <roles>
 				if (!args[2]) return message.channel.send("First put the number of warnings to put the role, and then mention the role, write its ID or write its name. Set \"false\" to not use roles in this system.");
 				if (args[2] === "false") {
 					try {
@@ -39,13 +37,8 @@ module.exports.run = async (client, message, args) => {
 					if (!isNaN(warnings)) {
 						if (roleObj) {
 							try {
-								await guilds.updateOne({
-									role: true,
-									roletime: warnings,
-								});
-								await warns.updateOne({
-									roleid: roleObj.id,
-								});
+								await guilds.updateOne({ role: true, roletime: warnings, });
+								await warns.updateOne({ rolID: roleObj.id });
 								return message.channel.send("Now I am going to put the role " + roleObj.name + " to the members that have " +
                  warnings + " warning(s)");
 							} catch (err) {
@@ -64,7 +57,6 @@ module.exports.run = async (client, message, args) => {
 			}
 				break;
 			case "kick": {
-			// warn set kick <warns o false>
 				if (!args[2]) return message.channel.send("Put the number of warnings necessary to kick the member.");
 				if (args[2] === "false") {
 					try {
@@ -98,7 +90,6 @@ module.exports.run = async (client, message, args) => {
 			}
 				break;
 			case "ban": {
-			// warn set ban <warns o false>
 				if (!args[2]) return message.channel.send("Put the number of warnings necessary to ban the member.");
 				if (args[2] === "false") {
 					try {
