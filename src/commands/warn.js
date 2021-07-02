@@ -37,8 +37,7 @@ module.exports.run = async (client, message, args) => {
 					if (!isNaN(warnings)) {
 						if (roleObj) {
 							try {
-								await guilds.updateOne({ role: true, roletime: warnings, });
-								await warns.updateOne({ rolID: roleObj.id });
+								await guilds.updateOne({ role: true, roletime: warnings, roleid: roleObj.id });
 								return message.channel.send("Now I am going to put the role " + roleObj.name + " to the members that have " +
                  warnings + " warning(s)");
 							} catch (err) {
