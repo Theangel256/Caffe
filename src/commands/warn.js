@@ -1,22 +1,18 @@
-const guildSystem = require('../structures/models/guilds');
-const MessageModel2 = require('../structures/models/warns');
+const guilds = require('../structures/models/guilds');
+const warns = require('../structures/models/warns');
 const { getMember } = require('../structures/functions.js');
 module.exports.run = async (client, message, args) => {
 	if (!args[0]) return message.channel.send('You haven\'t said anything. Put a member or `set`');
 	// warn <member> <reason> o warn set <role/kick/ban> <número de warns o false> <roles (sólo modo roles)>
-	const msgDocument = await guildSystem.findOne({
+	const msgDocument = await guilds.findOne({
 		guildID: message.guild.id,
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
 			var dbMsgModel = await dbMsg.save();
-		}
-		catch (err) {
-			console.log(err);
-		}
-	}
-	else {
+		} catch (err) { console.log(err); }
+	} else {
 		dbMsgModel = msgDocument;
 	}
 	if (args[0].toLowerCase() === 'set') {
@@ -149,13 +145,13 @@ module.exports.run = async (client, message, args) => {
 		// Aqui viene lo importante, warn <member> <reason>.
 		var member = getMember(message, args.slice(0, 1), false);
 		if (!member) return message.channel.send('Invalid member!');
-		const document = await MessageModel2.findOne({
+		const document = await warns.findOne({
 			guildID: message.guild.id,
 			userID: member.user.id,
 		}).catch(err => console.log(err));
 		if (!document) {
 			try {
-				const dbMsg = await new MessageModel2({ guildID: message.guild.id, userID: member.user.id, warnings: 0 });
+				const dbMsg = await new warns({ guildID: message.guild.id, userID: member.user.id, warnings: 0 });
 				var dbMsgModel2 = await dbMsg.save();
 			}
 			catch (err) {
@@ -210,8 +206,7 @@ module.exports.run = async (client, message, args) => {
 		catch (error) {
 			console.log(error);
 		}
-	}
-	else {
+	} else {
 		return message.channel.send('Something happened');
 	}
 };
