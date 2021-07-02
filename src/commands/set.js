@@ -47,11 +47,12 @@ module.exports.run = async (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'set',
-	description: 'establece todas las opciones que hay para disfrutar de un servidor configurado!',
+  name: "set",
+  description:
+    "establece todas las opciones que hay para disfrutar de un servidor configurado!",
 };
 module.exports.requirements = {
-	userPerms: ['MANAGE_GUILD'],
-	clientPerms: [],
-	ownerOnly: false,
+  userPerms: ["MANAGE_GUILD"],
+  clientPerms: [],
+  ownerOnly: false,
 };

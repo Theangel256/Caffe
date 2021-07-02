@@ -37,11 +37,11 @@ module.exports.run = async (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'gamble',
-	description: 'Apuesta todo tu dinero, o lo cuanto quieras!',
+  name: "gamble",
+  description: "Apuesta todo tu dinero, o lo cuanto quieras!",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: [],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: [],
+  ownerOnly: false,
 };

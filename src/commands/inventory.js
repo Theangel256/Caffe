@@ -17,12 +17,12 @@ message.channel.send(inventario);
 }
 */
 module.exports.help = {
-	name: 'inventory',
-	aliases: ['inv'],
-	description: 've lo que te has ganado trabajando duro!',
+  name: "inventory",
+  aliases: ["inv"],
+  description: "ve lo que te has ganado trabajando duro!",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: ['EMBED_LINKS'],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: ["EMBED_LINKS"],
+  ownerOnly: false,
 };

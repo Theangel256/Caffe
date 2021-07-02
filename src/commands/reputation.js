@@ -20,12 +20,12 @@ module.exports.run = async (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'reputation',
-	aliases: ['rep'],
-	description: 'Agregale reputacion a tu amigo!',
+  name: "reputation",
+  aliases: ["rep"],
+  description: "Agregale reputacion a tu amigo!",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: [],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: [],
+  ownerOnly: false,
 };

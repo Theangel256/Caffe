@@ -32,11 +32,12 @@ module.exports.run = (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'love',
-	description: 'Usa este medidor de amor con otro miembro para saber si le eres fiel :3',
+  name: "love",
+  description:
+    "Usa este medidor de amor con otro miembro para saber si le eres fiel :3",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: ['EMBED_LINKS'],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: ["EMBED_LINKS"],
+  ownerOnly: false,
 };

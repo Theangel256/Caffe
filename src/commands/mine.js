@@ -18,15 +18,15 @@ message.channel.send(embed);
 }
 */
 module.exports.help = {
-	name: 'mine',
-	description: 'trabaja duro para conseguir dinero!',
+  name: "mine",
+  description: "trabaja duro para conseguir dinero!",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: ['EMBED_LINKS'],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: ["EMBED_LINKS"],
+  ownerOnly: false,
 };
 module.exports.limits = {
-	rateLimit: 1,
-	cooldown: 300000,
+  rateLimit: 1,
+  cooldown: 300000,
 };

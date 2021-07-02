@@ -55,11 +55,11 @@ module.exports.run = async (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'profile',
-	description: 'Muestra tu logros a los demas!',
+  name: "profile",
+  description: "Muestra tu logros a los demas!",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: ['EMBED_LINKS'],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: ["EMBED_LINKS"],
+  ownerOnly: false,
 };

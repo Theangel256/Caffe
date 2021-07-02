@@ -13,12 +13,12 @@ module.exports.run = async (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'balance',
-	aliases: ['bal', 'money'],
-	description: 'Muestra el dinero que tienes en el bot',
+  name: "balance",
+  aliases: ["bal", "money"],
+  description: "Muestra el dinero que tienes en el bot",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: [],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: [],
+  ownerOnly: false,
 };

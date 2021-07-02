@@ -19,11 +19,11 @@ module.exports.run = async (client, message) => {
 };
 */
 module.exports.help = {
-	name: 'daily',
-	description: 'Cada 24h usa este comando para ganar una paga diaria!',
+  name: "daily",
+  description: "Cada 24h usa este comando para ganar una paga diaria!",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: [],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: [],
+  ownerOnly: false,
 };

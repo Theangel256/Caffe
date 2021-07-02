@@ -6,16 +6,15 @@
 }
 body {
   background-color: #34383c;
-  color: #FFFFFF;
-  font-family: 'Quicksand', sans-serif;
+  color: #ffffff;
+  font-family: "Quicksand", sans-serif;
   width: 100%;
 }
 input {
   width: 50%;
 }
 .row {
-
-  margin-right: 0 ;
+  margin-right: 0;
   margin-left: 0;
 }
 .mover-right {
@@ -23,11 +22,10 @@ input {
   right: 50px;
 }
 .floating {
-    animation-name: floating;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-  
+  animation-name: floating;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }
 .nav-index {
   z-index: 1;
@@ -38,11 +36,11 @@ input {
   max-width: 720px;
   padding-top: 72px;
 }
-.body-header p{
+.body-header p {
   font-size: 20px;
 }
 .content-banner {
-  background-color: #23272A;
+  background-color: #23272a;
   padding: 20px;
   height: 250px;
   margin-bottom: 20px;
@@ -51,8 +49,7 @@ input {
   margin-top: -60px;
 }
 .intro {
-  line-height: .6;
-  
+  line-height: 0.6;
 }
 .intro .username {
   font-size: 40px;
@@ -68,7 +65,7 @@ input {
   margin-bottom: 20vh;
 }
 
-.card-body .card .card-text{
+.card-body .card .card-text {
   font-size: 14px;
 }
 
@@ -77,22 +74,21 @@ input {
 }
 
 .card-text {
-  color: #23272A;
+  color: #23272a;
   font-size: 30px;
-  text-align:center;
+  text-align: center;
 }
-.btn-discord-white{
-  background-color: #FFFFFF;
+.btn-discord-white {
+  background-color: #ffffff;
 }
-.btn-proyecto a{
+.btn-proyecto a {
   margin-left: 10px;
 }
-.btn-discord-dark{
-  background-color: #2C2F33;
-  color: #FFFFFF;
-  
+.btn-discord-dark {
+  background-color: #2c2f33;
+  color: #ffffff;
 }
-.btn-caffe{
+.btn-caffe {
   background-color: #c69c6c;
 }
 /*body mypro*/
@@ -106,39 +102,39 @@ input {
 }
 
 .list-mypro {
-  background-color: #23272A;
+  background-color: #23272a;
   padding: 20px;
   border-radius: 5px;
   margin-bottom: 20px;
 }
 
 .list-mypro .items {
- background-color: #2c2f33;
- color: #FFFFFF;
-  margin-bottom:5px; 
+  background-color: #2c2f33;
+  color: #ffffff;
+  margin-bottom: 5px;
 }
 
 .nav-links:hover {
   background: #8699df;
   border-radius: 15px;
-  color: #FFFFFF;
+  color: #ffffff;
   text-decoration-line: none;
 }
 
 .nav-links {
   display: block;
   padding: 0.4rem 1rem;
-  color: #FFFFFF;
+  color: #ffffff;
   transition: 0.5s;
 }
 
 .nav-links.disabled {
-  color: #FFFFFF;
+  color: #ffffff;
   pointer-events: none;
   cursor: default;
 }
 
-.list-mypro .items-list{
+.list-mypro .items-list {
   font-weight: 700;
   color: #7289da;
 }
@@ -149,16 +145,16 @@ input {
 }
 .h2-perfil {
   font-size: 1.3rem;
-  color: #EE6E73;
+  color: #ee6e73;
   margin-top: 30px;
 }
 .color-azul {
-  background-color: #6478BE;
+  background-color: #6478be;
 }
 .color-web {
   background-color: #34383c;
 }
-.color-gris-web{
+.color-gris-web {
   background-color: rgba(19, 20, 22, 0.56);
 }
 .padding-box {
@@ -170,7 +166,7 @@ input {
   height: 60px;
 }
 .card {
-  background: #6478BE;
+  background: #6478be;
   border-radius: 10px;
   display: inline-block;
   height: 250px;
@@ -181,12 +177,12 @@ input {
 }
 
 .card-1 {
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .card-1:hover {
-  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 #section-opciones {
   display: block;
@@ -196,16 +192,41 @@ input {
   display: none;
   transition: 2s;
 }
-.dropdown-toggle:active, .open .dropdown-toggle {background:#9aaae4 !important; color:#FFF !important;}
-.dropdown .nav-link {color:#fff; text-decoration: none;}
-.dropdown .dropdown-menu a{color: #000; text-decoration: none;}
-.dropdown .btn {background: green; color:#fff;}
-.dropdown .btn:hover {background: cyan; color:#fff;}
-.dropdown .btn:active {background: cyan; color:#fff;}
-.dropdown .btn:focus {background: cyan; color:#fff;}
-.dropdown-menu .dropdown-item {display: inline-block; width: 100%; padding: 10px 5px;}
-.container .dropdown .dropdown-menu a:hover
-{
+.dropdown-toggle:active,
+.open .dropdown-toggle {
+  background: #9aaae4 !important;
+  color: #fff !important;
+}
+.dropdown .nav-link {
+  color: #fff;
+  text-decoration: none;
+}
+.dropdown .dropdown-menu a {
+  color: #000;
+  text-decoration: none;
+}
+.dropdown .btn {
+  background: green;
+  color: #fff;
+}
+.dropdown .btn:hover {
+  background: cyan;
+  color: #fff;
+}
+.dropdown .btn:active {
+  background: cyan;
+  color: #fff;
+}
+.dropdown .btn:focus {
+  background: cyan;
+  color: #fff;
+}
+.dropdown-menu .dropdown-item {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 5px;
+}
+.container .dropdown .dropdown-menu a:hover {
   color: #fff;
   background-color: #b91773;
   border-color: #fff;
@@ -239,18 +260,19 @@ input {
   animation-name: slideIn;
 }
 .custom-select {
-border: none;
-border: 1px solid black;
-padding: 5px;
+  border: none;
+  border: 1px solid black;
+  padding: 5px;
 }
 .custom-input {
   width: 40%;
   padding: 16px 20px;
   border: none;
   border-radius: 4px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
-input[type=text], select {
+input[type="text"],
+select {
   width: 20%;
   margin: 1px 1;
   display: inline-block;
@@ -261,7 +283,7 @@ input[type=text], select {
 
 div {
   border-radius: 5px;
-    justify-content: center;
+  justify-content: center;
 }
 footer {
   text-align: center;
@@ -269,35 +291,33 @@ footer {
   color: white;
 }
 /* MENU */
-.wrapper{
+.wrapper {
   display: flex;
   flex-direction: column;
 }
-nav ul li button{
+nav ul li button {
   position: relative;
   padding: 16px 0 5px;
   margin: 0 25px;
   color: #fff;
   text-decoration: none;
   text-transform: uppercase;
-
 }
-nav ul li button::after{
-  content: '';
+nav ul li button::after {
+  content: "";
   position: absolute;
   left: 50%;
   bottom: 0;
-  transform: translateX(-50%) scaleX(0) ;
+  transform: translateX(-50%) scaleX(0);
   -webkit-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
   width: 100%;
   height: 2px;
-  background-color: rgba(255,255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   -webkit-transition: transform 250ms;
   transition: transform 250ms;
 }
-nav ul li button:hover::after{
+nav ul li button:hover::after {
   -webkit-transform: translateX(-50%) scaleX(1);
   transform: translateX(-50%) scaleX(1);
-  
 }

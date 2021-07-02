@@ -30,12 +30,12 @@ module.exports.run = (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'transfer',
-	aliases: ['pay'],
-	description: 'transfiere parte de tu dinero a un amigo!',
+  name: "transfer",
+  aliases: ["pay"],
+  description: "transfiere parte de tu dinero a un amigo!",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: [],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: [],
+  ownerOnly: false,
 };

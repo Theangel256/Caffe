@@ -53,11 +53,11 @@ module.exports.run = async (client, message, args) => {
 	};
 	*/
 module.exports.help = {
-	name: 'mute',
-	description: 'Silencia a un miembro del servidor',
+  name: "mute",
+  description: "Silencia a un miembro del servidor",
 };
 module.exports.requirements = {
-	userPerms: ['MANAGE_MESSAGES'],
-	clientPerms: ['MANAGE_ROLES', 'MANAGE_CHANNELS'],
-	ownerOnly: false,
+  userPerms: ["MANAGE_MESSAGES"],
+  clientPerms: ["MANAGE_ROLES", "MANAGE_CHANNELS"],
+  ownerOnly: false,
 };

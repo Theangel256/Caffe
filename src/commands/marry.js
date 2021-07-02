@@ -27,15 +27,15 @@ module.exports.run = async (client, message, args) => {
 };
 */
 module.exports.help = {
-	name: 'marry',
-	description: 'Podras casarte con un miembro con este comando',
+  name: "marry",
+  description: "Podras casarte con un miembro con este comando",
 };
 module.exports.requirements = {
-	userPerms: [],
-	clientPerms: [],
-	ownerOnly: false,
+  userPerms: [],
+  clientPerms: [],
+  ownerOnly: false,
 };
 module.exports.limits = {
-	rateLimit: 1,
-	cooldown: 120000,
+  rateLimit: 1,
+  cooldown: 120000,
 };
