@@ -170,24 +170,15 @@ module.exports.run = async (client, message, args) => {
 				bantime,
 			} = guilds;
 			if (role) {
-				if (roletime <= newWarnings) {
-					member.roles.add(roleid, "Too many warnings");
-				}
+				if (roletime <= newWarnings) member.roles.add(roleid, "Too many warnings").catch(new Error('Missing Permissions'));
 			}
 			if (kick) {
-				if (kicktime == newWarnings) {
-					member.kick("Too many warnings");
-				}
+				if (kicktime == newWarnings) member.kick("Too many warnings").catch(new Error('Missing Permissions'));
 			}
 			if (ban) {
-				if (bantime == newWarnings) {
-					member.ban({ reason: "Too many warnings" });
-				}
+				if (bantime == newWarnings) member.ban({ reason: "Too many warnings" }).catch(new Error('Missing Permissions'));;
 			}
-		}
-		catch (error) {
-			console.log(error);
-		}
+		} catch (error) { console.log(error); }
 	} else {
 		return message.channel.send("Something happened");
 	}

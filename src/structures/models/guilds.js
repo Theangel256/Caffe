@@ -1,7 +1,7 @@
 const { model: Model, Schema } = require('mongoose');
 
 const model = new Model('guilds', new Schema({
-	guildID: { type: String, uni1que: true },
+	guildID: { type: String },
 	prefix: { type: String, default: process.env.prefix, required: true },
 	channelLogs: { type: String },
 	channelWelcome: { type: String },

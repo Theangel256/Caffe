@@ -1,7 +1,17 @@
 const getRank = require('../structures/functions');
-module.exports.run = (client, message, args) => {
-	const warns = new client.database('warns');
-
+const warnMembers = require("../structures/models/warns");
+module.exports.run = async (client, message, args) => {
+	const msgDocument = await warnMembers.findOne({
+		guildID: message.guild.id,
+	}).catch(err => console.log(err));
+	if (!msgDocument) {
+		try {
+			const dbMsg = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: "en", role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+			var guilds = await dbMsg.save();
+		} catch (err) { console.log(err); }
+	} else {
+		guilds = msgDocument;
+	}
 	if(!warns.has(message.guild.id)) return message.channel.send('No hay ninguno usuario sancionado.');
 
 	const usuarios = getRank(warns.get(message.guild.id), message);

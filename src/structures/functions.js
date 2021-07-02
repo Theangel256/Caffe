@@ -78,24 +78,16 @@ module.exports = {
 			} else {
 				warns = msgDocument;
 			}
-			const msgDocument2 = await guildSystem.findOne({
+			const guilds = await guildSystem.findOne({
 				guildID: message.guild.id,
 			}).catch(err => console.log(err));
-			if (!msgDocument2) {
-				try {
-					const dbMsg2 = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
-					var guilds = await dbMsg2.save();
-				} catch (err) { console.log(err); }
-			} else {
-				guilds = msgDocument2;
-			}
 			if (warns) {
 			  try {
-				  const { channelLogs, kick, kicktime, ban, bantime, role, roletime } = guilds;
-				  const { warnings, rolID } = warns;
+				  const { channelLogs, kick, kicktime, ban, bantime, role, roletime, roleid} = guilds;
+				  const { warnings } = warns;
 				  const newWarnings = warnings + 1;
 				  const embed = new client.Discord.MessageEmbed()
-					.setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), message.author.displayAvatarURL({ dynamic:true }))
+					.setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), message.author.displayAvatarURL({ dynamic: true }))
 					.setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
 				  if(message.deletable) message.delete()
 				  await warns.updateOne({ warnings: newWarnings });
@@ -113,13 +105,13 @@ module.exports = {
 						.catch(() => { null; });
 					// El único error es que si el usuario tenga DMs desactivados.
 					if (role) {
-						if (roletime <= newWarnings) message.member.roles.add(rolID, 'Too many warnings');
+						if (roletime <= newWarnings) member.roles.add(roleid, "Too many warnings").catch(new Error('Missing Permissions'));
 					}
 					if (kick) {
-						if (kicktime == newWarnings) message.member.kick('Too many warnings');
+						if (kicktime == newWarnings) member.kick("Too many warnings").catch(new Error('Missing Permissions'));
 					}
 					if (ban) {
-						if (bantime == newWarnings) message.member.ban({ reason: 'Too many warnings' });
+						if (bantime == newWarnings) member.ban({ reason: "Too many warnings" }).catch(new Error('Missing Permissions'));;
 					}
 				} catch (error) { console.log(error); }
 			}

@@ -28,7 +28,7 @@ module.exports = async (client, member) => {
 	try {
 		if(roleid) member.roles.add(roleid);
 	}
-	catch (e) { console.log(e.message); }
+	catch (e) { new Error('Missing Permissions')} 
 
 	const fondo = welcomeBackground.exists()
 		? welcomeBackground
