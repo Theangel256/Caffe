@@ -68,16 +68,12 @@ module.exports.run = async (client, message, args) => {
 					}
 				}
 				else {
-					const warnings = parseInt(args[3]);
+					const warnings = parseInt(args[2]);
 					if (!isNaN(warnings)) {
 						try {
-							await guilds.updateOne({
-								kick: true,
-								kicktime: warnings,
-							});
+							await guilds.updateOne({ kick: true, kicktime: warnings });
 							return message.channel.send("Now I'll kick members who have " + warnings + " warnings.");
-						}
-						catch (err) {
+						} catch (err) {
 							console.log(err);
 							return message.channel.send("I can't update my database info. Here's a debug: " + err);
 						}
