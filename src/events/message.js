@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
 	if (message.channel.type === 'dm') return;
 	if (!message.guild) return;
 	if(message.author.bot) return;
-	const msgDocument = await guildSystem.findOne({
+	const msgDocument = await guilds.findOne({
 		guildID: message.guild.id,
 	}).catch(err => console.log(err));
 	if (!msgDocument) {

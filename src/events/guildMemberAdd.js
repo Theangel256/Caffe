@@ -6,7 +6,7 @@ module.exports = async (client, member) => {
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, kick: false, ban: false });
+			const dbMsg = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: 'en', role: false, kick: false, ban: false });
 			var dbMsgModel = await dbMsg.save();
 		} catch (err) { console.log(err); }
 	} else {
