@@ -92,18 +92,8 @@ module.exports = {
 				  if(message.deletable) message.delete()
 				  await warns.updateOne({ warnings: newWarnings });
 				  message.channel.send(embed);
-				  const embed2 = new client.Discord.MessageEmbed()
-				    .setColor('RED')
-					.setDescription('**Warn**')
-					.addField('「:boy:」' + client.lang.events.message.ant.author, message.author.tag)
-					.addField('「:speech_balloon:」' + client.lang.events.message.ant.reason, client.lang.events.message.ant.warn)
-					.addField('「:closed_book:」' + client.lang.events.message.ant.warns, warnings)
-					.addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
-				  const canal = client.channels.cache.get(channelLogs);
-				  if(canal) canal.send(embed2);
 				  message.author.send(`You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`)
-						.catch(() => { null; });
-					// El único error es que si el usuario tenga DMs desactivados.
+						.catch(() => { null });
 					if (role) {
 						if (roletime <= newWarnings) member.roles.add(roleid, "Too many warnings").catch(new Error('Missing Permissions'));
 					}
@@ -113,6 +103,16 @@ module.exports = {
 					if (ban) {
 						if (bantime == newWarnings) member.ban({ reason: "Too many warnings" }).catch(new Error('Missing Permissions'));;
 					}
+				  const canal = client.channels.cache.get(channelLogs);
+				  const embed2 = new client.Discord.MessageEmbed()
+				    .setColor('RED')
+					.setDescription('**Warn**')
+					.addField('「:boy:」' + client.lang.events.message.ant.author, message.author.tag)
+					.addField('「:speech_balloon:」' + client.lang.events.message.ant.reason, client.lang.events.message.ant.warn)
+					.addField('「:closed_book:」' + client.lang.events.message.ant.warns, warnings)
+					.addField('「:fleur_de_lis:️」' + client.lang.events.message.ant.moderator, 'Bot');
+				  if(!canal) return;
+					canal.send(embed2);
 				} catch (error) { console.log(error); }
 			}
 		}

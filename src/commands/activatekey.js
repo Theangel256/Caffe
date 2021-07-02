@@ -7,12 +7,8 @@ module.exports.run = async (client, message, args) => {
 		try {
 			const dbMsg = await new keys({ guildID: message.guild.id, enable: false, license: '', time: 0 });
 			var dbMsgModel = await dbMsg.save();
-		}
-		catch (err) {
-			console.log(err);
-		}
-	}
-	else {
+		} catch (err) { console.log(err); }
+	} else {
 		dbMsgModel = msgDocument;
 	}
 	if(!args[0]) return message.channel.send(`Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla en: ${process.env.URL}/premium`);

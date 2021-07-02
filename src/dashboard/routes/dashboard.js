@@ -119,12 +119,12 @@ router.get('/', auth, async (req, res) => {
 		}).catch(err => console.log(err));
 		const { rolauto } = msgDocument;
 		if(!id_role || id_role === 'no_select') {
-			guildSystem.deleteOne({ rolauto: rolauto });
-			await res.redirect(`/dashboard/${idserver}`);
+			await guildSystem.deleteOne({ rolauto: rolauto });
+			res.redirect(`/dashboard/${idserver}`);
 		}
 		else {
-			guildSystem.updateOne({ rolauto: id_role });
-			await res.redirect(`/dashboard/${idserver}`);
+			await guildSystem.updateOne({ rolauto: id_role });
+			res.redirect(`/dashboard/${idserver}`);
 		}
 	})
 module.exports = router;

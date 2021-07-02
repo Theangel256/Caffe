@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
   if(!logginChannel) return;
 	if(!message.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
 	console.log(message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE' }).then(audit => audit.entries.first()))
-  .catch(console.error);
+  .catch(e => console.log(e));
 	let user = '';
 	if (entry.extra.channel.id === message.channel.id && (entry.target.id === message.author.id)
 && (entry.createdTimestamp > (Date.now() - 5000)) && entry.extra.count >= 1) {

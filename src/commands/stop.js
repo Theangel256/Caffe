@@ -8,8 +8,9 @@ module.exports.run = async (client, message) => {
 
 	const required = Math.ceil(userCount / 2);
 
-	if (!serverQueue.songs[0].voteStop) serverQueue.songs[0].voteStop = [];
-
+	if (!serverQueue.songs[0].voteStop) {
+		serverQueue.songs[0].voteStop = [];
+	}
 	if (serverQueue.songs[0].voteStop.includes(message.member.id)) {
 		const pos = serverQueue.songs[0].voteStop.indexOf(message.member.id);
 		serverQueue.songs[0].voteStop.splice(pos, 1);
