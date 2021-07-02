@@ -37,7 +37,7 @@ module.exports = async (client, message) => {
 		return;
 	}
 	const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
-	console.log(args.slice(1).toLowerCase())
+	console.log(args[0].toLowerCase())
 	const command = args.shift().toLowerCase();
 	const cmd = client.commands.get(command) || client.aliases.get(command);
 
