@@ -1,19 +1,19 @@
-const guilds = require("../structures/models/guilds");
-const warns = require("../structures/models/warns");
+const guildSystem = require("../structures/models/guilds");
+const warnMembers = require("../structures/models/warns");
 const { getMember } = require("../structures/functions.js");
 module.exports.run = async (client, message, args) => {
 	if (!args[0]) return message.channel.send("You haven't said anything. Put a member or `set`");
 	// warn <member> <reason> o warn set <role/kick/ban> <número de warns o false> <roles (sólo modo roles)>
-	const msgDocument = await guilds.findOne({
+	const msgDocument = await guildSystem.findOne({
 		guildID: message.guild.id,
 	}).catch(err => console.log(err));
 	if (!msgDocument) {
 		try {
-			const dbMsg = await new guilds({ guildID: message.guild.id, prefix: process.env.prefix, language: "en", role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
-			var dbMsgModel = await dbMsg.save();
+			const dbMsg = await new guildSystem({ guildID: message.guild.id, prefix: process.env.prefix, language: "en", role: false, roletime: 0, kick: false, kicktime: 0, ban: false, bantime: 0 });
+			var guilds = await dbMsg.save();
 		} catch (err) { console.log(err); }
 	} else {
-		dbMsgModel = msgDocument;
+		guilds = msgDocument;
 	}
 	if (args[0].toLowerCase() === "set") {
 		try{
@@ -23,7 +23,7 @@ module.exports.run = async (client, message, args) => {
 				if (!args[2]) return message.channel.send("First put the number of warnings to put the role, and then mention the role, write its ID or write its name. Set \"false\" to not use roles in this system.");
 				if (args[2] === "false") {
 					try {
-						await dbMsgModel.updateOne({ role: false });
+						await guilds.updateOne({ role: false });
 						message.channel.send("Okay, I'll not put a role.");
 					}
 					catch (err) {
@@ -39,11 +39,11 @@ module.exports.run = async (client, message, args) => {
 					if (!isNaN(warnings)) {
 						if (roleObj) {
 							try {
-								await dbMsgModel.updateOne({
+								await guilds.updateOne({
 									role: true,
 									roletime: warnings,
 								});
-								await dbMsgModel2.updateONe({
+								await warns.updateONe({
 									roleid: roleObj.id,
 								});
 								message.channel.send("Now I am going to put the role " + roleObj.name + " to the members that have " +
@@ -69,7 +69,7 @@ module.exports.run = async (client, message, args) => {
 				if (!args[2]) return message.channel.send("Put the number of warnings necessary to kick the member.");
 				if (args[2] === "false") {
 					try {
-						await dbMsgModel.updateOne({ kick: false });
+						await guilds.updateOne({ kick: false });
 						message.channel.send("I'll not kick anyone.");
 					}
 					catch (err) {
@@ -81,7 +81,7 @@ module.exports.run = async (client, message, args) => {
 					const warnings = parseInt(args[3]);
 					if (!isNaN(warnings)) {
 						try {
-							await dbMsgModel.updateOne({
+							await guilds.updateOne({
 								kick: true,
 								kicktime: warnings,
 							});
@@ -103,7 +103,7 @@ module.exports.run = async (client, message, args) => {
 				if (!args[2]) return message.channel.send("Put the number of warnings necessary to ban the member.");
 				if (args[2] === "false") {
 					try {
-						await dbMsgModel.updateOne({ ban: false });
+						await guilds.updateOne({ ban: false });
 						message.channel.send("I'll not kick anyone.");
 					}
 					catch (err) {
@@ -115,7 +115,7 @@ module.exports.run = async (client, message, args) => {
 					const warnings = parseInt(args[2]);
 					if (!isNaN(warnings)) {
 						try {
-							await dbMsgModel.updateOne({
+							await guilds.updateOne({
 								ban: true,
 								bantime: warnings,
 							});
@@ -131,9 +131,9 @@ module.exports.run = async (client, message, args) => {
 					}
 				}
 			}
-				break;
+			break;
 			default: {
-				message.channel.send("Usage: `warn set <role, kick, ban> <number or false> <role id (only role option)>`");
+				return message.channel.send("Usage: `warn set <role, kick, ban> <number or false> <role id (only role option)>`");
 			}
 			}
 		} catch (e) { console.error(e); }
@@ -142,28 +142,28 @@ module.exports.run = async (client, message, args) => {
 		// Aqui viene lo importante, warn <member> <reason>.
 		var member = getMember(message, args.slice(0, 1), false);
 		if (!member) return message.channel.send("Invalid member!");
-		const document = await warns.findOne({
+		const document = await warnMembers.findOne({
 			guildID: message.guild.id,
 			userID: member.user.id,
 		}).catch(err => console.log(err));
 		if (!document) {
 			try {
-				const dbMsg = await new warns({ guildID: message.guild.id, userID: member.user.id, warnings: 0 });
-				var dbMsgModel2 = await dbMsg.save();
+				const dbMsg = await new warnMembers({ guildID: message.guild.id, userID: member.user.id, warnings: 0 });
+				var warns = await dbMsg.save();
 			}
 			catch (err) {
 				console.log(err);
 			}
 		}
 		else {
-			dbMsgModel2 = document;
+			warns = document;
 		}
 	}
-	if (dbMsgModel2) {
+	if (warns) {
 		try {
-			const { warnings } = dbMsgModel2;
+			const { warnings } = warns;
 			const newWarnings = warnings + 1;
-			await dbMsgModel2.updateOne({ warnings: newWarnings });
+			await warns.updateOne({ warnings: newWarnings });
 			if (args[2]) {
 				member.send(`"You've been warned on ${message.guild.name} with reason: ${args.slice(2).join(" ")}. You have ${newWarnings} warning(s).`)
 					.catch(() => { null; });
@@ -183,7 +183,7 @@ module.exports.run = async (client, message, args) => {
 				kicktime,
 				ban,
 				bantime,
-			} = dbMsgModel;
+			} = guilds;
 			if (role) {
 				if (roletime <= newWarnings) {
 					member.roles.add(roleid, "Too many warnings");
