@@ -8,6 +8,7 @@ const model = new Model('guilds', new Schema({
 	goodbyeBackground: { type: String },
 	welcomeBackground: { type: String },
 	roleid: { type: String },
+	rolauto: { type: String },
 	language: { type: String, default: 'en', required: true },
 	channelGoodbye: { type: String },
 	kick: { type: Boolean, required: true },

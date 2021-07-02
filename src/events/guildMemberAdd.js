@@ -12,7 +12,7 @@ module.exports = async (client, member) => {
 	} else {
 		dbMsgModel = msgDocument;
 	}
-	const { channelLogs, roleid, channelWelcome, welcomeBackground } = dbMsgModel;
+	const { channelLogs, rolauto, channelWelcome, welcomeBackground } = dbMsgModel;
 	const canal = client.channels.resolve(channelLogs);
 	const robot = { true: 'Si', false: 'No' };
 	const logEmbed = new client.Discord.MessageEmbed()
@@ -26,7 +26,7 @@ module.exports = async (client, member) => {
 		.addField('**「:robot:」• Bot?**', robot[member.user.bot], true);
 	if(canal) return canal.send(logEmbed);
 	try {
-		if(roleid) member.roles.add(roleid);
+		if(rolauto) member.roles.add(rolauto);
 	}
 	catch (e) { new Error('Missing Permissions')} 
 

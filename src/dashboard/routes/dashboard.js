@@ -73,7 +73,7 @@ router.get('/', auth, async (req, res) => {
 		}).catch(err => console.log(err));
 		const { channelWelcome } = msgDocument;
 		if(!id_channel || id_channel === 'no_select') {
-			await guildSystem.deleteOne({channelWelcome});
+			await guildSystem.deleteOne({ channelWelcome: channelWelcome });
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
 			await guildSystem.updateOne({ channelWelcome: id_channel });
@@ -88,7 +88,7 @@ router.get('/', auth, async (req, res) => {
 		}).catch(err => console.log(err));
 		const { channelGoodbye } = msgDocument;
 		if(!id_channel || id_channel === 'no_select') {
-			await guildSystem.deleteOne({channelGoodbye});
+			await guildSystem.deleteOne({ channelGoodbye: channelGoodbye });
 			res.redirect(`/dashboard/${idserver}`);
 		} else {
 			await guildSystem.updateOne({ channelGoodbye: id_channel });
@@ -103,7 +103,7 @@ router.get('/', auth, async (req, res) => {
 		}).catch(err => console.log(err));
 		const { channelLogs } = msgDocument;
 		if(!logs_ID || logs_ID === 'no_select') {
-			await guildSystem.deleteOne({ channelLogs });
+			await guildSystem.deleteOne({ channelLogs: channelLogs });
 			res.redirect(`/dashboard/${idserver}`);
 		}
 		else {
@@ -117,13 +117,13 @@ router.get('/', auth, async (req, res) => {
 		const msgDocument = await guildSystem.findOne({
 			guildID: idserver,
 		}).catch(err => console.log(err));
-		const { roleid } = msgDocument;
+		const { rolauto } = msgDocument;
 		if(!id_role || id_role === 'no_select') {
-			guildSystem.deleteOne({roleid});
+			guildSystem.deleteOne({ rolauto: rolauto });
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 		else {
-			guildSystem.updateOne({ roleid: id_role });
+			guildSystem.updateOne({ rolauto: id_role });
 			await res.redirect(`/dashboard/${idserver}`);
 		}
 	})
