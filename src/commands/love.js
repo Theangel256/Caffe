@@ -1,5 +1,4 @@
-/*
-const db = require('quick.db');
+const users = require('../structures/models/users');
 module.exports.run = (client, message, args) => {
 	const {getMember} = require('../structures/functions.js');
 	const marrys = new db.table('marrys');
@@ -30,7 +29,6 @@ module.exports.run = (client, message, args) => {
 		.setColor('#a00f0f');
 	message.channel.send(embed);
 };
-*/
 module.exports.help = {
   name: "love",
   description:

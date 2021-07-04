@@ -40,7 +40,7 @@
     "zeew": "^1.2.1"
   },
   "engines": {
-    "node": "16.4.0"
+    "node": "16.4.1"
   },
   "repository": {
     "url": "https://github.com/Theangel256/Caffe.git"

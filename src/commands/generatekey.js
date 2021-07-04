@@ -1,11 +1,21 @@
 const { generateKey } = require("../structures/functions");
-// const db = require('quick.db');
-
+const keySystem = require("../structures/models/keys");
 module.exports.run = async (client, message) => {
   const license = generateKey();
-  // const premium = new db.table('premium');
-  //  premium.set(`${message.guild.id}.license`, license)
-  //  premium.set(`${message.guild.id}.enable`,false)
+  const msgDocument = await keySystem
+    .findOne({ guildID: message.guild.id })
+    .catch(console.error);
+  try {
+    const dbMsg = await new keySystem({
+      guildID: message.guild.id,
+      license,
+      enable: false,
+    });
+    var dbMsgModel = await dbMsg.save();
+  } catch (err) {
+    console.log(err);
+  }
+  dbMsgModel = msgDocument;
   message.channel.send(
     "Generada! (La licencia es de 30 dias)\nNo se contaran los dias mientras no la actives, revisa tu md"
   );

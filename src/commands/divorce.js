@@ -1,13 +1,13 @@
-/*
-const db = require('quick.db');
+const users = require('../structures/models/users');
 module.exports.run = (client, message) => {
-	const marrys = new db.table('marrys')
-	let data = marrys.fetch(`${message.author.id}`);
-	if(!marrys.has(`${message.author.id}`)) return message.channel.send(client.lang.commands.divorce.nothing);
+  const msgDocument = await users.findOne({ userID: message.author.id }).catch(console.error);
+	let data = msgDocument;
+  console.log(msgDocument);
+	if(!data) return message.channel.send(client.lang.commands.divorce.nothing);
 	message.channel.send(client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, data.tag));
-	data.delete(`${message.author.id}`, { tag: data.tag, id: data.id});
+	await data.deleteOne({ tag: data.tag, id: data.id });
 };
-*/
+
 module.exports.help = {
   name: "divorce",
   description:
