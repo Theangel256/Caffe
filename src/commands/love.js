@@ -1,5 +1,5 @@
 const users = require("../structures/models/users");
-module.exports.run = (client, message, args) => {
+module.exports.run = async (client, message, args) => {
   const { getMember } = require("../structures/functions.js");
   const msgDocument = await users
     .findOne({
