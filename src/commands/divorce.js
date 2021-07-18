@@ -4,8 +4,8 @@ module.exports.run = (client, message) => {
 	let data = msgDocument;
   console.log(msgDocument);
 	if(!data) return message.channel.send(client.lang.commands.divorce.nothing);
-	message.channel.send(client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, data.tag));
-	await data.deleteOne({ tag: data.tag, id: data.id });
+	message.channel.send(client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, data.marryTag));
+	await data.deleteOne({ marryTag: data.marryTag, marryId: data.marryId });
 };
 
 module.exports.help = {
