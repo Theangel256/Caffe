@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client({
-  ws: { intents: 32767 },
+  intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES] ,
   disableMentions: "everyone",
   fetchAllMembers: true,
 });
