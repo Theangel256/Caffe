@@ -39,8 +39,8 @@ module.exports.run = (client) => {
     .use(limiter)
     .use(express.urlencoded({ extended: true }))
     .use(methodOverride("_method"))
-    .set("views", join(__dirname, "..", "dashboard/views"))
-    .use(express.static(join(__dirname, "..", "dashboard/public")))
+    .set("views", join(__dirname, ".", "dashboard/views"))
+    .use(express.static(join(__dirname, ".", "dashboard/public")))
     .set("view engine", "ejs")
     .set("port", process.env.PORT || 3000)
     .set("trust proxy", 1)
@@ -67,10 +67,10 @@ module.exports.run = (client) => {
       req.bot = client;
       next();
     });
-  app.use("/", require("../dashboard/routes/index"));
-  app.use("/dashboard", require("../dashboard/routes/dashboard"));
-  app.use("/leaderboard", require("../dashboard/routes/leaderboard"));
-  app.use("/error404", require("../dashboard/routes/error"));
+  app.use("/", require("./dashboard/routes/index"));
+  app.use("/dashboard", require("./dashboard/routes/dashboard"));
+  app.use("/leaderboard", require("./dashboard/routes/leaderboard"));
+  app.use("/error404", require("./dashboard/routes/error"));
   app.get("*", function (req, res) {
     res.redirect("/error404");
   });
