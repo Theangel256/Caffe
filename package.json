@@ -18,6 +18,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@discordjs/opus": "^0.6.0",
+    "@discordjs/voice": "^0.6.0",
     "@fabricio-191/ms": "*",
     "axios": "^0.21.0",
     "canvas": "^2.8.0",

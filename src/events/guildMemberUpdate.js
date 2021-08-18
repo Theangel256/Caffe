@@ -23,7 +23,7 @@ module.exports = async (client, oldMember, newMember) => {
     dbMsgModel = msgDocument;
   }
   const { channelLogs } = dbMsgModel;
-  if (!oldMember.guild.member(client.user).hasPermission("VIEW_AUDIT_LOG"))
+  if (!oldMember.guild.member(client.user).permissions.has("VIEW_AUDIT_LOG"))
     return;
   const entry = await oldMember.guild
     .fetchAuditLogs({ type: "MEMBER_UPDATE" })

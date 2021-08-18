@@ -24,7 +24,7 @@ module.exports.run = async (client, message) => {
   }
   serverQueue.songs[0].voteStop.push(message.member.id);
 
-  if (message.member.hasPermission("MANAGE_MESSAGES")) {
+  if (message.member.permissions.has("MANAGE_MESSAGES")) {
     skip(serverQueue);
     return message.channel.send(
       ":white_check_mark:Un DJ a Borrado la lista de Canciones!"

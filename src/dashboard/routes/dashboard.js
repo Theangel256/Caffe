@@ -30,7 +30,7 @@ router
       );
     const userPermission = (
       await guild.members.fetch(req.user.id)
-    ).hasPermission("ADMINISTRATOR");
+    ).permissions.has("ADMINISTRATOR");
     if (!userPermission) return res.redirect("/error404");
     const msgDocument = await guildSystem
       .findOne({
@@ -62,7 +62,7 @@ router
       guild,
       guildSystem,
       db,
-      bans: guild.me.hasPermission("BAN_MEMBERS")
+      bans: guild.me.permissions.has("BAN_MEMBERS")
         ? await guild.fetchBans().then((x) => x.size)
         : false,
       bot: req.bot,

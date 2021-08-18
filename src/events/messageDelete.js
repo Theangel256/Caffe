@@ -25,7 +25,7 @@ module.exports = async (client, message) => {
   const { channelLogs } = dbMsgModel;
   const logginChannel = client.channels.resolve(channelLogs);
   if (!logginChannel) return;
-  if (!message.guild.member(client.user).hasPermission("VIEW_AUDIT_LOG"))
+  if (!message.guild.member(client.user).permissions.has("VIEW_AUDIT_LOG"))
     return;
   console
     .log(

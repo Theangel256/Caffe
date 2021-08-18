@@ -14,40 +14,40 @@ module.exports.run = (client, message, args) => {
       offline: "Desconectado/invisible",
     };
   const permissions = [];
-  if (usuario.hasPermission("ADMINISTRATOR")) {
+  if (usuario.permissions.has("ADMINISTRATOR")) {
     permissions.push("Administrator");
   }
-  if (usuario.hasPermission("MANAGE_ROLES")) {
+  if (usuario.permissions.has("MANAGE_ROLES")) {
     permissions.push("Manage Roles");
   }
-  if (usuario.hasPermission("KICK_MEMBERS")) {
+  if (usuario.permissions.has("KICK_MEMBERS")) {
     permissions.push("Kick Members");
   }
-  if (usuario.hasPermission("BAN_MEMBERS")) {
+  if (usuario.permissions.has("BAN_MEMBERS")) {
     permissions.push("Ban Members");
   }
-  if (usuario.hasPermission("MANAGE_NICKNAMES")) {
+  if (usuario.permissions.has("MANAGE_NICKNAMES")) {
     permissions.push("Manage Nicknames");
   }
-  if (usuario.hasPermission("MANAGE_EMOJIS")) {
+  if (usuario.permissions.has("MANAGE_EMOJIS")) {
     permissions.push("Manage Emojis");
   }
-  if (usuario.hasPermission("MANAGE_NICKNAMES")) {
+  if (usuario.permissions.has("MANAGE_NICKNAMES")) {
     permissions.push("Manage Nicknames");
   }
-  if (usuario.hasPermission("MANAGE_WEBHOOKS")) {
+  if (usuario.permissions.has("MANAGE_WEBHOOKS")) {
     permissions.push("Manage Webhooks");
   }
-  if (usuario.hasPermission("MANAGE_MESSAGES")) {
+  if (usuario.permissions.has("MANAGE_MESSAGES")) {
     permissions.push("Manage Messages");
   }
-  if (usuario.hasPermission("MENTION_EVERYONE")) {
+  if (usuario.permissions.has("MENTION_EVERYONE")) {
     permissions.push("Mention Everyone");
   }
-  if (usuario.hasPermission("MUTE_MEMBERS")) {
+  if (usuario.permissions.has("MUTE_MEMBERS")) {
     permissions.push("Mute Members");
   }
-  if (usuario.hasPermission("DEAFEN_MEMBERS")) {
+  if (usuario.permissions.has("DEAFEN_MEMBERS")) {
     permissions.push("Deafen Members");
   }
   if (permissions.length == 0) {

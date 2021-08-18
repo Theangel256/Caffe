@@ -24,7 +24,7 @@ module.exports.run = async (client, message) => {
   if (fetched.songs[0].author.id === message.author.id) {
     message.channel.send(":white_check_mark: Cancion Saltada!");
     return await skip(fetched);
-  } else if (message.member.hasPermission("MANAGE_MESSAGES")) {
+  } else if (message.member.permissions.has("MANAGE_MESSAGES")) {
     message.channel.send(":white_check_mark:Un DJ a Saltado la Cancion!");
     return await skip(fetched);
   } else if (fetched.songs[0].vote.length >= required) {
