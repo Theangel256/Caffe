@@ -63,7 +63,7 @@ module.exports.run = (client, message, args) => {
     }
     embed.setDescription(uwu.join("\n"));
   }
-  message.channel.send(embed);
+  message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {
   name: "queue",

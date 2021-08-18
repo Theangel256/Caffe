@@ -1,4 +1,4 @@
-const guildSystem = require("../structures/models/guilds");
+const guildSystem = require("../models/guilds");
 module.exports = async (client, oldRole, newRole) => {
   const msgDocument = await guildSystem
     .findOne({
@@ -39,5 +39,5 @@ module.exports = async (client, oldRole, newRole) => {
   if (r2.length) {
     embed.addField("Permisos removidos", r2.join(", "));
   }
-  if (logginChannel) return logginChannel.send(embed);
+  if (logginChannel) return logginChannel.send({ embeds: [embed] });
 };

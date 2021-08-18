@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { auth } = require("../../structures/functions");
-const guildSystem = require("../../structures/models/guilds");
+const { auth } = require("../../functions");
+const guildSystem = require("../../models/guilds");
 
 router
   .get("/", auth, async (req, res) => {

@@ -1,4 +1,4 @@
-const warns = require("../structures/models/warns");
+const warns = require("../models/warns");
 module.exports = async (client) => {
   setInterval(async function () {
     const allData = await warns.find();

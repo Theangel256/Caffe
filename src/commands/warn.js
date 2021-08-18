@@ -1,6 +1,6 @@
-const guildSystem = require("../structures/models/guilds");
-const warnMembers = require("../structures/models/warns");
-const { getMember } = require("../structures/functions.js");
+const guildSystem = require("../models/guilds");
+const warnMembers = require("../models/warns");
+const { getMember } = require("../functions.js");
 module.exports.run = async (client, message, args) => {
   if (!args[0])
     return message.channel.send(

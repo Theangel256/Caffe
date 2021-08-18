@@ -1,6 +1,6 @@
 /*
 const db = require('quick.db');
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../functions.js');
 module.exports.run = (client, message, args) => {
 	const economy = new db.table('economy'),
 		member = getMember(message, args, false);

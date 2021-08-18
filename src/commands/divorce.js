@@ -1,4 +1,4 @@
-const users = require('../structures/models/users');
+const users = require('../models/users');
 module.exports.run = async (client, message) => {
   const msgDocument = await users.findOne({ userID: message.author.id }).catch(console.error);
 	let data = msgDocument;

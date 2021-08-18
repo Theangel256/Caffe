@@ -60,7 +60,7 @@ module.exports.run = async (client, message, args) => {
           ),
           message.author.displayAvatarURL({ dynamic: true })
         );
-      msg = await message.channel.send(embed);
+      msg = await message.channel.send({ embeds: [embed] });
       try {
         var response = await message.channel.awaitMessages(
           (x) =>

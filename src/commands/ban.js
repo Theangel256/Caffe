@@ -1,4 +1,4 @@
-const { getMember } = require("../structures/functions");
+const { getMember } = require("../functions");
 module.exports.run = (client, message, args) => {
   const member = getMember(message, args, false),
     lang = client.lang.commands.ban;
@@ -17,11 +17,9 @@ module.exports.run = (client, message, args) => {
 
   member.ban({ reason: reason });
 
-  message.channel.send(
-    lang.sucess
-      .replace(/{user.tag}/gi, member.user.tag)
-      .replace(/{reason}/gi, reason)
-  );
+  message.channel.send({ 
+    content: lang.sucess.replace(/{user.tag}/gi, member.user.tag).replace(/{reason}/gi, reason)
+  });
 };
 module.exports.help = {
   name: "ban",

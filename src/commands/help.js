@@ -1,17 +1,15 @@
 module.exports.run = (client, message, args) => {
+  const embed = new client.Discord.MessageEmbed()
   if (args[0] && client.commands.get(args[0])) {
     const cmd = client.commands.get(args[0]);
-    const embed = new client.Discord.MessageEmbed()
-      .setAuthor(`${cmd.help.name} | Help`, client.user.displayAvatarURL())
+      embed.setAuthor(`${cmd.help.name} | Help`, client.user.displayAvatarURL())
       .setColor(0x00ffff)
       .setDescription(
         `**Name:** ${cmd.help.name}\n**Description:** ${cmd.help.description}`
       );
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] })
   }
-
-  const embed = new client.Discord.MessageEmbed()
-    .setAuthor(
+    embed.setAuthor(
       `Help | ${client.user.username} `,
       client.user.displayAvatarURL()
     )
@@ -20,7 +18,7 @@ module.exports.run = (client, message, args) => {
       client.user.displayAvatarURL({ dynamic: true })
     )
     .setDescription(client.commands.map((cmd) => cmd.help.name).join(", "));
-  return message.channel.send(embed);
+  return message.channel.send({ embeds: [embed] })
 };
 module.exports.help = {
   name: "help",
@@ -29,6 +27,7 @@ module.exports.help = {
 };
 module.exports.requirements = {
   userPerms: [],
-  clientPerms: ["EMBED_LINKS"],
+  clientPerms: [0x0000004000],
+  // EMBED_LINKS
   ownerOnly: false,
 };

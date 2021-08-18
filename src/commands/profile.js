@@ -1,6 +1,6 @@
 /*
 const db = require('quick.db')
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../functions.js');
 module.exports.run = async (client, message, args) => {
   const levels = new db.table('levels');
   const profile = new db.table('profile');
@@ -8,14 +8,14 @@ module.exports.run = async (client, message, args) => {
   const trofeos = new db.table('trophies');
   const marry = new db.table('marrys');
   let langcode = profile.has(`${message.author.id}.language`) ? await profile.fetch(`${message.author.id}.language`) : 'en';
-  let lang = require(`../structures/languages/profile.${langcode}.js`);
+  let lang = require(`../languages/profile.${langcode}.js`);
   if(args[0]) {
 	if (args[0].toLowerCase() === 'set') {
 		const embed2 = new client.Discord.MessageEmbed()
 		.setAuthor(lang.set.embed.author.replace(/{user.username}/gi, message.author.username), message.author.displayAvatarURL({format:'jpg', dynamic:true}))
 		.setColor(message.guild.me.displayHexColor)
 		.setDescription(lang.set.embed.desc.replace(/{prefix}/, client.prefix));
-		if (!args[1]) return message.channel.send(embed2);
+		if (!args[1]) return message.channel.send({ embeds: [embed2] });;
 	if(args[1].toLowerCase() === 'desc') {
 		if(!args[2]) return message.channel.send(lang.desc.noArgs);
 		profile.set(`${message.author.id}`, { personalText: args.slice(2).join(' ')});
@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args) => {
 		if(!args[2]) return message.channel.send(lang.lang.noArgs);
 		if(!['es', 'en'].includes(args[2].toLowerCase())) return message.channel.send(lang.lang.helper);
 		profile.set(`${message.author.id}.language`, args.slice(2).join(' '));
-		lang = require(`../structures/languages/profile.${langcode}.js`);
+		lang = require(`../languages/profile.${langcode}.js`);
 		return message.channel.send(lang.lang.success.replace(/{args}/gi, args.slice(2).join(' ')));
 	}else{
 		return message.channel.send(lang.wrongChoice);
@@ -51,7 +51,7 @@ module.exports.run = async (client, message, args) => {
   .setColor(member.displayHexColor)
   .setTimestamp()
   .setFooter(lang.beta);
-  return message.channel.send(embed);
+  return message.channel.send({ embeds: [embed] });
 };
 */
 module.exports.help = {

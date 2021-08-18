@@ -30,7 +30,7 @@ module.exports.run = (client, message, args) => {
         const embed = new client.Discord.MessageEmbed()
           .setImage(args.slice(1).join(" "))
           .setColor(roleColor === "#000000" ? "#ffffff" : roleColor);
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
       }
       break;
     case "embed":
@@ -52,7 +52,7 @@ module.exports.run = (client, message, args) => {
           embed.setDescription(replace);
         }
         embed.setColor(roleColor === "#000000" ? "#ffffff" : roleColor);
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
       }
       break;
     default: {

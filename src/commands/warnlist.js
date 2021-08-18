@@ -1,5 +1,5 @@
-const getRank = require("../structures/functions");
-const warnMembers = require("../structures/models/warns");
+const getRank = require("../functions");
+const warnMembers = require("../models/warns");
 module.exports.run = async (client, message, args) => {
   const msgDocument = await warnMembers
     .findOne({
@@ -51,7 +51,7 @@ module.exports.run = async (client, message, args) => {
         paginas.length
       })\n\n${paginas[0].join("\n")}`
     );
-    return message.channel.send(embed);
+    return message.channel.send({ embeds: [embed] });
   }
   if (isNaN(args[0]))
     return message.channel.send("Necesitas ingresar el numero de la pagina");
@@ -66,7 +66,7 @@ module.exports.run = async (client, message, args) => {
       paginas.length
     })\n\n${paginas[seleccion - 1].join("\n")}`
   );
-  return message.channel.send(embed);
+  return message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {
   name: "warnlist",

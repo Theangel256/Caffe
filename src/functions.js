@@ -1,7 +1,7 @@
 const cooldownniveles = new Map();
-const levelSystem = require("../structures/models/levels");
-const warnMembers = require("../structures/models/warns");
-const guildSystem = require("../structures/models/guilds");
+const levelSystem = require("./models/levels");
+const warnMembers = require("./models/warns");
+const guildSystem = require("./models/guilds");
 module.exports = {
   auth: (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -133,7 +133,7 @@ module.exports = {
             );
           if (message.deletable) message.delete();
           await warns.updateOne({ warnings: newWarnings });
-          message.channel.send(embed);
+          message.channel.send({ embeds: [embed] });
           message.author
             .send(
               `You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`
@@ -180,7 +180,7 @@ module.exports = {
               "Bot"
             );
           if (!canal) return;
-          canal.send(embed2);
+          canal.send({ embeds: [embed2] });;
         } catch (error) {
           console.log(error);
         }

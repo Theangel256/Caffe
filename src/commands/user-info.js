@@ -1,4 +1,4 @@
-const { getMember } = require("../structures/functions");
+const { getMember } = require("../functions");
 module.exports.run = (client, message, args) => {
   const usuario = getMember(message, args, true),
     color = {
@@ -90,7 +90,7 @@ module.exports.run = (client, message, args) => {
     "「:gear:」Permisos",
     "```prolog\n" + permissions.join(", ") + "```"
   );
-  return message.channel.send(embed);
+  return message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {
   name: "user-info",

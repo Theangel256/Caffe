@@ -1,4 +1,4 @@
-const keys = require("../structures/models/keys");
+const keys = require("../models/keys");
 module.exports.run = async (client, message, args) => {
   const msgDocument = await keys
     .findOne({
@@ -21,9 +21,9 @@ module.exports.run = async (client, message, args) => {
     dbMsgModel = msgDocument;
   }
   if (!args[0])
-    return message.channel.send(
-      `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aqui](${process.env.URL}/premium)`
-    );
+    return message.channel.send({
+    content: `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aquí](${process.env.URL}/premium)`
+    });
   const { license } = dbMsgModel;
   if (license === args[0]) {
     keys.updateOne({

@@ -1,5 +1,5 @@
-const { generateKey } = require("../structures/functions");
-const keySystem = require("../structures/models/keys");
+const { generateKey } = require("../functions");
+const keySystem = require("../models/keys");
 module.exports.run = async (client, message) => {
   const license = generateKey();
   const msgDocument = await keySystem

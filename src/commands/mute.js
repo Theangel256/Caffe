@@ -1,6 +1,6 @@
 /*
 const db = require('quick.db');
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../functions.js');
 const ms = require('ms');
 module.exports.run = async (client, message, args) => {
 	const MuteDB = new db.table('systemMute');

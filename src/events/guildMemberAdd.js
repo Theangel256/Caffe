@@ -1,4 +1,4 @@
-const guildSystem = require("../structures/models/guilds");
+const guildSystem = require("../models/guilds");
 const Zeew = require("zeew");
 module.exports = async (client, member) => {
   const msgDocument = await guildSystem

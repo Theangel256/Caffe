@@ -1,4 +1,4 @@
-const guildSystem = require("../structures/models/guilds");
+const guildSystem = require("../models/guilds");
 module.exports = async (client, message) => {
   const msgDocument = await guildSystem
     .findOne({
@@ -71,7 +71,7 @@ module.exports = async (client, message) => {
       embed
         .setTitle("**「:wastebasket:」** Imagen Borrada")
         .setImage(m.proxyURL);
-      logginChannel.send(embed);
+      logginChannel.send({ embeds: [embed] });
     });
   }
 };

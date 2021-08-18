@@ -1,6 +1,6 @@
-const users = require("../structures/models/users");
+const users = require("../models/users");
 module.exports.run = async (client, message, args) => {
-  const { getMember } = require("../structures/functions.js");
+  const { getMember } = require("../functions.js");
   const msgDocument = await users
     .findOne({
       guildID: message.guild.id,
@@ -62,7 +62,7 @@ module.exports.run = async (client, message, args) => {
       `__**:heartbeat::bow_and_arrow: ${client.lang.commands.love.relations} :bow_and_arrow::heartbeat:**__\n\n:small_red_triangle_down:${message.author.username}\n:small_red_triangle:${member.user.username}\n\n${love}`
     )
     .setColor("#a00f0f");
-  message.channel.send(embed);
+  message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {
   name: "love",

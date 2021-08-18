@@ -1,6 +1,6 @@
 /*
 const db = require('quick.db');
-const {getMember} = require('../structures/functions.js');
+const {getMember} = require('../functions.js');
 module.exports.run = async (client, message, args) => {
 	const marrys = new db.table('marrys');
 	const lang = client.lang.commands.marry;

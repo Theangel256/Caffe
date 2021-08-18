@@ -1,4 +1,4 @@
-const { getMember } = require("../structures/functions");
+const { getMember } = require("../functions");
 
 module.exports.run = (client, message, args) => {
   const member = getMember(message, args, true),
@@ -11,7 +11,7 @@ module.exports.run = (client, message, args) => {
           ? lang.no_user.replace(/{user.username}/gi, member.user.username)
           : lang.user.replace(/{user.username}/gi, member.user.username)
       );
-  message.channel.send(embed);
+  message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {
   name: "avatar",

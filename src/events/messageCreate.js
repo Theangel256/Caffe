@@ -1,7 +1,7 @@
 const moment = require("moment");
 require("moment-duration-format");
-const { levels, missingPerms, regExp } = require("../structures/functions");
-const guilds = require("../structures/models/guilds");
+const { levels, missingPerms, regExp } = require("../functions");
+const guilds = require("../models/guilds");
 module.exports = async (client, message) => {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;
@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
   }
   const { prefix, language } = dbMsgModel;
   client.prefix = prefix;
-  client.lang = require(`../structures/languages/${language}.js`);
+  client.lang = require(`../languages/${language}.js`);
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
     const invite = await client.generateInvite({
       permissions: ["ADMINISTRATOR"],
@@ -53,7 +53,7 @@ module.exports = async (client, message) => {
       .setTimestamp()
       .setColor(0x00ffff);
     message.channel
-      .send(embed)
+      .send({ embeds: [embed] })
       .then((e) => e.delete({ timeout: 120000 }))
       .catch((e) => console.log(e.message));
   }
@@ -68,7 +68,7 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.aliases.get(command);
 
   if (!cmd) return;
-  if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+  if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 
   if (
     cmd.requirements.ownerOnly &&
@@ -78,7 +78,7 @@ module.exports = async (client, message) => {
 
   if (
     cmd.requirements.userPerms &&
-    !message.member.hasPermission(cmd.requirements.userPerms)
+    !message.member.permissions.has(cmd.requirements.userPerms)
   )
     return message.reply(
       client.lang.userPerms.replace(
@@ -89,7 +89,7 @@ module.exports = async (client, message) => {
 
   if (
     cmd.requirements.clientPerms &&
-    !message.guild.me.hasPermission(cmd.requirements.clientPerms)
+    !message.guild.me.permissions.has(cmd.requirements.clientPerms)
   )
     return message.reply(
       client.lang.clientPerms.replace(

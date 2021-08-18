@@ -97,7 +97,7 @@ module.exports.run = (client, message) => {
       .setImage(guild.bannerURL({ size: 2048, format: "jpg" }))
       .setTimestamp()
       .setColor(0x00ffff);
-  message.channel.send(embed);
+  message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {
   name: "server-info",

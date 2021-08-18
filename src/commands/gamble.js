@@ -1,4 +1,4 @@
-const economySystem = require('../structures/models/users');
+const economySystem = require('../models/users');
 module.exports.run = async (client, message, args) => {
 	const msgDocument = await economySystem.findOne({ userID: message.author.id }).catch(console.error);
 	if(!msgDocument) {

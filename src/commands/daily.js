@@ -1,6 +1,6 @@
 const moment = require("moment");
 require("moment-duration-format");
-const economySystem = require("../structures/models/users");
+const economySystem = require("../models/users");
 module.exports.run = async (client, message) => {
   const lang = client.lang.commands.daily;
   const msgDocument = await economySystem

@@ -1,5 +1,5 @@
-const economySystem = require("../structures/models/users");
-const { getMember } = require("../structures/functions");
+const economySystem = require("../models/users");
+const { getMember } = require("../functions");
 module.exports.run = async (client, message, args) => {
   const lang = client.lang.commands.balance;
   const member = getMember(message, args, true);

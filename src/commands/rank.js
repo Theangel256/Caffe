@@ -1,6 +1,6 @@
-const levels = require("../structures/models/levels");
+const levels = require("../models/levels");
 const Canvas = require("canvas");
-const { getMember, getRank } = require("../structures/functions.js");
+const { getMember, getRank } = require("../functions.js");
 Canvas.registerFont("Arial.ttf", { family: "Arial" });
 module.exports.run = async (client, message, args) => {
   const member = getMember(message, args, true);

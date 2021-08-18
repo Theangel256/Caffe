@@ -9,7 +9,7 @@ module.exports.run = (client, message, args) => {
     .addField(lang.field1, `${pregunta}`)
     .addField(lang.field2, lang.ball[result])
     .setColor(0x00ffff);
-  message.channel.send(embed);
+  message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {
   name: "8ball",
