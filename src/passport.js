@@ -3,7 +3,6 @@ const app = express();
 const session = require("express-session");
 const { join } = require("path");
 const MongoStore = require("connect-mongo")
-new MongoStore(session);
 const methodOverride = require("method-override");
 const passport = require("passport");
 const RateLimit = require("express-rate-limit");
