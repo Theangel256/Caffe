@@ -46,9 +46,7 @@ module.exports.run = (client) => {
     .set("trust proxy", 1)
     .use(
       session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
+        keys: ['key1', 'key2'],
         cookie: {
           secure: true,
           maxAge: null,
