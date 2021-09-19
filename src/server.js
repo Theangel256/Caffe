@@ -18,7 +18,7 @@ mongoose.connect(
   },
   (err) => {
     if (err) throw err;
-    console.log(db.connection.host);
+    console.log('Connected to MongoDB');
   }
 );
 require("./connection");
