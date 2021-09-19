@@ -43,13 +43,13 @@
       <div class="card card-1">
         <br>
         <p class="text-center"><b>Conectados:
-            <%=guild.members.cache.filter(x => x.user.presence.status === "online").size%></b></p>
+            <%=guild.members.cache.filter(x => x.presence.status === "online").size%></b></p>
         <p class="text-center"><b>Ausentes:
-            <%=guild.members.cache.filter(x => x.user.presence.status === "idle").size%></b></p>
+            <%=guild.members.cache.filter(x => x.presence.status === "idle").size%></b></p>
         <p class="text-center"><b>No Molestar:
-            <%=guild.members.cache.filter(x => x.user.presence.status === "dnd").size%></b></p>
+            <%=guild.members.cache.filter(x => x.presence.status === "dnd").size%></b></p>
         <p class="text-center"><b>Desconectados:
-            <%=guild.members.cache.filter(x => x.user.presence.status === "offline").size%></b></p>
+            <%=guild.members.cache.filter(x => x.presence.status === "offline").size%></b></p>
       </div>
   </center>
   </section>
