@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-const session = require("cookie-session");
+const session = require("express-session");
 const { join } = require("path");
+const MongoStore = require("connect-mongo")(session);
 const methodOverride = require("method-override");
 const passport = require("passport");
 const RateLimit = require("express-rate-limit");
@@ -46,12 +47,21 @@ module.exports.run = (client) => {
     .set("trust proxy", 1)
     .use(
       session({
-        keys: ['key1', 'key2'],
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
         cookie: {
           secure: true,
           maxAge: null,
+          sameSite: "lax",
+          path: "/",
           domain: process.env.URL.substr(8),
         },
+        store: new MongoStore({
+          mongoUrl: process.env.mongoDB_URI,
+          autoRemove: "interval",
+          autoRemoveInterval: 10, // In minutes. Default
+        }),
       })
     )
     .use(passport.initialize())
