@@ -63,7 +63,7 @@ router
       guildSystem,
       db,
       bans: guild.me.permissions.has("BAN_MEMBERS")
-        ? await guild.fetchBans().then((x) => x.size)
+        ? await guild.bans.fetch().then((x) => x.size)
         : false,
       bot: req.bot,
     });
