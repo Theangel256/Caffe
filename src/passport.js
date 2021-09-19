@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const session = require("express-session");
+const session = require("cookie-session");
 const { join } = require("path");
 const methodOverride = require("method-override");
 const passport = require("passport");
