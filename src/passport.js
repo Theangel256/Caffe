@@ -52,8 +52,6 @@ module.exports.run = (client) => {
         cookie: {
           secure: true,
           maxAge: null,
-          sameSite: "lax",
-          path: "/",
           domain: process.env.URL.substr(8),
         },
       })
