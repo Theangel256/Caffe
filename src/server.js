@@ -21,7 +21,6 @@ mongoose.connect(
     console.log('Connected to MongoDB');
   }
 );
-require("./connection");
 require("./handlers").run(client);
 require("./passport").run(client);
 client.login().catch((err) => console.error(err.message));
