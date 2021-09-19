@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
   }
   if (!args[0])
     return message.channel.send({
-    content: `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aquí](${process.env.URL}/premium)`
+      content: `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aquí](${process.env.URL}/premium)`,
     });
   const { license } = dbMsgModel;
   if (license === args[0]) {

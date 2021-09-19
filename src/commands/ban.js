@@ -17,8 +17,10 @@ module.exports.run = (client, message, args) => {
 
   member.ban({ reason: reason });
 
-  message.channel.send({ 
-    content: lang.sucess.replace(/{user.tag}/gi, member.user.tag).replace(/{reason}/gi, reason)
+  message.channel.send({
+    content: lang.sucess
+      .replace(/{user.tag}/gi, member.user.tag)
+      .replace(/{reason}/gi, reason),
   });
 };
 module.exports.help = {

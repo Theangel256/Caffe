@@ -180,7 +180,7 @@ module.exports = {
               "Bot"
             );
           if (!canal) return;
-          canal.send({ embeds: [embed2] });;
+          canal.send({ embeds: [embed2] });
         } catch (error) {
           console.log(error);
         }

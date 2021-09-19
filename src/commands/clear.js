@@ -29,7 +29,10 @@ module.exports.run = async (client, message, args) => {
       case "users":
         {
           if (!args[2])
-            return message.channel.send({ coontent: "Mention or put the ID of the people whom you want their messages to be deleted.\n`purge users <number> <mentions>`" });
+            return message.channel.send({
+              coontent:
+                "Mention or put the ID of the people whom you want their messages to be deleted.\n`purge users <number> <mentions>`",
+            });
           const authors = message.mentions.users.size
             ? message.mentions.users.keyArray()
             : args.slice(2);

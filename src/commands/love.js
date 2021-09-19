@@ -21,8 +21,9 @@ module.exports.run = async (client, message, args) => {
   const random = Math.ceil(Math.random() * 100);
   const member = getMember(message, args, false);
   if (!member) return message.channel.send(client.lang.no_user);
-  if (member.user.bot) return message.channel.send(client.lang.commands.love.bot);
-  let { marryId, marryTag } = dbMsgModel;
+  if (member.user.bot)
+    return message.channel.send(client.lang.commands.love.bot);
+  let { marryId } = dbMsgModel;
   let love;
   if (random >= 0 && random < 10)
     love = `**${random}%** :broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart: **${random}%**`;
