@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 $("#opciones").click(function (e) {
-  $("#section-datos").css("display", "none");
+  $("#section-data").css("display", "none");
   $("#section-leaderboard").css("display", "none");
   $("#section-opciones").css("display", "block");
 });
-$("#datos").click(function (e) {
+$("#data").click(function (e) {
   $("#section-opciones").css("display", "none");
-  $("#section-datos").css("display", "block");
+  $("#section-data").css("display", "block");
   $("#section-leaderboard").css("display", "none");
 });
