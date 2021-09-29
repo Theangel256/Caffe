@@ -5,7 +5,7 @@
     <h3><b>Datos del servidor:</b></h3>
     <p> Nombre: <%=guild.name%></p>
     <p>ID: <%=guild.id%></p>
-    <p>Dueño: <%=guild.fetchOwner().then(e => e.user.tag)%></p>
+    <p>Dueño: <%=guild.fetchOwner().then(e => e.user ).tag%></p>
     <p>Region: <%=guild.region%></p>
     <p>Fecha de Creacion: <%=guild.createdAt.toDateString()%></p>
     <section class="data-arrays">

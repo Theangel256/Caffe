@@ -30,7 +30,7 @@ router
     res.redirect("/");
   })
   .get("/discord", (req, res) => {
-    res.redirect("https://discord.gg/pEfSMsF5Ad");
+    res.redirect("https://discord.gg/s3wPw53Qxg");
   })
   .get("/add", (req, res) => {
     res.redirect(
