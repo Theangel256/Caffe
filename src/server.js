@@ -17,4 +17,12 @@ mongoose.connect(process.env.mongoDB_URI, { useNewUrlParser: true, useUnifiedTop
     });
 require('./passport.js').run(client);
 require('./handlers.js').run(client);
+process.on('unhandledRejection', function (err) {
+    throw err;
+});
+
+process.on('uncaughtException', function (err) {
+   log(err);
+});
+
 client.login().catch(err => console.error(err.message));
