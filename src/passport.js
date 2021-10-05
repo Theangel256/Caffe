@@ -52,9 +52,9 @@ const limiter = new RateLimit({
             domain: process.env.URL.substr(8),
         },
         store: new MongoStore({
-            mongoUrl: process.env.MONGODB_URI,
+            mongoUrl: process.env.mongoDB_URI,
             autoRemove: 'interval',
-            autoRemovalInterval: 10, //In Minutes.
+            autoRemoveInterval: 10, //In Minutes.
         }),
     }));
     app.use(passport.initialize())
