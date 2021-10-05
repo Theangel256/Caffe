@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const client = new Discord.Client({
-    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES],
+    intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_PRESENCES],
     disableMentions: 'everyone',
     fetchAllMembers: true,
 });
