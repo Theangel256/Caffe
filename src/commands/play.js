@@ -8,7 +8,7 @@ module.exports.run = async (client, message, args) => {
     url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : "",
     voiceChannel = message.member.voice.channel;
   if (!voiceChannel) return message.channel.send(client.lang.music.needJoin);
-  if (message.member.voice.channel !== message.guild.me.voice.channel)
+  if (message.member.voice.channel !== message.guild.voice.channel)
     message.member.voice.channel.join();
   if (!searchString) return message.reply(lang.no_args);
   /*

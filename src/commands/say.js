@@ -24,7 +24,7 @@ module.exports.run = (client, message, args) => {
         }
         if (!/https?:\/\/.+\.(?:png|jpg|jpeg|gif)/g.test(args[1])) {
           return message.channel.send(
-            "esta no es una url, o no tiene el formato permitido `png, jpg, jpeg, gif`\nEjemplo: `/say image https://caffebot.glitch.me/api/example.png`"
+            "esta no es una url, o no tiene el formato permitido `png, jpg, jpeg, gif`\nEjemplo: `/say image https://tudominio.com/api/example.png`"
           );
         }
         const embed = new client.Discord.MessageEmbed()

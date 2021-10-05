@@ -5,7 +5,7 @@ const model = new Model(
   new Schema({
     guildID: { type: String, unique: true },
     userID: { type: String },
-    xp: { type: Number },
+    xp: { type: Number, default: 1 },
     lvl: { type: Number, default: 1 },
   })
 );

@@ -213,6 +213,7 @@ module.exports = {
     } else {
       levels = msgDocument;
     }
+    console.log(msgDocument);
     const { xp, lvl } = levels;
     const randomxp = Math.floor(1.0 * Math.sqrt(xp + 1));
     const lvlup = lvl * 80;

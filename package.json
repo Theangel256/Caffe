@@ -1,55 +1,38 @@
 {
-  "//1": "describes your app and its dependencies",
-  "//2": "https://docs.npmjs.com/files/package.json",
-  "//3": "updating this file will download and update your packages",
   "name": "caffe",
-  "version": "1.3.5",
-  "description": "A bot without feelings",
+  "version": "10.0.0",
+  "description": "A bot whitout feelings",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "pm2 start src/index.js --watch"
+    "dev": "pm2 start src/index.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "node",
     "express"
   ],
   "author": "Theangel256",
-  "license": "Apache-2.0",
+  "license": "Apache 2.0",
   "dependencies": {
-    "@discordjs/opus": "^0.6.0",
-    "@discordjs/voice": "^0.6.0",
-    "@fabricio-191/ms": "*",
-    "axios": "^0.21.0",
+    "axios": "^0.22.0",
     "canvas": "^2.8.0",
     "connect-mongo": "^4.6.0",
-    "discord.js": "^13.0.1",
+    "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
-    "ejs": "^3.1.5",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "express-rate-limit": "^5.2.6",
+    "express-rate-limit": "^5.4.0",
     "express-session": "^1.17.2",
-    "ffmpeg-static": "^4.2.7",
     "jimp": "^0.16.1",
     "mech-aki": "^0.1.4",
     "method-override": "^3.0.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^6.0.2",
+    "mongoose": "^6.0.9",
     "passport": "^0.5.0",
     "passport-discord": "^0.1.4",
-    "ytdl-core": "^4.8.3",
-    "zeew": "^1.2.1"
-  },
-  "engines": {
-    "node": "16.8.0",
-    "npm": "7.21.0"
-  },
-  "repository": {
-    "url": "https://github.com/Theangel256/Caffe.git"
-  },
-  "devDependencies": {
-    "eslint": "^7.29.0",
-    "pm2": "^5.1.0"
+    "ytdl-core": "^4.9.1",
+    "zeew": "^1.3.1"
   }
 }
