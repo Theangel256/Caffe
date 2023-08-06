@@ -72,7 +72,7 @@ router
     const idserver = req.params.id,
       newPrefix = req.body.newPrefix;
     if (newPrefix || newPrefix.lenght !== 0) {
-      await guildSystem.updateOne({ prefix: newPrefix });
+      await guildSystem.updateOne({ prefix: { $eq: newPrefix } });
       res.redirect(`/dashboard/${idserver}`);
     }
   })
@@ -80,7 +80,7 @@ router
     const idserver = req.params.id;
     const lang = req.body.language;
     if (lang || lang !== "no_select") {
-      await guildSystem.updateOne({ language: lang });
+      await guildSystem.updateOne({ language: { $eq: lang }});
       res.redirect(`/dashboard/${idserver}`);
     }
   })
@@ -94,10 +94,10 @@ router
       .catch((err) => console.log(err));
     const { channelWelcome } = msgDocument;
     if (!id_channel || id_channel === "no_select") {
-      await guildSystem.deleteOne({ channelWelcome: channelWelcome });
+      await guildSystem.deleteOne({ channelWelcome: { $eq: channelWelcome } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ channelWelcome: id_channel });
+      await guildSystem.updateOne({ channelWelcome: { $eq: id_channel } });
       res.redirect(`/dashboard/${idserver}`);
     }
   })
@@ -111,10 +111,10 @@ router
       .catch((err) => console.log(err));
     const { channelGoodbye } = msgDocument;
     if (!id_channel || id_channel === "no_select") {
-      await guildSystem.deleteOne({ channelGoodbye: channelGoodbye });
+      await guildSystem.deleteOne({ channelGoodbye: { $eq: channelGoodbye } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ channelGoodbye: id_channel });
+      await guildSystem.updateOne({ channelGoodbye: { $eq: id_channel } });
       res.redirect(`/dashboard/${idserver}`);
     }
   })
@@ -128,10 +128,10 @@ router
       .catch((err) => console.log(err));
     const { channelLogs } = msgDocument;
     if (!logs_ID || logs_ID === "no_select") {
-      await guildSystem.deleteOne({ channelLogs: channelLogs });
+      await guildSystem.deleteOne({ channelLogs: { $eq: channelLogs } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ channelLogs: logs_ID });
+      await guildSystem.updateOne({ channelLogs: { $eq: logs_ID } });
       res.redirect(`/dashboard/${idserver}`);
     }
   })
@@ -145,10 +145,10 @@ router
       .catch((err) => console.log(err));
     const { rolauto } = msgDocument;
     if (!id_role || id_role === "no_select") {
-      await guildSystem.deleteOne({ rolauto: rolauto });
+      await guildSystem.deleteOne({ rolauto: { $eq: rolauto } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ rolauto: id_role });
+      await guildSystem.updateOne({ rolauto: { $eq: id_role } });
       res.redirect(`/dashboard/${idserver}`);
     }
   });
