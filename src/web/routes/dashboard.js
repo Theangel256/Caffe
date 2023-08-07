@@ -26,8 +26,14 @@ router
     const guild = req.bot.guilds.cache.get(idserver);
     if (!guild)
       return res.redirect(
-        `https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code&guild_id=${idserver}`
+        
       );
+    const allowlist = ['/id'];
+    if (allowlist.indexOf(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code&guild_id=${idserver}`) > -1) {
+      res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code&guild_id=${idserver}`);
+    } else {
+      res.redirect('/');
+    }
     const userPermission = (
       await guild.members.fetch(req.user.id)
     ).permissions.has("ADMINISTRATOR");
