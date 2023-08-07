@@ -24,10 +24,9 @@ router
   .get("/:id", auth, async (req, res) => {
     const idserver = req.params.id;
     const guild = req.bot.guilds.cache.get(idserver);
+    const DsInv = `oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code&guild_id=${idserver}`
     if (!guild)
-      return res.redirect(
-        `https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code&guild_id=${idserver}`
-      );
+      return res.redirect('https://discord.com/' + DsInv);
     const userPermission = (
       await guild.members.fetch(req.user.id)
     ).permissions.has("ADMINISTRATOR");
