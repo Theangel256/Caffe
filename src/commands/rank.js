@@ -1,9 +1,8 @@
 const levels = require("../models/levels");
-//const Canvas = require("canvas");
+const Canvas = require("canvas");
 const { getMember, getRank } = require("../functions.js");
-//Canvas.registerFont("Arial.ttf", { family: "Arial" });
+Canvas.registerFont("Arial.ttf", { family: "Arial" });
 module.exports.run = async (client, message, args) => {
-   /*
   const member = getMember(message, args, true);
   if (member.user.bot)
     return message.channel.send("los bots no tienen niveles");
@@ -97,7 +96,6 @@ module.exports.run = async (client, message, args) => {
   );
 
   message.channel.send(attachment);
-  */
 };
 module.exports.help = {
   name: "rank",

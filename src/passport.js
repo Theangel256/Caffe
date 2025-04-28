@@ -73,5 +73,5 @@ const limiter = rateLimit({
     .get('*', function (req, res) {
         res.redirect('/error404');
     })
-    .listen(app.get('port'), () => console.log('listening on port ' + app.get('port')));
+    .listen(app.get('port'), () => console.log('Listening on port ' + app.get('port')));
 }

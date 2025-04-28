@@ -31,4 +31,4 @@ process.on('uncaughtException', function (err) {
    console.log(err);
 });
 
-client.login().catch(err => console.error("Lol " + err.message));
+client.login().catch(err => console.error("Client Login Error: " + err.message));
