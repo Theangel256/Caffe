@@ -13,6 +13,14 @@
     "node",
     "express"
   ],
+  "engines" : { 
+    "npm" : ">=9.x <11.3.0",
+    "node" : ">=16.14.2 <22.14.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Theangel256/Caffe.git"
+  },
   "author": "Theangel256",
   "license": "Apache-2.0",
   "dependencies": {
