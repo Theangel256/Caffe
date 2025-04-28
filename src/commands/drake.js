@@ -1,6 +1,8 @@
 const { getMember } = require("../functions");
-const Canvas = require("canvas");
+//const Canvas = require("canvas");
 module.exports.run = async (client, message, args) => {
+  /*
+
   const member = getMember(message, args, false);
   if (!member) return message.channel.send(client.lang.no_user);
 
@@ -21,7 +23,8 @@ module.exports.run = async (client, message, args) => {
     canvas.toBuffer(),
     "rankcard.png"
   );
-  message.channel.send(attachment);
+  message.channel.send(attachment);¨
+*/
 };
 module.exports.help = {
   name: "drake",

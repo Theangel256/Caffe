@@ -16,7 +16,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "axios": "^1.4.0",
-    "canvas": "^2.8.0",
     "connect-mongo": "^5.0.0",
     "discord.js": "^14.12.1",
     "dotenv": "^16.3.1",
@@ -32,6 +31,7 @@
     "mongoose": "^7.4.2",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
+    "pm2": "^6.0.5",
     "ytdl-core": "^4.9.1",
     "zeew": "^2.1.6"
   }

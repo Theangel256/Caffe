@@ -5,7 +5,7 @@ const { join } = require('path');
 const MongoStore = require('connect-mongo');
 const methodOverride = require('method-override');
 const passport = require('passport');
-const RateLimit = require('express-rate-limit');
+const { rateLimit } = require('express-rate-limit');
 const { Strategy } = require('passport-discord');
 module.exports.run = (client) => {
     passport.serializeUser((user, done) => {
@@ -25,7 +25,7 @@ module.exports.run = (client) => {
             return done(null, profile);
         });
     }));
-const limiter = new RateLimit({
+const limiter = rateLimit({
     windowMs: 2 * 60 * 1000,
     max: 300,
     message: "There are too many requests for your IP. Please try again later."
@@ -51,11 +51,11 @@ const limiter = new RateLimit({
             path: '/',
             domain: process.env.URL.substr(8),
         },
-        store: new MongoStore({
+        store: MongoStore.create({ 
             mongoUrl: process.env.mongoDB_URI,
             autoRemove: 'interval',
             autoRemoveInterval: 10, //In Minutes.
-        }),
+        }), 
     }));
     app.use(passport.initialize())
     .use(passport.session())

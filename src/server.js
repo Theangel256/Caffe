@@ -1,18 +1,24 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const client = new Discord.Client({
-    intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_PRESENCES],
-    disableMentions: 'everyone',
-    fetchAllMembers: true,
+    intents: [
+        Discord.GatewayIntentBits.Guilds,
+		Discord.GatewayIntentBits.GuildMessages,
+        Discord.GatewayIntentBits.GuildMessageReactions,
+        Discord.GatewayIntentBits.GuildMembers,
+        Discord.GatewayIntentBits.GuildPresences,
+    ],
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    allowedMentions: { parse: ['users'], repliedUser: false },
 });
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.limits = new Discord.Collection();
 client.queue = new Discord.Collection();
 client.Discord = Discord;
-mongoose.connect(process.env.mongoDB_URI, { useNewUrlParser: true, useUnifiedTopology: true },
+mongoose.connect(process.env.mongoDB_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     (err) => {
-        if (err) throw err;
+    if (err) throw err;
         console.log('Connected to MongoDB');
     });
 require('./passport.js').run(client);
@@ -22,7 +28,7 @@ process.on('unhandledRejection', function (err) {
 });
 
 process.on('uncaughtException', function (err) {
-   log(err);
+   console.log(err);
 });
 
-client.login().catch(err => console.error(err.message));
+client.login().catch(err => console.error("Lol " + err.message));
