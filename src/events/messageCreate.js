@@ -48,9 +48,9 @@ module.exports = async (client, message) => {
     });
     const embed = new EmbedBuilder()
       .addFields(
-        { name: `:gear: | Prefix`, value: `> \`${client.prefix}\``,
-          name: `:satellite: | \`${client.prefix}\`Help`, value: client.lang.events.message.isMentioned.field1,
-          name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
+        { name: `:gear: | Prefix`, value: `> \`${client.prefix}\`` },
+        {  name: `:satellite: | \`${client.prefix}\`Help`, value: client.lang.events.message.isMentioned.field1 },
+        {  name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
       })
       .setFooter({
         text: client.lang.events.message.isMentioned.footer + require("../../package.json").version,
@@ -63,10 +63,8 @@ module.exports = async (client, message) => {
   }
   regExp(client, message);
 
-  if (!message.content.startsWith(client.prefix)) {
-    levels(message);
-    return;
-  }
+  if (!message.content.startsWith(client.prefix)) return levels(message);
+  
   const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   const cmd = client.commands.get(command) || client.aliases.get(command);
