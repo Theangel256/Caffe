@@ -1,12 +1,8 @@
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = (client, message, args) => {
   if (message.deletable) message.delete();
-  if (!args[0]) {
-    return message.channel
-      .send(
-        "Nada para decir? `Ej: /say Hola o /say embed Hola o /say image url.com`"
-      )
-      .then((m) => m.delete({ timeout: 5000 }));
-  }
+  if (!args[0]) return message.channel.send("Nada para decir? `Ej: /say Hola o /say embed Hola o /say image url.com`")
+    .then((m) => m.delete({ timeout: 5000 }));
   let emoji;
   message.content.split(" ").map((x) => {
     if (x.startsWith(":") && x.endsWith(":"))
@@ -18,16 +14,13 @@ module.exports.run = (client, message, args) => {
     case "image":
       {
         if (!args[1]) {
-          return message.channel
-            .send("Nada para ver? `Ej: /say image url.com`")
+          return message.channel.send("Nada para ver? `Ej: /say image url.com`")
             .then((m) => m.delete({ timeout: 5000 }));
         }
         if (!/https?:\/\/.+\.(?:png|jpg|jpeg|gif)/g.test(args[1])) {
-          return message.channel.send(
-            "esta no es una url, o no tiene el formato permitido `png, jpg, jpeg, gif`\nEjemplo: `/say image https://tudominio.com/api/example.png`"
-          );
+          return message.channel.send("esta no es una url, o no tiene el formato permitido `png, jpg, jpeg, gif`\nEjemplo: `/say image https://tudominio.com/api/example.png`");
         }
-        const embed = new client.Discord.MessageEmbed()
+        const embed = new EmbedBuilder()
           .setImage(args.slice(1).join(" "))
           .setColor(roleColor === "#000000" ? "#ffffff" : roleColor);
         message.channel.send({ embeds: [embed] });
@@ -35,12 +28,9 @@ module.exports.run = (client, message, args) => {
       break;
     case "embed":
       {
-        if (!args[1]) {
-          return message.channel
-            .send("Nada para decir? `Ej: /say embed Hola`")
+        if (!args[1]) return message.channel.send("Nada para decir? `Ej: /say embed Hola`")
             .then((m) => m.delete({ timeout: 5000 }));
-        }
-        const embed = new client.Discord.MessageEmbed();
+        const embed = new EmbedBuilder();
         if (!emoji) {
           embed.setDescription(args.slice(1).join(" "));
         } else {

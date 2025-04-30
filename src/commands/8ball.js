@@ -1,14 +1,17 @@
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = (client, message, args) => {
   const lang = client.lang.commands.eightBall;
   const pregunta = args.join(" ");
   const result = Math.floor(Math.random() * lang.ball.length);
-  const embed = new client.Discord.MessageEmbed();
+  const embed = {
+    color: 0x00ffff,
+    title: lang.title,
+    fields: [
+      { name: lang.field1, value: `${pregunta}` },
+      { name: lang.field2, value: lang.ball[result] },
+    ],
+  };
   if (!pregunta[0]) return message.channel.send(lang.no_args);
-  embed
-    .setTitle(lang.title)
-    .addField(lang.field1, `${pregunta}`)
-    .addField(lang.field2, lang.ball[result])
-    .setColor(0x00ffff);
   message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {

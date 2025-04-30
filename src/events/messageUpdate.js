@@ -26,7 +26,7 @@ module.exports = async (client, oldMessage, newMessage) => {
   if (oldMessage.content === newMessage.content) return;
   const logginChannel = client.channels.resolve(channelLogs);
   if (!logginChannel) return;
-  const logEmbed = new client.Discord.MessageEmbed()
+  const logEmbed = new EmbedBuilder()
     .setTitle(
       "**「:writing_hand:」** Mensaje Editado (Click para ir al mensaje)"
     )

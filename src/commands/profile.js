@@ -1,5 +1,6 @@
 /*
 const db = require('quick.db')
+const { EmbedBuilder } = require('discord.js');
 const {getMember} = require('../functions.js');
 module.exports.run = async (client, message, args) => {
   const levels = new db.table('levels');
@@ -11,7 +12,7 @@ module.exports.run = async (client, message, args) => {
   let lang = require(`../languages/profile.${langcode}.js`);
   if(args[0]) {
 	if (args[0].toLowerCase() === 'set') {
-		const embed2 = new client.Discord.MessageEmbed()
+		const embed2 = new EmbedBuilder()
 		.setAuthor(lang.set.embed.author.replace(/{user.username}/gi, message.author.username), message.author.displayAvatarURL({format:'jpg', dynamic:true}))
 		.setColor(message.guild.me.displayHexColor)
 		.setDescription(lang.set.embed.desc.replace(/{prefix}/, client.prefix));
@@ -39,7 +40,7 @@ module.exports.run = async (client, message, args) => {
   const dinero = await economy.fetch(`${member.user.id}.money`);
   const reputation = await economy.fetch(`${member.user.id}.rep`);
   const { xp, lvl } = await levels.fetch(`${message.guild.id}.${member.user.id}`);
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new EmbedBuilder()
   .setAuthor(lang.profile.replace(/{user.username}/gi, member.user.username), member.user.displayAvatarURL({ format: 'jpg', dynamic: true }))
   .setThumbnail(member.user.displayAvatarURL({ format: 'jpg', dynamic: true }))
   .setDescription(profile.has(`${member.user.id}.personalText`) ? await profile.fetch(`${member.user.id}.personalText`) : lang.profileDesc)

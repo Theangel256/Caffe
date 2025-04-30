@@ -120,7 +120,7 @@ module.exports = {
           } = guilds;
           const { warnings } = warns;
           const newWarnings = warnings + 1;
-          const embed = new client.Discord.MessageEmbed()
+          const embed = new EmbedBuilder()
             .setAuthor(
               client.lang.events.message.ant.warned.replace(
                 /{author.tag}/gi,
@@ -160,7 +160,7 @@ module.exports = {
                 .catch(new Error("Missing Permissions"));
           }
           const canal = client.channels.cache.get(channelLogs);
-          const embed2 = new client.Discord.MessageEmbed()
+          const embed2 = new EmbedBuilder()
             .setColor("RED")
             .setDescription("**Warn**")
             .addField(
@@ -213,7 +213,12 @@ module.exports = {
     } else {
       levels = msgDocument;
     }
-    console.log(msgDocument);
+    console.log({
+      guildID: message.guild.id,
+      userID: message.author.id,
+      xp: levels.xp,
+      lvl: levels.lvl,
+    });
     const { xp, lvl } = levels;
     const randomxp = Math.floor(1.0 * Math.sqrt(xp + 1));
     const lvlup = lvl * 80;

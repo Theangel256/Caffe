@@ -25,19 +25,23 @@ module.exports = async (client, channel) => {
   }
   const { channelLogs } = dbMsgModel;
   const canal = client.channels.resolve(channelLogs);
-  const logEmbed = new client.Discord.MessageEmbed()
-    .setTitle("**「:white_check_mark: 」• Canal Creado**")
-    .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
-    .setColor("GREEN")
-    .addField("Tipo", "`" + channel.type + "`", true)
-    .addField("Nombre", "`" + channel.name + "`", true)
-    .addField("Creado", "`" + channel.createdAt.toDateString() + "`", true)
-    .addField("ID", "`" + channel.id + "`", true)
-    .setTimestamp()
-    .setFooter(
-      `•${channel.guild.name}•`,
-      client.user.displayAvatarURL({ dynamic: true }),
-      true
-    );
-  if (canal) return canal.send(logEmbed);
+  const logEmbed = {
+    color: "GREEN",
+    title: "**「:white_check_mark: 」• Canal Creado**",
+    description: "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+    fields: [
+      { name: "Tipo", value: "`" + channel.type + "`", inline: true, },
+      { name: "Nombre", value: "`" + channel.name + "`", inline: true, },
+      { name: "Creado", value: "`" + channel.createdAt.toDateString() + "`", inline: true, },
+      { name: "ID", value: "`" + channel.id + "`", inline: true },
+    ],
+    timestamp: new Date().toISOString(),
+    footer: {
+      text: `•${channel.guild.name}•`,
+      icon_url: client.user.displayAvatarURL({ dynamic: true }),
+    },
+  };
+  
+  canal.send({ embeds: [logEmbed] });
+
 };

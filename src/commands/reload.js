@@ -1,5 +1,6 @@
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = async (client, message) => {
-  const reload = new client.Discord.MessageEmbed()
+  const reload = new EmbedBuilder()
     .setTitle(":arrows_counterclockwise: | **Recargando el sistema**")
     .setDescription("`Espera 5 Segundos`")
     .setThumbnail(

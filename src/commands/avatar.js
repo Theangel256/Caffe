@@ -1,9 +1,9 @@
 const { getMember } = require("../functions");
-
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = (client, message, args) => {
   const member = getMember(message, args, true),
     lang = client.lang.commands.avatar,
-    embed = new client.Discord.MessageEmbed()
+    embed = new EmbedBuilder()
       .setImage(member.user.displayAvatarURL({ dynamic: true, size: 2048 }))
       .setColor(member.displayHexColor)
       .setFooter(

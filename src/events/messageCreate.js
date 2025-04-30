@@ -2,6 +2,7 @@ const moment = require("moment");
 require("moment-duration-format");
 const { levels, missingPerms, regExp } = require("../functions");
 const guilds = require("../models/guilds");
+const { PermissionsBitField, Client, EmbedBuilder } = require("discord.js");
 module.exports = async (client, message) => {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;
@@ -33,29 +34,32 @@ module.exports = async (client, message) => {
   client.lang = require(`../languages/${language}.js`);
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
     const invite = await client.generateInvite({
-      permissions: ["ADMINISTRATOR"],
+      PermissionsBitField: [ 
+        PermissionsBitField.Flags.Administrator,
+        PermissionsBitField.Flags.SendMessages,
+        PermissionsBitField.Flags.ViewChannel,
+        PermissionsBitField.Flags.ReadMessageHistory,
+        PermissionsBitField.Flags.EmbedLinks,
+        PermissionsBitField.Flags.AttachFiles,
+        PermissionsBitField.Flags.AddReactions,
+        PermissionsBitField.Flags.UseExternalEmojis,
+      ],
+      scopes: ["bot", "applications.commands"],
     });
-    const embed = new client.Discord.MessageEmbed()
-      .addField(":gear: | Prefix", `> \`${client.prefix}\``)
-      .addField(
-        `:satellite: | \`${client.prefix}\`Help`,
-        client.lang.events.message.isMentioned.field1
-      )
-      .addField(
-        `❔ | ${client.lang.events.message.isMentioned.field2}`,
-        `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.URL}discord)\n[Twitter](https://twitter.com/Theangel256)`
-      )
-      .setFooter(
-        client.lang.events.message.isMentioned.footer +
-          require("../../package.json").version,
-        client.user.displayAvatarURL({ format: "jpg", dynamic: true })
-      )
+    const embed = new EmbedBuilder()
+      .addFields(
+        { name: `:gear: | Prefix`, value: `> \`${client.prefix}\``,
+          name: `:satellite: | \`${client.prefix}\`Help`, value: client.lang.events.message.isMentioned.field1,
+          name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
+      })
+      .setFooter({
+        text: client.lang.events.message.isMentioned.footer + require("../../package.json").version,
+        iconURL: client.user.displayAvatarURL({ format: "jpg", dynamic: true })
+      })
       .setTimestamp()
       .setColor(0x00ffff);
     message.channel
       .send({ embeds: [embed] })
-      .then((e) => e.delete({ timeout: 120000 }))
-      .catch((e) => console.log(e.message));
   }
   regExp(client, message);
 
@@ -70,33 +74,16 @@ module.exports = async (client, message) => {
   if (!cmd) return;
   if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 
-  if (
-    cmd.requirements.ownerOnly &&
-    !process.env.owners.includes(message.author.id)
-  )
+  if (cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id))
     return message.reply(client.lang.only_developers);
 
-  if (
-    cmd.requirements.userPerms &&
-    !message.member.permissions.has(cmd.requirements.userPerms)
-  )
-    return message.reply(
-      client.lang.userPerms.replace(
-        /{function}/gi,
-        missingPerms(client, message.member, cmd.requirements.userPerms)
-      )
-    );
+  if (cmd.requirements.userPerms && !message.member.permissions.has(cmd.requirements.userPerms))
+    return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms)));
 
-  if (
-    cmd.requirements.clientPerms &&
+  if (cmd.requirements.clientPerms &&
     !message.guild.me.permissions.has(cmd.requirements.clientPerms)
   )
-    return message.reply(
-      client.lang.clientPerms.replace(
-        /{function}/gi,
-        missingPerms(client, message.guild.me, cmd.requirements.clientPerms)
-      )
-    );
+    return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.me, cmd.requirements.clientPerms)));
 
   if (cmd.limits) {
     const current = client.limits.get(`${command}-${message.author.id}`);

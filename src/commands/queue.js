@@ -1,10 +1,11 @@
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = (client, message, args) => {
   const serverQueue = client.queue.get(message.guild.id);
   if (!serverQueue) return message.channel.send(client.lang.music.noQueue);
 
   const queue = serverQueue.songs,
     page = parseInt(queue.length / 10),
-    embed = new client.Discord.MessageEmbed()
+    embed = new EmbedBuilder()
       .setTitle(
         client.lang.commands.queue.embed.title.replace(
           /{guild.name}/gi,

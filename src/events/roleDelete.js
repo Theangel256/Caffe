@@ -25,7 +25,7 @@ module.exports = async (client, role) => {
   const { channelLogs } = dbMsgModel;
   const traduccion = { false: "No", true: "Si" };
   const logginChannel = client.channels.resolve(channelLogs);
-  const rolembed = new client.Discord.MessageEmbed()
+  const rolembed = new EmbedBuilder()
     .setTitle("**「:x: 」Rol Borrado**")
     .setColor("RED")
     .addField("Nombre:", role.name, true)

@@ -1,5 +1,6 @@
 const ytdl = require("ytdl-core");
 const axios = require("axios");
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = async (client, message, args) => {
   let msg;
   const queue = client.queue,
@@ -39,7 +40,7 @@ module.exports.run = async (client, message, args) => {
         console.log(e.message);
       }
       let index = 0;
-      const embed = new client.Discord.MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle(lang.embed.title)
         .setDescription(
           videos.items
@@ -53,13 +54,10 @@ module.exports.run = async (client, message, args) => {
         )
         .setColor("BLUE")
         .setTimestamp()
-        .setFooter(
-          lang.embed.footer.replace(
-            /{author.username}/gi,
-            message.author.username
-          ),
-          message.author.displayAvatarURL({ dynamic: true })
-        );
+        .setFooter({
+          text: lang.embed.footer.replace(/{author.username}/gi, message.author.username),
+          iconURL: message.author.displayAvatarURL({ dynamic: true })
+    });
       msg = await message.channel.send({ embeds: [embed] });
       try {
         var response = await message.channel.awaitMessages(
@@ -128,7 +126,7 @@ module.exports.run = async (client, message, args) => {
       if (playlist) {
         return;
       } else {
-        const embedAddQueue = new client.Discord.MessageEmbed()
+        const embedAddQueue = new EmbedBuilder()
           .setColor("#a00f0f")
           .setAuthor(lang.addQueue, "https://i.imgur.com/htXCtPo.gif")
           .setDescription(`[${song.title}](${song.url})`)
@@ -160,15 +158,17 @@ module.exports.run = async (client, message, args) => {
       })
       .on("error", (error) => console.error(error));
     dispatcher.setVolume(0.5);
-    const embedPlay = new client.Discord.MessageEmbed()
+    const embedPlay = new EmbedBuilder()
       .setAuthor(lang.embed.nowPlaying, "https://i.imgur.com/htXCtPo.gif")
       .setDescription(
         `[${serverQueue.songs[0].title}](${serverQueue.songs[0].url})`
       )
       .setImage(serverQueue.songs[0].thumbnail)
       .setColor("#a00f0f")
-      .addField(lang.embed.time, serverQueue.songs[0].duration, true)
-      .addField(lang.embed.channel, serverQueue.songs[0].channel, true)
+      .addFields({
+        name: lang.embed.time, value: serverQueue.songs[0].duration, inline: true,
+        name: lang.embed.channel, value: serverQueue.songs[0].channel, inline: true
+  })
       .setFooter(message.guild.name, message.guild.iconURL())
       .setTimestamp();
     return message.channel.send(embedPlay);

@@ -9,7 +9,7 @@ if(!consulta) {
 }
 economy.add(`${message.author.id}.money`, 50)
 economy.add(`${message.author.id}.oro`, 2)
-const embed = new client.Discord.MessageEmbed()
+const embed = new EmbedBuilder()
 .setAuthor('Mina Rueca', message.author.displayAvatarURL({format:'jpg', dynamic:true}))
 .setDescription(`**${message.author.username}** has minado en la **Mina Rueca** y has obtenido:\n**Dinero:** 50\n**Oro:** 2`)
 .setColor(message.guild.me.displayHexColor);

@@ -29,7 +29,7 @@ module.exports = async (client, guild, user) => {
   guild.fetchAuditLogs({ type: "MEMBER_BAN_REMOVE" }).then((logs) => {
     const userID = logs.entries.first().executor.id;
     if (userID === client.user.id) return;
-    const msgChannel = new client.Discord.MessageEmbed()
+    const msgChannel = new EmbedBuilder()
       .setTitle("**「:x:」 • Miembro Desbaneado**")
       .setColor("RED")
       .addField("**「:boy: 」• Nombre**", user.tag, true)

@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require("discord.js");
 const users = require("../models/users");
 module.exports.run = async (client, message, args) => {
   const { getMember } = require("../functions.js");
@@ -57,7 +58,7 @@ module.exports.run = async (client, message, args) => {
   if (member.user.id === message.author.id)
     love =
       "**200%** :sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart::sparkling_heart: **200%**";
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new EmbedBuilder()
     .setThumbnail("https://i.imgur.com/rRI5O0N.png")
     .setDescription(
       `__**:heartbeat::bow_and_arrow: ${client.lang.commands.love.relations} :bow_and_arrow::heartbeat:**__\n\n:small_red_triangle_down:${message.author.username}\n:small_red_triangle:${member.user.username}\n\n${love}`

@@ -1,21 +1,20 @@
-const Discord = require('discord.js');
+const { Client, Collection, GatewayIntentBits} = require('discord.js');
 const mongoose = require('mongoose');
-const client = new Discord.Client({
-    intents: [
-        Discord.GatewayIntentBits.Guilds,
-		Discord.GatewayIntentBits.GuildMessages,
-        Discord.GatewayIntentBits.GuildMessageReactions,
-        Discord.GatewayIntentBits.GuildMembers,
-        Discord.GatewayIntentBits.GuildPresences,
+const client = new Client({
+    intents: [ 
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildPresences,
     ],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     allowedMentions: { parse: ['users'], repliedUser: false },
 });
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
-client.limits = new Discord.Collection();
-client.queue = new Discord.Collection();
-client.Discord = Discord;
+client.commands = new Collection();
+client.aliases = new Collection();
+client.limits = new Collection();
+client.queue = new Collection();
 mongoose.connect(process.env.mongoDB_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     (err) => {
     if (err) throw err;

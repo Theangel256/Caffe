@@ -1,5 +1,6 @@
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = (client, message, args) => {
-  const embed = new client.Discord.MessageEmbed();
+  const embed = new EmbedBuilder();
   if (args[0] && client.commands.get(args[0])) {
     const cmd = client.commands.get(args[0]);
     embed
@@ -15,10 +16,10 @@ module.exports.run = (client, message, args) => {
       `Help | ${client.user.username} `,
       client.user.displayAvatarURL()
     )
-    .setFooter(
-      `caffe-bot.herokuapp.com V ${require("../../package.json").version}`,
-      client.user.displayAvatarURL({ dynamic: true })
-    )
+    .setFooter({
+      text: `caffe-bot.herokuapp.com V ${require("../../package.json").version}`,
+      iconURL: client.user.displayAvatarURL({ dynamic: true })
+})
     .setDescription(client.commands.map((cmd) => cmd.help.name).join(", "));
   return message.channel.send({ embeds: [embed] });
 };

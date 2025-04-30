@@ -4,7 +4,7 @@ module.exports.run = async (client, message, args) => {
 	const guilds = new db.table('guilds');
 	const Dashboard = `[Dashboard](${process.env.URL}/Dashboard/${message.guild.id})`;
 
-	const embed = new client.Discord.MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setAuthor(message.author.username + ' Debes de utilizarlo de la siguiente manera.', message.author.displayAvatarURL({ dynamic:true }))
 		.setColor(message.guild.me.displayHexColor)
 		.setDescription(`\`${client.prefix}set <acción> <dato>\`

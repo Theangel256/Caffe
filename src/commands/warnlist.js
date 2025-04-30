@@ -42,7 +42,7 @@ module.exports.run = async (client, message, args) => {
   while (usuarios.length > 0) {
     paginas.push(usuarios.splice(0, cantidad));
   }
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new EmbedBuilder()
     .setColor("RANDOM")
     .setThumbnail(message.guild.iconURL({ dynamic: true }));
   if (!args[0]) {

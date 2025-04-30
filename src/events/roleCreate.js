@@ -25,7 +25,7 @@ module.exports = async (client, role) => {
   const { channelLogs } = dbMsgModel;
   const logginChannel = client.channels.resolve(channelLogs);
   if (!logginChannel) return;
-  const rolembed = new client.Discord.MessageEmbed()
+  const rolembed = new EmbedBuilder()
     .setTitle("**「:white_check_mark: 」Rol Creado**")
     .setColor("GREEN")
     .addField("Nombre:", role.name, true)

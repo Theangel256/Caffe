@@ -29,7 +29,7 @@ module.exports = async (client, oldRole, newRole) => {
   if (p1.equals(p2)) return;
   const r1 = p1.missing(p2);
   const r2 = p2.missing(p1);
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new EmbedBuilder()
     .setTitle("Permisos del rol cambiados")
     .addField("Rol", newRole.toString())
     .setColor("RANDOM");

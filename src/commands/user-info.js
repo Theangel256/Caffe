@@ -53,7 +53,7 @@ module.exports.run = (client, message, args) => {
   if (permissions.length == 0) {
     permissions.push("None");
   }
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new EmbedBuilder()
     .setColor(color[usuario.presence.status])
     .setDescription(`Informacion del usuario ${usuario.user.username}`)
     .setThumbnail(usuario.user.displayAvatarURL({ dynamic: true }))
@@ -62,34 +62,19 @@ module.exports.run = (client, message, args) => {
       usuario.user.tag,
       usuario.user.displayAvatarURL({ dynamic: true })
     )
-    .addField("「:bust_in_silhouette: 」Nombre", usuario.user.tag, true)
-    .addField("「:inbox_tray:」Estado", estados[usuario.presence.status], true);
-  if (usuario.presence.activities.name) {
-    embed.addField(
-      "「:video_game:」Actividad",
-      usuario.presence.activities.name,
-      true
-    );
-  }
-  embed
-    .addField("「:id:」ID", usuario.id, true)
-    .addField(
-      "「:new:」Cuenta Creada",
-      usuario.user.createdAt.toDateString(),
-      true
-    )
-    .addField("「:calendar:」Ingresó", usuario.joinedAt.toDateString(), true);
-  if (usuario.nickname !== null) {
-    embed.addField("「:page_facing_up:」Apodo", usuario.nickname, true);
-  }
-  embed.addField(
-    "「:game_die:」Roles (" + usuario.roles.cache.size + ")",
-    usuario.roles.cache.map((m) => m).join(", ")
-  );
-  embed.addField(
-    "「:gear:」Permisos",
-    "```prolog\n" + permissions.join(", ") + "```"
-  );
+    .addFields({
+      name: "「:bust_in_silhouette: 」Nombre", value: usuario.user.tag, inline: true,
+      name: "「:page_facing_up: 」Apodo", value: usuario.nickname || "Ninguno", inline: true,
+      name: "「:bot: 」Bot", value: usuario.user.bot ? "Si" : "No", inline: true,
+      name: "「:inbox_tray:」Estado", value: estados[usuario.presence.status], inline: true,
+      name: "「:computer: 」Actividad", value: usuario.presence.activities.length > 0 ? usuario.presence.activities[0].name : "Ninguna", inline: true,
+      name: "「:sparkles: 」Banner", value: `[Link](${usuario.user.bannerURL({ dynamic: true })})`, inline: true,
+      name: "「:id:」ID", value: usuario.id, inline: true,
+      name: "「:new:」Cuenta Creada", value: usuario.user.createdAt.toDateString(), inline: true,
+      name: "「:calendar:」Ingresó", value: usuario.joinedAt.toDateString(), inline: true,
+      name: "「:game_die:」Roles (" + usuario.roles.cache.size + ")", value: usuario.roles.cache.map((m) => m).join(", "),
+      name: "「:gear:」Permisos", value: "```prolog\n" + permissions.join(", ") + "```"
+})
   return message.channel.send({ embeds: [embed] });
 };
 module.exports.help = {

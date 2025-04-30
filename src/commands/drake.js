@@ -1,5 +1,6 @@
 const { getMember } = require("../functions");
 const Canvas = require("canvas");
+const { MessageAttachment } = require("discord.js");
 module.exports.run = async (client, message, args) => {
   const member = getMember(message, args, false);
   if (!member) return message.channel.send(client.lang.no_user);
@@ -17,7 +18,7 @@ module.exports.run = async (client, message, args) => {
     message.author.displayAvatarURL({ format: "png" })
   );
   ctx.drawImage(avatar1, 570, 465, 515, 510);
-  const attachment = new client.Discord.MessageAttachment(
+  const attachment = new MessageAttachment(
     canvas.toBuffer(),
     "rankcard.png"
   );

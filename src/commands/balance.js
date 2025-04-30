@@ -22,10 +22,10 @@ module.exports.run = async (client, message, args) => {
   let { money } = dbMsgModel;
   message.channel.send(
     message.author.id === member.user.id
-      ? lang.no_user.replace(/{money}/gi, dinero.toLocaleString())
+      ? lang.no_user.replace(/{money}/gi, money.toLocaleString())
       : lang.user
           .replace(/{user.username}/gi, member.user.username)
-          .replace(/{money}/gi, dinero.toLocaleString())
+          .replace(/{money}/gi, money.toLocaleString())
   );
 };
 

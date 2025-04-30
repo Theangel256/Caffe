@@ -1,6 +1,7 @@
 const { readdirSync } = require("fs");
 const { join } = require("path");
 const filePath = join(__dirname, "..", "events");
+const Discord = require("discord.js");
 const eventFiles = readdirSync(filePath);
 const moment = require("moment");
 require("moment-duration-format");
@@ -30,47 +31,38 @@ module.exports.run = async (client, message) => {
       (process.memoryUsage().heapUsed / 1024 / 1024).toString().slice(0, 6)
     )} MB`,
     invite = await client.generateInvite({ permissions: ["ADMINISTRATOR"] }),
-    main = new client.Discord.MessageEmbed()
+    main = new EmbedBuilder()
       .setAuthor(
         client.user.username,
         client.user.displayAvatarURL({ dynamic: true })
       )
       .setColor(0x00ffff)
       .setTimestamp()
-      .addField(
-        "⁉️ " + lang.statistics,
-        `>>> **Theangel256 Studios** ${
-          lang.owner
-        }\n**${servers.toLocaleString()}** ${
-          lang.guilds
-        }\n**${users.toLocaleString()}** ${
-          lang.users
-        }\n**${canales.toLocaleString()}** ${
-          lang.channels
-        }\n**${emojis.toLocaleString()}** Emojis\n**${client.commands.size.toLocaleString()}** ${
-          lang.commands
-        }\n**${eventFiles.length.toLocaleString()}** ${
-          lang.events
-        }\n**${actividad}** ${lang.uptime}\n**${Math.round(
-          message.client.ws.ping
-        )}ms** Ping\n**${voz}** ${lang.connections.toLocaleString()}\n**${
-          modulos.version
-        }** ${lang.version}\n**${client.Discord.version}** Discord.JS\n**${
-          client.prefix
-        }** Prefix\n**${memory}** ${lang.usage}\n**${cpu}** CPU\n**${
-          modulos.engines.node
-        }** Node`,
-        true
-      )
-      .addField(
-        "❔ LINKS",
-        `>>> [Invite](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`,
-        true
-      )
-      .setFooter(
-        client.lang.events.message.isMentioned.footer + modulos.version,
-        client.user.displayAvatarURL({ format: "jpg", dynamic: true })
-      );
+      .addFields({
+        name: "⁉️ " + lang.statistics,
+        value: `>>> **Theangel256 Studios** ${lang.owner}
+        \n**${servers.toLocaleString()}** ${lang.guilds}
+        \n**${users.toLocaleString()}** ${lang.users}
+        \n**${canales.toLocaleString()}** ${lang.channels}
+        \n**${emojis.toLocaleString()}** Emojis
+        \n**${client.commands.size.toLocaleString()}** ${lang.commands}
+        \n**${eventFiles.length.toLocaleString()}** ${lang.events}
+        \n**${actividad}** ${lang.uptime}
+        \n**${Math.round(message.client.ws.ping)}ms** Ping
+        \n**${voz}** ${lang.connections.toLocaleString()}
+        \n**${modulos.version}** ${lang.version}
+        \n**${Discord.version}** Discord.JS\n**${client.prefix}** Prefix
+        \n**${memory}** ${lang.usage}
+        \n**${cpu}** CPU\n**${modulos.engines.node}** Node`,
+        inline: true,
+        name: "❔ LINKS",
+        value: `>>> [Invite](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`,
+        inline: true
+      })
+      .setFooter({
+        text: client.lang.events.message.isMentioned.footer + modulos.version,
+        iconURL: client.user.displayAvatarURL({ format: "jpg", dynamic: true })
+});
   message.channel.send(main);
 };
 module.exports.help = {

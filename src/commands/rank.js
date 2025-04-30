@@ -1,5 +1,6 @@
 const levels = require("../models/levels");
 const Canvas = require("canvas");
+const { MessageAttachment } = require("discord.js");
 const { getMember, getRank } = require("../functions.js");
 Canvas.registerFont("Arial.ttf", { family: "Arial" });
 module.exports.run = async (client, message, args) => {
@@ -90,7 +91,7 @@ module.exports.run = async (client, message, args) => {
   ctx.closePath();
   ctx.clip();
   ctx.drawImage(avatar, 25, 25, 200, 200);
-  const attachment = new client.Discord.MessageAttachment(
+  const attachment = new MessageAttachment(
     canvas.toBuffer(),
     "rankcard.png"
   );

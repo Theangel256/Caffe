@@ -45,7 +45,7 @@ module.exports = async (client, message) => {
   } else {
     user = message.author;
   }
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new EmbedBuilder()
     .setTitle("**「:wastebasket:」** Mensaje Borrado")
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     .setAuthor(

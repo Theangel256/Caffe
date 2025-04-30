@@ -1,4 +1,5 @@
 const guildSystem = require("../models/guilds");
+const { MessageAttachment, EmbedBuilder } = require("discord.js");
 const Zeew = require("zeew");
 module.exports = async (client, member) => {
   const msgDocument = await guildSystem
@@ -27,7 +28,7 @@ module.exports = async (client, member) => {
     dbMsgModel;
   const canal = client.channels.resolve(channelLogs);
   const robot = { true: "Si", false: "No" };
-  const logEmbed = new client.Discord.MessageEmbed()
+  const logEmbed = new EmbedBuilder()
     .setTitle("**「:white_check_mark:」 • Miembro Unido**")
     .setColor("BLUE")
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
@@ -68,7 +69,7 @@ module.exports = async (client, member) => {
     .colorDesc("#fff")
     .descripcion("Tenemos un nuevo usuario");
   const img = await Zeew.WelcomeZeew(wel);
-  const attachment = new client.Discord.MessageAttachment(img, "img.gif");
+  const attachment = new MessageAttachment(img, "img.gif");
   const welcome = client.channels.resolve(channelWelcome);
   if (welcome) return welcome.send(attachment);
 };

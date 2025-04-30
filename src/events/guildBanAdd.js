@@ -28,7 +28,7 @@ module.exports = async (client, guild, user) => {
   if (!guild.member(client.user).permissions.has("VIEW_AUDIT_LOG")) return;
   guild.fetchAuditLogs({ type: "MEMBER_BAN_ADD" }).then((logs) => {
     const userID = logs.entries.first().executor.id;
-    const msgChannel = new client.Discord.MessageEmbed()
+    const msgChannel = new EmbedBuilder()
       .setTitle("**「:x:」 • Miembro Baneado**")
       .setColor("RED")
       .addField("**「:boy: 」• Nombre**", user.tag, true)

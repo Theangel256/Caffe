@@ -25,7 +25,7 @@ module.exports = async (client, channel) => {
   }
   const { channelLogs } = dbMsgModel;
   const canal = client.channels.resolve(channelLogs);
-  const logEmbed = new client.Discord.MessageEmbed()
+  const logEmbed = new EmbedBuilder()
     .setTitle("**「:x:」• Canal Removido**")
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     .setColor("RED")

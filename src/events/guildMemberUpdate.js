@@ -31,7 +31,7 @@ module.exports = async (client, oldMember, newMember) => {
   const channel = client.channels.resolve(channelLogs);
   if (oldMember.nickname !== newMember.nickname) {
     const user = entry.executor;
-    const msgChannel = new client.Discord.MessageEmbed()
+    const msgChannel = new EmbedBuilder()
       .setTitle("**「:writing_hand:」 • Nickname Actualizado**")
       .setColor("BLUE")
       .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")

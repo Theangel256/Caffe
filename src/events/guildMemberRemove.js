@@ -1,5 +1,6 @@
 const Zeew = require("zeew");
 const guildSystem = require("../models/guilds");
+const { MessageAttachment, EmbedBuilder } = require("discord.js");
 module.exports = async (client, member) => {
   const msgDocument = await guildSystem
     .findOne({
@@ -26,7 +27,7 @@ module.exports = async (client, member) => {
   const { channelLogs, goodbyeBackground, channelGoodbye } = dbMsgModel;
   const canal = client.channels.resolve(channelLogs);
   const robot = { true: "Si", false: "No" };
-  const logEmbed = new client.Discord.MessageEmbed()
+  const logEmbed = new EmbedBuilder()
     .setTitle("**「:x:」 • Miembro Dejado**")
     .setColor("RED")
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
@@ -61,7 +62,7 @@ module.exports = async (client, member) => {
     .colorDesc("#fff")
     .descripcion("Tenemos un nuevo usuario");
   const img = await Zeew.WelcomeZeew(wel);
-  const attachment = new client.Discord.MessageAttachment(img, "img.gif");
+  const attachment = new MessageAttachment(img, "img.gif");
   const goodbye = client.channels.resolve(channelGoodbye);
   if (goodbye) return goodbye.send(attachment);
 };

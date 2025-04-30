@@ -32,7 +32,7 @@ module.exports.run = async (client, message, args) => {
 
 	if(tomute.roles.highest.comparePositionTo(message.guild.me.roles.highest) > 0) return message.channel.send(lang.highest);
 
-	const muteembed = new client.Discord.MessageEmbed()
+	const muteembed = new EmbedBuilder()
 		.setDescription(`${lang.muteembed.description} ${message.author}`)
 		.setColor('ORANGE')
 		.addField(lang.muteembed.user, tomute)
