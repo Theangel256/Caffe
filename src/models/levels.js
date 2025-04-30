@@ -7,7 +7,6 @@ const model = new Model(
     userID: { type: String },
     xp: { type: Number, default: 1 },
     lvl: { type: Number, default: 1 },
-  })
-);
+  }));
 
 module.exports = model;

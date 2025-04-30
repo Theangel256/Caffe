@@ -1,8 +1,6 @@
 const { model: Model, Schema } = require("mongoose");
 
-const model = new Model(
-  "guilds",
-  new Schema({
+const model = new Model("guilds", new Schema({
     guildID: { type: String },
     prefix: { type: String, default: process.env.prefix, required: true },
     channelLogs: { type: String },
@@ -19,7 +17,6 @@ const model = new Model(
     bantime: { type: Number, default: 0 },
     role: { type: Boolean, required: true },
     roletime: { type: Number, default: 0 },
-  })
-);
+  }));
 
 module.exports = model;
