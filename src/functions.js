@@ -10,6 +10,22 @@ module.exports = {
       return res.redirect("/signin");
     }
   },
+  getOrCreateDB: async (model, query, defaults = {})  => {
+    try {
+      let doc = await model.findOne(query);
+      if (!doc) {
+        doc = new model({
+          ...query,
+          ...defaults, // propiedades adicionales como money, daily, etc.
+        });
+        await doc.save();
+      }
+      return doc;
+    } catch (err) {
+      console.error(`Error en getOrCreate con modelo ${model.modelName}:`, err);
+      return null;
+    }
+  },
   getRank: async (users, message) => {
     const list = [];
     for (const id of users) {
@@ -44,6 +60,11 @@ module.exports = {
     return result || (autor ? message.member : null);
   },
   missingPerms: (client, member, perms = Array) => {
+    if (!member || !member.permissions || typeof member.permissions.missing !== 'function') {
+      console.error("¡'member' inválido o sin permisos definidos!", member);
+      return "Permissions not allowed";
+    }
+
     const missingPerms = member.permissions.missing(perms).map(
       (str) =>
         `\`${str
@@ -62,7 +83,7 @@ module.exports = {
     var lowercase = "abcdefghijklmnopqrstuvwxyz";
     var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var digits = "0123456789";
-    var punctuation = "()[]{}.:,:<>/|'\"?+=-_`~!@#$%^&* ";
+    var punctuation = "()[]{}.:,:<>/|'\"?+=-_`~!@#$%^&*";
 
     var characters = lowercase + uppercase + digits + punctuation;
     var charactersCount = characters.length;
@@ -80,11 +101,7 @@ module.exports = {
         message.content
       )
     ) {
-      const msgDocument = await warnMembers
-        .findOne({
-          guildID: message.guild.id,
-          userID: message.author.id,
-        })
+      const msgDocument = await warnMembers.findOne({guildID: message.guild.id,userID: message.author.id})
         .catch((err) => console.log(err));
       if (!msgDocument) {
         try {
@@ -121,43 +138,26 @@ module.exports = {
           const { warnings } = warns;
           const newWarnings = warnings + 1;
           const embed = new EmbedBuilder()
-            .setAuthor(
-              client.lang.events.message.ant.warned.replace(
-                /{author.tag}/gi,
-                message.author.tag
-              ),
-              message.author.displayAvatarURL({ extension: "png" })
-            )
-            .setDescription(
-              `${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`
-            );
+            .setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi,message.author.tag),message.author.displayAvatarURL({ extension: "png" }))
+            .setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
           if (message.deletable) message.delete();
           await warns.updateOne({ warnings: newWarnings });
           message.channel.send({ embeds: [embed] });
-          message.author
-            .send(
-              `You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`
-            )
-            .catch(() => {
-              null;
-            });
-          if (role) {
-            if (roletime <= newWarnings)
-              member.roles
-                .add(roleid, "Too many warnings")
-                .catch(new Error("Missing Permissions"));
-          }
-          if (kick) {
-            if (kicktime == newWarnings)
-              member
-                .kick("Too many warnings")
-                .catch(new Error("Missing Permissions"));
-          }
-          if (ban) {
-            if (bantime == newWarnings)
-              member
-                .ban({ reason: "Too many warnings" })
-                .catch(new Error("Missing Permissions"));
+          message.author.send(`You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`).catch(() => { null;});
+          try {
+            if (role && roletime <= newWarnings) {
+              await member.roles.add(roleid, "Too many warnings");
+            }
+          
+            if (kick && kicktime === newWarnings) {
+              await member.kick("Too many warnings");
+            }
+          
+            if (ban && bantime === newWarnings) {
+              await member.ban({ reason: "Too many warnings" });
+            }
+          } catch (error) {
+            console.error("Error al aplicar sanción por advertencias:", error.message);
           }
           const canal = client.channels.cache.get(channelLogs);
           const embed2 = new EmbedBuilder()

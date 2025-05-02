@@ -1,31 +1,14 @@
 const economySystem = require("../models/users");
-const { getMember } = require("../functions");
+const { getMember, getOrCreateDB } = require("../functions");
 module.exports.run = async (client, message, args) => {
   const lang = client.lang.commands.balance;
   const member = getMember(message, args, true);
-  const msgDocument = await economySystem
-    .findOne({ userID: member.user.id })
-    .catch(console.error);
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new economySystem({
-        userID: member.user.id,
-        money: 200,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  let { money } = dbMsgModel;
+  const economy = await getOrCreateDB(economySystem, { userID: member.user.id });
+  if (!economy) return message.channel.send("I have an error while trying to access to the database, please try again later.");
   message.channel.send(
     message.author.id === member.user.id
-      ? lang.no_user.replace(/{money}/gi, money.toLocaleString())
-      : lang.user
-          .replace(/{user.username}/gi, member.user.username)
-          .replace(/{money}/gi, money.toLocaleString())
+      ? lang.no_user.replace(/{money}/gi, economy.money.toLocaleString())
+      : lang.user.replace(/{user.username}/gi, member.user.username).replace(/{money}/gi, economy.money.toLocaleString())
   );
 };
 

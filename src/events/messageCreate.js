@@ -2,6 +2,7 @@ const moment = require("moment");
 require("moment-duration-format");
 const { levels, missingPerms, regExp } = require("../functions");
 const guilds = require("../models/guilds");
+const { joinVoiceChannel } = require("@discordjs/voice");
 const { PermissionsBitField, EmbedBuilder, InteractionCallback } = require("discord.js");
 module.exports = async (client, message) => {
   if (message.channel.type === "dm") return;
@@ -33,6 +34,14 @@ module.exports = async (client, message) => {
   const { prefix, language } = dbMsgModel;
   client.prefix = prefix;
   client.lang = require(`../languages/${language}.js`);
+  client.joinVoiceChannel = function (channel) {
+    return joinVoiceChannel({
+      channelId: channel.id,
+      guildId: channel.guild.id,
+      adapterCreator: channel.guild.voiceAdapterCreator,
+    });
+  };
+  
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
     const invite = await client.generateInvite({
       PermissionsBitField: [ 
@@ -79,7 +88,7 @@ module.exports = async (client, message) => {
     return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms)));
 
   if (cmd.requirements.clientPerms && !botPerms.has(cmd.requirements.clientPerms))
-    return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.memmbers.me, cmd.requirements.clientPerms)));
+    return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.members.me, cmd.requirements.clientPerms)));
 
   if (cmd.limits) {
     const key = `${command}-${message.author.id}`;

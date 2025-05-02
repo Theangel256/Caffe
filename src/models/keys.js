@@ -1,10 +1,10 @@
 const { model: Model, Schema } = require("mongoose");
 
-const model = new Model("economy", new Schema({
-    guildID: { type: String, unique: true },
-    enable: { type: Boolean, unique: true },
-    license: { type: String },
-    time: { type: Number },
-  }));
+const schema = new Schema({
+  guildID: { type: String, required: true, unique: true }, // Se asegura de que sea único
+  enable: { type: Boolean, required: true },
+  license: { type: String },
+  time: { type: Number },
+});
 
-module.exports = model;
+module.exports = Model("keys", schema);

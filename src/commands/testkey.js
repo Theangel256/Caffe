@@ -6,17 +6,12 @@ module.exports.run = async (client, message, args) => {
 
   if (!args[0]) return message.channel.send({content: `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aquí](${process.env.URL}/premium)`,});
 
-  if (keysDB.license === args[0]) {
-    keysDB.enable = true 
-    keysDB.time = Date.now() + 2.592e9
+    keySystem.collection.dropIndex("enable_1")
     await keysDB.save();
     return message.channel.send("Premium Activado para este servidor!");
-  } else {
-    return message.channel.send("Licencia invalida!");
-  }
 };
 module.exports.help = {
-  name: "activatekey",
+  name: "testkey",
   description: "",
 };
 module.exports.requirements = {

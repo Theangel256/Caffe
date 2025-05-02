@@ -193,9 +193,9 @@ M => For months.
         channel: "Channel",
       },
       expired: "The wait is over, canceling selection.",
-      invalidArgs: "No song with that Name was found.",
+      invalidArgs: "No song with the name {searchString} was found.",
       addQueue: "Added to queue",
-      error: "An error has occurred please contact an administrator, {url}",
+      error: "An error has occurred please contact an developer, {url}",
       playlistAdded: "Playlist: **{title}** has been added to the queue!",
     },
     punch: {
@@ -269,5 +269,6 @@ M => For months.
   music: {
     noQueue: "There is no song! The queue is empty.",
     needJoin: "You must join a voice channel.",
+    alreadyPlaying: "The music is already playing in {channel}.",
   },
 };

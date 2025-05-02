@@ -1,12 +1,13 @@
 const { model: Model, Schema } = require("mongoose");
 
-const model = new Model(
-  "systemlvl",
-  new Schema({
-    guildID: { type: String, unique: true },
-    userID: { type: String },
-    xp: { type: Number, default: 1 },
-    lvl: { type: Number, default: 1 },
-  }));
+const schema = new Schema({
+  guildID: { type: String, required: true },
+  userID: { type: String, required: true },
+  xp: { type: Number, default: 1 },
+  lvl: { type: Number, default: 1 },
+});
 
-module.exports = model;
+// Índice único compuesto para evitar duplicados de userID por guildID
+schema.index({ guildID: 1, userID: 1 }, { unique: true });
+
+module.exports = Model("systemlvl", schema);

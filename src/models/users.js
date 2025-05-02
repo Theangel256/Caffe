@@ -1,11 +1,17 @@
 const { model: Model, Schema } = require("mongoose");
 
-const model = new Model("users", new Schema({
-    userID: { type: String, unique: true },
-    marryTag: { type: String },
-    marryId: { type: String },
-    daily: { type: Number },
-    money: { type: Number, default: 200 },
-  }));
+const schema = new Schema({
+  userID: {  type: String, required: true, unique: true, },
+  marryTag: { type: String, default: null },
+  marryId: { type: String, default: null },
+  daily: { type: Number, default: Date.now() },
+  money: { type: Number, default: 200, },
+});
 
-module.exports = model;
+// Si planeas hacer búsquedas frecuentes basadas en `userID`, puedes mantener el índice único
+// Aunque ya se está asegurando la unicidad con `unique: true` en `userID`.
+
+// Ejemplo de índice compuesto si necesitas búsquedas combinadas
+// schema.index({ marryTag: 1, marryId: 1 }, { unique: true });
+
+module.exports = Model("users", schema);

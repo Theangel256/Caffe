@@ -197,7 +197,7 @@ M => Para meses.
         channel: "Canal",
       },
       expired: "La espera termino, cancelando selección.",
-      invalidArgs: "No se ha encontrado ninguna canción con ese Nombre.",
+      invalidArgs: "No se ha encontrado ninguna canción con llamada {searchString}.",
       addQueue: "Se ha agregado a la cola",
       error:
         "Ha ocurrido un error porfavor contacta con un desarrollador, {url}",
@@ -278,5 +278,6 @@ M => Para meses.
   music: {
     noQueue: "¡No hay canción!, la cola esta vacía.",
     needJoin: "Debes unirte a un canal de voz.",
+    alreadyPlaying: "Ya estoy reproduciendo música en ${channel}",
   },
 };
