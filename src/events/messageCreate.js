@@ -2,11 +2,12 @@ const moment = require("moment");
 require("moment-duration-format");
 const { levels, missingPerms, regExp } = require("../functions");
 const guilds = require("../models/guilds");
-const { PermissionsBitField, Client, EmbedBuilder } = require("discord.js");
+const { PermissionsBitField, EmbedBuilder, InteractionCallback } = require("discord.js");
 module.exports = async (client, message) => {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;
   if (message.author.bot) return;
+  const botPerms = message.guild.members.me.permissionsIn(message.channel);
   const msgDocument = await guilds
     .findOne({
       guildID: message.guild.id,
@@ -61,46 +62,55 @@ module.exports = async (client, message) => {
     message.channel
       .send({ embeds: [embed] })
   }
-  regExp(client, message);
-
+  regExp(client, message);  
   if (!message.content.startsWith(client.prefix)) return levels(message);
-  
+  console.log(message.content); 
   const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   const cmd = client.commands.get(command) || client.aliases.get(command);
 
   if (!cmd) return;
-  if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-
+  if (!botPerms.has(PermissionsBitField.Flags.SendMessages)) return;
+  
   if (cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id))
     return message.reply(client.lang.only_developers);
 
   if (cmd.requirements.userPerms && !message.member.permissions.has(cmd.requirements.userPerms))
     return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms)));
 
-  if (cmd.requirements.clientPerms &&
-    !message.guild.me.permissions.has(cmd.requirements.clientPerms)
-  )
-    return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.me, cmd.requirements.clientPerms)));
+  if (cmd.requirements.clientPerms && !botPerms.has(cmd.requirements.clientPerms))
+    return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.memmbers.me, cmd.requirements.clientPerms)));
 
   if (cmd.limits) {
-    const current = client.limits.get(`${command}-${message.author.id}`);
-
-    if (!current) {
-      client.limits.set(`${command}-${message.author.id}`, 1);
-    } else {
-      const duracion = moment
-        .duration(cmd.limits.cooldown)
-        .format(" D [d], H [hrs], m [m], s [s]");
-      if (current >= cmd.limits.rateLimit)
-        return message.channel.send(
-          client.lang.wait.replace(/{duration}/gi, duracion)
-        );
-      client.limits.set(`${command}-${message.author.id}`, current + 1);
+    const key = `${command}-${message.author.id}`;
+    const now = Date.now();
+    const cooldown = cmd.limits.cooldown;
+    const rateLimit = cmd.limits.rateLimit || 1;
+  
+    const timestamps = client.limits.get(key) || [];
+  
+    // Elimina usos viejos fuera del cooldown
+    const recentUses = timestamps.filter(ts => now - ts < cooldown);
+  
+    if (recentUses.length >= rateLimit) {
+      const nextAvailable = cooldown - (now - recentUses[0]);
+      const duracion = moment.duration(nextAvailable).format("D [d], H [hrs], m [m], s [s]");
+      return message.channel.send(client.lang.wait.replace(/{duration}/gi, duracion));
     }
+  
+    // Guardamos el uso actual
+    recentUses.push(now);
+    client.limits.set(key, recentUses);
+  
+    // Limpieza automática opcional
     setTimeout(() => {
-      client.limits.delete(`${command}-${message.author.id}`);
-    }, cmd.limits.cooldown);
+      const updated = client.limits.get(key)?.filter(ts => Date.now() - ts < cooldown);
+      if (!updated || updated.length === 0) {
+        client.limits.delete(key);
+      } else {
+        client.limits.set(key, updated);
+      }
+    }, cooldown);
   }
 
   cmd.run(client, message, args);

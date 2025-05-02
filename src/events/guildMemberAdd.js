@@ -1,5 +1,5 @@
 const guildSystem = require("../models/guilds");
-const { MessageAttachment, EmbedBuilder } = require("discord.js");
+const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const Zeew = require("zeew");
 module.exports = async (client, member) => {
   const msgDocument = await guildSystem
@@ -34,7 +34,7 @@ module.exports = async (client, member) => {
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     .setFooter(
       `ID: ${member.user.id}`,
-      member.user.displayAvatarURL({ dynamic: true })
+      member.user.displayAvatarURL({ extension: "png" })
     )
     .setTimestamp()
     .addField("**「:boy: 」• Nombre**", member.user.username, true)
@@ -69,7 +69,7 @@ module.exports = async (client, member) => {
     .colorDesc("#fff")
     .descripcion("Tenemos un nuevo usuario");
   const img = await Zeew.WelcomeZeew(wel);
-  const attachment = new MessageAttachment(img, "img.gif");
+  const attachment = new AttachmentBuilder(img, "img.gif");
   const welcome = client.channels.resolve(channelWelcome);
   if (welcome) return welcome.send(attachment);
 };

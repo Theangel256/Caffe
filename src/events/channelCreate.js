@@ -38,7 +38,7 @@ module.exports = async (client, channel) => {
     timestamp: new Date().toISOString(),
     footer: {
       text: `•${channel.guild.name}•`,
-      icon_url: client.user.displayAvatarURL({ dynamic: true }),
+      icon_url: client.user.displayAvatarURL({ extension: "png" }),
     },
   };
   

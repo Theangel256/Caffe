@@ -1,4 +1,4 @@
-const { Client, Collection, GatewayIntentBits} = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const mongoose = require('mongoose');
 const client = new Client({
     intents: [ 
@@ -7,19 +7,21 @@ const client = new Client({
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.MessageContent,
     ],
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction],
     allowedMentions: { parse: ['users'], repliedUser: false },
 });
 client.commands = new Collection();
 client.aliases = new Collection();
 client.limits = new Collection();
 client.queue = new Collection();
-mongoose.connect(process.env.mongoDB_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(
-    (err) => {
-    if (err) throw err;
-        console.log('Connected to MongoDB');
-    });
+try {
+    mongoose.connect(process.env.mongoDB_URI);
+    console.log("Connected to Database Successfully");
+} catch (error) {
+    handleError('Could not Connect to Database:', error.message);
+};
 require('./passport.js').run(client);
 require('./handlers.js').run(client);
 process.on('unhandledRejection', function (err) {

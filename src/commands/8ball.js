@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 module.exports.run = (client, message, args) => {
   const lang = client.lang.commands.eightBall;
   const pregunta = args.join(" ");
@@ -20,7 +20,9 @@ module.exports.help = {
 };
 module.exports.requirements = {
   userPerms: [],
-  clientPerms: ["EMBED_LINKS"],
+  clientPerms: [
+    PermissionsBitField.Flags.EmbedLinks,
+  ],
   ownerOnly: false,
 };
 module.exports.limits = {

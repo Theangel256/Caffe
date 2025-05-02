@@ -1,4 +1,4 @@
-const { MessageAttachment } = require("discord.js");
+const { AttachmentBuilder } = require("discord.js");
 const Jimp = require("jimp");
 module.exports.run = async (client, message, args) => {
   if (!args[0]) return message.channel.send("Pon algo");
@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
 
   const render = await meme.getBufferAsync(Jimp.MIME_PNG);
 
-  const attachment = new MessageAttachment(render, "trump.png");
+  const attachment = new AttachmentBuilder(render, "trump.png");
 
   await message.channel.send(attachment);
 };

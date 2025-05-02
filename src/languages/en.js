@@ -1,3 +1,5 @@
+const { wait } = require("./es");
+
 module.exports = {
   no_reason: "Break the rules",
   no_user: "**:grey_exclamation:** | Mention someone",
@@ -49,11 +51,11 @@ module.exports = {
     },
     clear: {
       no_args:
-        "**:grey_exclamation: |** Enter the number of messages to delete",
-      messages: {
-        max: "**:exclamation: |** You can only bulk delete messages that are under 14 days old.",
-        unknown: "**:exclamation: |** There are no messages to delete",
-      },
+        "**❕ |** Enter the number of messages to delete",
+      invalid_number: "**❌ |** The number must be between 1 and 100.",
+      no_messages: "**❌ |** Messages could not be deleted. Make sure they are not too old.",
+      cleared: "**✅ |** {number} messages were deleted.",
+      usage: "Deletes messages from the current channel, with filters.\n\n**Usage:**\n`{prefix}clear <amount> [filters]`\n\n**Filters:**\n`bot` - Deletes only messages from bots.\n`attachment` - Deletes only messages with attachments.\n`embed` - Deletes only messages with embeds.\n`with <text>` - Deletes only messages that contain the specified text.",
     },
     cry: {
       no_user: "{user.username} is sad 😢",
@@ -61,6 +63,7 @@ module.exports = {
     },
     daily: {
       sucess: "Daily Reward Claimed **{total}**",
+      wait: "**🎁 |** You already claimed your daily reward, you have to wait **{duration}**",
     },
     divorce: {
       nothing: "**:grey_exclamation: |** You are not married to anyone :(",

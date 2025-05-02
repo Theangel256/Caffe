@@ -23,25 +23,25 @@ module.exports = {
     });
     return list;
   },
-  getMember: (message, args, autor = Boolean) => {
-    let search = args.join(" ");
-    let result;
-    if (!search) {
-      result = autor === true ? message.member : null;
-    } else {
-      search = search.toLowerCase();
-      result =
-        message.mentions.members.first() ||
-        message.guild.members.resolve(search) ||
-        message.guild.members.cache.find(
-          (e) =>
-            e.user.username.toLowerCase().includes(search) ||
-            e.user.tag.toLowerCase().includes(search) ||
-            e.displayName.toLowerCase().includes(search)
-        ) ||
-        message.member;
-    }
-    return result;
+  getMember: (message, args, autor = true, argIndex = 0) => {
+    const members = message.guild.members.cache;
+  
+    let searchRaw = Array.isArray(args)
+      ? args.slice(argIndex).join(" ").toLowerCase().trim()
+      : String(args).toLowerCase().trim();
+  
+    if (!searchRaw && autor) return message.member;
+  
+    const result =
+      message.mentions?.members?.first?.() ||                  // Mención directa
+      members.get(searchRaw) ||                                // ID directo
+      members.find(member =>
+        member.user.username.toLowerCase().includes(searchRaw) ||
+        member.user.tag.toLowerCase().includes(searchRaw) ||
+        member.displayName.toLowerCase().includes(searchRaw)
+      );
+  
+    return result || (autor ? message.member : null);
   },
   missingPerms: (client, member, perms = Array) => {
     const missingPerms = member.permissions.missing(perms).map(
@@ -126,7 +126,7 @@ module.exports = {
                 /{author.tag}/gi,
                 message.author.tag
               ),
-              message.author.displayAvatarURL({ dynamic: true })
+              message.author.displayAvatarURL({ extension: "png" })
             )
             .setDescription(
               `${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`
@@ -233,7 +233,8 @@ module.exports = {
     await levels.updateOne({ xp: xp + randomxp });
     cooldownniveles.set(
       message.guild.id + message.author.id,
-      Date.now() + 5000
+      Date.now() + 7000
     );
+    return message;
   },
 };

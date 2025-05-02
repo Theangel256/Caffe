@@ -50,11 +50,11 @@ module.exports = async (client, message) => {
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     .setAuthor(
       message.author.tag,
-      message.author.displayAvatarURL({ dynamic: true })
+      message.author.displayAvatarURL({ extension: "png" })
     )
     .setFooter(
       `ID: ${message.author.id}`,
-      message.author.displayAvatarURL({ dynamic: true })
+      message.author.displayAvatarURL({ extension: "png" })
     )
     .setTimestamp()
     .setColor("RED")

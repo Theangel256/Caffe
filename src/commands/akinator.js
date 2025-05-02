@@ -1,7 +1,11 @@
+const { PermissionsBitField } = require("discord.js");
 const mech_aki = require("mech-aki");
 module.exports.run = async (client, message) => {
   const akinator = new mech_aki("es");
-  let pregunta = await akinator.empezar();
+  let pregunta = await akinator.empezar().catch((err) => {
+    console.log(err);
+    return message.reply("No se ha podido iniciar la partida de Akinator, intenta de nuevo más tarde.");
+  })
   const embed = { color: "RANDOM", title: pregunta.pregunta };
   const respuestas = new Map([
     ["✅", 0],
@@ -58,7 +62,9 @@ module.exports.help = {
 };
 module.exports.requirements = {
   userPerms: [],
-  clientPerms: ["EMBED_LINKS"],
+  clientPerms: [
+    PermissionsBitField.Flags.EmbedLinks
+  ],
   ownerOnly: false,
 };
 module.exports.limits = {

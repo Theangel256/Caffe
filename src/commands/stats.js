@@ -9,17 +9,10 @@ module.exports.run = async (client, message) => {
   const actividad = moment
       .duration(client.uptime)
       .format(" D [d], H [hrs], m [m], s [s]"),
-    servers = (
-      await client.shard.fetchClientValues("guilds.cache.size")
-    ).reduce((acc, guildCount) => acc + guildCount, 0),
+    servers = (await client.shard.fetchClientValues("guilds.cache.size")).reduce((acc, guildCount) => acc + guildCount, 0),
     lang = client.lang.commands.stats,
-    users = (await client.shard.fetchClientValues("users.cache.size")).reduce(
-      (acc, guildCount) => acc + guildCount,
-      0
-    ),
-    canales = (
-      await client.shard.fetchClientValues("channels.cache.size")
-    ).reduce((acc, guildCount) => acc + guildCount, 0),
+    users = (await client.shard.fetchClientValues("users.cache.size")).reduce((acc, guildCount) => acc + guildCount,0),
+    canales = (await client.shard.fetchClientValues("channels.cache.size")).reduce((acc, guildCount) => acc + guildCount, 0),
     voz = client.voice.connections.size,
     emojis = (await client.shard.fetchClientValues("emojis.cache.size")).reduce(
       (acc, guildCount) => acc + guildCount,
@@ -34,7 +27,7 @@ module.exports.run = async (client, message) => {
     main = new EmbedBuilder()
       .setAuthor(
         client.user.username,
-        client.user.displayAvatarURL({ dynamic: true })
+        client.user.displayAvatarURL({ extension: "png" })
       )
       .setColor(0x00ffff)
       .setTimestamp()
@@ -54,11 +47,13 @@ module.exports.run = async (client, message) => {
         \n**${Discord.version}** Discord.JS\n**${client.prefix}** Prefix
         \n**${memory}** ${lang.usage}
         \n**${cpu}** CPU\n**${modulos.engines.node}** Node`,
-        inline: true,
-        name: "❔ LINKS",
-        value: `>>> [Invite](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)\n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`,
-        inline: true
-      })
+        inline: true, },
+        { name: "❔ LINKS",
+        value: `>>> [Invite](${invite})
+        \n[Discord](${process.env.URL}/discord)
+        \n[Twitter](https://twitter.com/Theangel256)
+        \n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`,
+        inline: true })
       .setFooter({
         text: client.lang.events.message.isMentioned.footer + modulos.version,
         iconURL: client.user.displayAvatarURL({ format: "jpg", dynamic: true })

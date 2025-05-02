@@ -1,3 +1,4 @@
+const { PermissionsBitField } = require("discord.js");
 const { getMember } = require("../functions");
 module.exports.run = (client, message, args) => {
   const member = getMember(message, args, false),
@@ -28,7 +29,11 @@ module.exports.help = {
   description: "Banea a una persona con este comando",
 };
 module.exports.requirements = {
-  userPerms: ["BAN_MEMBERS"],
-  clientPerms: ["BAN_MEMBERS"],
+  userPerms: [ 
+    PermissionsBitField.Flags.BanMembers
+    ],
+  clientPerms: [
+    PermissionsBitField.Flags.BanMembers
+    ],
   ownerOnly: false,
 };

@@ -56,7 +56,7 @@ module.exports.run = async (client, message, args) => {
         .setTimestamp()
         .setFooter({
           text: lang.embed.footer.replace(/{author.username}/gi, message.author.username),
-          iconURL: message.author.displayAvatarURL({ dynamic: true })
+          iconURL: message.author.displayAvatarURL({ extension: "png" })
     });
       msg = await message.channel.send({ embeds: [embed] });
       try {

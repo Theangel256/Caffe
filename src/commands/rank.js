@@ -1,6 +1,6 @@
 const levels = require("../models/levels");
 const Canvas = require("canvas");
-const { MessageAttachment } = require("discord.js");
+const { AttachmentBuilder } = require("discord.js");
 const { getMember, getRank } = require("../functions.js");
 Canvas.registerFont("Arial.ttf", { family: "Arial" });
 module.exports.run = async (client, message, args) => {
@@ -33,14 +33,12 @@ module.exports.run = async (client, message, args) => {
   if (rank === -1) rank = `#${usuarios.length}`;
   else rank = `#${rank + 1}`;
   const { lvl, xp } = dbMsgModel;
-  const canvas = Canvas.createCanvas(934, 282);
+  const canvas = Canvas.createCanvas(934, 282, "png");
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "rgb(0, 0, 0)";
   ctx.fillRect(0, 0, 934, 282);
   const fondo = await Canvas.loadImage("https://i.imgur.com/fM93m9e.png");
-  const avatar = await Canvas.loadImage(
-    member.user.displayAvatarURL({ format: "png" })
-  );
+  const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: "png" }));
   ctx.drawImage(fondo, 10, 10, 914, 262);
 
   ctx.lineWidth = 3;
@@ -91,12 +89,9 @@ module.exports.run = async (client, message, args) => {
   ctx.closePath();
   ctx.clip();
   ctx.drawImage(avatar, 25, 25, 200, 200);
-  const attachment = new MessageAttachment(
-    canvas.toBuffer(),
-    "rankcard.png"
-  );
+  const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "rankcard.png" });
 
-  message.channel.send(attachment);
+  message.channel.send({ files: [attachment]});
 };
 module.exports.help = {
   name: "rank",

@@ -1,141 +1,57 @@
-const { missingPerms } = require("../functions");
-module.exports.run = async (client, message, args) => {
-  if (!message.channel.permissionsFor(message.member).has("MANAGE_MESSAGES")) {
-    return message.reply(
-      client.lang.userPerms.replace(
-        /{function}/gi,
-        missingPerms(client, message.member, ["MANAGE_MESSAGES"])
-      )
-    );
-  }
-  if (
-    !message.channel.permissionsFor(message.guild.me).has("MANAGE_MESSAGES")
-  ) {
-    return message.reply(
-      client.lang.clientPerms.replace(
-        /{function}/gi,
-        missingPerms(client, message.guild.me, ["MANAGE_MESSAGES"])
-      )
-    );
-  }
+const { PermissionsBitField } = require("discord.js");
 
-  if (!args[0] || (isNaN(args[0]) && !args[1]))
+module.exports.run = async (client, message, args) => {
+  if (!args[0] || isNaN(args[0]))
     return message.channel.send(client.lang.commands.clear.no_args);
 
-  const number = args[0];
-  if (!isNaN(number) && number <= 100 && number >= 1) {
-    await message.delete();
-    switch (args[1].toLowerCase()) {
-      case "users":
-        {
-          if (!args[2])
-            return message.channel.send({
-              coontent:
-                "Mention or put the ID of the people whom you want their messages to be deleted.\n`purge users <number> <mentions>`",
-            });
-          const authors = message.mentions.users.size
-            ? message.mentions.users.keyArray()
-            : args.slice(2);
-          const messages = await message.channel.messages.fetch(
-            {
-              limit: number,
-            },
-            false
-          );
-          messages.sweep((m) => !authors.includes(m.author.id));
-          await message.channel.bulkDelete(messages, true);
-          const thing = await message.channel.send(
-            messages.size + " messages were successfully deleted"
-          );
-          thing.delete({ timeout: 5000 });
-        }
-        break;
-      case "bots":
-        {
-          const messages = await message.channel.messages.fetch(
-            {
-              limit: number,
-            },
-            false
-          );
-          messages.sweep((m) => !m.author.bot);
-          await message.channel.bulkDelete(messages, true);
-          const thing = await message.channel.send(
-            messages.size + " messages were successfully deleted"
-          );
-          thing.delete({ timeout: 5000 });
-        }
-        break;
-      case "attachments":
-        {
-          const messages = await message.channel.messages.fetch(
-            {
-              limit: number,
-            },
-            false
-          );
-          messages.sweep((m) => !m.attachments.first());
-          await message.channel.bulkDelete(messages, true);
-          const thing = await message.channel.send(
-            messages.size + " messages were successfully deleted"
-          );
-          thing.delete({ timeout: 5000 });
-        }
-        break;
-      case "embeds":
-        {
-          const messages = await message.channel.messages.fetch(
-            {
-              limit: number,
-            },
-            false
-          );
-          messages.sweep((m) => !m.embeds[0]);
-          await message.channel.bulkDelete(messages, true);
-          const thing = await message.channel.send(
-            messages.size + " messages were successfully deleted"
-          );
-          thing.delete({ timeout: 5000 });
-        }
-        break;
-      case "with":
-        {
-          const messages = await message.channel.messages.fetch(
-            {
-              limit: number,
-            },
-            false
-          );
-          messages.sweep(
-            (m) => !new RegExp(args.slice(2).join(" "), "gmi").test(m.content)
-          );
-          await message.channel.bulkDelete(messages, true);
-          const thing = await message.channel.send(
-            messages.size + " messages were successfully deleted"
-          );
-          thing.delete({ timeout: 5000 });
-        }
-        break;
-      default: {
-        if (args[2]) return message.channel.send("Invalid mode!");
-        await message.channel.bulkDelete(number, true);
-      }
-    }
-  } else if (isNaN(number)) {
-    message.channel.send("That isn't a number!");
-  } else if (number > 100) {
-    message.channel.send("I can only delete 100 messages at a time.");
-  } else if (number < 1) {
-    message.channel.send("I don't think 0 or less is what you want to delete.");
+  const number = parseInt(args[0]);
+  if (number < 1 || number > 100)
+    return message.channel.send(client.lang.commands.clear.invalid_number);
+
+  await message.delete().catch(() => {});
+
+  const messages = await message.channel.messages.fetch({ limit: number });
+
+  const filter = (msg) => {
+    const ids = message.mentions.users.map(u => u.id);
+    const hasMentions = ids.length > 0;
+
+    const hasBots = args.includes("bot") || args.includes("bots");
+    const hasAttachments = args.includes("attachment") || args.includes("attachments");
+    const hasEmbeds = args.includes("embed") || args.includes("embeds");
+
+    const textIndex = args.findIndex(a => a.toLowerCase() === "with");
+    const textToMatch = textIndex !== -1 ? args.slice(textIndex + 1).join(" ") : null;
+
+    return (
+      (!hasMentions || ids.includes(msg.author.id)) &&
+      (!hasBots || msg.author.bot) &&
+      (!hasAttachments || msg.attachments.size > 0) &&
+      (!hasEmbeds || msg.embeds.length > 0) &&
+      (!textToMatch || msg.content.toLowerCase().includes(textToMatch.toLowerCase()))
+    );
+  };
+  const filtered = messages.filter(filter);
+
+  const deleted = await message.channel.bulkDelete(filtered, true).catch(() => null);
+
+  if (!deleted || deleted.size === 0) {
+    return message.channel.send(client.lang.commands.clear.no_messages);
   }
+
+  const confirm = await message.channel.send(client.lang.commands.clear.cleared.replace(/{number}/gi, deleted.size));
+  setTimeout(() => confirm.delete().catch(() => {}), 5000);
+
 };
+
 module.exports.help = {
   name: "clear",
+  description: "Deletes messages from the current channel, with filters.\n\n**Usage:**\n`$clear <amount> [filters]`\n\n**Filters:**\n`bot` - Deletes only messages from bots.\n`attachment` - Deletes only messages with attachments.\n`embed` - Deletes only messages with embeds.\n`with <text>` - Deletes only messages that contain the specified text.",
   aliases: ["purge", "prune", "bulkdelete"],
-  description: "Borra los mensajes de un canal",
 };
+
 module.exports.requirements = {
-  userPerms: [],
-  clientPerms: [],
+  userPerms: [PermissionsBitField.Flags.ManageMessages],
+  clientPerms: [PermissionsBitField.Flags.ManageMessages],
   ownerOnly: false,
 };

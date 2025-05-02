@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-module.exports.run = (client, message) => {
+module.exports.run = async (client, message) => {
   const guild = message.guild,
     features = {
       ANIMATED_ICON: "Icono animado",
@@ -48,10 +48,11 @@ module.exports.run = (client, message) => {
       amsterdam: "Amsterdam :flag_nl:",
       india: "India :flag_in:",
     },
+    guildOwner = await message.guild.members.fetch(guild.ownerId),
     embed = new EmbedBuilder()
-      .setAuthor(guild.name, guild.iconURL({ dynamic: true }))
+      .setAuthor({ name: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
       .addFields({
-        name: "_Dueño del Servidor_", value: guild.owner.user.tag, inline: true,
+        name: "_Dueño del Servidor_", value: guildOwner, inline: true,
         name: "_ID_", value: guild.id, inline: true,
         name: "_Region_", value: region[guild.region], inline: true,
         name: "_Miembros_", value: guild.memberCount.toLocaleString(), inline: true ,

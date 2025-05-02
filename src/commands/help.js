@@ -4,7 +4,9 @@ module.exports.run = (client, message, args) => {
   if (args[0] && client.commands.get(args[0])) {
     const cmd = client.commands.get(args[0]);
     embed
-      .setAuthor(`${cmd.help.name} | Help`, client.user.displayAvatarURL())
+      .setAuthor({
+        name: `${cmd.help.name} | Help`, value: client.user. displayAvatarURL({ extension: "png"})
+        })
       .setColor(0x00ffff)
       .setDescription(
         `**Name:** ${cmd.help.name}\n**Description:** ${cmd.help.description}`
@@ -12,13 +14,12 @@ module.exports.run = (client, message, args) => {
     return message.channel.send({ embeds: [embed] });
   }
   embed
-    .setAuthor(
-      `Help | ${client.user.username} `,
-      client.user.displayAvatarURL()
-    )
+    .setAuthor({
+      name: `Help | ${client.user.username} `, value: client.user.displayAvatarURL({ extension: "png" })
+})
     .setFooter({
-      text: `caffe-bot.herokuapp.com V ${require("../../package.json").version}`,
-      iconURL: client.user.displayAvatarURL({ dynamic: true })
+      text: `${process.env.URL} V${require("../../package.json").version}`,
+      iconURL: client.user.displayAvatarURL({ extension: "png" })
 })
     .setDescription(client.commands.map((cmd) => cmd.help.name).join(", "));
   return message.channel.send({ embeds: [embed] });

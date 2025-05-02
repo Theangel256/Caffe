@@ -1,6 +1,6 @@
 const { getMember } = require("../functions");
 const Canvas = require("canvas");
-const { MessageAttachment } = require("discord.js");
+const { AttachmentBuilder } = require("discord.js");
 module.exports.run = async (client, message, args) => {
   const member = getMember(message, args, false);
   if (!member) return message.channel.send(client.lang.no_user);
@@ -11,18 +11,18 @@ module.exports.run = async (client, message, args) => {
   const fondo = await Canvas.loadImage("https://i.imgur.com/j5gNEmh.jpg");
   ctx.drawImage(fondo, 10, 10, 1080, 970);
   const avatar = await Canvas.loadImage(
-    member.user.displayAvatarURL({ format: "png" })
+    member.user.displayAvatarURL({ extension: "png" })
   );
   ctx.drawImage(avatar, 570, 10, 515, 460);
   const avatar1 = await Canvas.loadImage(
-    message.author.displayAvatarURL({ format: "png" })
+    message.author.displayAvatarURL({ extension: "png" })
   );
   ctx.drawImage(avatar1, 570, 465, 515, 510);
-  const attachment = new MessageAttachment(
-    canvas.toBuffer(),
-    "rankcard.png"
+  const attachment = new AttachmentBuilder(
+    canvas.toBuffer(), 
+    { name: "drake.png" }
   );
-  message.channel.send(attachment);
+  message.channel.send({ files: [attachment] });
 };
 module.exports.help = {
   name: "drake",

@@ -1,4 +1,5 @@
 const { getMember } = require("../functions");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 module.exports.run = (client, message, args) => {
   const usuario = getMember(message, args, true),
     color = {
@@ -14,16 +15,16 @@ module.exports.run = (client, message, args) => {
       offline: "Desconectado/invisible",
     };
   const permissions = [];
-  if (usuario.permissions.has("ADMINISTRATOR")) {
+  if (usuario.permissions.has(PermissionsBitField.Flags.Administrator)) {
     permissions.push("Administrator");
   }
-  if (usuario.permissions.has("MANAGE_ROLES")) {
+  if (usuario.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
     permissions.push("Manage Roles");
   }
-  if (usuario.permissions.has("KICK_MEMBERS")) {
+  if (usuario.permissions.has(PermissionsBitField.Flags.KickMember)) {
     permissions.push("Kick Members");
   }
-  if (usuario.permissions.has("BAN_MEMBERS")) {
+  if (usuario.permissions.has(PermissionsBitField.Flags.BanMembers)) {
     permissions.push("Ban Members");
   }
   if (usuario.permissions.has("MANAGE_NICKNAMES")) {
@@ -56,12 +57,12 @@ module.exports.run = (client, message, args) => {
   const embed = new EmbedBuilder()
     .setColor(color[usuario.presence.status])
     .setDescription(`Informacion del usuario ${usuario.user.username}`)
-    .setThumbnail(usuario.user.displayAvatarURL({ dynamic: true }))
+    .setThumbnail(usuario.user.displayAvatarURL({ extension: "png" }))
     .setTimestamp()
-    .setAuthor(
-      usuario.user.tag,
-      usuario.user.displayAvatarURL({ dynamic: true })
-    )
+    .setAuthor({
+      name: usuario.user.tag,
+      iconURL: usuario.user.displayAvatarURL({ extension: "png" })
+    })
     .addFields({
       name: "「:bust_in_silhouette: 」Nombre", value: usuario.user.tag, inline: true,
       name: "「:page_facing_up: 」Apodo", value: usuario.nickname || "Ninguno", inline: true,

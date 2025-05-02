@@ -36,7 +36,7 @@ module.exports = async (client, channel) => {
     .setTimestamp()
     .setFooter(
       `•${channel.guild.name}•`,
-      client.user.displayAvatarURL({ dynamic: true }),
+      client.user.displayAvatarURL({ extension: "png" }),
       true
     );
   if (canal) return canal.send(logEmbed);

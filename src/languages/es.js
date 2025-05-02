@@ -51,18 +51,19 @@ module.exports = {
     },
     clear: {
       no_args:
-        "**:grey_exclamation: |** Ingrese el número de mensajes para eliminar",
-      messages: {
-        max: "**:exclamation: |** Solo puedo borrar mensajes con menos de 2 semanas de antigüedad",
-        unknown: "**:exclamation: |** No hay mensajes para borrar",
-      },
+        "**❕ |** Ingrese el número de mensajes para eliminar",
+      invalid_number: "**❌ |** El número debe estar entre 1 y 100.",
+      no_messages: "**❌ |** No se pudieron borrar mensajes. Asegúrate de que no sean demasiado antiguos.",
+      cleared: "**✅ |** Se eliminaron {number} mensajes.",
+      usage: "Borra mensajes del canal actual, con filtros.\n\n**Uso:**\n`{prefix}clear <cantidad> [filtros]`\n\n**Filtros:**\n`bot` - Borra solo mensajes de bots.\n`attachment` - Borra solo mensajes con archivos adjuntos.\n`embed` - Borra solo mensajes con embeds.\n`with <texto>` - Borra solo mensajes que contengan el texto especificado."
     },
     cry: {
       no_user: "{user.username} Esta triste 😢",
       user: "{author.username} Esta triste con {user.username} 😢",
     },
     daily: {
-      sucess: "Recompensa diaria reclamada **{total}**",
+      sucess: "Recompensa diaria reclamada **{total}**",    
+      wait: "**🎁 |** Ya has reclamado tu recompensa diaria, vuelve en **{duration}**",
     },
     divorce: {
       nothing: "**:grey_exclamation: |** No estás casado con nadie :(",

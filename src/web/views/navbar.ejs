@@ -2,7 +2,7 @@
   <a class="navbar-brand" href="/">
     <img
       class="responsive-img circle"
-      src="<%= bot.user ? bot.user.displayAvatarURL() : null %>"
+      src="<%= bot.user ? bot.user.displayAvatarURL({ extension: "png" }) : null %>"
       width="60"
       height="60"
       style="border: 1px; border-radius: 150px"
