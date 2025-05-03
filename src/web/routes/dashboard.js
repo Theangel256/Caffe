@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { auth } = require("../../functions");
+const { auth, getOrCreateDB } = require("../../functions");
 const guildSystem = require("../../models/guilds");
+const { ChannelType, PermissionFlagsBits } = require("discord.js");
 
 router
   .get("/", auth, async (req, res) => {
     const guilds = req.user.guilds.filter((p) => (p.permissions & 8) === 8);
     const userAvatarURL = req.isAuthenticated()
-      ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({
-          dynamic: true,
-        })
+      ? (await req.bot.users.fetch(req.user.id)).displayAvatarURL({ extension: "png", })
       : null;
     res.render("dashboard", {
       bot: req.bot,
@@ -23,114 +22,90 @@ router
   })
   .get("/:id", auth, async (req, res) => {
     const idserver = req.params.id;
-    const guild = req.bot.guilds.cache.get(idserver);
+    const guild = req.bot.guilds.cache.get(idserver) || await req.bot.guilds.fetch(idserver).catch(() => null);
     const DsInv = `oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code&guild_id=${idserver}`
     if (!guild)
       return res.redirect('https://discord.com/' + DsInv);
-    const userPermission = (
-      await guild.members.fetch(req.user.id)
-    ).permissions.has("ADMINISTRATOR");
+    const userPermission = (await guild.members.fetch(req.user.id)).permissions.has(PermissionFlagsBits.Administrator); 
     if (!userPermission) return res.redirect("/error404");
-    const msgDocument = await guildSystem
-      .findOne({
-        guildID: idserver,
-      })
-      .catch((err) => console.log(err));
-    if (!msgDocument) {
-      try {
-        const dbMsg = await new guildSystem({
-          guildID: idserver,
-          prefix: process.env.prefix,
-          language: "en",
-          role: false,
-          kick: false,
-          ban: false,
-        });
-        var db = await dbMsg.save();
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      db = msgDocument;
-    }
+      const db = await getOrCreateDB(guildSystem, { guildID: idserver });
+      if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
+      const bans = await guild.bans.fetch();
+
     res.render("guilds", {
       title: "Caffe - Dashboard",
       login: req.isAuthenticated() ? true : false,
       textLogin: req.isAuthenticated() ? req.user.username : "Login",
       user: req.user,
       guild,
+      ChannelType,
+      PermissionFlagsBits,
       guildSystem,
       db,
-      bans: guild.me.permissions.has("BAN_MEMBERS")
+      bans: guild.members.me.permissions.has(PermissionFlagsBits.BanMembers)
         ? await guild.bans.fetch().then((x) => x.size)
         : false,
       bot: req.bot,
     });
   })
   .post("/:id/prefix", auth, async (req, res) => {
-    const idserver = req.params.id,
-      newPrefix = req.body.newPrefix;
-    if (newPrefix || newPrefix.lenght !== 0) {
-      await guildSystem.updateOne({ prefix: { $eq: newPrefix } });
-      res.redirect(`/dashboard/${idserver}`);
+    const idserver = req.params.id;
+    const newPrefix = req.body.newPrefix;
+  
+    if (newPrefix && newPrefix.length !== 0) {
+      await guildSystem.updateOne({ guildID: idserver }, { $set: { prefix: newPrefix } });
     }
+    res.redirect(`/dashboard/${idserver}`);
   })
   .post("/:id/lang", auth, async (req, res) => {
     const idserver = req.params.id;
     const lang = req.body.language;
-    if (lang || lang !== "no_select") {
-      await guildSystem.updateOne({ language: { $eq: lang }});
+    if (lang && lang !== "no_select") {
+      await guildSystem.updateOne({ guildID: idserver },{ $set: { language: lang } });
       res.redirect(`/dashboard/${idserver}`);
+    } else {
+      res.redirect(`/dashboard/${idserver}`); // o maneja el error según tu lógica
     }
   })
   .post("/:id/welcome", auth, async (req, res) => {
     const idserver = req.params.id;
     const id_channel = req.body.channel_ID;
-    const msgDocument = await guildSystem
-      .findOne({
-        guildID: idserver,
-      })
-      .catch((err) => console.log(err));
-    const { channelWelcome } = msgDocument;
+    const db = await getOrCreateDB(guildSystem, { guildID: idserver }, { channelWelcome: "" });
+    if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
+  
     if (!id_channel || id_channel === "no_select") {
-      await guildSystem.deleteOne({ channelWelcome: { $eq: channelWelcome } });
+      await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelWelcome: "" } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ channelWelcome: { $eq: id_channel } });
+      await guildSystem.updateOne({ guildID: idserver }, { $set: { channelWelcome: id_channel } });
       res.redirect(`/dashboard/${idserver}`);
     }
   })
   .post("/:id/goodbye", auth, async (req, res) => {
     const idserver = req.params.id;
     const id_channel = req.body.channelID;
-    const msgDocument = await guildSystem
-      .findOne({
-        guildID: idserver,
-      })
-      .catch((err) => console.log(err));
-    const { channelGoodbye } = msgDocument;
+    const db = await getOrCreateDB(guildSystem, { guildID: idserver }, { channelGoodbye: "" });
+    if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
+  
     if (!id_channel || id_channel === "no_select") {
-      await guildSystem.deleteOne({ channelGoodbye: { $eq: channelGoodbye } });
+      await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelGoodbye: "" } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ channelGoodbye: { $eq: id_channel } });
+      await guildSystem.updateOne({ guildID: idserver }, { $set: { channelGoodbye: id_channel } });
       res.redirect(`/dashboard/${idserver}`);
     }
   })
   .post("/:id/logs", auth, async (req, res) => {
     const idserver = req.params.id;
     const logs_ID = req.body.logs_ID;
-    const msgDocument = await guildSystem
-      .findOne({
-        guildID: idserver,
-      })
-      .catch((err) => console.log(err));
-    const { channelLogs } = msgDocument;
+    const db = await getOrCreateDB(guildSystem, { guildID: idserver }, { channelLogs: "" });
+    if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
+  
     if (!logs_ID || logs_ID === "no_select") {
-      await guildSystem.deleteOne({ channelLogs: { $eq: channelLogs } });
+      await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelLogs: "" } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ channelLogs: { $eq: logs_ID } });
+      await guildSystem.updateOne({ guildID: idserver }, { $set: { channelLogs: logs_ID } });
       res.redirect(`/dashboard/${idserver}`);
     }
   })

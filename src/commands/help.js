@@ -1,34 +1,37 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { PermissionsBitField } = require("discord.js");
+
 module.exports.run = (client, message, args) => {
-  const embed = new EmbedBuilder();
+  let embed = {
+    color: 0x00ffff,
+    author: {
+      icon_url: client.user.displayAvatarURL({ extension: "png" })
+    },
+    description: ""
+  };
+
   if (args[0] && client.commands.get(args[0])) {
     const cmd = client.commands.get(args[0]);
-    embed
-      .setAuthor({
-        name: `${cmd.help.name} | Help`, value: client.user. displayAvatarURL({ extension: "png"})
-        })
-      .setColor(0x00ffff)
-      .setDescription(
-        `**Name:** ${cmd.help.name}\n**Description:** ${cmd.help.description}`
-      );
-    return message.channel.send({ embeds: [embed] });
-  }
-  embed
-    .setAuthor({
-      name: `Help | ${client.user.username} `, value: client.user.displayAvatarURL({ extension: "png" })
-})
-    .setFooter({
+
+    embed.author.name = `${cmd.help.name} | Help`;
+    embed.description = `**Name:** ${cmd.help.name}\n**Description:** ${cmd.help.description}`;
+  } else {
+    embed.author.name = `Help | ${client.user.username}`;
+    embed.footer = {
       text: `${process.env.URL} V${require("../../package.json").version}`,
-      iconURL: client.user.displayAvatarURL({ extension: "png" })
-})
-    .setDescription(client.commands.map((cmd) => cmd.help.name).join(", "));
+      icon_url: client.user.displayAvatarURL({ extension: "png" })
+    };
+    embed.description = client.commands.map((cmd) => cmd.help.name).join(", ");
+  }
+
   return message.channel.send({ embeds: [embed] });
 };
+
 module.exports.help = {
   name: "help",
   aliases: ["cmds", "commands"],
   description: "obten ayuda de cuantos y cuales son los comandos de Caffe!",
 };
+
 module.exports.requirements = {
   userPerms: [],
   clientPerms: [

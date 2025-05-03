@@ -46,10 +46,10 @@ const limiter = rateLimit({
         saveUninitialized: true,
         cookie: {
             secure: true,
-            maxAge: 3600 * 24 * 60 * 60 * 60 * 24,
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 días en ms
             sameSite: 'lax',
             path: '/',
-            domain: process.env.URL.substr(8),
+            domain: new URL(process.env.URL).hostname,
         },
         store: MongoStore.create({ 
             mongoUrl: process.env.mongoDB_URI,
@@ -59,6 +59,10 @@ const limiter = rateLimit({
     }));
     app.use(passport.initialize())
     .use(passport.session())
+    .use((err, req, res, next) => {
+        console.error("Passport.JS Error: " + err.stack);
+        res.status(500).render('error', { message: 'Ocurrió un error interno.' });
+      })
     .use(function (req, res, next) {
         if(!req.session) {
             return next(new Error('Oh no')) //handle error
@@ -69,7 +73,7 @@ const limiter = rateLimit({
     .use('/', require('./web/routes/index'))
     .use('/dashboard', require('./web/routes/dashboard'))
     .use('/leaderboard', require('./web/routes/leaderboard'))
-    .use('error404', require('./web/routes/error'))
+    .use('/error404', require('./web/routes/error'))
     .get('*', function (req, res) {
         res.redirect('/error404');
     })

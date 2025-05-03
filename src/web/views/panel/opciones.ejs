@@ -45,9 +45,12 @@
           <div class="form-group">
             <select id="select-channel" name="channel_ID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un canal.</option>
-              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(bot.user).has('SEND_MESSAGES')).map(lc => {%>
-              <option value="<%=lc.id %>">#<%=lc.name%></option>
-              <% }); %>
+              <% guild.channels.cache
+              .filter(ch => ch.type === ChannelType.GuildText)
+              .filter(ch => ch.permissionsFor(bot.user)?.has(PermissionFlagsBits.SendMessages))
+              .map(lc => { %>
+              <option value="<%= lc.id %>">#<%= lc.name %></option>
+            <% }); %>
             </select>
             <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
               name="action">Guardar
@@ -72,9 +75,12 @@
           <div class="form-group">
             <select id="select-channel" name="channelID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un canal.</option>
-              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(bot.user).has('SEND_MESSAGES')).map(lc => {%>
-              <option value="<%=lc.id %>">#<%=lc.name%></option>
-              <% }); %>
+              <% guild.channels.cache
+              .filter(ch => ch.type === ChannelType.GuildText)
+              .filter(ch => ch.permissionsFor(bot.user)?.has(PermissionFlagsBits.SendMessages))
+              .map(lc => { %>
+              <option value="<%= lc.id %>">#<%= lc.name %></option>
+            <% }); %>
             </select>
             <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
               name="action">Guardar
@@ -99,9 +105,15 @@
           <div class="form-group">
             <select id="select-channel" name="logs_ID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un canal.</option>
-              <% guild.channels.cache.filter(ch => ch.type === 'text').filter(p => p.permissionsFor(bot.user).has('SEND_MESSAGES')).map(lc => {%>
-              <option value="<%=lc.id %>">#<%=lc.name%></option>
-              <% }); %>
+              <% guild.channels.cache
+              .filter(ch => ch.type === ChannelType.GuildText)
+              .filter(ch => {
+                const perms = ch.permissionsFor(bot?.user);
+                return perms?.has(PermissionFlagsBits.SendMessages);
+              })
+              .map(lc => { %>
+                <option value="<%= lc.id %>">#<%= lc.name %></option>
+            <% }); %>
             </select>
             <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
               name="action">Guardar
@@ -128,8 +140,8 @@
             <select id="select-channel" name="rol_ID" class="custom-select">
               <option value="no_select" disabled selected>Seleccione un rol.</option>
               <% guild.roles.cache.filter(rol => rol.id !== guild.id).map(r => { %>
-              <% if(r.comparePositionTo(guild.me.roles.highest) > 0) return; %>
-              <option value="<%=r.id %>"><%=r.name%></option>
+                <% if (r.comparePositionTo(guild.members.me.roles.highest) > 0) return; %>
+                <option value="<%= r.id %>"><%= r.name %></option>
               <% }); %>
             </select>
             <div class="input-field col s12">

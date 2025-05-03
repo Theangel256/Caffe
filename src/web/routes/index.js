@@ -26,16 +26,19 @@ router
     }
   )
   .get("/logout", (req, res) => {
-    req.logout();
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/');
+    });
     res.redirect("/");
   })
   .get("/discord", (req, res) => {
     res.redirect("https://discord.gg/s3wPw53Qxg");
   })
   .get("/add", (req, res) => {
-    res.redirect(
-      `https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code`
-    );
+    res.redirect(`https://discord.com/oauth2/authorize?client_id=${req.bot.user.id}&scope=bot&permissions=8&response_type=code`);
   });
 /*
 	.post('/github', (req, res) => {

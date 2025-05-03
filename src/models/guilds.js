@@ -11,11 +11,11 @@ const schema = new Schema({
   rolauto: { type: String },
   language: { type: String, default: "en", required: true },
   channelGoodbye: { type: String },
-  kick: { type: Boolean, required: true },
+  kick: { type: Boolean, default: false, required: true },
   warningKickCounter: { type: Number, default: 0 },
-  ban: { type: Boolean, required: true },
+  ban: { type: Boolean, default: false, required: true },
   warningBanCounter: { type: Number, default: 0 },
-  role: { type: Boolean, required: true },
+  role: { type: Boolean, default: false, required: true },
   warningRoleCounter: { type: Number, default: 0 },
 });
 

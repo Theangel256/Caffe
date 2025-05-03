@@ -1,3 +1,4 @@
+const { PermissionFlagsBits, EmbedBuilder, Colors } = require("discord.js");
 const guildSystem = require("../models/guilds");
 module.exports = async (client, message) => {
   const msgDocument = await guildSystem
@@ -25,45 +26,42 @@ module.exports = async (client, message) => {
   const { channelLogs } = dbMsgModel;
   const logginChannel = client.channels.resolve(channelLogs);
   if (!logginChannel) return;
-  if (!message.guild.member(client.user).permissions.has("VIEW_AUDIT_LOG"))
-    return;
-  console
-    .log(
-      message.guild
-        .fetchAuditLogs({ type: "MESSAGE_DELETE" })
-        .then((audit) => audit.entries.first())
-    )
-    .catch((e) => console.log(e));
+  if (!message.guild.members.me.permissions.has(PermissionFlagsBits.ViewAuditLog)) return console.log("No permissions to view audit logs");
+  try {
+    const audit = await message.guild.fetchAuditLogs({ type: 72 }); // 72 = Message Delete
+    const entry = audit.entries.first();
   let user = "";
-  if (
-    entry.extra.channel.id === message.channel.id &&
-    entry.target.id === message.author.id &&
-    entry.createdTimestamp > Date.now() - 5000 &&
-    entry.extra.count >= 1
-  ) {
-    user = entry.executor;
+  if (entry && entry.extra && entry.extra.channel && entry.target) {
+    if (entry.extra.channel.id === message.channel.id) {
+      if (entry.target.id === message.author.id &&
+          entry.createdTimestamp > Date.now() - 5000 &&
+          entry.extra.count >= 1) {
+        user = entry.executor;  
+      } else if (entry.target.id === client.user.id) {
+        user = entry.executor; 
+      } else {
+        user = message.author;
+      }
+    } else {
+      user = message.author;
+    }
   } else {
+    console.log("Audit entry does not have the expected properties:", entry);
     user = message.author;
   }
   const embed = new EmbedBuilder()
     .setTitle("**「:wastebasket:」** Mensaje Borrado")
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
-    .setAuthor(
-      message.author.tag,
-      message.author.displayAvatarURL({ extension: "png" })
-    )
-    .setFooter(
-      `ID: ${message.author.id}`,
-      message.author.displayAvatarURL({ extension: "png" })
-    )
+    .setAuthor({ name: message.author.username + "#" + message.author.discriminator, iconURL: message.author.displayAvatarURL({ extension: "png" }) })
+    embed.setFooter({text: `ID: ${message.author.id}`, iconURL: message.author.displayAvatarURL({ extension: "png" }) })
     .setTimestamp()
-    .setColor("RED")
-    .addField("En", message.channel, true);
+    .setColor(Colors.Red)
+    .addFields({ name: "En", value: message.channel.toString(), inline: true });
   if (!user.bot) {
-    embed.addField("Por", `<@${user.id}>`, true);
+    embed.addFields({ name: "Por", value: `<@${user.id}>`, inline: true });
   }
   if (message.content) {
-    embed.addField("Mensaje", message.content, true);
+    embed.addFields({ name: "Mensaje", value: message.content, inline: true });
   }
   if (message.attachments.size > 0) {
     const Attachs = message.attachments.array();
@@ -74,4 +72,7 @@ module.exports = async (client, message) => {
       logginChannel.send({ embeds: [embed] });
     });
   }
+} catch (e) {
+  console.log("Error fetching audit logs:", e);
+}
 };
