@@ -157,18 +157,22 @@ module.exports.run = async (client, message, args) => {
     if (!member) return message.channel.send("Invalid member!");
     const warns = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: message.author.id });
     if (!warns) return message.channel.send(client.lang.dbErrorMessage);
+    const { warnings, reasons } = warns;
+    const newWarnings = warnings + 1;
+    const reason = args.slice(1).join(" ") || "Sin razón especificada";
     try {
-      const { warnings } = warns;
-      const newWarnings = warnings + 1;
-      await warns.updateOne({ warnings: newWarnings });
-      const reason = args.slice(1).join(" ");
-      const dmMessage = reason
-      ? `You've been warned on ${message.guild.name} with reason: ${reason}. You have ${newWarnings} warning(s).`
+      await warns.updateOne({
+        warnings: newWarnings,
+        reasons: [...reasons, reason],
+      });
+      const dmMessage = warns.reasons.length > 0
+      ? `You've been warned on ${message.guild.name} with reason: ${warns.reasons[warns.reasons.length - 1]}. You have ${newWarnings} warning(s).`
       : `You've been warned on ${message.guild.name}. You have ${newWarnings} warning(s).`;
-      
-      const publicMessage = reason
-      ? `I've warned ${member.user.tag} with reason: ${reason}. They now have ${newWarnings} warnings.`
+  
+      const publicMessage = warns.reasons.length > 0
+      ? `I've warned ${member.user.tag} with reason: ${warns.reasons[warns.reasons.length - 1]}. They now have ${newWarnings} warnings.`
       : `I've warned ${member.user.tag}. They now have ${newWarnings} warnings.`;
+
       try { await member.send(dmMessage); } catch (err) { console.warn(`No se pudo enviar DM a ${member.user.tag}: ${err.message}`);}
       message.channel.send(publicMessage); 
       const { role, roletime, roleid, kick, kicktime, ban, bantime } = guilds;
@@ -190,8 +194,9 @@ module.exports.run = async (client, message, args) => {
             .ban({ reason: "Too many warnings" })
             .catch(new Error("Missing Permissions"));
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
+      return message.channel.send(client.lang.dbErrorMessage);
     }
   }
 };

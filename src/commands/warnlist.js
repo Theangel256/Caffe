@@ -9,11 +9,13 @@ module.exports.run = async (client, message, args) => {
   if (!warnList || warnList.length === 0) {
     return message.channel.send("No hay ningún usuario sancionado.");
   }
-  const usuarios = warnList.map(warnDoc => {
-    const lastReason = Array.isArray(warnDoc.reasons) && warnDoc.reasons.length > 0
-      ? warnDoc.reasons[warnDoc.reasons.length - 1]
-      : "Sin razón especificada";
-    return [`<@${warnDoc.userID}>`, warnDoc.warnings, lastReason];
+    const usuarios = warnList.map((warnDoc) => {
+    const allReasons = warnDoc.reasons ? warnDoc.reasons.join(", ") : "Sin razón especificada";
+    return [
+      `<@${warnDoc.userID}>`,
+      warnDoc.warnings,
+      allReasons
+    ];
   });
   usuarios.sort((a, b) => b[1] - a[1]);
 
