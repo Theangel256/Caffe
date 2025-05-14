@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: message.guild.id });
   const { channelLogs } = guildsDB;
   const logginChannel = client.channels.resolve(channelLogs);
-  if (!logginChannel) return;
+  if (!logginChannel) return console.log(logginChannel);
   if (!message.guild.members.me.permissions.has(PermissionFlagsBits.ViewAuditLog)) return console.log("No permissions to view audit logs");
   try {
     const audit = await message.guild.fetchAuditLogs({ type: 72 }); // 72 = Message Delete
