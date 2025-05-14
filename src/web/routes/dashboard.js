@@ -70,8 +70,7 @@ router
   .post("/:id/welcome", auth, async (req, res) => {
     const idserver = req.params.id;
     const id_channel = req.body.channel_ID;
-    const db = await getOrCreateDB(guildSystem, { guildID: idserver }, { channelWelcome: "" });
-    if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
+    await getOrCreateDB(guildSystem, { guildID: idserver });
   
     if (!id_channel || id_channel === "no_select") {
       await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelWelcome: "" } });
@@ -84,8 +83,7 @@ router
   .post("/:id/goodbye", auth, async (req, res) => {
     const idserver = req.params.id;
     const id_channel = req.body.channelID;
-    const db = await getOrCreateDB(guildSystem, { guildID: idserver }, { channelGoodbye: "" });
-    if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
+    await getOrCreateDB(guildSystem, { guildID: idserver });
   
     if (!id_channel || id_channel === "no_select") {
       await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelGoodbye: "" } });
@@ -98,8 +96,7 @@ router
   .post("/:id/logs", auth, async (req, res) => {
     const idserver = req.params.id;
     const logs_ID = req.body.logs_ID;
-    const db = await getOrCreateDB(guildSystem, { guildID: idserver }, { channelLogs: "" });
-    if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
+    await getOrCreateDB(guildSystem, { guildID: idserver });
   
     if (!logs_ID || logs_ID === "no_select") {
       await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelLogs: "" } });
@@ -112,17 +109,13 @@ router
   .post("/:id/rolauto", auth, async (req, res) => {
     const idserver = req.params.id;
     const id_role = req.body.rol_ID;
-    const msgDocument = await guildSystem
-      .findOne({
-        guildID: idserver,
-      })
-      .catch((err) => console.log(err));
-    const { rolauto } = msgDocument;
+    await getOrCreateDB(guildSystem, { guildID: idserver });
+  
     if (!id_role || id_role === "no_select") {
-      await guildSystem.deleteOne({ rolauto: { $eq: rolauto } });
+      await guildSystem.updateOne({ guildID: idserver }, { $unset: { rolauto: "" } });
       res.redirect(`/dashboard/${idserver}`);
     } else {
-      await guildSystem.updateOne({ rolauto: { $eq: id_role } });
+      await guildSystem.updateOne({ guildID: idserver }, { $set: { rolauto: id_role } });
       res.redirect(`/dashboard/${idserver}`);
     }
   });

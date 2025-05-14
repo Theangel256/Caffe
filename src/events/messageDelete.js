@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, EmbedBuilder, Colors } = require("discord.js");
 const guildSystem = require("../utils/models/guilds");
+const { getOrCreateDB } = require('../utils/functions.js');
 module.exports = async (client, message) => {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: message.guild.id });
   const { channelLogs } = guildsDB;
