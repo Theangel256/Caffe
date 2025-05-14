@@ -1,5 +1,5 @@
 const economySystem = require("../utils/models/users");
-const { getOrCreateDB } = require("../functions");
+const { getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
 
   const economy = await getOrCreateDB(economySystem, { userID: message.author.id });

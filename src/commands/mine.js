@@ -1,5 +1,5 @@
 const economySystem = require("../utils/models/users");
-const { getOrCreateDB } = require("../functions");
+const { getOrCreateDB } = require("../utils/functions.js");
 const { EmbedBuilder } = require("discord.js");
 module.exports.run = async (client, message) => {
   const reward = 150;

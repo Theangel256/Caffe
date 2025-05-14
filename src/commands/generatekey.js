@@ -1,4 +1,4 @@
-const { generateKey, getOrCreateDB } = require("../functions");
+const { generateKey, getOrCreateDB } = require("../utils/functions.js");
 const keySystem = require("../utils/models/keys");;
 module.exports.run = async (client, message) => {
   const license = generateKey();

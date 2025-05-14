@@ -1,5 +1,5 @@
 const keySystem = require("../utils/models/keys");;
-const { getOrCreateDB } = require("../functions");
+const { getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
   const keysDB = await getOrCreateDB(keySystem, { guildID: message.guild.id }, { enable: false, license: "" });
   if (!keysDB) return message.channel.send(client.lang.dbErrorMessage);

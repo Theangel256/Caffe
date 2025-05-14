@@ -1,4 +1,4 @@
-const { getMember } = require("../functions");
+const { getMember } = require("../utils/functions.js");
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 module.exports.run = (client, message, args) => {
   const member = getMember(message, args, true),

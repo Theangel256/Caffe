@@ -1,7 +1,7 @@
 const moment = require("moment");
 require("moment-duration-format");
 const economySystem = require("../utils/models/users");
-const { getOrCreateDB } = require("../functions");
+const { getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message) => {
   const lang = client.lang.commands.daily;
   const cooldown = 86400000; // 24 hours in milliseconds

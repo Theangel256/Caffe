@@ -1,7 +1,7 @@
 const levels = require("../utils/models/levels");;
 const Canvas = require("canvas");
 const { AttachmentBuilder } = require("discord.js");
-const { getMember, getRank } = require("../functions.js");
+const { getMember, getRank } = require("../utils/functions.js");
 Canvas.registerFont("Arial.ttf", { family: "Arial" });
 module.exports.run = async (client, message, args) => {
   const member = getMember(message, args, true);

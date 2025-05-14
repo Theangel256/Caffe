@@ -1,4 +1,4 @@
-const { getMember } = require("../functions");
+const { getMember } = require("../utils/functions.js");
 module.exports.run = (client, message, args) => {
   const member = getMember(message, args, false);
   let reason = args.slice(1).join(" ");

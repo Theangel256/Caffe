@@ -1,4 +1,4 @@
-const getRank = require("../functions");
+const getRank = require("../utils/functions.js");
 const warnMembers = require("../utils/models/warns");
 module.exports.run = async (client, message, args) => {
   const msgDocument = await warnMembers

@@ -1,6 +1,6 @@
 const moment = require("moment");
 require("moment-duration-format");
-const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions");
+const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions.js");
 const guilds = require("../utils/models/guilds");
 const { joinVoiceChannel } = require("@discordjs/voice");
 const { PermissionsBitField, EmbedBuilder, InteractionCallback } = require("discord.js");
