@@ -1,6 +1,6 @@
 const { readdirSync } = require('fs');
 const { join } = require('path');
-const cmdPath = join(__dirname, '.', 'commands');
+const cmdPath = join(__dirname, '..', 'commands');
 module.exports.run = (client) => {
     for (const command of readdirSync(cmdPath).filter((x) => x.endsWith('.js'))) {
         const prop = require(`${cmdPath}/${command}`);
@@ -11,7 +11,7 @@ module.exports.run = (client) => {
             }
         }
     }
-    const eventPath = join(__dirname, '.', 'events');
+    const eventPath = join(__dirname, '..', 'events');
     const eventFiles = readdirSync(eventPath);
     for (const event of eventFiles) {
         const prop = require(`${eventPath}/${event}`);
