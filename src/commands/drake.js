@@ -11,11 +11,11 @@ module.exports.run = async (client, message, args) => {
   const fondo = await Canvas.loadImage("https://i.imgur.com/j5gNEmh.jpg");
   ctx.drawImage(fondo, 10, 10, 1080, 970);
   const avatar = await Canvas.loadImage(
-    member.user.displayAvatarURL({ extension: "png" })
+    member.user.displayAvatarURL({ extension: "webp"})
   );
   ctx.drawImage(avatar, 570, 10, 515, 460);
   const avatar1 = await Canvas.loadImage(
-    message.author.displayAvatarURL({ extension: "png" })
+    message.author.displayAvatarURL({ extension: "webp"})
   );
   ctx.drawImage(avatar1, 570, 465, 515, 510);
   const attachment = new AttachmentBuilder(

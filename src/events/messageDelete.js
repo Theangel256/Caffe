@@ -52,8 +52,8 @@ module.exports = async (client, message) => {
   const embed = new EmbedBuilder()
     .setTitle("**「:wastebasket:」** Mensaje Borrado")
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
-    .setAuthor({ name: message.author.username + "#" + message.author.discriminator, iconURL: message.author.displayAvatarURL({ extension: "png" }) })
-    embed.setFooter({text: `ID: ${message.author.id}`, iconURL: message.author.displayAvatarURL({ extension: "png" }) })
+    .setAuthor({ name: message.author.username + "#" + message.author.discriminator, iconURL: message.author.displayAvatarURL({ extension: "webp"}) })
+    embed.setFooter({text: `ID: ${message.author.id}`, iconURL: message.author.displayAvatarURL({ extension: "webp"}) })
     .setTimestamp()
     .setColor(Colors.Red)
     .addFields({ name: "En", value: message.channel.toString(), inline: true });

@@ -34,7 +34,7 @@ module.exports = async (client, oldMessage, newMessage) => {
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     .setAuthor(
       oldMessage.author.tag,
-      oldMessage.author.displayAvatarURL({ extension: "png" })
+      oldMessage.author.displayAvatarURL({ extension: "webp"})
     )
     .setURL(
       `http://discordapp.com/channels/${oldMessage.guild.id}/${oldMessage.channel.id}/${oldMessage.id}`

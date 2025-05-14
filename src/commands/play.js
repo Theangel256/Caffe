@@ -1,6 +1,7 @@
 const ytdl = require("ytdl-core");
 const axios = require("axios");
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const voice = require("@discordjs/voice");
 module.exports.run = async (client, message, args) => {
   let msg;
   const queue = client.queue,
@@ -44,7 +45,7 @@ module.exports.run = async (client, message, args) => {
           videos.map((x) => `**${++index}. [${x.snippet.title}](https://www.youtube.com/watch?v=${x.id.videoId})**`)).join("\n")
         .setColor("BLUE")
         .setTimestamp()
-        .setFooter({ text: lang.embed.footer.replace(/{author.username}/gi, message.author.username), iconURL: message.author.displayAvatarURL({ extension: "png" })});
+        .setFooter({ text: lang.embed.footer.replace(/{author.username}/gi, message.author.username), iconURL: message.author.displayAvatarURL({ extension: "webp"})});
       msg = await message.channel.send({ embeds: [embed] });
       try {
         var response = await message.channel.awaitMessages({

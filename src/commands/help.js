@@ -4,7 +4,7 @@ module.exports.run = (client, message, args) => {
   let embed = {
     color: 0x00ffff,
     author: {
-      icon_url: client.user.displayAvatarURL({ extension: "png" })
+      icon_url: client.user.displayAvatarURL({ extension: "webp"})
     },
     description: ""
   };
@@ -18,7 +18,7 @@ module.exports.run = (client, message, args) => {
     embed.author.name = `Help | ${client.user.username}`;
     embed.footer = {
       text: `${process.env.URL} V${require("../../package.json").version}`,
-      icon_url: client.user.displayAvatarURL({ extension: "png" })
+      icon_url: client.user.displayAvatarURL({ extension: "webp"})
     };
     embed.description = client.commands.map((cmd) => cmd.help.name).join(", ");
   }

@@ -64,7 +64,7 @@ module.exports = async (client, message) => {
       })
       .setFooter({
         text: client.lang.events.message.isMentioned.footer + require("../../package.json").version,
-        iconURL: client.user.displayAvatarURL({ format: "jpg", dynamic: true })
+        iconURL: client.user.displayAvatarURL({ extension: "webp"})
       })
       .setTimestamp()
       .setColor(0x00ffff);

@@ -6,14 +6,9 @@ module.exports.run = (client, message, args) => {
   const queue = serverQueue.songs,
     page = parseInt(queue.length / 10),
     embed = new EmbedBuilder()
-      .setTitle(
-        client.lang.commands.queue.embed.title.replace(
-          /{guild.name}/gi,
-          message.guild.name
-        )
-      )
+      .setTitle(client.lang.commands.queue.embed.title.replace(/{guild.name}/gi, message.guild.name))
       .setColor("#0099ff")
-      .setThumbnail(message.guild.iconURL({ format: "jpg", dynamic: true }));
+      .setThumbnail(message.guild.iconURL({ extension: "webp"}));
   if (queue.length < 10) {
     const lista = [];
     for (let i = 0; i < queue.length; i++) {

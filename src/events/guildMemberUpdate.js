@@ -37,9 +37,9 @@ module.exports = async (client, oldMember, newMember) => {
       .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
       .setFooter(
         `ID: ${oldMember.user.id}`,
-        oldMember.user.displayAvatarURL({ extension: "png" })
+        oldMember.user.displayAvatarURL({ extension: "webp"})
       )
-      .setAuthor(user.tag, user.displayAvatarURL({ extension: "png" }));
+      .setAuthor(user.tag, user.displayAvatarURL({ extension: "webp"}));
     if (oldMember.nickname !== null) {
       msgChannel.addField("Nickname anterior", oldMember.nickname, true);
     }

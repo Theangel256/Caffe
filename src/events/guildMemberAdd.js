@@ -34,7 +34,7 @@ module.exports = async (client, member) => {
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     .setFooter(
       `ID: ${member.user.id}`,
-      member.user.displayAvatarURL({ extension: "png" })
+      member.user.displayAvatarURL({ extension: "webp"})
     )
     .setTimestamp()
     .addField("**「:boy: 」• Nombre**", member.user.username, true)

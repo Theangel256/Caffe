@@ -127,16 +127,17 @@ module.exports = {
       relations: "RELACIONES",
     },
     marry: {
-      married: "Ya estas casado con {esposaTag}",
+      already_married: "Ya estas casado con {esposaTag}",
       bot: "No puedes casarte con un bot ..",
       yourself: "No puedes casarte contigo mismo ..",
       another_married: "Ese usuario ya está casado/a.",
       request:
         ":mega:**{user.username}**, escribe **yes** o **no** para responder a la proposición de matrimonio de **{author.username}**\n:stopwatch: Esto expira en 2 minutos.",
-      sucess: "Felicidades! {author.username} se caso con {user.username}!",
+      sucess: "💍 ¡${author.username} y ${user.username} ahora están casados! 🎉",
       unsucess:
         "Uhh, {user.username} te rechazo cruel mente {author.username}!",
       expired: "**{user.username}** no respondio, la espera termino",
+      errorSaving: "❌ Hubo un error al guardar el matrimonio. Intenta nuevamente.",
     },
     move: {
       disconnected:

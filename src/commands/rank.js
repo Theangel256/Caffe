@@ -38,7 +38,7 @@ module.exports.run = async (client, message, args) => {
   ctx.fillStyle = "rgb(0, 0, 0)";
   ctx.fillRect(0, 0, 934, 282);
   const fondo = await Canvas.loadImage("https://i.imgur.com/fM93m9e.png");
-  const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: "png" }));
+  const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: "webp"}));
   ctx.drawImage(fondo, 10, 10, 914, 262);
 
   ctx.lineWidth = 3;

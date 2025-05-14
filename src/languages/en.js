@@ -125,16 +125,16 @@ module.exports = {
       relations: "RELATIONS",
     },
     marry: {
-      married: "You are already married to {esposaTag}",
+      already_married: "You are already married to {esposaTag}",
       bot: "You can't marry a bot ..",
       yourself: "You can't marry yourself ..",
       another_married: "That user is already married.",
       request:
         ":mega:**{user.username}** write **yes** or **no** to respond to the marriage proposal of **{author.username}**\n:stopwatch: This expires in 2 minutes.",
-      sucess:
-        "Congratulations! {author.username} got married with {user.username}!",
+      success: "💍 Congratulations! ${author.username} and ${user.username} are now officially married! 🎉",
       unsucess: "Uhh, {user.username} I cruelly reject you {author.username}",
       expired: "**{user.username}** did not answer, the wait is over",
+      errorSaving: "❌ Oops! Something went wrong while saving the marriage. Try again later.",
     },
     mute: {
       no_user: `You need to mention the user you want to mute, you also need to set the time:

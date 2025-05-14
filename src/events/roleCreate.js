@@ -33,7 +33,7 @@ module.exports = async (client, role) => {
     .setTimestamp()
     .setFooter(
       `•${role.guild.name}•`,
-      client.user.displayAvatarURL({ extension: "png" }),
+      client.user.displayAvatarURL({ extension: "webp"}),
       true
     );
   logginChannel.send(rolembed);

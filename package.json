@@ -1,6 +1,6 @@
 {
   "name": "caffe",
-  "version": "0.0.12-dev",
+  "version": "0.0.14-dev",
   "description": "A bot whitout feelings",
   "main": "src/index.js",
   "scripts": {

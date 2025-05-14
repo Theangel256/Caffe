@@ -1,22 +1,18 @@
-/*
-const db = require('quick.db');
+const economySystem = require("../models/users");
+const { getOrCreateDB } = require("../functions");
+const { EmbedBuilder } = require("discord.js");
 module.exports.run = async (client, message) => {
-	const economy = new db.table('economy');
-let consulta = await economy.fetch(`${message.author.id}`);
-if(!consulta) {
-	await economy.set(`${message.author.id}.money`, 200)
-	await economy.set(`${message.author.id}.oro`, 2)
-}
-economy.add(`${message.author.id}.money`, 50)
-economy.add(`${message.author.id}.oro`, 2)
-const embed = new EmbedBuilder()
-.setAuthor('Mina Rueca', message.author.displayAvatarURL({format:'jpg', dynamic:true}))
-.setDescription(`**${message.author.username}** has minado en la **Mina Rueca** y has obtenido:\n**Dinero:** 50\n**Oro:** 2`)
-.setColor(message.guild.me.displayHexColor);
-message.channel.send({ embeds: [embed] });
-
-}
-*/
+  const reward = 150;
+    const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
+    if (!economy) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+    economy.money += reward;
+    await economy.save();
+    const embed = new EmbedBuilder()
+    .setAuthor({ name: 'Mina Rueca', iconURL: message.author.displayAvatarURL({ extension: 'png' }) })
+    .setDescription(`**${message.author.username}** has minado en la **Mina Rueca** y has obtenido:\n**Dinero:** 50`)
+    .setColor(message.guild.members.me.displayHexColor);
+    return message.channel.send({ embeds: [embed] });
+};
 module.exports.help = {
   name: "mine",
   description: "trabaja duro para conseguir dinero!",

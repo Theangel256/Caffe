@@ -47,15 +47,17 @@ module.exports = {
       : String(args).toLowerCase().trim();
   
     if (!searchRaw && autor) return message.member;
+    if (!searchRaw) return null;
   
     const result =
       message.mentions?.members?.first?.() ||                  // Mención directa
       members.get(searchRaw) ||                                // ID directo
       members.find(member =>
+        (autor || member.id !== message.author.id) && (
         member.user.username.toLowerCase().includes(searchRaw) ||
         member.user.tag.toLowerCase().includes(searchRaw) ||
         member.displayName.toLowerCase().includes(searchRaw)
-      );
+      ));
   
     return result || (autor ? message.member : null);
   },
@@ -138,7 +140,7 @@ module.exports = {
           const { warnings } = warns;
           const newWarnings = warnings + 1;
           const embed = new EmbedBuilder()
-            .setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi,message.author.tag),message.author.displayAvatarURL({ extension: "png" }))
+            .setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi,message.author.tag),message.author.displayAvatarURL({ extension: "webp"}))
             .setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
           if (message.deletable) message.delete();
           await warns.updateOne({ warnings: newWarnings });

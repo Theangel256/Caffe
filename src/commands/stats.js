@@ -27,7 +27,7 @@ module.exports.run = async (client, message) => {
     main = new EmbedBuilder()
       .setAuthor(
         client.user.username,
-        client.user.displayAvatarURL({ extension: "png" })
+        client.user.displayAvatarURL({ extension: "webp"})
       )
       .setColor(0x00ffff)
       .setTimestamp()
@@ -56,7 +56,7 @@ module.exports.run = async (client, message) => {
         inline: true })
       .setFooter({
         text: client.lang.events.message.isMentioned.footer + modulos.version,
-        iconURL: client.user.displayAvatarURL({ format: "jpg", dynamic: true })
+        iconURL: client.user.displayAvatarURL({ extension: "webp"})
 });
   message.channel.send(main);
 };

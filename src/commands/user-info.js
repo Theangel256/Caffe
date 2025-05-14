@@ -57,11 +57,11 @@ module.exports.run = (client, message, args) => {
   const embed = new EmbedBuilder()
     .setColor(color[usuario.presence.status])
     .setDescription(`Informacion del usuario ${usuario.user.username}`)
-    .setThumbnail(usuario.user.displayAvatarURL({ extension: "png" }))
+    .setThumbnail(usuario.user.displayAvatarURL({ extension: "webp"}))
     .setTimestamp()
     .setAuthor({
       name: usuario.user.tag,
-      iconURL: usuario.user.displayAvatarURL({ extension: "png" })
+      iconURL: usuario.user.displayAvatarURL({ extension: "webp"})
     })
     .addFields({
       name: "「:bust_in_silhouette: 」Nombre", value: usuario.user.tag, inline: true,
