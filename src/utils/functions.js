@@ -103,29 +103,9 @@ module.exports = {
         message.content
       )
     ) {
-      const msgDocument = await warnMembers.findOne({guildID: message.guild.id,userID: message.author.id})
-        .catch((err) => console.log(err));
-      if (!msgDocument) {
-        try {
-          const dbMsg2 = await new warnMembers({
-            guildID: message.guild.id,
-            userID: message.author.id,
-            warnings: 0,
-            time: 0,
-          });
-          var warns = await dbMsg2.save();
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        warns = msgDocument;
-      }
-      const guilds = await guildSystem
-        .findOne({
-          guildID: message.guild.id,
-        })
-        .catch((err) => console.log(err));
-      if (warns) {
+      const warnsDB = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: message.author.id });
+      const guildsDB = await getOrCreateDB(guildSystem, { guildID: message.guild.id }); 
+      if (warnsDB) {
         try {
           const {
             channelLogs,
@@ -136,14 +116,14 @@ module.exports = {
             role,
             roletime,
             roleid,
-          } = guilds;
-          const { warnings } = warns;
+          } = guildsDB;
+          const { warnings } = warnsDB;
           const newWarnings = warnings + 1;
           const embed = new EmbedBuilder()
-            .setAuthor(client.lang.events.message.ant.warned.replace(/{author.tag}/gi,message.author.tag),message.author.displayAvatarURL({ extension: "webp"}))
+            .setAuthor({ name: client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), iconURL: message.author.displayAvatarURL({ extension: "webp" })})
             .setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
           if (message.deletable) message.delete();
-          await warns.updateOne({ warnings: newWarnings });
+          await warnsDB.updateOne({ warnings: newWarnings });
           message.channel.send({ embeds: [embed] });
           message.author.send(`You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`).catch(() => { null;});
           try {
@@ -162,25 +142,14 @@ module.exports = {
             console.error("Error al aplicar sanción por advertencias:", error.message);
           }
           const canal = client.channels.cache.get(channelLogs);
-          const embed2 = new EmbedBuilder()
+            const embed2 = new EmbedBuilder()
             .setColor("RED")
             .setDescription("**Warn**")
-            .addField(
-              "「:boy:」" + client.lang.events.message.ant.author,
-              message.author.tag
-            )
-            .addField(
-              "「:speech_balloon:」" + client.lang.events.message.ant.reason,
-              client.lang.events.message.ant.warn
-            )
-            .addField(
-              "「:closed_book:」" + client.lang.events.message.ant.warns,
-              warnings
-            )
-            .addField(
-              "「:fleur_de_lis:️」" + client.lang.events.message.ant.moderator,
-              "Bot"
-            );
+            .addFields(
+              { name: "「:boy:」" + client.lang.events.message.ant.author, value: message.author.tag },
+              { name: "「:speech_balloon:」" + client.lang.events.message.ant.reason, value: client.lang.events.message.ant.warn },
+              { name: "「:closed_book:」" + client.lang.events.message.ant.warns, value: warnings.toString() },
+              { name: "「:fleur_de_lis:️」" + client.lang.events.message.ant.moderator, value: "Bot" });
           if (!canal) return;
           canal.send({ embeds: [embed2] });
         } catch (error) {
@@ -194,27 +163,7 @@ module.exports = {
       const time = cooldownniveles.get(message.guild.id + message.author.id);
       if (Date.now() < time) return;
     }
-    const msgDocument = await levelSystem
-      .findOne({
-        guildID: message.guild.id,
-        userID: message.author.id,
-      })
-      .catch((err) => console.log(err));
-    if (!msgDocument) {
-      try {
-        const dbMsg = await new levelSystem({
-          guildID: message.guild.id,
-          userID: message.author.id,
-          xp: 1,
-          lvl: 1,
-        });
-        var levels = await dbMsg.save();
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      levels = msgDocument;
-    }
+    const levels = await getOrCreateDB(levelSystem, { guildID: message.guild.id, userID: message.author.id });
     console.log({
       guildID: message.guild.id,
       userID: message.author.id,

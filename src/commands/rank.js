@@ -1,4 +1,4 @@
-const levels = require("../models/levels");
+const levels = require("../utils/models/levels");;
 const Canvas = require("canvas");
 const { AttachmentBuilder } = require("discord.js");
 const { getMember, getRank } = require("../functions.js");

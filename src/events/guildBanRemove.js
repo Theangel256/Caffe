@@ -1,4 +1,4 @@
-const guildSystem = require("../models/guilds");
+const guildSystem = require("../utils/models/guilds");
 module.exports = async (client, guild, user) => {
   const msgDocument = await guildSystem
     .findOne({

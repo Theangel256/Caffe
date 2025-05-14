@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { getMember, getOrCreateDB } = require('../functions.js');
-const users = require("../models/users");
+const users = require("../utils/models/users");
 module.exports.run = async (client, message, args) => {
   const usersDB = await getOrCreateDB(users, { userID: message.author.id });
   if (!usersDB) return message.channel.send("I have an error while trying to access to the database, please try again later.");

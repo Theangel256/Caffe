@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { auth, getOrCreateDB } = require("../../functions");
-const guildSystem = require("../../models/guilds");
+const { auth, getOrCreateDB } = require("../../utils/functions");
+const guildSystem = require("../../utils/models/guilds");
 const { ChannelType, PermissionFlagsBits } = require("discord.js");
 
 router

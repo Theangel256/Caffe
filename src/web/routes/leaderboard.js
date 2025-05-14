@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const levels = require("../../models/levels");
+const levels = require("../../utils/models/levels");
 router.get("/:id", async (req, res) => {
   const idserver = req.params.id;
   const guild = req.bot.guilds.cache.get(idserver);

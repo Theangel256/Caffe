@@ -1,4 +1,4 @@
-const economySystem = require("../models/users");
+const economySystem = require("../utils/models/users");
 const { getOrCreateDB } = require("../functions");
 const { EmbedBuilder } = require("discord.js");
 module.exports.run = async (client, message) => {

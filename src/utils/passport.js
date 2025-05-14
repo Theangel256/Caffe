@@ -71,10 +71,10 @@ const limiter = rateLimit({
         req.bot = client;
         next();
     })
-    .use('/', require('./web/routes/index'))
-    .use('/dashboard', require('./web/routes/dashboard'))
-    .use('/leaderboard', require('./web/routes/leaderboard'))
-    .use('/error404', require('./web/routes/error'))
+    .use('/', require('../web/routes/index'))
+    .use('/dashboard', require('../web/routes/dashboard'))
+    .use('/leaderboard', require('../web/routes/leaderboard'))
+    .use('/error404', require('../web/routes/error'))
     .get('*', function (req, res) {
         res.redirect('/error404');
     })

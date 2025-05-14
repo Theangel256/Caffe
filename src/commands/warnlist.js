@@ -1,5 +1,5 @@
 const getRank = require("../functions");
-const warnMembers = require("../models/warns");
+const warnMembers = require("../utils/models/warns");
 module.exports.run = async (client, message, args) => {
   const msgDocument = await warnMembers
     .findOne({

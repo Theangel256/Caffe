@@ -1,36 +1,9 @@
-const guildSystem = require("../models/guilds");
-const warnMembers = require("../models/warns");
-const { getMember } = require("../functions.js");
+const guildSystem = require("../utils/models/guilds.js");
+const warnMembers = require("../utils/models/warns.js");
+const { getMember } = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
-  if (!args[0])
-    return message.channel.send(
-      "You haven't said anything. Put a member or `set`"
-    );
-  const msgDocument = await guildSystem
-    .findOne({
-      guildID: message.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        roletime: 0,
-        kick: false,
-        kicktime: 0,
-        ban: false,
-        bantime: 0,
-      });
-      var guilds = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    guilds = msgDocument;
-  }
+  if (!args[0]) return message.channel.send("You haven't said anything. Put a member or `set`");
+  const guilds = await getOrCreateDB(guildSystem, { guildID: message.guild.id }); 
   if (args[0].toLowerCase() === "set") {
     try {
       switch (args[1]) {
@@ -182,51 +155,20 @@ module.exports.run = async (client, message, args) => {
     // Aqui viene lo importante, warn <member> <reason>.
     var member = getMember(message, args.slice(0, 1), false);
     if (!member) return message.channel.send("Invalid member!");
-    const document = await warnMembers
-      .findOne({
-        guildID: message.guild.id,
-        userID: member.user.id,
-      })
-      .catch((err) => console.log(err));
-    if (!document) {
-      try {
-        const dbMsg = await new warnMembers({
-          guildID: message.guild.id,
-          userID: member.user.id,
-          warnings: 0,
-        });
-        var warns = await dbMsg.save();
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      warns = document;
-    }
-  }
-  if (warns) {
+    const warns = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: message.author.id });
+    if (!warns) return message.channel.send("I have an error while trying to access to the database, please try again later.");
     try {
       const { warnings } = warns;
       const newWarnings = warnings + 1;
       await warns.updateOne({ warnings: newWarnings });
-      if (args[2]) {
-        member
-          .send(
-            `"You've been warned on ${message.guild.name} with reason: ${args
-              .slice(2)
-              .join(" ")}. You have ${newWarnings} warning(s).`
-          )
+      if (args[2]) { member.send(`"You've been warned on ${message.guild.name} with reason: ${args.slice(2).join(" ")}. You have ${newWarnings} warning(s).`)
           .catch(() => {
             null;
           });
         // El único error que sepa yo salga de aquí es que si el usuario tenga DMs desactivados.
-        message.channel.send(
-          `I've warned ${member.user.tag} with reason: ${args
-            .slice(2)
-            .join(" ")}. They now have ${newWarnings} warnings.`
-        );
+        message.channel.send(`I've warned ${member.user.tag} with reason: ${args.slice(2).join(" ")}. They now have ${newWarnings} warnings.`);
       } else {
-        member
-          .send(
+        member.send(
             `You've been warned on ${message.guild.name}. You have ${newWarnings} warning(s).`
           )
           .catch(() => {
@@ -258,8 +200,6 @@ module.exports.run = async (client, message, args) => {
     } catch (error) {
       console.log(error);
     }
-  } else {
-    return message.channel.send("Something happened");
   }
 };
 module.exports.help = {

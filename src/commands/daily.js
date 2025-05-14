@@ -1,6 +1,6 @@
 const moment = require("moment");
 require("moment-duration-format");
-const economySystem = require("../models/users");
+const economySystem = require("../utils/models/users");
 const { getOrCreateDB } = require("../functions");
 module.exports.run = async (client, message) => {
   const lang = client.lang.commands.daily;

@@ -1,7 +1,7 @@
 const moment = require("moment");
 require("moment-duration-format");
-const { levels, missingPerms, regExp } = require("../functions");
-const guilds = require("../models/guilds");
+const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions");
+const guilds = require("../utils/models/guilds");
 const { joinVoiceChannel } = require("@discordjs/voice");
 const { PermissionsBitField, EmbedBuilder, InteractionCallback } = require("discord.js");
 module.exports = async (client, message) => {
@@ -9,31 +9,10 @@ module.exports = async (client, message) => {
   if (!message.guild) return;
   if (message.author.bot) return;
   const botPerms = message.guild.members.me.permissionsIn(message.channel);
-  const msgDocument = await guilds
-    .findOne({
-      guildID: message.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guilds({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { prefix, language } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guilds, { guildID: message.guild.id });
+  const { prefix, language } = guildsDB;
   client.prefix = prefix;
-  client.lang = require(`../languages/${language}.js`);
+  client.lang = require(`../utils/languages/${language}.js`);
   client.joinVoiceChannel = function (channel) {
     return joinVoiceChannel({
       channelId: channel.id,

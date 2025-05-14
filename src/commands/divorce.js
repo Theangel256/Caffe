@@ -1,4 +1,4 @@
-const users = require("../models/users");
+const users = require("../utils/models/users");
 const { getOrCreateDB } = require("../functions");
 module.exports.run = async (client, message) => {
     const usersDB = await getOrCreateDB(users, { userID: message.author.id });

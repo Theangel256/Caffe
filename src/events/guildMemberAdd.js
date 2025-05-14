@@ -1,4 +1,4 @@
-const guildSystem = require("../models/guilds");
+const guildSystem = require("../utils/models/guilds");
 const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const Zeew = require("zeew");
 module.exports = async (client, member) => {

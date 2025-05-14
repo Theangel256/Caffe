@@ -1,4 +1,4 @@
-const economySystem = require("../models/users");
+const economySystem = require("../utils/models/users");
 const { getMember, getOrCreateDB } = require("../functions");
 module.exports.run = async (client, message, args) => {
   const lang = client.lang.commands.balance;

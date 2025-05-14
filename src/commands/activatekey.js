@@ -1,4 +1,4 @@
-const keySystem = require("../models/keys");
+const keySystem = require("../utils/models/keys");;
 const { getOrCreateDB } = require("../functions");
 module.exports.run = async (client, message, args) => {
   const keysDB = await getOrCreateDB(keySystem, { guildID: message.guild.id }, { enable: false, license: "" });
