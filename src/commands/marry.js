@@ -1,4 +1,4 @@
-const { getMember, getOrCreateDB } = require('../functions.js');
+const { getMember, getOrCreateDB } = require("../utils/functions.js");
 const users = require("../utils/models/users");
 module.exports.run = async (client, message, args) => {
 	const lang = client.lang.commands.marry;

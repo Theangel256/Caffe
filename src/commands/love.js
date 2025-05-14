@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const { getMember, getOrCreateDB } = require('../functions.js');
+const { getMember, getOrCreateDB } = require("../utils/functions.js");
 const users = require("../utils/models/users");
 module.exports.run = async (client, message, args) => {
   const usersDB = await getOrCreateDB(users, { userID: message.author.id });
