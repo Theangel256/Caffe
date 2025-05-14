@@ -1,5 +1,5 @@
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-const { dbConnect } = require('./utils.db.js')
+const dbConnect = require('./utils/db.js');
 const client = new Client({
     intents: [ 
         GatewayIntentBits.Guilds,
