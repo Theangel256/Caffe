@@ -53,7 +53,7 @@ const limiter = rateLimit({
             domain: new URL(process.env.URL).hostname,
         },
         store: MongoStore.create({ 
-            mongoUrl: process.env.mongoDB_URI,
+            mongoUrl: process.env.MONGO_URI,
             autoRemove: 'interval',
             autoRemoveInterval: 10, //In Minutes.
         }), 

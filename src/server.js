@@ -1,5 +1,6 @@
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const mongoose = require('mongoose');
+import dbConnect from './utils/db.js';
 const client = new Client({
     intents: [ 
         GatewayIntentBits.Guilds,
@@ -17,14 +18,7 @@ client.commands = new Collection();
 client.aliases = new Collection();
 client.limits = new Collection();
 client.queue = new Collection();
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-console.log("✅ Conectado a MongoDB");
-}).catch(err => {
-  console.error("❌ Error conectando a MongoDB:", err);
-});
+await dbConnect();
 require('./utils/passport.js').run(client);
 require('./utils/handlers.js').run(client);
 process.on('unhandledRejection', function (err) {

@@ -161,23 +161,16 @@ module.exports.run = async (client, message, args) => {
       const { warnings } = warns;
       const newWarnings = warnings + 1;
       await warns.updateOne({ warnings: newWarnings });
-      if (args[2]) { member.send(`"You've been warned on ${message.guild.name} with reason: ${args.slice(2).join(" ")}. You have ${newWarnings} warning(s).`)
-          .catch(() => {
-            null;
-          });
-        // El único error que sepa yo salga de aquí es que si el usuario tenga DMs desactivados.
-        message.channel.send(`I've warned ${member.user.tag} with reason: ${args.slice(2).join(" ")}. They now have ${newWarnings} warnings.`);
-      } else {
-        member.send(
-            `You've been warned on ${message.guild.name}. You have ${newWarnings} warning(s).`
-          )
-          .catch(() => {
-            null;
-          });
-        message.channel.send(
-          `I've warned ${member.user.tag}. They now have ${newWarnings} warnings.`
-        );
-      }
+      const reason = args.slice(2).join(" ");
+      const dmMessage = reason
+      ? `You've been warned on ${message.guild.name} with reason: ${reason}. You have ${newWarnings} warning(s).`
+      : `You've been warned on ${message.guild.name}. You have ${newWarnings} warning(s).`;
+      
+      const publicMessage = reason
+      ? `I've warned ${member.user.tag} with reason: ${reason}. They now have ${newWarnings} warnings.`
+      : `I've warned ${member.user.tag}. They now have ${newWarnings} warnings.`;
+      try { await member.send(dmMessage); } catch (err) { console.warn(`No se pudo enviar DM a ${member.user.tag}: ${err.message}`);}
+      message.channel.send(publicMessage); 
       const { role, roletime, roleid, kick, kicktime, ban, bantime } = guilds;
       if (role) {
         if (roletime <= newWarnings)
