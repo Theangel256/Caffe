@@ -21,6 +21,7 @@
     "type": "git",
     "url": "https://github.com/Theangel256/Caffe.git"
   },
+  "type": "commonjs",
   "author": "Theangel256",
   "license": "Apache-2.0",
   "dependencies": {
