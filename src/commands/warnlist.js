@@ -1,70 +1,42 @@
 const getRank = require("../utils/functions.js");
 const warnMembers = require("../utils/models/warns");
+const { EmbedBuilder } = require('discord.js')
 module.exports.run = async (client, message, args) => {
-  const msgDocument = await warnMembers
-    .findOne({
-      guildID: message.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        roletime: 0,
-        kick: false,
-        kicktime: 0,
-        ban: false,
-        bantime: 0,
-      });
-      var guilds = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    guilds = msgDocument;
+  const warnList = await warnMembers.find({
+  guildID: message.guild.id,
+  warnings: { $gt: 0 } // solo los que tengan 1 o más advertencias
+});
+  if (!warnList || warnList.length === 0) {
+    return message.channel.send("No hay ningún usuario sancionado.");
   }
-  if (!warns.has(message.guild.id))
-    return message.channel.send("No hay ninguno usuario sancionado.");
+  const usuarios = warnList.map(warnDoc => {
+    const lastReason = Array.isArray(warnDoc.reasons) && warnDoc.reasons.length > 0
+      ? warnDoc.reasons[warnDoc.reasons.length - 1]
+      : "Sin razón especificada";
+    return [`<@${warnDoc.userID}>`, warnDoc.warnings, lastReason];
+  });
+  usuarios.sort((a, b) => b[1] - a[1]);
 
-  const usuarios = getRank(warns.get(message.guild.id), message);
-  usuarios.map(
-    (usuario, index) =>
-      (usuarios[index] = `> #${index + 1} ${usuario[0]} | Warns: ${
-        usuario[1]
-      } | Reason: ${usuario[2]}`)
-  );
   const paginas = [];
   const cantidad = 10;
-
   while (usuarios.length > 0) {
     paginas.push(usuarios.splice(0, cantidad));
   }
-  const embed = new EmbedBuilder()
-    .setColor("RANDOM")
+    const page = args[0] ? parseInt(args[0]) : 1;
+    const embed = new EmbedBuilder()
+    .setColor("Random")
     .setThumbnail(message.guild.iconURL({ dynamic: true }));
-  if (!args[0]) {
-    embed.setDescription(
-      `Warnlist del servidor ${message.guild.name} (pagina 1 de ${
-        paginas.length
-      })\n\n${paginas[0].join("\n")}`
-    );
-    return message.channel.send({ embeds: [embed] });
+  if (isNaN(page) || page <= 0 || page > paginas.length) {
+    return message.channel.send(`La página ${args[0] || 1} no existe.`);
   }
-  if (isNaN(args[0]))
-    return message.channel.send("Necesitas ingresar el numero de la pagina");
-
-  const seleccion = parseInt(args[0]);
-
-  if (seleccion <= 0 || seleccion > paginas.length)
-    return message.channel.send(`La pagina ${seleccion} no existe.`);
-
+  const contenido = paginas[page - 1]
+    .map(
+      (usuario, index) =>
+        `> #${(page - 1) * cantidad + index + 1} ${usuario[0]} | Warns: ${usuario[1]} | Reason: ${usuario[2]}`
+    )
+    .join("\n");
   embed.setDescription(
-    `Warnlist del servidor ${message.guild.name} (pagina ${seleccion} de ${
-      paginas.length
-    })\n\n${paginas[seleccion - 1].join("\n")}`
+    `Warnlist del servidor ${message.guild.name} (página ${page} de ${paginas.length})\n\n${contenido}`
   );
   return message.channel.send({ embeds: [embed] });
 };

@@ -1,6 +1,6 @@
 const guildSystem = require("../utils/models/guilds.js");
 const warnMembers = require("../utils/models/warns.js");
-const { getMember } = require("../utils/functions.js");
+const { getMember, getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
   if (!args[0]) return message.channel.send("You haven't said anything. Put a member or `set`");
   const guilds = await getOrCreateDB(guildSystem, { guildID: message.guild.id }); 
@@ -161,7 +161,7 @@ module.exports.run = async (client, message, args) => {
       const { warnings } = warns;
       const newWarnings = warnings + 1;
       await warns.updateOne({ warnings: newWarnings });
-      const reason = args.slice(2).join(" ");
+      const reason = args.slice(1).join(" ");
       const dmMessage = reason
       ? `You've been warned on ${message.guild.name} with reason: ${reason}. You have ${newWarnings} warning(s).`
       : `You've been warned on ${message.guild.name}. You have ${newWarnings} warning(s).`;

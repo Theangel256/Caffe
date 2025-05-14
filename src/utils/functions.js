@@ -2,31 +2,27 @@ const cooldownniveles = new Map();
 const levelSystem = require("./models/levels");
 const warnMembers = require("./models/warns");
 const guildSystem = require("./models/guilds");
-module.exports = {
-  auth: (req, res, next) => {
+const auth = (req, res, next) => {
     if (req.isAuthenticated()) {
       return next();
     } else {
       return res.redirect("/signin");
     }
-  },
-  getOrCreateDB: async (model, query, defaults = {})  => {
-    try {
-      let doc = await model.findOne(query);
-      if (!doc) {
-        doc = new model({
-          ...query,
-          ...defaults, // propiedades adicionales como money, daily, etc.
-        });
-        await doc.save();
-      }
-      return doc;
-    } catch (err) {
-      console.error(`Error en getOrCreate con modelo ${model.modelName}:`, err);
-      return null;
-    }
-  },
-  getRank: async (users, message) => {
+  }
+const getOrCreateDB = async (model, query, defaults = {}) => {
+  try {
+    const doc = await model.findOneAndUpdate(
+      query,
+      { $setOnInsert: { ...defaults, ...query } },
+      { new: true, upsert: true }
+    );
+    return doc;
+  } catch (err) {
+    console.error(`Error en getOrCreate con modelo ${model.modelName}:`, err);
+    return null;
+  }
+};
+const getRank = async (users, message) => {
     const list = [];
     for (const id of users) {
       const user = message.guild.members.cache.has(id.userID)
@@ -38,8 +34,8 @@ module.exports = {
       return user2[1] - user1[1] || user2[2] - user1[2];
     });
     return list;
-  },
-  getMember: (message, args, autor = true, argIndex = 0) => {
+  }
+const getMember = (message, args, autor = true, argIndex = 0) => {
     const members = message.guild.members.cache;
   
     let searchRaw = Array.isArray(args)
@@ -52,16 +48,15 @@ module.exports = {
     const result =
       message.mentions?.members?.first?.() ||                  // Mención directa
       members.get(searchRaw) ||                                // ID directo
-      members.find(member =>
-        (autor || member.id !== message.author.id) && (
+      members.find(member => (
         member.user.username.toLowerCase().includes(searchRaw) ||
         member.user.tag.toLowerCase().includes(searchRaw) ||
         member.displayName.toLowerCase().includes(searchRaw)
       ));
   
     return result || (autor ? message.member : null);
-  },
-  missingPerms: (client, member, perms = Array) => {
+  }
+const missingPerms = (client, member, perms = Array) => {
     if (!member || !member.permissions || typeof member.permissions.missing !== 'function') {
       console.error("¡'member' inválido o sin permisos definidos!", member);
       return "Permissions not allowed";
@@ -80,8 +75,8 @@ module.exports = {
           .replace(/{missingPerms0}/gi, missingPerms.slice(0, -1).join(", "))
           .replace(/{missingPerms1}/gi, missingPerms.slice(-1)[0])
       : missingPerms[0];
-  },
-  generateKey: (length = 30) => {
+  }
+const generateKey = (length = 30) => {
     var lowercase = "abcdefghijklmnopqrstuvwxyz";
     var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var digits = "0123456789";
@@ -96,8 +91,8 @@ module.exports = {
       password += characters.charAt(randomPos);
     }
     return password;
-  },
-  regExp: async (client, message) => {
+  }
+const regExp = async (client, message) => {
     if (
       /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord\.com\/invite)\/.+[a-z]/gim.test(
         message.content
@@ -157,8 +152,8 @@ module.exports = {
         }
       }
     }
-  },
-  levels: async (message) => {
+  }
+const levels = async (message) => {
     if (cooldownniveles.has(message.guild.id + message.author.id)) {
       const time = cooldownniveles.get(message.guild.id + message.author.id);
       if (Date.now() < time) return;
@@ -175,17 +170,12 @@ module.exports = {
     const lvlup = lvl * 80;
     if (xp + randomxp >= lvlup) {
       await levels.updateOne({ lvl: lvl + 1, xp: 0 });
-      return message.channel.send(
-        `Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(
-          lvl + 1
-        )}!`
-      );
+      return message.channel.send(`Felicidades ${message.author.tag}, Subiste al nivel ${parseInt(lvl + 1)}!`);
     }
     await levels.updateOne({ xp: xp + randomxp });
-    cooldownniveles.set(
-      message.guild.id + message.author.id,
-      Date.now() + 7000
-    );
+    cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 7000);
     return message;
-  },
+  }
+module.exports = {
+  auth, getOrCreateDB, getRank, getMember, missingPerms, generateKey, regExp, levels
 };
