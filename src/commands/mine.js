@@ -4,7 +4,7 @@ const { EmbedBuilder } = require("discord.js");
 module.exports.run = async (client, message) => {
   const reward = 150;
     const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
-    if (!economy) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+    if (!economy) return message.channel.send(client.lang.dbErrorMessage);
     economy.money += reward;
     await economy.save();
     const embed = new EmbedBuilder()

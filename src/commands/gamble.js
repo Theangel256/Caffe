@@ -3,7 +3,7 @@ const { getOrCreateDB } = require("../functions");
 module.exports.run = async (client, message, args) => {
 
   const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
-  if (!economy) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+  if (!economy) return message.channel.send(client.lang.dbErrorMessage);
 
   const cantidad = args.join(" ");
   const random = Math.ceil(Math.random() * 8);

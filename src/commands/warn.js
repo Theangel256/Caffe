@@ -156,7 +156,7 @@ module.exports.run = async (client, message, args) => {
     var member = getMember(message, args.slice(0, 1), false);
     if (!member) return message.channel.send("Invalid member!");
     const warns = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: message.author.id });
-    if (!warns) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+    if (!warns) return message.channel.send(client.lang.dbErrorMessage);
     try {
       const { warnings } = warns;
       const newWarnings = warnings + 1;

@@ -7,6 +7,7 @@ module.exports = {
   missingPerms: "{missingPerms0} y {missingPerms1}",
   userPerms: "Debe tener los siguientes permisos: {function}",
   clientPerms: "Me faltan los siguientes permisos: {function}",
+  dbErrorMessage: "Ocurrió un error al intentar acceder a la base de datos, por favor intenta nuevamente más tarde.",
   commands: {
     eightBall: {
       ball: [

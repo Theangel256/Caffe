@@ -3,7 +3,7 @@ const { getMember, getOrCreateDB } = require('../functions.js');
 const users = require("../utils/models/users");
 module.exports.run = async (client, message, args) => {
   const usersDB = await getOrCreateDB(users, { userID: message.author.id });
-  if (!usersDB) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+  if (!usersDB) return message.channel.send(client.lang.dbErrorMessage);
   const random = Math.ceil(Math.random() * 100);
   const member = getMember(message, args, true);
   if (!member) return message.channel.send(client.lang.no_user);

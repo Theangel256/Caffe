@@ -2,7 +2,7 @@ const users = require("../utils/models/users");
 const { getOrCreateDB } = require("../functions");
 module.exports.run = async (client, message) => {
     const usersDB = await getOrCreateDB(users, { userID: message.author.id });
-    if (!usersDB) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+    if (!usersDB) return message.channel.send(client.lang.dbErrorMessage);
     let { marryId, marryTag } = usersDB;
     
   if (!marryId) return message.channel.send(client.lang.commands.divorce.nothing);

@@ -4,7 +4,7 @@ module.exports.run = async (client, message, args) => {
 	const lang = client.lang.commands.marry;
 	const member = getMember(message, args, false);
 	const usersDB = await getOrCreateDB(users, { userID: message.author.id });
-	if (!usersDB) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+	if (!usersDB) return message.channel.send(client.lang.dbErrorMessage);
 	let { marryId, marryTag } = usersDB;
 	if (marryId) return message.channel.send(lang.already_married.replace(/{esposaTag}/gi, marryTag));
 	console.log("RESULT:", member?.user?.tag, "AUTHOR:", message.author.tag);
@@ -14,7 +14,7 @@ module.exports.run = async (client, message, args) => {
 	if(member.user.id === message.author.id) return message.channel.send(lang.yourself);
 
 	const memberDB = await getOrCreateDB(users, { userID: member.user.id });
-	if (!memberDB) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+	if (!memberDB) return message.channel.send(client.lang.dbErrorMessage);
 	if (memberDB.marryId) return message.channel.send(lang.another_married);
 	message.channel.send(lang.request.replace(/{user.username}/gi, member.user.username).replace(/{author.username}/gi, message.author.username));
 	const filter = m => m.author.id === member.user.id && (m.content && (m.content.toLowerCase().startsWith('yes') || m.content.toLowerCase().startsWith('no')));
