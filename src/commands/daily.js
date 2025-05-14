@@ -7,7 +7,7 @@ module.exports.run = async (client, message) => {
   const cooldown = 86400000; // 24 hours in milliseconds
   const reward = 1200; // Daily reward amount
     const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
-    if(!economy) return message.channel.send(client.lang.dbErrorMessage)
+    if(!economy) return message.channel.send(client.lang.dbError)
 
     if (Date.now() < economy.daily) {
       const remaining = moment.duration(economy.daily - Date.now()).format("D [d], H [hrs], m [m], s [s]");

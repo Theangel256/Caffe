@@ -3,7 +3,7 @@ const keySystem = require("../utils/models/keys");;
 module.exports.run = async (client, message) => {
   const license = generateKey();
   const keysDB = await getOrCreateDB(keySystem, { guildID: message.guild.id }, { enable: false });
-  if (!keysDB) return message.channel.send(client.lang.dbErrorMessage);
+  if (!keysDB) return message.channel.send(client.lang.dbError);
   
   keysDB.license = license;
   await keysDB.save();

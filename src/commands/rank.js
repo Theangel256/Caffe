@@ -1,38 +1,19 @@
-const levels = require("../utils/models/levels");;
+const levelSystem = require("../utils/models/levels");;
 const Canvas = require("canvas");
 const { AttachmentBuilder } = require("discord.js");
-const { getMember, getRank } = require("../utils/functions.js");
+const { getMember, getRank, getOrCreateDB } = require("../utils/functions.js");
 Canvas.registerFont("Arial.ttf", { family: "Arial" });
 module.exports.run = async (client, message, args) => {
   const member = getMember(message, args, true);
   if (member.user.bot)
     return message.channel.send("los bots no tienen niveles");
-  const msgDocument = await levels
-    .findOne({
-      guildID: message.guild.id,
-      userID: member.user.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new levels({
-        guildID: message.guild.id,
-        userID: member.user.id,
-        xp: 1,
-        lvl: 1,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const usuarios = await getRank(await levels.find(), message);
+  const levels = await getOrCreateDB(levelSystem, { guildID: message.guild.id, userID: message.author.id });
+  if(!levels) return message.channel.send(client.lang.dbError)
+  const { xp, lvl } = levels;
+  const usuarios = await getRank(await levelSystem.find(), message);
   let rank = usuarios.findIndex((u) => u[0] == member.user.tag);
   if (rank === -1) rank = `#${usuarios.length}`;
   else rank = `#${rank + 1}`;
-  const { lvl, xp } = dbMsgModel;
   const canvas = Canvas.createCanvas(934, 282, "png");
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "rgb(0, 0, 0)";
@@ -62,25 +43,25 @@ module.exports.run = async (client, message, args) => {
   ctx.fillStyle = "#ffffff";
   ctx.fillText(`${xp} / ${lvl * 80} XP`, 750, 140);
 
-  ctx.font = "25px Arial";
-  ctx.fillStyle = "rgb(255, 255, 255)";
-  ctx.fillText("RANK", 580, 70);
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "rgb(130, 136, 214)";
+  ctx.fillText("RANK", 590, 70);
 
   ctx.font = "50px Arial";
   ctx.fillStyle = "rgb(255, 255, 255)";
-  ctx.fillText(rank, 670, 70);
+  ctx.fillText(rank, 680, 70);
 
-  ctx.font = "25px Arial";
-  ctx.fillStyle = "rgb(255, 255, 255)";
-  ctx.fillText("LEVEL", 770, 70);
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "rgb(130, 136, 214)";
+  ctx.fillText("LEVEL", 780, 70);
 
   ctx.font = "50px Arial";
   ctx.fillStyle = "rgb(255, 255, 255)";
-  ctx.fillText(lvl, 850, 70);
+  ctx.fillText(lvl, 860, 70);
 
-  ctx.font = "25px Arial";
+  ctx.font = "35px Arial";
   ctx.textAlign = "left";
-  ctx.fillText(member.user.tag, 220, 140);
+  ctx.fillText(member.user.username, 230, 130);
 
   ctx.arc(125, 125, 85, 0, Math.PI * 2, true);
   ctx.lineWidth = 6;
