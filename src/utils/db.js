@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-
+const mongoose = require('mongoose');
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) {
   throw new Error("❌ MONGO_URI no está definido en el archivo .env");

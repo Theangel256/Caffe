@@ -1,6 +1,5 @@
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-const mongoose = require('mongoose');
-import dbConnect from './utils/db.js';
+const { dbConnect } = require('./utils.db.js')
 const client = new Client({
     intents: [ 
         GatewayIntentBits.Guilds,
