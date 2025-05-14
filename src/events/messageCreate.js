@@ -3,7 +3,7 @@ require("moment-duration-format");
 const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions.js");
 const guilds = require("../utils/models/guilds");
 const { joinVoiceChannel } = require("@discordjs/voice");
-const { PermissionsBitField, EmbedBuilder, InteractionCallback } = require("discord.js");
+const { PermissionsBitField, EmbedBuilder } = require("discord.js");
 module.exports = async (client, message) => {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;

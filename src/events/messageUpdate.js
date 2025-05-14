@@ -1,28 +1,7 @@
 const guildSystem = require("../utils/models/guilds");
 module.exports = async (client, oldMessage, newMessage) => {
-  const msgDocument = await guildSystem
-    .findOne({
-      guildID: newMessage.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { channelLogs } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guildSystem, { guildID: oldMessage.guild.id });
+  const { channelLogs } = guildsDB;
   if (oldMessage.content === newMessage.content) return;
   const logginChannel = client.channels.resolve(channelLogs);
   if (!logginChannel) return;

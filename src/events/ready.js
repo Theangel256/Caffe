@@ -15,11 +15,19 @@ module.exports = async (client) => {
       .reduce((acc, guildCount) => acc + guildCount, 0)
       .toLocaleString()} users!`,
     "Theangel256 Studios V" + require("../../package.json").version,
-    "caffe-bot.herokuapp.com/discord",
-    "caffe-bot.herokuapp.com/add",
+    `${process.env.URL}/discord"`,
+    `${process.env.URL}/add"`,
   ];
-  setInterval(function () {
-    const status = statues[Math.ceil(Math.random() * (statues.length - 1))];
-    client.user.setPresence({ activity: { name: status }, status: "online" });
-  }, 20000);
+  setInterval(() => {
+  const status = statues[Math.floor(Math.random() * statues.length)];
+  client.user.setPresence({
+    status: "online",
+    activities: [
+      {
+        name: status,
+        type: 0, // 0 = Playing, 1 = Streaming, 2 = Listening, etc.
+      },
+    ],
+  });
+}, 20000);
 };
