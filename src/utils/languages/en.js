@@ -193,6 +193,7 @@ M => For months.
         time: "Duration",
         channel: "Channel",
       },
+      couldNotGetVideo: "Could not get the video.",
       expired: "The wait is over, canceling selection.",
       invalidArgs: "No song with the name {searchString} was found.",
       addQueue: "Added to queue",

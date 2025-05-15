@@ -2,7 +2,7 @@ const moment = require("moment");
 require("moment-duration-format");
 const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions.js");
 const guilds = require("../utils/models/guilds");
-const { joinVoiceChannel } = require("@discordjs/voice");
+const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require("@discordjs/voice");
 const { PermissionsBitField, EmbedBuilder } = require("discord.js");
 module.exports = async (client, message) => {
   if (message.channel.type === "dm") return;
@@ -13,13 +13,21 @@ module.exports = async (client, message) => {
   const { prefix, language } = guildsDB;
   client.prefix = prefix;
   client.lang = require(`../utils/languages/${language}.js`);
-  client.joinVoiceChannel = function (channel) {
-    return joinVoiceChannel({
+  
+  client.joinVoiceChannel = async function (channel) {
+  try {
+    const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
       adapterCreator: channel.guild.voiceAdapterCreator,
       selfDeaf: false,
     });
+    await entersState(connection, VoiceConnectionStatus.Ready, 15_000);
+    return connection;
+  } catch (error) {
+    console.error("❌ Error al conectar al canal de voz:\n", error);
+    throw error;
+  }
   };
   
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {

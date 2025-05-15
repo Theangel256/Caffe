@@ -198,6 +198,7 @@ M => Para meses.
         time: "Duración",
         channel: "Canal",
       },
+      couldNotGetVideo: "No se pudo obtener el video.",
       expired: "La espera termino, cancelando selección.",
       invalidArgs: "No se ha encontrado ninguna canción con llamada {searchString}.",
       addQueue: "Se ha agregado a la cola",

@@ -11,6 +11,7 @@ async function start() {
       GatewayIntentBits.GuildMembers,
       GatewayIntentBits.GuildPresences,
       GatewayIntentBits.MessageContent,
+      GatewayIntentBits.GuildVoiceStates
     ],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction],
     allowedMentions: { parse: ['users'], repliedUser: false },

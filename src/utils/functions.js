@@ -2,6 +2,7 @@ const cooldownniveles = new Map();
 const levelSystem = require("./models/levels");
 const warnMembers = require("./models/warns");
 const guildSystem = require("./models/guilds");
+const { EmbedBuilder } = require('discord.js');
 const auth = (req, res, next) => {
     if (req.isAuthenticated()) {
       return next();
