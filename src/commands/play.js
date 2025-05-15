@@ -107,8 +107,6 @@ async function handleVideo(info, playlist = false) {
       queue.delete(message.guild.id); 
       return message.channel.send(lang.error.replace("{url}", process.env.URL));
     }
-    console.log(queueConstruct.songs[0])
-    
     await playHandler(message.guild, queueConstruct.songs[0]);    
 } else {
       serverQueue.songs.push(song);
@@ -132,8 +130,12 @@ async function playHandler(guild, song) {
     if (serverQueue?.connection) serverQueue.connection.destroy();
     return queue.delete(guild.id);
   }
+  if (!play_dl.validate(song.url)) {
+  console.error("❌ URL no válida para play-dl:", song.url);
+  return;
+}
   try {
-    const stream = await play_dl.stream(song.url);
+    const stream = await play_dl.stream(song.url, { quality: 0, discordPlayerCompatibility: true })
       if (!stream || !stream.stream) {
       return serverQueue.textChannel.send("❌ No se pudo obtener el stream.");
     }
@@ -141,7 +143,7 @@ async function playHandler(guild, song) {
   inputType: stream.type ?? StreamType.Arbitrary,
   inlineVolume: true,
   });
-    resource.volume.setVolume(0.5);
+    resource.volume.setVolume(serverQueue.volume);
   const player = serverQueue.player || createAudioPlayer({
   behaviors: { noSubscriber: NoSubscriberBehavior.Pause }
   });

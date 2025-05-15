@@ -63,13 +63,11 @@ const missingPerms = (client, member, perms = Array) => {
       return "Permissions not allowed";
     }
 
-    const missingPerms = member.permissions.missing(perms).map(
-      (str) =>
+    const missingPerms = member.permissions.missing(perms).map((str) =>
         `\`${str
           .replace(/_/g, " ")
           .toLowerCase()
-          .replace(/\b(\w)/g, (char) => char.toUpperCase())}\``
-    );
+          .replace(/\b(\w)/g, (char) => char.toUpperCase())}\``);
 
     return missingPerms.length > 1
       ? client.lang.missingPerms
@@ -160,12 +158,6 @@ const levels = async (message) => {
       if (Date.now() < time) return;
     }
     const levels = await getOrCreateDB(levelSystem, { guildID: message.guild.id, userID: message.author.id });
-    console.log({
-      guildID: message.guild.id,
-      userID: message.author.id,
-      xp: levels.xp,
-      lvl: levels.lvl,
-    });
     const { xp, lvl } = levels;
     const randomxp = Math.floor(1.0 * Math.sqrt(xp + 1));
     const lvlup = lvl * 80;
