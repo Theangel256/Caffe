@@ -18,6 +18,7 @@ module.exports = async (client, message) => {
       channelId: channel.id,
       guildId: channel.guild.id,
       adapterCreator: channel.guild.voiceAdapterCreator,
+      selfDeaf: false,
     });
   };
   

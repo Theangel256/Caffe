@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
       await economy.updateOne({ money: total });
       return message.channel.send(client.lang.commands.gamble.success.replace(/{all}/gi,total.toLocaleString()));
     } else {
-      await dbMsgModel.updateOne({ money: economy.money - all });
+      await economy.updateOne({ money: economy.money - all });
       return message.channel.send(client.lang.commands.gamble.unsuccess.replace(/{all}/gi,all.toLocaleString()));
     }
   } else if (isNaN(cantidad)) {
