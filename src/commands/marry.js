@@ -49,6 +49,6 @@ module.exports.requirements = {
   ownerOnly: false,
 };
 module.exports.limits = {
-  rateLimit: 1,
+  rateLimit: 3,
   cooldown: 120000,
 };
