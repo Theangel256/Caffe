@@ -42,14 +42,13 @@
     <section class="data-arrays">
       <div class="card card-1">
         <br>
-        <p class="text-center"><b>Conectados:
-            <%=guild.members.fetch().then(fetchedMembers => fetchedMembers.filter(member => member.presence.status === 'online').size);%></b></p>
+        <p class="text-center"><b>Conectados:<%=statusCounts.online%></b></p>
         <p class="text-center"><b>Ausentes:
-            <%=guild.members.fetch().then(fetchedMembers => fetchedMembers.filter(member => member.presence.status === 'idle').size);%></b></p>
+            <%=statusCounts.idle%></b></p>
         <p class="text-center"><b>No Molestar:
-            <%=guild.members.fetch().then(fetchedMembers => fetchedMembers.filter(member => member.presence.status === 'dnd').size);%></b></p>
+            <%=statusCounts.dnd%></b></p>
         <p class="text-center"><b>Desconectados:
-            <%=guild.members.fetch().then(fetchedMembers => fetchedMembers.filter(member => member.presence.status === 'offline').size);%></b></p>
+            <%=statusCounts.offline%></b></p>
       </div>
   </center>
   </section>

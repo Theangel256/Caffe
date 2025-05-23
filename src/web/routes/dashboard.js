@@ -31,6 +31,25 @@ router
       const db = await getOrCreateDB(guildSystem, { guildID: idserver });
       if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
       const bans = await guild.bans.fetch();
+      const fetchedMembers = await guild.members.fetch();
+      const statuses = {
+        online: 0,
+        idle: 0,
+        dnd: 0,
+        offline: 0,
+      };
+      fetchedMembers.forEach(member => {
+        const status = member.presence?.status;
+        if (status && statuses[status] !== undefined) {
+          statuses[status]++;
+        }
+});
+
+res.render("panel/data.ejs", {
+  guild,
+  statusCounts: statuses
+});
+
 
     res.render("guilds", {
       title: "Caffe - Dashboard",
@@ -42,8 +61,9 @@ router
       PermissionFlagsBits,
       guildSystem,
       db,
+      statusCounts: statuses,
       bans: guild.members.me.permissions.has(PermissionFlagsBits.BanMembers)
-        ? await guild.bans.fetch().then((x) => x.size)
+        ? bans.then((x) => x.size)
         : false,
       bot: req.bot,
     });
