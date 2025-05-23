@@ -30,7 +30,6 @@ router
     if (!userPermission) return res.redirect("/error404");
       const db = await getOrCreateDB(guildSystem, { guildID: idserver });
       if (!db) return console.error("Dashboard.js Error: I have an error while trying to access to the database, please try again later.");
-      const bans = await guild.bans.fetch();
       const fetchedMembers = await guild.members.fetch();
       const statuses = {
         online: 0,
@@ -56,7 +55,7 @@ router
       db,
       statusCounts: statuses,
       bans: guild.members.me.permissions.has(PermissionFlagsBits.BanMembers)
-        ? bans.then((x) => x.size)
+        ? await guild.bans.fetch().then((x) => x.size)
         : false,
       bot: req.bot,
     });
