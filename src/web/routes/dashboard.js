@@ -44,13 +44,6 @@ router
           statuses[status]++;
         }
 });
-
-res.render("panel/data.ejs", {
-  guild,
-  statusCounts: statuses
-});
-
-
     res.render("guilds", {
       title: "Caffe - Dashboard",
       login: req.isAuthenticated() ? true : false,
