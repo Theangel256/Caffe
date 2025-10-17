@@ -4,7 +4,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 // Import Discord client and Mongoose model
-const { client } = require("../../server.js");
+const { client } = require("../../shard.js");
 const levels = require("../../utils/models/levels.js");
 
 // Get params from URL

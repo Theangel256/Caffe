@@ -5,7 +5,7 @@ import { ChannelType, PermissionFlagsBits } from "discord.js";
 import { SESSION_STORE } from "../callback.ts"; // tu Map() con sesiones activas
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-const { client } = require("../../../server.js");
+const { client } = require("../../../shard.js");
 import { parse } from "cookie";
 
 export async function GET({ params, request }: { params: { id: string }, request: Request }) {
