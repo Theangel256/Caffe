@@ -1,4 +1,4 @@
-require('dotenv').config();
+dotenv.config();
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const dbConnect = require('./utils/db.js');
 
