@@ -8,11 +8,11 @@ export async function POST({ params, request }) {
 
   const idserver = params.id;
   const form = await request.formData();
-  const newPrefix = form.get("newPrefix");
+  const lang = form.get("language");
   await getOrCreateDB(guildSystem, { guildID: idserver });
 
-  if (newPrefix && newPrefix.toString().length > 0) {
-    await guildSystem.updateOne({ guildID: idserver }, { $set: { prefix: newPrefix.toString() } });
+  if (lang && lang !== "no_select") {
+    await guildSystem.updateOne({ guildID: idserver }, { $set: { language: lang } });
   }
 
   return new Response(null, {

@@ -8,11 +8,13 @@ export async function POST({ params, request }) {
 
   const idserver = params.id;
   const form = await request.formData();
-  const newPrefix = form.get("newPrefix");
+  const rol_ID = form.get("rol_ID");
   await getOrCreateDB(guildSystem, { guildID: idserver });
 
-  if (newPrefix && newPrefix.toString().length > 0) {
-    await guildSystem.updateOne({ guildID: idserver }, { $set: { prefix: newPrefix.toString() } });
+  if (!rol_ID || rol_ID === "no_select") {
+    await guildSystem.updateOne({ guildID: idserver }, { $unset: { rolauto: "" } });
+  } else {
+    await guildSystem.updateOne({ guildID: idserver }, { $set: { rolauto: rol_ID } });
   }
 
   return new Response(null, {

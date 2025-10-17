@@ -8,11 +8,13 @@ export async function POST({ params, request }) {
 
   const idserver = params.id;
   const form = await request.formData();
-  const newPrefix = form.get("newPrefix");
+  const logs_ID = form.get("logs_ID");
   await getOrCreateDB(guildSystem, { guildID: idserver });
 
-  if (newPrefix && newPrefix.toString().length > 0) {
-    await guildSystem.updateOne({ guildID: idserver }, { $set: { prefix: newPrefix.toString() } });
+  if (!logs_ID || logs_ID === "no_select") {
+    await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelLogs: "" } });
+  } else {
+    await guildSystem.updateOne({ guildID: idserver }, { $set: { channelLogs: logs_ID } });
   }
 
   return new Response(null, {
@@ -20,3 +22,5 @@ export async function POST({ params, request }) {
     headers: { Location: `/dashboard/${idserver}` },
   });
 }
+
+

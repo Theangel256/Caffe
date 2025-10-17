@@ -1,5 +1,5 @@
 import guildSystem from "../../../../utils/models/guilds";
-import { getSession } from "../../../../middleware/session.js";
+import { getSession } from "../../../../../middleware/session.js";
 import { getOrCreateDB } from "../../../../utils/db.js";
 
 export async function POST({ params, request }) {
@@ -8,11 +8,13 @@ export async function POST({ params, request }) {
 
   const idserver = params.id;
   const form = await request.formData();
-  const newPrefix = form.get("newPrefix");
+  const channel_ID = form.get("channel_ID");
   await getOrCreateDB(guildSystem, { guildID: idserver });
 
-  if (newPrefix && newPrefix.toString().length > 0) {
-    await guildSystem.updateOne({ guildID: idserver }, { $set: { prefix: newPrefix.toString() } });
+  if (!channel_ID || channel_ID === "no_select") {
+    await guildSystem.updateOne({ guildID: idserver }, { $unset: { channelWelcome: "" } });
+  } else {
+    await guildSystem.updateOne({ guildID: idserver }, { $set: { channelWelcome: channel_ID } });
   }
 
   return new Response(null, {
