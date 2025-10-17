@@ -28,7 +28,7 @@
   "dependencies": {
     "@astrojs/node": "^9.5.0",
     "@discordjs/opus": "^0.10.0",
-    "@discordjs/voice": "^0.18.0",
+    "@discordjs/voice": "^0.19.0",
     "axios": "^1.9.0",
     "canvas": "^3.1.0",
     "connect-mongo": "^5.1.0",
