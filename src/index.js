@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { ShardingManager } = require('discord.js');
 const { spawn } = require('child_process');
-const http = require('http');
 
 async function start() {
   // Crear el ShardingManager
@@ -17,22 +16,13 @@ async function start() {
     ],
   });
 
-const astro = spawn("npx", ["astro", "preview"], {
+const astro = spawn("npx", ["astro", "preview", "--port", process.env.PORT || "10000"], {
   stdio: "inherit",
   shell: true,
 });
 astro.on("exit", (code) => {
   console.log(`Astro preview exited with code ${code}`);
 });
-const PORT = process.env.PORT || 4321;
-http
-  .createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("✅ Caffe bot + Astro server running\n");
-  })
-  .listen(PORT, () => {
-    console.log(`🌐 Listening on port ${PORT}`);
-  });
   // Levantamos todos los shards automáticamente
   manager.spawn();
   // Eventos de los shards
