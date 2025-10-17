@@ -1,6 +1,6 @@
 {
   "name": "caffe",
-  "version": "0.0.52-dev",
+  "version": "0.0.54-dev",
   "description": "A bot whitout feelings",
   "main": "src/index.js",
   "scripts": {
@@ -33,19 +33,13 @@
     "canvas": "^3.1.0",
     "connect-mongo": "^5.1.0",
     "discord.js": "^14.19.2",
-    "dotenv": "^16.5.0",
-    "ejs": "^3.1.10",
-    "express": "^4.21.2",
-    "express-rate-limit": "^7.5.0",
-    "express-session": "^1.18.1",
+    "dotenv": "^17.2.3",
     "jimp": "^1.6.0",
     "mech-aki": "^0.1.4",
     "method-override": "^3.0.0",
     "moment": "^2.30.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^8.14.1",
-    "passport": "^0.7.0",
-    "passport-discord": "^0.1.4",
     "play-dl": "^1.9.7",
     "zeew": "^2.1.6"
   }
