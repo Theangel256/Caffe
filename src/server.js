@@ -39,3 +39,5 @@ async function start() {
 }
 
 start(); // Calling the async function
+
+module.exports = client;

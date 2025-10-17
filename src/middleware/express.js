@@ -9,16 +9,11 @@ const { Strategy: DiscordStrategy } = require("passport-discord");
 require("dotenv").config();
 
 module.exports.run = async (astroApp, client) => {
-  const app = express();
 
-  passport.serializeUser((user, done) => done(null, user));
-  passport.deserializeUser((obj, done) => done(null, obj));
 
   app
     .use(express.json())
     .use(express.urlencoded({ extended: true }))
-    .use(methodOverride("_method"))
-    .use(express.static(join(process.cwd(), "public")))
     .set('trust proxy', 1)
     .use(
       session({
