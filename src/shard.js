@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-const dbConnect = require('../src/utils/db.js');
+const dbConnect = require('./utils/db.js');
 
 const client = new Client({
   intents: [
@@ -25,7 +25,7 @@ client.queue = new Collection();
 async function startShard() {
   try {
     await dbConnect();
-    require('../utils/handlers.js').run(client);
+    require('./utils/handlers.js').run(client);
 
     process.on('unhandledRejection', err => console.error('Unhandled Rejection:', err));
     process.on('uncaughtException', err => console.error('Uncaught Exception:', err));
