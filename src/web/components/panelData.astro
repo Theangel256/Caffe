@@ -1,0 +1,47 @@
+---
+const { guild, bans, statusCounts } = Astro.props;
+---
+
+<div id="section-data" class="col s12">
+  <center>
+    <h3><b>Datos del servidor:</b></h3>
+    <p>Nombre: {guild.name}</p>
+    <p>ID: {guild.id}</p>
+    <p>Dueño: {guild.owner?.tag}</p>
+    <p>Fecha de Creación: {new Date(guild.createdAt).toDateString()}</p>
+
+    <section class="data-arrays">
+      <div class="card card-1">
+        <h3 class="text-center"><b>MIEMBROS</b></h3>
+        <p class="text-center card-text">{guild.memberCount}</p>
+      </div>
+
+      <div class="card card-1">
+        <h3 class="text-center"><b>CANALES</b></h3>
+        <p class="text-center card-text">{guild.channels}</p>
+      </div>
+
+      <div class="card card-1">
+        <h3 class="text-center"><b>ROLES</b></h3>
+        <p class="text-center card-text">{guild.roles}</p>
+      </div>
+
+      {bans && (
+        <div class="card card-1">
+          <h3 class="text-center"><b>BANEADOS</b></h3>
+          <p class="text-center card-text">{bans}</p>
+        </div>
+      )}
+    </section>
+
+    <h3><b>Estados del servidor</b></h3>
+    <section class="data-arrays">
+      <div class="card card-1">
+        <p class="text-center"><b>Conectados: {statusCounts.online}</b></p>
+        <p class="text-center"><b>Ausentes: {statusCounts.idle}</b></p>
+        <p class="text-center"><b>No molestar: {statusCounts.dnd}</b></p>
+        <p class="text-center"><b>Desconectados: {statusCounts.offline}</b></p>
+      </div>
+    </section>
+  </center>
+</div>

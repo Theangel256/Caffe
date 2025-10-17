@@ -1,3 +1,15 @@
+---
+const { title = Astro.props.title ?? "Caffe - The Discord Bot", favicon = "https://i.imgur.com/RALQsX4.png", url = process.env.URL } = Astro.props;
+---
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+
 <meta charset="utf-8" />
 <meta
   name="viewport"
@@ -7,11 +19,11 @@
 <meta property="og:type" content="website" />
 <meta name="distribution" content="global" />
 <meta name="theme-color" content="#7289da" />
-<meta property="og:url" content="<%= process.env.URL %>>" />
-<meta property="og:title" content="Caffe Website" />
+<meta property="og:url" content={url} />
+<meta property="og:title" content="Caffe Website"/>
 <meta property="og:site_name" content="Caffe" />
 <meta property="og:description" content="Dashboard del bot caffe" />
-<meta property="og:image" content="https://i.imgur.com/RALQsX4.png" />
+<meta property="og:image" content={favicon} />
 <meta
   name="description"
   content='Construye el mejor servidor de Discord con el bot caffe, podrás cambiar el prefix por default, configurar los eventos de registro comúnmente llamados "Logs", establecer el canal de bienvenida, y establecer un rol auto asignable para los nuevos usuarios'
@@ -20,9 +32,9 @@
   id="favicon"
   rel="icon"
   type="image/x-icon"
-  href="https://i.imgur.com/RALQsX4.png"
+  href={favicon}
 />
-<title><%= title %></title>
+<title>{title}</title>
 <link
   rel="stylesheet"
   href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"

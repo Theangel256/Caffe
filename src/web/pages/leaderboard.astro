@@ -1,0 +1,57 @@
+---
+import db from "../../utils/db.js";
+import Header from "../components/_head.astro";
+const database = await db();
+const bot = Astro.locals.bot;
+// Fetch top 10 users by XP from the database
+const users = await database.collection("users").find().sort({ xp: -1 }).limit(10).toArray();
+---
+
+<html>
+  <body>
+    <h1>Leaderboard</h1>
+    <ul>
+      {users.map(u => <li>{u.username} — {u.xp} XP</li>)}
+    </ul>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <link rel="stylesheet" type="text/css" href="/leaderboard.css" />
+    <Header title="Caffe - Leaderboard" />
+  </head>
+  <body>
+    <Header></Header>
+    <div id="section-leaderboard" class="container leaderPlayerList">
+      <h2>Lista de usuarios</h2>
+      {
+      users.map((usuario, index) => {
+      <div>
+        <div class="leaderPlayer">
+          <div
+            class={`leaderRank ${users.findIndex(u=> u[0] === usuario[0])+1 === 1
+            ? 'leaderFirstRank'
+            : users.findIndex(u =>u[0]===usuario[0])+1===2
+            ? 'leaderSecondRank'
+            : users.findIndex(u => u[0] === usuario[0])+1 === 3
+            ? 'leaderThirdRank' : null}`}>
+            {users.findIndex(u => u[0] === usuario[0])+1}
+          </div>
+          <div class="leaderAvatar">
+            <img
+              src={bot.users.cache.get(usuario[0]).displayAvatarURL({ extension: 'png' })}
+              alt={bot.users.cache.get(usuario[0]).username}
+            />
+          </div>
+          <div class="leaderUsername">
+            {bot.users.resolve(usuario[0]).username}
+          </div>
+        </div>
+        <div class="leaderLine"></div>
+      </div>
+      })
+    </div>
+  </body>
+</html>

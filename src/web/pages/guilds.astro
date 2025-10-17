@@ -1,0 +1,28 @@
+---
+import Navbar from "../components/navbar.astro";
+import Header from "../components/_head.astro";
+import PanelData from '../components/PanelData.astro';
+import PanelOpciones from "../components/PanelOpciones.astro";
+import { GuildTextThreadManager } from "discord.js";
+const user = Astro.locals.user;
+if (!user) return Astro.redirect('/signin');
+const guilds = user.guilds?.filter(g => (g.permissions & 8) === 8) || [];
+const bot = Astro.locals.bot;
+const { id } = Astro.params;
+const guild = bot?.guilds.cache.get(id) ?? await bot.guilds.fetch(id).catch(() => null);
+
+if (!guild) return Astro.redirect("/error404");
+---
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <Header title={`Caffe - ${guild.name}`} />
+  </head>
+
+  <body data-spy="scroll" data-target="#data">
+    <Navbar guild={guild} user={user}></Navbar>
+    <PanelData guild={guilds[0]} statusCounts={{online:0,idle:0,dnd:0,offline:0}} bans={0} />
+    <PanelOpciones guild={guild} />
+  </body>
+</html>
+<script src="/hidden.js"></script>

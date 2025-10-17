@@ -24,7 +24,6 @@ async function start() {
 
   await dbConnect();
 
-  require('./utils/passport.js').run(client);
   require('./utils/handlers.js').run(client);
   
   process.on('unhandledRejection', (err) => {
