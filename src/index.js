@@ -1,4 +1,4 @@
-dotenv.config();
+require('dotenv').config();
 const { ShardingManager } = require('discord.js');
 const { spawn } = require('child_process');
 
