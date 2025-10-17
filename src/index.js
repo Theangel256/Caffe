@@ -16,18 +16,29 @@ async function start() {
     ],
   });
 
+const astro = spawn("npx", ["astro", "preview"], {
+  stdio: "inherit",
+  shell: true,
+});
+astro.on("exit", (code) => {
+  console.log(`Astro preview exited with code ${code}`);
+});
+const PORT = process.env.PORT || 4321;
+http
+  .createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("✅ Caffe bot + Astro server running\n");
+  })
+  .listen(PORT, () => {
+    console.log(`🌐 Listening on port ${PORT}`);
+  });
+  // Levantamos todos los shards automáticamente
+  manager.spawn();
   // Eventos de los shards
   manager.on('shardCreate', shard => {
     shard.on('ready', () => console.log(`❖ Shard ${shard.id} launched!`));
     shard.on('error', error => console.error(`❖ Shard ${shard.id} error:`, error));
   });
-
-  // Levantamos todos los shards automáticamente
-  manager.spawn();
-
-  // Levantar Astro en paralelo
-  spawn("npx", ["astro", "preview", "--port", process.env.PORT], { stdio: "inherit", shell: true });
-  console.log('✅ REST API + Astro preview started');
 }
 
 // Ejecutar el inicio
