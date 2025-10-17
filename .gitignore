@@ -43,6 +43,7 @@ jspm_packages/
 .idea/
 #path
 .vscode/
+.astro/
 
 # file
 package-lock.json
