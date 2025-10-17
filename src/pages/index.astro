@@ -3,17 +3,13 @@ import Header from "../components/_head.astro";
 import Navbar from "../components/navbar.astro";
 const user = Astro.locals?.user;
 const login = Boolean(user);
-if (!user) return Astro.redirect('/signin');
-
+      
 ---
 <!DOCTYPE html>
 <html lang="es">
-  <head>
     <Header title="Caffe - Home" />
-  </head>
-
+    <Navbar guild={null} user={user ? user : null}/>
   <body class="body-index">
-    <Navbar guild={null} user={user}/>
     <center>
       <div class="container-fluid">
         <section class="body-header">
@@ -28,7 +24,7 @@ if (!user) return Astro.redirect('/signin');
           <div>
             <a
               class="btn btn-discord-white btn-lg"
-              href={login === true ? '/dashboard' : '/signin'}
+              href={login === true ? '/dashboard' : '/api/signin'}
               role="button"
               style="font-size: 130%"
               ><i class="fab fa-discord" style="font-size: 110%"></i

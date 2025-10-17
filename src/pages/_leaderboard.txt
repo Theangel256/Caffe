@@ -1,10 +1,25 @@
 ---
 import db from "../../utils/db.js";
 import Header from "../components/_head.astro";
+import Dashboard from "../components/dashboardNavbar.astro";
+const levels = require("../../../utils/models/levels");
 const database = await db();
 const bot = Astro.locals.bot;
 // Fetch top 10 users by XP from the database
 const users = await database.collection("users").find().sort({ xp: -1 }).limit(10).toArray();
+
+function getRank(leaderboard) {
+  const userlist = [];
+  for (const key of leaderboard) {
+    userlist.push([key.userID, key.lvl, key.xp]);
+  }
+
+  userlist.sort((user1, user2) => {
+    return user2[1] - user1[1] || user2[2] - user1[2];
+  });
+  return userlist;
+}
+const usuarios = getRank(await levels.find({ guildID: idserver })),
 ---
 
 <html>
@@ -23,7 +38,7 @@ const users = await database.collection("users").find().sort({ xp: -1 }).limit(1
     <Header title="Caffe - Leaderboard" />
   </head>
   <body>
-    <Header></Header>
+    <Dashboard></Dashboard>
     <div id="section-leaderboard" class="container leaderPlayerList">
       <h2>Lista de usuarios</h2>
       {

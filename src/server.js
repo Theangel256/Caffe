@@ -42,4 +42,5 @@ module.exports = { client, start };
 // Inicia el bot solo si este archivo se ejecuta directamente
 if (require.main === module) {
   start();
+  console.log("✅ REST API + middleware registered in Astro");
 }

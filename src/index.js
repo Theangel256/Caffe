@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { spawn } = require('child_process');
 const { ShardingManager } = require('discord.js');
 const manager = new ShardingManager(`${__dirname}/server.js`, {
     token: process.env.DISCORD_TOKEN,
@@ -11,6 +12,7 @@ const manager = new ShardingManager(`${__dirname}/server.js`, {
         '--trace-warnings',
     ],
 });
+spawn("npx", ["astro", "preview"], { stdio: "inherit", shell: true });
 manager.spawn('auto');
 manager.on('shardCreate', async (shard) => {
     shard.on('ready', () => {

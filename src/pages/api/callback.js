@@ -35,7 +35,10 @@ export async function GET({ url }) {
   const cookie = serialize("session_id", sessionId, {
     path: "/",
     httpOnly: true,
-    maxAge: 60 * 60 * 24 * 7,
+    secure: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 días en ms
+    sameSite: 'lax',
+    domain: new URL(process.env.PUBLIC_URL).hostname, 
   });
 
   return new Response(null, {

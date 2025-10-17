@@ -1,0 +1,125 @@
+---
+export const prerender = false; // No generar estático
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
+// Import Discord client and Mongoose model
+const { client } = require("../../server.js");
+const levels = require("../../utils/models/levels.js");
+
+// Get params from URL
+const { id } = Astro.params;
+
+// Get guild and check access
+const guild = client.guilds.cache.get(id);
+if (!guild) {
+  return Astro.redirect(
+    `https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot&response_type=code&guild_id=${id}`
+  );
+}
+
+// Get leaderboard users
+const users = await levels.find({ guildID: id });
+
+// Sort leaderboard (same logic as getRank)
+const sortedUsers = users
+  .map((user) => [user.userID, user.lvl, user.xp])
+  .sort((a, b) => b[1] - a[1] || b[2] - a[2]);
+
+// Fetch Discord usernames and avatars
+const enrichedUsers = await Promise.all(
+  sortedUsers.slice(0, 50).map(async ([userID, lvl, xp]) => {
+    try {
+      const user = await client.users.fetch(userID);
+      return {
+        id: userID,
+        name: user.username,
+        avatar: user.displayAvatarURL({ extension: "png" }),
+        lvl,
+        xp,
+      };
+    } catch {
+      return { id: userID, name: "Unknown User", avatar: "", lvl, xp };
+    }
+  })
+);
+---
+
+<html lang="en">
+  <head>
+    <title>Leaderboard — {guild.name}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background: #0d1117;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 2rem;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #161b22;
+      }
+      th, td {
+        padding: 1rem;
+        text-align: left;
+      }
+      th {
+        background-color: #21262d;
+        color: #c9d1d9;
+      }
+      tr:nth-child(even) {
+        background-color: #1e2329;
+      }
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+      .user {
+        display: flex;
+        align-items: center;
+      }
+      .rank {
+        font-weight: bold;
+        color: #58a6ff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🏆 Leaderboard — {guild.name}</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Level</th>
+          <th>XP</th>
+        </tr>
+      </thead>
+      <tbody>
+        {enrichedUsers.map((user, index) => (
+          <tr>
+            <td class="rank">#{index + 1}</td>
+            <td class="user">
+              {user.avatar && <img src={user.avatar} alt="Avatar" />} {user.name}
+            </td>
+            <td>{user.lvl}</td>
+            <td>{user.xp}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </body>
+</html>

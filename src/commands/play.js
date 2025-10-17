@@ -105,7 +105,7 @@ async function handleVideo(info, playlist = false) {
     queueConstruct.connection = connection;
     if(!connection) {
       queue.delete(message.guild.id); 
-      return message.channel.send(lang.error.replace("{url}", process.env.URL));
+      return message.channel.send(lang.error.replace("{url}", process.env.PUBLIC_URL));
     }
     await playHandler(message.guild, queueConstruct.songs[0]);    
 } else {

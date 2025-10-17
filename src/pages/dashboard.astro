@@ -1,18 +1,16 @@
 ---
+import Header from '../components/_head.astro';
+import Navbar from '../components/navbar.astro';
 const user = Astro.locals.user;
-if (!user) return Astro.redirect('/signin');
+if (!user) return Astro.redirect('/api/signin');
 
 const guilds = user.guilds?.filter(g => (g.permissions & 8) === 8) || [];
-
 ---
 
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <title>Caffe - Dashboard</title>
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-
+    <Header title="Caffe - Dashboard" />
+    <Navbar guild={guilds[0]} user={user} />
 <body class="body-index">
   
     <nav>

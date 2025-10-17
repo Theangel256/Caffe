@@ -1,5 +1,5 @@
 ---
-
+export const prerender = false; // No generar estático
 
 const { id } = Astro.params;
 const data = await fetch(`/api/dashboard/${id}`).then(r => r.json());
@@ -7,28 +7,29 @@ const data = await fetch(`/api/dashboard/${id}`).then(r => r.json());
 const db = data.db;
 const statusCounts = data.statuses;
 const bans = data.bans;
-import Head from "../../../components/_head.astro";
-//import PanelHeader from "../../../../components/PanelHeader.astro";
-//<PanelHeader guild={guild} user={user} />
-import PanelData from '../../../components/PanelData.astro';
-import PanelOpciones from "../../../components/PanelOpciones.astro";
-import Navbar from "../../../components/navbar.astro";
+import Head from "../../components/_head.astro";
+import Navbar from "../../components/navbar.astro";
+import PanelData from "../../components/PanelData.astro";
+import PanelOpciones from "../../components/PanelOpciones.astro";
 
 // Authentication
 const user = Astro.locals?.user;
-if (!user) return Astro.redirect("/signin");
+if (!user) return Astro.redirect("/api/signin");
 
 // Get guild data from your bot client (you can replace this with a fetch)
 const bot = globalThis.client;
+const login = Boolean(Astro.locals.user);
+const textLogin = login ? Astro.locals.user.username : "Login";
 const guild = bot?.guilds.cache.get(id) ?? await bot.guilds.fetch(id).catch(() => null);
 
 if (!guild) return Astro.redirect("/error404");
+
 ---
 
 <!DOCTYPE html>
 <html lang="es">
   <Head title={`Caffe Dashboard - ${guild.name}`} />
-  <Navbar></Navbar>
+  <Navbar guild={guild} user={user} textLogin={textLogin} />
   <body data-spy="scroll" data-target="#data">
     <PanelData guild={guild} bans={bans} statusCounts={statusCounts} />
     <PanelOpciones guild={guild} />

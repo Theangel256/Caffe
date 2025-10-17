@@ -48,7 +48,7 @@ module.exports = async (client, message) => {
       .addFields(
         { name: `:gear: | Prefix`, value: `> \`${client.prefix}\`` },
         {  name: `:satellite: | \`${client.prefix}\`Help`, value: client.lang.events.message.isMentioned.field1 },
-        {  name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
+        {  name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.PUBLIC_URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
       })
       .setFooter({
         text: client.lang.events.message.isMentioned.footer + require("../../package.json").version,

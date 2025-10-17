@@ -15,8 +15,8 @@ module.exports = async (client) => {
       .reduce((acc, guildCount) => acc + guildCount, 0)
       .toLocaleString()} users!`,
     "Theangel256 Studios V" + require("../../package.json").version,
-    `${process.env.URL}/discord"`,
-    `${process.env.URL}/add"`,
+    `${process.env.PUBLIC_URL}/discord"`,
+    `${process.env.PUBLIC_URL}/add"`,
   ];
   setInterval(() => {
   const status = statues[Math.floor(Math.random() * statues.length)];

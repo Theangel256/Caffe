@@ -2,7 +2,7 @@
 const db = require('quick.db');
 module.exports.run = async (client, message, args) => {
 	const guilds = new db.table('guilds');
-	const Dashboard = `[Dashboard](${process.env.URL}/Dashboard/${message.guild.id})`;
+	const Dashboard = `[Dashboard](${process.env.PUBLIC_URL}/Dashboard/${message.guild.id})`;
 
 	const embed = new EmbedBuilder()
 		.setAuthor(message.author.username + ' Debes de utilizarlo de la siguiente manera.', message.author.displayAvatarURL({ dynamic:true }))

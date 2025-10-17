@@ -3,13 +3,6 @@ const levelSystem = require("./models/levels");
 const warnMembers = require("./models/warns");
 const guildSystem = require("./models/guilds");
 const { EmbedBuilder } = require('discord.js');
-const auth = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      return next();
-    } else {
-      return res.redirect("/signin");
-    }
-  }
 const getOrCreateDB = async (model, query, defaults = {}) => {
   try {
     const doc = await model.findOneAndUpdate(
@@ -170,5 +163,5 @@ const levels = async (message) => {
     return message;
   }
 module.exports = {
-  auth, getOrCreateDB, getRank, getMember, missingPerms, generateKey, regExp, levels
+  getOrCreateDB, getRank, getMember, missingPerms, generateKey, regExp, levels
 };

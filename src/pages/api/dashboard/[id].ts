@@ -1,6 +1,6 @@
-import { getOrCreateDB } from "../../../../utils/functions.js";
+import { getOrCreateDB } from "../../../utils/functions.js";
 // Update the import path to the correct relative location
-import guildSystem from "../../../../utils/models/guilds.js";
+import guildSystem from "../../../utils/models/guilds.js";
 import { ChannelType, PermissionFlagsBits } from "discord.js";
 import { SESSION_STORE } from "../callback.ts"; // tu Map() con sesiones activas
 import { createRequire } from "module";
@@ -15,7 +15,7 @@ export async function GET({ params, request }: { params: { id: string }, request
   const sessionId = cookies.session_id;
   const user = SESSION_STORE.get(sessionId);
 
-  if (!user) return new Response(null, { status: 302, headers: { Location: "/signin" } });
+  if (!user) return new Response(null, { status: 302, headers: { Location: "/api/signin" } });
 
   const guild = client.guilds.cache.get(idserver) || (await client.guilds.fetch(idserver).catch(() => null));
 

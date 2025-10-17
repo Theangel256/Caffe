@@ -50,7 +50,7 @@ module.exports.run = async (client, message) => {
         inline: true, },
         { name: "❔ LINKS",
         value: `>>> [Invite](${invite})
-        \n[Discord](${process.env.URL}/discord)
+        \n[Discord](${process.env.PUBLIC_URL}/discord)
         \n[Twitter](https://twitter.com/Theangel256)
         \n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`,
         inline: true })

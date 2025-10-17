@@ -1,12 +1,13 @@
 {
   "name": "caffe",
-  "version": "0.0.47-dev",
+  "version": "0.0.50-dev",
   "description": "A bot whitout feelings",
   "main": "src/index.js",
   "scripts": {
+    "build": "astro build",
+    "preview": "astro preview",
     "start": "node src/index.js",
-    "build": "npm install",
-    "dev": "nodemon src/index.js",
+    "dev": "astro dev --port 4321",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -25,7 +26,7 @@
   "author": "Theangel256",
   "license": "Apache-2.0",
   "dependencies": {
-    "@astrojs/node": "^9.4.6",
+    "@astrojs/node": "^9.5.0",
     "@discordjs/opus": "^0.10.0",
     "@discordjs/voice": "^0.18.0",
     "axios": "^1.9.0",
