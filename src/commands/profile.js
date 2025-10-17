@@ -1,7 +1,7 @@
 /*
 const db = require('quick.db')
 const { EmbedBuilder } = require('discord.js');
-const {getMember} = require('../functions.js');
+const {getMember} = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
   const levels = new db.table('levels');
   const profile = new db.table('profile');

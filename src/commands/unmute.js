@@ -1,4 +1,4 @@
-const { getMember } = require("../functions.js");
+const { getMember } = require("../utils/functions.js");
 module.exports.run = (client, message, args) => {
   const cooldown = new client.database("cooldownmute"),
     tomute = getMember(message, args, false);

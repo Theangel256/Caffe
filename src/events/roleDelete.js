@@ -1,28 +1,8 @@
-const guildSystem = require("../models/guilds");
+const guildSystem = require("../utils/models/guilds");
+const { getOrCreateDB } = require('../utils/functions.js');
 module.exports = async (client, role) => {
-  const msgDocument = await guildSystem
-    .findOne({
-      guildID: role.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { channelLogs } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guildSystem, { guildID: role.guild.id });
+  const { channelLogs } = guildsDB;
   const traduccion = { false: "No", true: "Si" };
   const logginChannel = client.channels.resolve(channelLogs);
   const rolembed = new EmbedBuilder()
@@ -37,7 +17,7 @@ module.exports = async (client, role) => {
     .setTimestamp()
     .setFooter(
       `•${role.guild.name}•`,
-      client.user.displayAvatarURL({ extension: "png" }),
+      client.user.displayAvatarURL({ extension: "webp"}),
       true
     );
   if (logginChannel) return logginChannel.send(rolembed);

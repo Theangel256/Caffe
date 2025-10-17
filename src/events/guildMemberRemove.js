@@ -1,30 +1,10 @@
 const Zeew = require("zeew");
-const guildSystem = require("../models/guilds");
+const guildSystem = require("../utils/models/guilds");
 const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
+const { getOrCreateDB } = require('../utils/functions.js');
 module.exports = async (client, member) => {
-  const msgDocument = await guildSystem
-    .findOne({
-      guildID: member.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { channelLogs, goodbyeBackground, channelGoodbye } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guildSystem, { guildID: member.guild.id });
+  const { channelLogs, goodbyeBackground, channelGoodbye } = guildsDB;
   const canal = client.channels.resolve(channelLogs);
   const robot = { true: "Si", false: "No" };
   const logEmbed = new EmbedBuilder()
@@ -33,7 +13,7 @@ module.exports = async (client, member) => {
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
     .setFooter(
       `ID: ${member.user.id}`,
-      client.user.displayAvatarURL({ extension: "png" })
+      client.user.displayAvatarURL({ extension: "webp"})
     )
     .setTimestamp()
     .addField("**「:boy: 」• Nombre**", member.user.username, true)

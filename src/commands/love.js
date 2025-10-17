@@ -1,30 +1,15 @@
 const { EmbedBuilder } = require("discord.js");
-const users = require("../models/users");
+const { getMember, getOrCreateDB } = require("../utils/functions.js");
+const users = require("../utils/models/users");
 module.exports.run = async (client, message, args) => {
-  const { getMember } = require("../functions.js");
-  const msgDocument = await users
-    .findOne({
-      guildID: message.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new users({
-        userID: message.author.id,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
+  const usersDB = await getOrCreateDB(users, { userID: message.author.id });
+  if (!usersDB) return message.channel.send(client.lang.dbError);
   const random = Math.ceil(Math.random() * 100);
-  const member = getMember(message, args, false);
+  const member = getMember(message, args, true);
   if (!member) return message.channel.send(client.lang.no_user);
   if (member.user.bot)
     return message.channel.send(client.lang.commands.love.bot);
-  let { marryId } = dbMsgModel;
+  let { marryId } = usersDB;
   let love;
   if (random >= 0 && random < 10)
     love = `**${random}%** :broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart::broken_heart: **${random}%**`;

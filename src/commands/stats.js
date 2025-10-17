@@ -27,7 +27,7 @@ module.exports.run = async (client, message) => {
     main = new EmbedBuilder()
       .setAuthor(
         client.user.username,
-        client.user.displayAvatarURL({ extension: "png" })
+        client.user.displayAvatarURL({ extension: "webp"})
       )
       .setColor(0x00ffff)
       .setTimestamp()
@@ -50,13 +50,13 @@ module.exports.run = async (client, message) => {
         inline: true, },
         { name: "❔ LINKS",
         value: `>>> [Invite](${invite})
-        \n[Discord](${process.env.URL}/discord)
+        \n[Discord](${process.env.PUBLIC_URL}/discord)
         \n[Twitter](https://twitter.com/Theangel256)
         \n[MySpawn](https://www.spigotmc.org/resources/myspawn.64762/)`,
         inline: true })
       .setFooter({
         text: client.lang.events.message.isMentioned.footer + modulos.version,
-        iconURL: client.user.displayAvatarURL({ format: "jpg", dynamic: true })
+        iconURL: client.user.displayAvatarURL({ extension: "webp"})
 });
   message.channel.send(main);
 };

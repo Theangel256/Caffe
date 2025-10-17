@@ -1,15 +1,14 @@
-const users = require("../models/users");
+const users = require("../utils/models/users");
+const { getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message) => {
-  const msgDocument = await users
-    .findOne({ userID: message.author.id })
-    .catch(console.error);
-  let data = msgDocument;
-  console.log(msgDocument);
-  if (!data) return message.channel.send(client.lang.commands.divorce.nothing);
-  message.channel.send(
-    client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, data.marryTag)
-  );
-  await data.deleteOne({ marryTag: data.marryTag, marryId: data.marryId });
+    const usersDB = await getOrCreateDB(users, { userID: message.author.id });
+    if (!usersDB) return message.channel.send(client.lang.dbError);
+    let { marryId, marryTag } = usersDB;
+    
+  if (!marryId) return message.channel.send(client.lang.commands.divorce.nothing);
+  message.channel.send(client.lang.commands.divorce.sucess.replace(/{esposa.tag}/gi, usersDB.marryTag));
+
+  await users.deleteOne({ marryTag: marryTag, marryId: marryId });
 };
 
 module.exports.help = {

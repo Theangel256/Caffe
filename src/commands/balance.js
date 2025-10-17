@@ -1,10 +1,10 @@
-const economySystem = require("../models/users");
-const { getMember, getOrCreateDB } = require("../functions");
+const economySystem = require("../utils/models/users");
+const { getMember, getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
   const lang = client.lang.commands.balance;
   const member = getMember(message, args, true);
   const economy = await getOrCreateDB(economySystem, { userID: member.user.id });
-  if (!economy) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+  if (!economy) return message.channel.send(client.lang.dbError);
   message.channel.send(
     message.author.id === member.user.id
       ? lang.no_user.replace(/{money}/gi, economy.money.toLocaleString())

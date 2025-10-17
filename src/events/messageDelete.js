@@ -1,31 +1,11 @@
 const { PermissionFlagsBits, EmbedBuilder, Colors } = require("discord.js");
-const guildSystem = require("../models/guilds");
+const guildSystem = require("../utils/models/guilds");
+const { getOrCreateDB } = require('../utils/functions.js');
 module.exports = async (client, message) => {
-  const msgDocument = await guildSystem
-    .findOne({
-      guildID: message.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { channelLogs } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guildSystem, { guildID: message.guild.id });
+  const { channelLogs } = guildsDB;
   const logginChannel = client.channels.resolve(channelLogs);
-  if (!logginChannel) return;
+  if (!logginChannel) return console.log(logginChannel);
   if (!message.guild.members.me.permissions.has(PermissionFlagsBits.ViewAuditLog)) return console.log("No permissions to view audit logs");
   try {
     const audit = await message.guild.fetchAuditLogs({ type: 72 }); // 72 = Message Delete
@@ -52,8 +32,8 @@ module.exports = async (client, message) => {
   const embed = new EmbedBuilder()
     .setTitle("**「:wastebasket:」** Mensaje Borrado")
     .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
-    .setAuthor({ name: message.author.username + "#" + message.author.discriminator, iconURL: message.author.displayAvatarURL({ extension: "png" }) })
-    embed.setFooter({text: `ID: ${message.author.id}`, iconURL: message.author.displayAvatarURL({ extension: "png" }) })
+    .setAuthor({ name: message.author.username + "#" + message.author.discriminator, iconURL: message.author.displayAvatarURL({ extension: "webp"}) })
+    embed.setFooter({text: `ID: ${message.author.id}`, iconURL: message.author.displayAvatarURL({ extension: "webp"}) })
     .setTimestamp()
     .setColor(Colors.Red)
     .addFields({ name: "En", value: message.channel.toString(), inline: true });

@@ -1,29 +1,9 @@
-const guildSystem = require("../models/guilds");
+const guildSystem = require("../utils/models/guilds");
+const { getOrCreateDB } = require('../utils/functions.js');
 module.exports = async (client, channel) => {
   if (channel.type === "dm") return;
-  const msgDocument = await guildSystem
-    .findOne({
-      guildID: channel.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { channelLogs } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guildSystem, { guildID: channel.guild.id });
+  const { channelLogs } = guildsDB;
   const canal = client.channels.resolve(channelLogs);
   const logEmbed = {
     color: "GREEN",
@@ -38,7 +18,7 @@ module.exports = async (client, channel) => {
     timestamp: new Date().toISOString(),
     footer: {
       text: `•${channel.guild.name}•`,
-      icon_url: client.user.displayAvatarURL({ extension: "png" }),
+      icon_url: client.user.displayAvatarURL({ extension: "webp"}),
     },
   };
   

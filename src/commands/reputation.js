@@ -1,7 +1,7 @@
 /*
 const moment = require('moment');
 require('moment-duration-format');
-const {getMember} = require('../functions.js');
+const {getMember} = require("../utils/functions.js");
 const db = require('quick.db');
 module.exports.run = async (client, message, args) => {
 	const economy = new db.table('economy');

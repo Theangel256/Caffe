@@ -1,28 +1,8 @@
-const guildSystem = require("../models/guilds");
+const guildSystem = require("../utils/models/guilds");
+const { getOrCreateDB } = require('../utils/functions.js');
 module.exports = async (client, oldMember, newMember) => {
-  const msgDocument = await guildSystem
-    .findOne({
-      guildID: oldMember.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guildSystem({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { channelLogs } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guildSystem, { guildID: oldMember.guild.id });
+  const { channelLogs } = guildsDB;
   if (!oldMember.guild.member(client.user).permissions.has("VIEW_AUDIT_LOG"))
     return;
   const entry = await oldMember.guild
@@ -37,9 +17,9 @@ module.exports = async (client, oldMember, newMember) => {
       .setDescription("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
       .setFooter(
         `ID: ${oldMember.user.id}`,
-        oldMember.user.displayAvatarURL({ extension: "png" })
+        oldMember.user.displayAvatarURL({ extension: "webp"})
       )
-      .setAuthor(user.tag, user.displayAvatarURL({ extension: "png" }));
+      .setAuthor(user.tag, user.displayAvatarURL({ extension: "webp"}));
     if (oldMember.nickname !== null) {
       msgChannel.addField("Nickname anterior", oldMember.nickname, true);
     }

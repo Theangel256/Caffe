@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ALLOWED_EXTENSIONS } = require("discord.js");
 module.exports.run = async (client, message) => {
   const guild = message.guild,
     features = {
@@ -50,7 +50,7 @@ module.exports.run = async (client, message) => {
     },
     guildOwner = await message.guild.members.fetch(guild.ownerId),
     embed = new EmbedBuilder()
-      .setAuthor({ name: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+      .setAuthor({ name: guild.name, iconURL: guild.iconURL({ extension: "webp"}) })
       .addFields({
         name: "_Dueño del Servidor_", value: guildOwner, inline: true,
         name: "_ID_", value: guild.id, inline: true,

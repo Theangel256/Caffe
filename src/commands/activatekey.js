@@ -1,10 +1,10 @@
-const keySystem = require("../models/keys");
-const { getOrCreateDB } = require("../functions");
+const keySystem = require("../utils/models/keys");;
+const { getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
   const keysDB = await getOrCreateDB(keySystem, { guildID: message.guild.id }, { enable: false, license: "" });
-  if (!keysDB) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+  if (!keysDB) return message.channel.send(client.lang.dbError);
 
-  if (!args[0]) return message.channel.send({content: `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aquí](${process.env.URL}/premium)`,});
+  if (!args[0]) return message.channel.send({content: `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aquí](${process.env.PUBLIC_URL}/premium)`,});
 
   if (keysDB.license === args[0]) {
     keysDB.enable = true 

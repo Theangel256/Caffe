@@ -1,4 +1,4 @@
-const { getMember } = require("../functions");
+const { getMember } = require("../utils/functions.js");
 const Canvas = require("canvas");
 const { AttachmentBuilder } = require("discord.js");
 module.exports.run = async (client, message, args) => {

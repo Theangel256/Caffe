@@ -1,9 +1,9 @@
-const economySystem = require("../models/users");
-const { getOrCreateDB } = require("../functions");
+const economySystem = require("../utils/models/users");
+const { getOrCreateDB } = require("../utils/functions.js");
 module.exports.run = async (client, message, args) => {
 
   const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
-  if (!economy) return message.channel.send("I have an error while trying to access to the database, please try again later.");
+  if (!economy) return message.channel.send(client.lang.dbError);
 
   const cantidad = args.join(" ");
   const random = Math.ceil(Math.random() * 8);
@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
       await economy.updateOne({ money: total });
       return message.channel.send(client.lang.commands.gamble.success.replace(/{all}/gi,total.toLocaleString()));
     } else {
-      await dbMsgModel.updateOne({ money: economy.money - all });
+      await economy.updateOne({ money: economy.money - all });
       return message.channel.send(client.lang.commands.gamble.unsuccess.replace(/{all}/gi,all.toLocaleString()));
     }
   } else if (isNaN(cantidad)) {

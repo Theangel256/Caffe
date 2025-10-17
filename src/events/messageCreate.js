@@ -1,45 +1,33 @@
 const moment = require("moment");
 require("moment-duration-format");
-const { levels, missingPerms, regExp } = require("../functions");
-const guilds = require("../models/guilds");
-const { joinVoiceChannel } = require("@discordjs/voice");
-const { PermissionsBitField, EmbedBuilder, InteractionCallback } = require("discord.js");
+const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions.js");
+const guilds = require("../utils/models/guilds");
+const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require("@discordjs/voice");
+const { PermissionsBitField, EmbedBuilder } = require("discord.js");
 module.exports = async (client, message) => {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;
   if (message.author.bot) return;
   const botPerms = message.guild.members.me.permissionsIn(message.channel);
-  const msgDocument = await guilds
-    .findOne({
-      guildID: message.guild.id,
-    })
-    .catch((err) => console.log(err));
-  if (!msgDocument) {
-    try {
-      const dbMsg = await new guilds({
-        guildID: message.guild.id,
-        prefix: process.env.prefix,
-        language: "en",
-        role: false,
-        kick: false,
-        ban: false,
-      });
-      var dbMsgModel = await dbMsg.save();
-    } catch (err) {
-      console.log(err);
-    }
-  } else {
-    dbMsgModel = msgDocument;
-  }
-  const { prefix, language } = dbMsgModel;
+  const guildsDB = await getOrCreateDB(guilds, { guildID: message.guild.id });
+  const { prefix, language } = guildsDB;
   client.prefix = prefix;
-  client.lang = require(`../languages/${language}.js`);
-  client.joinVoiceChannel = function (channel) {
-    return joinVoiceChannel({
+  client.lang = require(`../utils/languages/${language}.js`);
+  
+  client.joinVoiceChannel = async function (channel) {
+  try {
+    const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
       adapterCreator: channel.guild.voiceAdapterCreator,
+      selfDeaf: false,
     });
+    await entersState(connection, VoiceConnectionStatus.Ready, 15_000);
+    return connection;
+  } catch (error) {
+    console.error("❌ Error al conectar al canal de voz:\n", error);
+    throw error;
+  }
   };
   
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
@@ -60,11 +48,11 @@ module.exports = async (client, message) => {
       .addFields(
         { name: `:gear: | Prefix`, value: `> \`${client.prefix}\`` },
         {  name: `:satellite: | \`${client.prefix}\`Help`, value: client.lang.events.message.isMentioned.field1 },
-        {  name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
+        {  name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.PUBLIC_URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
       })
       .setFooter({
         text: client.lang.events.message.isMentioned.footer + require("../../package.json").version,
-        iconURL: client.user.displayAvatarURL({ format: "jpg", dynamic: true })
+        iconURL: client.user.displayAvatarURL({ extension: "webp"})
       })
       .setTimestamp()
       .setColor(0x00ffff);
