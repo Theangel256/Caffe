@@ -1,10 +1,10 @@
-import { getOrCreateDB } from "../../../utils/functions.js";
-// Update the import path to the correct relative location
-import guildSystem from "../../../utils/models/guilds.js";
-import { ChannelType, PermissionFlagsBits } from "discord.js";
-import { SESSION_STORE } from "../callback.ts"; // tu Map() con sesiones activas
-import { createRequire } from "module";
 const require = createRequire(import.meta.url);
+const { getOrCreateDB } = require("../../../utils/functions.js");
+// Update the import path to the correct relative location
+const guildSystem = require("../../../utils/models/guilds");
+import { ChannelType, PermissionFlagsBits } from "discord.js";
+import { SESSION_STORE } from "../callback.js"; // tu Map() con sesiones activas
+import { createRequire } from "module";
 const { client } = require("../../../shard.js");
 import { parse } from "cookie";
 

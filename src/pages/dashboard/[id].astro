@@ -9,8 +9,8 @@ const statusCounts = data.statuses;
 const bans = data.bans;
 import Head from "../../components/_head.astro";
 import Navbar from "../../components/navbar.astro";
-import PanelData from "../../components/PanelData.astro";
-import PanelOpciones from "../../components/PanelOpciones.astro";
+import PanelData from "../../components/panelData.astro";
+import PanelOpciones from "../../components/panelOpciones.astro";
 
 // Authentication
 const user = Astro.locals?.user;
@@ -33,7 +33,7 @@ if (!guild) return Astro.redirect("/error404");
   <body data-spy="scroll" data-target="#data">
     <PanelData guild={guild} bans={bans} statusCounts={statusCounts} />
     <PanelOpciones guild={guild} />
-    <script src="/hidden.js"></script>
+    <script src="/js/hidden.js" is:inline></script>
   </body>
 </html>
 

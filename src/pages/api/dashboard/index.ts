@@ -1,4 +1,4 @@
-import { SESSION_STORE } from "../callback.ts";
+import { SESSION_STORE } from "../callback.js";
 import { parse } from "cookie";
 
 export async function GET({ request }: { request: Request }) {

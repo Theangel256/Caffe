@@ -1,8 +1,7 @@
 ---
 const { guild, db } = Astro.props;
 import { ChannelType, PermissionFlagsBits } from "discord.js";
-
-import guildSystem from "../utils/models/guilds.js"; 
+const guildSystem = require("../../../utils/models/guilds");
 const bot = globalThis.client;
 
 

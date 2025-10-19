@@ -17,4 +17,13 @@ export async function onRequest(context, next) {
   return next();
 }
 
+export function getSession(request) {
+  const cookieHeader = request.headers.get("cookie");
+  const cookies = cookieHeader ? parse(cookieHeader) : {};
+  const sessionId = cookies.session_id;
+
+  return SESSION_STORE.get(sessionId);
+
+}
+
 export { SESSION_STORE };
