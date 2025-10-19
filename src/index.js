@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { ShardingManager } = require('discord.js');
-const { spawn } = require('child_process');\
+const { spawn } = require('child_process');
 const { existsSync } = require("fs");
 const path = require("path");
 const http = require('http');
