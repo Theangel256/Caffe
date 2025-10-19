@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { ShardingManager } = require('discord.js');
-const { spawn } = require('child_process');
+const { spawn } = require('child_process');\
+const { existsSync } = require("fs");
+const path = require("path");
 const http = require('http');
 
 async function start() {
@@ -18,11 +20,21 @@ async function start() {
   });
 // Usa un puerto dinámico para Render o 4321 localmente
 const PORT = process.env.PORT || 4321;
+
+const distServerPath = path.resolve("dist/server/entry.mjs");
+
+// Si no existe el build, lo genera
+if (!existsSync(distServerPath)) {
+  console.log("⚙️ No se encontró el build de Astro, ejecutando astro build...");
+  spawn("npx", ["astro", "build"], { stdio: "inherit", shell: true });
+}
+
 // Lanza Astro Preview sin bloquear el proceso principal
 const astro = spawn("npx", ["astro", "preview", "--port", PORT], {
   stdio: "inherit",
   shell: true,
 });
+/*
 // Render necesita que haya un servidor escuchando para detectar el servicio
 const keepAlive = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
@@ -38,6 +50,7 @@ keepAlive.listen(PORT, () => {
 astro.on("close", (code) => {
   console.log(`⚠️ Astro preview exited with code ${code}`);
 });
+*/
   // Levantamos todos los shards automáticamente
   manager.spawn();
   // Eventos de los shards
