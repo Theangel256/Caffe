@@ -31,7 +31,6 @@ async function startShard() {
     process.on('uncaughtException', err => console.error('Uncaught Exception:', err));
 
     client.login().catch(err => console.error("Client Login Error: " + err.message));
-    console.log(`✅ Shard running with ${client.guilds.cache.size} guilds`);
   } catch (err) {
     console.error('Error starting shard:', err);
     process.exit(1);

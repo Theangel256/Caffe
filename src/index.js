@@ -55,7 +55,7 @@ astro.on("close", (code) => {
   manager.spawn();
   // Eventos de los shards
   manager.on('shardCreate', shard => {
-    shard.on('ready', () => console.log(`❖ Shard ${shard.id} launched!`));
+    shard.on('ready', () => console.log(`❖  Shard ${shard.id} launched!`));
     shard.on('error', error => console.error(`❖ Shard ${shard.id} error:`, error));
   });
 }
