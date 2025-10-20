@@ -20,37 +20,23 @@ async function start() {
   });
 // Usa un puerto dinámico para Render o 4321 localmente
 const PORT = process.env.PORT || 4321;
-
-const distServerPath = path.resolve("dist/server/entry.mjs");
-
-// Si no existe el build, lo genera
-if (!existsSync(distServerPath)) {
-  console.log("⚙️ No se encontró el build de Astro, ejecutando astro build...");
-  spawn("npx", ["astro", "build"], { stdio: "inherit", shell: true });
-}
-
-// Lanza Astro Preview sin bloquear el proceso principal
-const astro = spawn("npx", ["astro", "preview", "--port", PORT], {
-  stdio: "inherit",
-  shell: true,
-});
-/*
 // Render necesita que haya un servidor escuchando para detectar el servicio
-const keepAlive = http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
   res.end("✅ Caffe Bot + Astro server running.\n");
 });
-
-// Escucha el mismo puerto (Render escanea puertos)
-keepAlive.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🌐 Listening on port ${PORT}`);
 });
+if (!existsSync("./dist")) {
+  console.log("⚙️ No se encontró el build de Astro, ejecutando astro build...");
+  const build = spawn("npx", ["astro", "build"], { stdio: "inherit" });
+  build.on("close", (code) => {
+    if (code === 0) startAstro();
+    else console.error(`❌ Error al ejecutar astro build (código ${code})`);
+  });
+} else { startAstro(); }
 
-// Manejamos errores del proceso Astro
-astro.on("close", (code) => {
-  console.log(`⚠️ Astro preview exited with code ${code}`);
-});
-*/
   // Levantamos todos los shards automáticamente
   manager.spawn();
   // Eventos de los shards
@@ -62,3 +48,15 @@ astro.on("close", (code) => {
 
 // Ejecutar el inicio
 start();
+
+
+function startAstro() {
+  console.log("🚀 Iniciando servidor Astro...");
+  const astro = spawn("npx", ["astro", "preview", "--port", PORT], {
+    stdio: "inherit",
+  });
+
+  astro.on("close", (code) => {
+    console.log(`⚠️ Astro preview exited with code ${code}`);
+  });
+}
