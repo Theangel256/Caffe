@@ -32,6 +32,7 @@
     "axios": "^1.9.0",
     "canvas": "^3.1.0",
     "connect-mongo": "^5.1.0",
+    "cookie": "^1.0.2",
     "discord.js": "^14.19.2",
     "dotenv": "^17.2.3",
     "jimp": "^1.6.0",

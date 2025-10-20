@@ -114,3 +114,5 @@ dist
 # TernJS port file
 .tern-port
 package.json
+.astro/data-store.json
+.astro/types.d.ts
