@@ -1,8 +1,8 @@
 ---
 import Navbar from "../components/navbar.astro";
 import Header from "../components/_head.astro";
-import PanelData from '../components/PanelData.astro';
-import PanelOpciones from "../components/PanelOpciones.astro";
+import PanelData from '../components/panelData.astro';
+import PanelOpciones from "../components/panelOpciones.astro";
 import { GuildTextThreadManager } from "discord.js";
 const user = Astro.locals.user;
 if (!user) return Astro.redirect('/api/signin');
