@@ -14,6 +14,7 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+  closeTimeout: 120000,
   allowedMentions: { parse: ['users'], repliedUser: false },
 });
 
@@ -21,6 +22,8 @@ client.commands = new Collection();
 client.aliases = new Collection();
 client.limits = new Collection();
 client.queue = new Collection();
+
+startShard();
 
 async function startShard() {
   try {
@@ -36,8 +39,5 @@ async function startShard() {
     process.exit(1);
   }
 }
-
-startShard();
-
 // Exportamos client para endpoints que lo necesiten
 module.exports = client;
