@@ -1,70 +1,38 @@
 ---
-const bot = Astro.locals.bot;
-const login = Boolean(Astro.locals.user);
-const textLogin = login ? Astro.locals.user.username : "Login";
 const user = Astro.locals?.user;
-const avatarURL = user ? user.displayAvatarURL({ extension: "webp", size: 1024 }) : null;
+const login = Boolean(user);
+const avatarURL = user ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : null;
+const textLogin = login ? user.username : "Login";
 ---
-<nav class="navbar navbar-expand-lg color-web shadow-lg navbar-right">
-  <a class="navbar-brand" href="/">
-    <img
-      class="responsive-img circle"
-      src="src/public/images/Caffe.png"
-      width="60"
-      height="60"
-      style="border: 1px; border-radius: 150px"
-  /></a>
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav font-weight-bolder mover-right">
-      <li class="nav-item">
-        <a class="nav-links" target="_blank" href={`${process.env.PUBLIC_URL}/discord`}
-          rel=”noopener noreferrer”>Support Server</a
-        >
-      </li>
-  {login ? (
-    <li class="nav-item dropdown">
-      <a
-        class="nav-links dropdown-toggle"
-        href="#"
-        id="navbarDropdown"
-        role="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        <img
-          class="circle responsive-img"
-          src={avatarURL}
-          width="30"
-          height="30"
-          style="border: 10px; border-radius: 150px"
-          alt={user ? user.username : "User"}
-        />
-        {textLogin}
-      </a>
-      <div
-        class="dropdown-menu animate slideIn"
-        aria-labelledby="navbarDropdown"
-      >
-        <a class="dropdown-item" href="/logout">Salir</a>
-      </div>
-    </li>
-  ) : (
-    <li class="nav-item">
-      <a class="nav-links" href="/api/signin">Login</a>
-    </li>
-  )}
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <img src="src/public/images/Caffe.png" alt="Caffe Bot Logo" class="nav-logo-img" />
+    </a>
+    <ul class="nav-menu">
+      <li><a href="/discord" target="_blank" class="nav-links">Support Server</a></li>
+      <li><a href="/dashboard" class="nav-links">Dashboard</a></li>
+
+      {login ? (
+        <li class="nav-item dropdown">
+          <button class="nav-links dropdown-toggle">
+            <img
+              src={avatarURL}
+              alt={textLogin}
+              width="28"
+              height="28"
+              style="border-radius: 50%; margin-right: 8px;"
+            />
+            {textLogin}
+          </button>
+          <div class="dropdown-menu">
+            <a href="/api/logout">Salir</a>
+          </div>
+        </li>
+      ) : (
+        <li><a href="/api/signin" class="nav-links">Login</a></li>
+      )}
     </ul>
   </div>
 </nav>

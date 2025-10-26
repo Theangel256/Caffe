@@ -1,20 +1,43 @@
-import { SESSION_STORE } from "../callback.js";
-import { parse } from "cookie";
+import { APIContext } from 'astro';
+import { PermissionFlagsBits } from 'discord.js';
 
-export async function GET({ request }: { request: Request }) {
-  const cookieHeader = request.headers.get("cookie") || "";
-  const cookies = parse(cookieHeader) as { [key: string]: string };
-  const sessionId = cookies.session_id;
-  const user = SESSION_STORE.get(sessionId);
+interface DiscordUser {
+  id: string;
+  username: string;
+  avatar: string;
+  guilds?: Array<{
+    id: string;
+    name: string;
+    permissions: number;
+  }>;
+  accessToken?: string;
+}
 
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
+export async function GET(context: APIContext) {
+  const user = context.locals.user as DiscordUser | undefined;
+
+  if (!user || !user.accessToken) {
+    return new Response('Unauthorized', { status: 401 });
   }
 
-  // Filtrar guilds donde el usuario tiene admin
-  const guilds = user.guilds.filter((p: { permissions: number; }) => (p.permissions & 8) === 8);
+  let guilds = user.guilds || [];
+  if (!guilds.length) {
+    const guildsRes = await fetch('https://discord.com/api/users/@me/guilds', {
+      headers: { Authorization: `Bearer ${user.accessToken}` },
+    });
+    if (guildsRes.ok) {
+      guilds = await guildsRes.json() as Array<{
+        id: string;
+        name: string;
+        permissions: number;
+      }>;
+    }
+  }
 
-  return new Response(JSON.stringify({ guilds, user }), {
-    headers: { "Content-Type": "application/json" },
+  const adminGuilds = guilds.filter((g) => (g.permissions & PermissionFlagsBits.Administrator) === PermissionFlagsBits.Administrator);
+
+  return new Response(JSON.stringify({ guilds: adminGuilds, user }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
   });
 }

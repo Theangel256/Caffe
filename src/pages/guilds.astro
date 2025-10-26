@@ -4,10 +4,10 @@ import Header from "../components/_head.astro";
 import PanelData from '../components/panelData.astro';
 import PanelOpciones from "../components/panelOpciones.astro";
 import { GuildTextThreadManager } from "discord.js";
-const user = Astro.locals.user;
+const user = Astro.locals?.user;
 if (!user) return Astro.redirect('/api/signin');
 const guilds = user.guilds?.filter(g => (g.permissions & 8) === 8) || [];
-const bot = Astro.locals.bot;
+const bot = Astro.locals?.bot;
 const { id } = Astro.params;
 const guild = bot?.guilds.cache.get(id) ?? await bot.guilds.fetch(id).catch(() => null);
 

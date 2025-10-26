@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
+import { onRequest as sessionMiddleware } from './src/middleware/index.ts';
 
 export default defineConfig({
   output: 'server',

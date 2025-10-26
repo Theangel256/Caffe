@@ -3,7 +3,6 @@ import Header from "../components/_head.astro";
 import Navbar from "../components/navbar.astro";
 const user = Astro.locals?.user;
 const login = Boolean(user);
-      
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -11,7 +10,7 @@ const login = Boolean(user);
     <Navbar guild={null} user={user ? user : null}/>
   <body class="body-index">
     <center>
-      <div class="container-fluid">
+      <div class="container-fluid min-h-screen w-full relative">
         <section class="body-header">
           <h1><b>Caffe</b></h1>
           <br />
@@ -23,7 +22,7 @@ const login = Boolean(user);
           </p>
           <div>
             <a
-              class="btn btn-discord-white btn-lg"
+              class="btn btn-white btn-lg"
               href={login === true ? '/dashboard' : '/api/signin'}
               role="button"
               style="font-size: 130%"

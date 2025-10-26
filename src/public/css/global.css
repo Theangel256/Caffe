@@ -1,0 +1,298 @@
+/* 🌌 Caffe Bot — Modern Blue-Black Gradient Theme */
+/* Reworked: clean structure, unified design, optimized gradients */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-primary: #0b0c10;
+  --color-accent: #4e6ef2;
+  --color-gold: #c69c6c;
+  --color-body-gradient: radial-gradient(120% 120% at 50% 10%, #0a0f1c 0%, #0d1a36 100%);
+  --color-navbar-gradient: linear-gradient(90deg, #101828 0%, #0d2038 100%);
+  --color-dashboard-bg: #1e1f24;
+}
+
+/* Global */
+body {
+  min-height: 100vh;
+  font-family: "Quicksand", sans-serif;
+  color: #ffffff;
+  background: var(--color-body-gradient);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Inputs */
+input,
+select {
+  width: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: 0.3s;
+}
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+/* NAVBAR FIX - alignment + responsive */
+.navbar {
+  background: var(--color-navbar-gradient);
+  backdrop-filter: blur(12px);
+  padding: 10px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* vertical centering */
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* container: center content and set max width */
+.nav-container {
+  display: flex;
+  align-items: center; /* important: align items vertically */
+  justify-content: space-between; /* logo left, menu right */
+  width: 100%;
+  max-width: 1200px;
+  gap: 20px;
+}
+
+/* logo */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.nav-logo-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: block;
+  object-fit: cover;
+}
+
+/* menu - flex row, centered vertically */
+.nav-menu {
+  list-style: none;
+  display: flex;
+  align-items: center; /* key to vertically align links with logo */
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* links */
+.nav-links {
+  display: inline-flex;
+  align-items: center; /* ensures icon + text align */
+  gap: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  line-height: 1; /* avoid vertical misalign */
+  transition: background .18s, color .18s, transform .12s;
+  height: 42px; /* explicit height helps stable layout */
+}
+
+/* ensure text sits centered vertically */
+.nav-links, .nav-links * { 
+  vertical-align: middle;
+}
+
+/* hover/focus states */
+.nav-links:hover,
+.nav-links:focus {
+  background: rgba(255,255,255,0.06);
+  color: var(--color-accent);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+/* avatar + username inside nav button */
+.nav-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  object-fit: cover;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.nav-username {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* dropdown menu (simple absolute box) */
+.nav-item.dropdown {
+  position: relative;
+}
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: rgba(10,12,18,0.95);
+  border: 1px solid rgba(255,255,255,0.04);
+  min-width: 150px;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  padding: 8px 8px;
+  display: none; /* shown when active */
+  z-index: 200;
+}
+.nav-item.dropdown:focus-within .dropdown-menu,
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+.dropdown-item {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+.dropdown-item:hover { background: rgba(255,255,255,0.04); color: var(--color-accent); }
+
+/* responsive: stack menu into hamburger on small screens */
+@media (max-width: 860px) {
+  .nav-container {
+    padding: 0 12px;
+  }
+
+  .nav-menu {
+    gap: 0.8rem;
+  }
+
+  /* make menu collapse into a simple vertical list if you later toggle it */
+  .nav-menu--mobile {
+    display: none; /* implement js toggle if you want mobile menu */
+    flex-direction: column;
+    background: var(--color-navbar-gradient);
+    position: absolute;
+    top: 64px;
+    right: 12px;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .nav-links {
+    height: 36px;
+    padding: 6px 10px;
+  }
+
+  .nav-logo-img { width: 40px; height: 40px; }
+}
+/* Header */
+.body-header {
+  max-width: 720px;
+  padding-top: 72px;
+  text-align: center;
+}
+.body-header p {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+/* Banner */
+.content-banner {
+  background: linear-gradient(180deg, rgba(20, 25, 45, 0.9), rgba(10, 12, 25, 0.8));
+  padding: 20px;
+  height: 250px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(145deg, #1c2230, #2a3450);
+  border-radius: 12px;
+  display: inline-block;
+  height: 250px;
+  width: 250px;
+  margin: 1rem;
+  padding: 35px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(114, 137, 218, 0.25);
+}
+.card-text {
+  color: #e6e9f5;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.btn-white {
+  background-color: #fff;
+  color: #000;
+}
+.btn-white:hover {
+  background-color: #e3e3e3;
+}
+.btn-dark {
+  background-color: #2c2f33;
+  color: #fff;
+}
+.btn-dark:hover {
+  background-color: #4b4f56;
+}
+.btn-caffe {
+  background: linear-gradient(90deg, #c69c6c, #dcb680);
+  color: #1a1a1a;
+}
+.btn-caffe:hover {
+  filter: brightness(1.1);
+}
+
+/* Dashboard (gris sólido) */
+.dashboard {
+  background-color: var(--color-dashboard-bg);
+  min-height: 100vh;
+  padding: 40px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #bbb;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 50px;
+}
+
+/* Floating animation */
+@keyframes floating {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}

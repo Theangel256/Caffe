@@ -1,49 +1,84 @@
 ---
 export const prerender = false; // No generar estático
 
-const { id } = Astro.params;
-const data = await fetch(`/api/dashboard/${id}`).then(r => r.json());
-
-const db = data.db;
-const statusCounts = data.statuses;
-const bans = data.bans;
 import Head from "../../components/_head.astro";
 import Navbar from "../../components/navbar.astro";
 import PanelData from "../../components/panelData.astro";
 import PanelOpciones from "../../components/panelOpciones.astro";
 
-// Authentication
-const user = Astro.locals?.user;
+// Type definitions
+interface GuildData {
+  guild: {
+    id: string;
+    name: string;
+    memberCount: number;
+    channels: number;
+    roles: number;
+    createdAt: Date;
+  };
+  statuses: { online: number; idle: number; dnd: number; offline: number };
+  bans: number | false;
+  db: any; // Adjust based on your DB structure
+}
+
+interface DiscordUser {
+  id: string;
+  username: string;
+  avatar: string;
+  guilds?: Array<{
+    id: string;
+    name: string;
+    permissions: number;
+    icon?: string;
+  }>;
+  accessToken?: string;
+}
+
+// Get dynamic ID parameter
+const { id } = Astro.params;
+
+// Authentication and data fetching
+const user = Astro.locals.user as DiscordUser | undefined;
 if (!user) return Astro.redirect("/api/signin");
 
-// Get guild data from your bot client (you can replace this with a fetch)
+let data: GuildData | undefined;
+try {
+  const res = await fetch(`/api/dashboard/${id}`);
+  if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  data = await res.json();
+} catch (error) {
+  console.error('Fetch error:', error);
+  return Astro.redirect("/error404"); // Fallback if API fails
+}
+
+const db = data?.db;
+const statusCounts = data?.statuses;
+const bans = data?.bans;
+
+// Bot client (ensure it's initialized globally or adjust)
 const bot = globalThis.client;
-const login = Boolean(Astro.locals.user);
-const textLogin = login ? Astro.locals.user.username : "Login";
+const login = Boolean(user);
+const textLogin = login ? user.username : "Login";
 const guild = bot?.guilds.cache.get(id) ?? await bot.guilds.fetch(id).catch(() => null);
 
 if (!guild) return Astro.redirect("/error404");
-
 ---
 
 <!DOCTYPE html>
 <html lang="es">
-  <Head title={`Caffe Dashboard - ${guild.name}`} />
-  <Navbar guild={guild} user={user} textLogin={textLogin} />
+  <head>
+    <Head title={`Caffe Dashboard - ${guild.name}`} />
+  </head>
   <body data-spy="scroll" data-target="#data">
+    <Navbar guild={guild} user={user} textLogin={textLogin} />
     <PanelData guild={guild} bans={bans} statusCounts={statusCounts} />
     <PanelOpciones guild={guild} />
     <script src="/js/hidden.js" is:inline></script>
   </body>
 </html>
 
----
-const { id } = Astro.params;
-const res = await fetch(`/api/dashboard/${id}`);
-const data = await res.json();
----
-
-<h1>{data.guild.name}</h1>
-<p>Miembros: {data.guild.memberCount}</p>
-<p>Canales: {data.guild.channels}</p>
-<p>Roles: {data.guild.roles}</p>
+<!-- Render additional guild info below the components -->
+<h1>{data?.guild.name || 'Unknown Guild'}</h1>
+<p>Miembros: {data?.guild.memberCount || 0}</p>
+<p>Canales: {data?.guild.channels || 0}</p>
+<p>Roles: {data?.guild.roles || 0}</p>
