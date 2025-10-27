@@ -69,6 +69,22 @@ export const onRequest = defineMiddleware(async (context, next) => {
   return response;
 });
 
+export async function getSession(context: any) {
+  const cookieHeader = context.request.headers.get('cookie') || '';
+  const cookies = parse(cookieHeader);
+  const sessionCookie = cookies.session_data || '';
+  const unsignedSession = unsign(sessionCookie, SESSION_SECRET);
+  if (unsignedSession !== false) {
+    try {
+      return JSON.parse(unsignedSession);
+    } catch (e) {
+      console.error('Invalid session data:', e);
+      return null;
+    }
+  }
+  return null;
+}
+
 // Type safety for locals
 declare module 'astro' {
   interface Locals {

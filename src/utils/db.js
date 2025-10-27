@@ -20,8 +20,7 @@ async function dbConnect() {
       console.log("✅ Conectado a MongoDB");
       return mongoose;
     }).catch(err => {
-      console.error("❌ Error conectando a MongoDB:", err);
-      throw err;
+      throw new Error("❌ Error conectando a MongoDB:", err);
     });
   }
 
