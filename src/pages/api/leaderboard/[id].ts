@@ -19,6 +19,11 @@ interface DiscordUser {
   accessToken?: string;
 }
 
+interface GuildData {
+  id: string;
+  name: string;
+}
+
 export async function GET(context: APIContext) {
   const { params } = context;
   const id = params.id;

@@ -29,8 +29,9 @@ interface DiscordUser {
   accessToken?: string;
 }
 
-// Get dynamic ID parameter
+// Get dynamic ID parameter and base URL
 const { id } = Astro.params;
+const baseURL = Astro.site ? new URL(Astro.site).origin : 'http://localhost:3000'; // Fallback for dev
 
 // Authentication and data fetching
 const user = Astro.locals.user as DiscordUser | undefined;
@@ -38,7 +39,7 @@ if (!user) return Astro.redirect("/api/signin");
 
 let data: LeaderboardResponse | undefined;
 try {
-  const res = await fetch(`/api/leaderboard/${id}`);
+  const res = await fetch(`${baseURL}/api/leaderboard/${id}`);
   if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
   data = await res.json();
 } catch (error) {
