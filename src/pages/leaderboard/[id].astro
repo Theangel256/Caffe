@@ -1,48 +1,52 @@
 ---
 export const prerender = false; // No generar estático
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
 
-// Import Discord client and Mongoose model
-const { client } = require("../../shard.js");
-const levels = require("../../utils/models/levels.js");
+import Head from "../../components/_head.astro";
 
-// Get params from URL
-const { id } = Astro.params;
-
-// Get guild and check access
-const guild = client.guilds.cache.get(id);
-if (!guild) {
-  return Astro.redirect(
-    `https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot&response_type=code&guild_id=${id}`
-  );
+// Type definitions
+interface GuildData {
+  id: string;
+  name: string;
 }
 
-// Get leaderboard users
-const users = await levels.find({ guildID: id });
+interface LeaderboardUser {
+  id: string;
+  name: string;
+  avatar: string;
+  lvl: number;
+  xp: number;
+}
 
-// Sort leaderboard (same logic as getRank)
-const sortedUsers = users
-  .map((user) => [user.userID, user.lvl, user.xp])
-  .sort((a, b) => b[1] - a[1] || b[2] - a[2]);
+interface LeaderboardResponse {
+  guild: GuildData;
+  users: LeaderboardUser[];
+}
 
-// Fetch Discord usernames and avatars
-const enrichedUsers = await Promise.all(
-  sortedUsers.slice(0, 50).map(async ([userID, lvl, xp]) => {
-    try {
-      const user = await client.users.fetch(userID);
-      return {
-        id: userID,
-        name: user.username,
-        avatar: user.displayAvatarURL({ extension: "png" }),
-        lvl,
-        xp,
-      };
-    } catch {
-      return { id: userID, name: "Unknown User", avatar: "", lvl, xp };
-    }
-  })
-);
+interface DiscordUser {
+  id: string;
+  username: string;
+  avatar: string;
+  accessToken?: string;
+}
+
+// Get dynamic ID parameter
+const { id } = Astro.params;
+
+// Authentication and data fetching
+const user = Astro.locals.user as DiscordUser | undefined;
+if (!user) return Astro.redirect("/api/signin");
+
+let data: LeaderboardResponse | undefined;
+try {
+  const res = await fetch(`/api/leaderboard/${id}`);
+  if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  data = await res.json();
+} catch (error) {
+  console.error('Fetch error:', error);
+  return Astro.redirect("/error404");
+}
+
+const { guild, users } = data || { guild: { id, name: 'Unknown Guild' }, users: [] };
 ---
 
 <html lang="en">
@@ -109,7 +113,7 @@ const enrichedUsers = await Promise.all(
         </tr>
       </thead>
       <tbody>
-        {enrichedUsers.map((user, index) => (
+        {users.map((user, index) => (
           <tr>
             <td class="rank">#{index + 1}</td>
             <td class="user">
