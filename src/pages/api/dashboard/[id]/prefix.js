@@ -3,7 +3,7 @@ import { getSession } from "../../../../middleware/index.ts";
 const { getOrCreateDB } = require("../../../../utils/functions.js");
 
 export async function POST({ params, request }) {
-  const user = getSession(request);
+  const user = await getSession(request);
   if (!user) return new Response("Unauthorized", { status: 401 });
 
   const idserver = params.id;
