@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: caffe-bot-astro
+    env: node
+    region: oregon
+    plan: starter
+
+    # Variables de entorno
+    envVars:
+      NODE_VERSION: 20.17.0
+      PORT: 10000
+      DISCORD_TOKEN:
+        fromSecret: DISCORD_TOKEN
+      MONGODB_URI:
+        fromSecret: MONGODB_URI
+
+    # Construcción
+    buildCommand: |
+      npm install
+      npx astro build
+
+    # Comando de inicio
+    startCommand: |
+      node dist/server/entry.mjs & node -e "
+        const { ShardingManager } = require('discord.js');
+        const manager = new ShardingManager('./src/shard.js', {
+          token: process.env.DISCORD_TOKEN,
+          totalShards: 'auto'
+        });
+        manager.spawn();
+        manager.on('shardCreate', shard => {
+          console.log(\`Shard \${shard.id} creado\`);
+          shard.on('ready', () => console.log(\`Shard \${shard.id} listo\`));
+        });
+      "
+
+    # Salud y puerto
+    healthCheckPath: /api/health
+    autoDeploy: true

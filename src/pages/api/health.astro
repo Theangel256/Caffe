@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+---
+
+<pre>
+  {JSON.stringify({
+    status: "ok",
+    time: new Date().toISOString(),
+    env: import.meta.env.MODE
+  }, null, 2)}
+</pre>
