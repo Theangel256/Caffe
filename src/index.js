@@ -2,19 +2,12 @@ require("dotenv").config();
 const { ShardingManager } = require("discord.js");
 const { spawn } = require("child_process");
 const { existsSync } = require("fs");
-const http = require("http");
+const path = require("path");
 
-const PORT = process.env.PORT || 4321;
+// Puerto asignado por Render
+const PORT = process.env.PORT || 10000;
 
-/* Servidor HTTP mínimo (Render necesita un puerto abierto)
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("✅ Caffe Bot + Astro server running.\n");
-});
-server.listen(PORT, () => console.log(`🌐 Listening on port ${PORT}`));
-*/
-
-// Configurar el ShardingManager
+// Configurar ShardingManager
 const manager = new ShardingManager(`${__dirname}/shard.js`, {
   token: process.env.DISCORD_TOKEN,
   totalShards: "auto",
@@ -39,30 +32,48 @@ function startBot() {
   });
 }
 
-// Función para lanzar Astro
+// Función para iniciar el servidor Astro (producción)
 function startAstro() {
-  console.log("🚀 Iniciando servidor Astro...");
-  const astro = spawn("npx", ["astro", "preview", "--port", PORT], {
+  console.log(`🚀 Iniciando servidor Astro en puerto ${PORT}...`);
+
+  // Ruta al entrypoint del servidor SSR
+  const serverPath = path.join(__dirname, "dist", "server", "entry.mjs");
+
+  if (!existsSync(serverPath)) {
+    console.error("❌ No se encontró dist/server/entry.mjs");
+    process.exit(1);
+  }
+
+  const astro = spawn("node", [serverPath], {
     stdio: "inherit",
+    env: {
+      ...process.env,
+      PORT: PORT.toString(),
+      HOST: "0.0.0.0", // Escuchar en todas las interfaces
+    },
   });
 
   astro.on("close", (code) => {
-    console.log(`⚠️ Astro preview salió con código ${code}`);
+    console.log(`⚠️ Servidor Astro cerrado con código ${code}`);
+    process.exit(code);
   });
 }
-  // Si no hay build, lo genera
-  if (!existsSync("./dist")) {
-    console.log("⚙️ No se encontró el build de Astro, ejecutando astro build...");
-    const build = spawn("npx", ["astro", "build"], { stdio: "inherit" });
-    build.on("close", (code) => {
-      if (code === 0) {
-        startAstro();
-        setTimeout(startBot, 8000); // Espera unos segundos antes de lanzar el bot
-      } else {
-        console.error(`❌ Error al ejecutar astro build (código ${code})`);
-      }
-    });
-  } else {
-    startAstro();
-    setTimeout(startBot, 5000); // Espera 5 s para evitar conflicto de puertos
-  }
+
+// Construir Astro si no existe /dist
+if (!existsSync("./dist")) {
+  console.log("⚙️ No se encontró build, ejecutando astro build...");
+  const build = spawn("npx", ["astro", "build"], { stdio: "inherit" });
+
+  build.on("close", (code) => {
+    if (code === 0) {
+      startAstro();
+      setTimeout(startBot, 8000);
+    } else {
+      console.error(`❌ Falló astro build (código ${code})`);
+      process.exit(1);
+    }
+  });
+} else {
+  startAstro();
+  setTimeout(startBot, 5000);
+}
