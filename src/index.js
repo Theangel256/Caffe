@@ -6,12 +6,13 @@ const http = require("http");
 
 const PORT = process.env.PORT || 4321;
 
-// Servidor HTTP mínimo (Render necesita un puerto abierto)
+/* Servidor HTTP mínimo (Render necesita un puerto abierto)
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
   res.end("✅ Caffe Bot + Astro server running.\n");
 });
 server.listen(PORT, () => console.log(`🌐 Listening on port ${PORT}`));
+*/
 
 // Configurar el ShardingManager
 const manager = new ShardingManager(`${__dirname}/shard.js`, {
