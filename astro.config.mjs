@@ -5,7 +5,18 @@ import { onRequest as sessionMiddleware } from './src/middleware/index.ts';
 export default defineConfig({
   output: 'server',
   adapter: node({
-    mode: 'standalone' // puedes dejarlo también para facilitar el deploy
+    mode: 'standalone'
   }),
-  site: process.env.NODE_ENV === 'production' ? 'http://tgxc7w5c-4321.usw3.devtunnels.ms' : undefined,
+  build: {
+    assets: '_astro',
+  },
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: () => 'everything.js'
+        }
+      }
+    }
+  }
 });
