@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: caffe-bot-astro
+    name: caffe-bot
     env: node
     region: oregon
     plan: free  # Recomendado para bots con sharding
