@@ -1,0 +1,205 @@
+---
+export const prerender = false;
+
+import Head from "../../../components/_head.astro";
+import Navbar from "../../../components/navbar.astro";
+import User from '../../../utils/models/users.js';
+
+// --- Autenticación ---
+const user = Astro.locals.user;
+if (!user) return Astro.redirect('/api/signin');
+
+const { id } = Astro.params;
+
+// --- Permisos: solo admins o el propio usuario ---
+const client = globalThis.client;
+if (!client?.user) return Astro.redirect('/error404');
+
+const member = await client.guilds.cache.get('1365881248089640991')?.members.fetch(user.id).catch(() => null);
+const isAdmin = member?.permissions.has('Administrator');
+const isSelf = user.id === id;
+
+if (!isAdmin && !isSelf) {
+  return Astro.redirect('/error404');
+}
+
+// --- Cargar usuario ---
+let profile = null;
+let discordUser = null;
+
+try {
+  profile = await User.findOne({ userID: id }).lean();
+  if (!profile) return Astro.redirect('/dashboard/users');
+
+  discordUser = await client.users.fetch(id).catch(() => null);
+} catch (err) {
+  console.error('[User Profile] DB Error:', err);
+  return Astro.redirect('/error404');
+}
+
+// --- Virtuals ya están en .lean() con toJSON ---
+const canClaimDaily = !profile.lastDaily || (Date.now() - new Date(profile.lastDaily)) >= 24 * 60 * 60 * 1000;
+const isMarried = profile.marryId !== null;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <Head title={`Perfil de ${discordUser?.username || id} - Caffe Dashboard`} />
+    <style>
+      :root {
+        --bg: #111;
+        --card: #1a1a1a;
+        --accent: #00d4aa;
+        --text: #eee;
+        --muted: #888;
+      }
+      body { background: var(--bg); color: var(--text); font-family: system-ui; margin: 0; }
+      .container { max-width: 800px; margin: 2rem auto; padding: 1rem; }
+      .profile-card {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid var(--accent);
+        object-fit: cover;
+      }
+      .info { flex: 1; min-width: 300px; }
+      .username {
+        font-size: 1.8rem;
+        margin: 0 0 0.5rem;
+        color: var(--accent);
+        font-weight: bold;
+      }
+      .tag { color: var(--muted); font-size: 0.9rem; }
+      .desc {
+        background: #111;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        font-style: italic;
+        color: #ccc;
+        min-height: 60px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+      .stat {
+        background: #111;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+      }
+      .stat-label { 
+        font-size: 0.8rem; 
+        color: var(--muted); 
+        text-transform: uppercase;
+      }
+      .stat-value { 
+        font-size: 1.5rem; 
+        font-weight: bold; 
+        color: var(--accent);
+        margin-top: 0.25rem;
+      }
+      .badge {
+        display: inline-block;
+        background: var(--accent);
+        color: #000;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        margin-left: 0.5rem;
+      }
+      .daily-btn {
+        background: {canClaimDaily ? 'var(--accent)' : '#555'};
+        color: {canClaimDaily ? '#000' : '#aaa'};
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: {canClaimDaily ? 'pointer' : 'not-allowed'};
+        margin-top: 1rem;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <Navbar user={user} textLogin={user.username} />
+
+    <div class="container">
+      <div class="profile-card">
+        <!-- Avatar -->
+        <img 
+          src={discordUser?.displayAvatarURL({ size: 256, format: 'png' }) || '/default-avatar.png'} 
+          alt="Avatar" 
+          class="avatar"
+        />
+
+        <!-- Info -->
+        <div class="info">
+          <h1 class="username">
+            {discordUser?.username || id}
+            {isMarried && <span class="badge">Casado</span>}
+          </h1>
+          <p class="tag">@{discordUser?.tag || id}</p>
+
+          <!-- Descripción -->
+          <div class="desc">
+            {profile.personalText || 'Este usuario no ha escrito nada aún.'}
+          </div>
+
+          <!-- Botón Daily (solo si es él mismo) -->
+          {isSelf && (
+            <form method="POST" action="/api/daily">
+              <button type="submit" class="daily-btn" disabled={!canClaimDaily}>
+                {canClaimDaily ? 'Reclamar Daily (+200)' : 'Espera 24h'}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Dinero</div>
+          <div class="stat-value">{profile.money.toLocaleString()}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Reputación</div>
+          <div class="stat-value">{profile.reputation.toLocaleString()}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Idioma</div>
+          <div class="stat-value">{profile.language.toUpperCase()}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Miembro desde</div>
+          <div class="stat-value">{new Date(profile.createdAt).toLocaleDateString('es-ES')}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Última actividad</div>
+          <div class="stat-value">{new Date(profile.updatedAt).toLocaleString('es-ES')}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Estado</div>
+          <div class="stat-value">
+            {isMarried ? 'Casado' : 'Soltero'}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

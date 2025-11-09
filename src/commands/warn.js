@@ -153,6 +153,33 @@ export async function run(client, message, args) {
       console.error(e);
     }
   } else {
+    const target = getMember(message, args.slice(0, 1), false);
+    if (!target) return message.reply('Menciona a alguien.');
+    const reason = args.slice(1).join(' ') || 'Sin razón';
+    const duration = 10 * 60 * 1000; // 10 minutos
+    const muteRole = message.guild.roles.cache.find(r => r.name === 'Muted') || await message.guild.roles.create({
+      name: 'Muted',
+      reason: 'Rol de mute automático'
+    });
+    let warn = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: target.id });
+    warn.warnings += 1;
+    warn.reasons.push(reason);
+    warn.muteUntil = new Date(Date.now() + duration);
+    warn.muteRoleID = muteRole.id;
+    
+    await warn.save(); // ← Aquí se dispara el post('save')
+    await target.roles.add(muteRole).catch(() => {});
+    const embed = new EmbedBuilder()
+    .setTitle('Usuario Advertido')
+    .setDescription(`${target} ha sido muteado por ${duration / 60000} minutos.`)
+    .addFields(
+      { name: 'Razón', value: reason },
+      { name: 'Advertencias', value: warn.warnings.toString() }
+    )
+    .setColor('#ff0000');
+    
+    message.channel.send({ embeds: [embed] });
+    /*
     // Aqui viene lo importante, warn <member> <reason>.
     var member = getMember(message, args.slice(0, 1), false);
     if (!member) return message.channel.send("Invalid member!");
@@ -199,6 +226,7 @@ export async function run(client, message, args) {
       console.error(err);
       return message.channel.send(client.lang.dbError);
     }
+    */
   }
 };
 export const help = {
