@@ -1,6 +1,6 @@
 {
   "name": "caffe",
-  "version": "0.0.54-dev",
+  "version": "0.1.0-dev",
   "description": "A bot whitout feelings",
   "main": "src/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "type": "git",
     "url": "https://github.com/Theangel256/Caffe.git"
   },
-  "type": "commonjs",
+  "type": "module",
   "author": "Theangel256",
   "license": "Apache-2.0",
   "dependencies": {
