@@ -1,4 +1,5 @@
 import { PermissionsBitField } from "discord.js";
+import pkg from '../../package.json' assert { type: 'json' };
 
 export async function run(client, message, args) {
   let embed = {
@@ -17,7 +18,7 @@ export async function run(client, message, args) {
   } else {
     embed.author.name = `Help | ${client.user.username}`;
     embed.footer = {
-      text: `${process.env.PUBLIC_URL} V${require("../../package.json").version}`,
+      text: `${process.env.PUBLIC_URL} V${pkg.version}`,
       icon_url: client.user.displayAvatarURL({ extension: "webp"})
     };
     embed.description = client.commands.map((cmd) => cmd.help.name).join(", ");

@@ -1,6 +1,6 @@
-const guildSystem = require("../../../../utils/models/guilds");
+import guildSystem from "../../../../utils/models/guilds.js";
 import { getSession } from "../../../../middleware/index.ts";
-const { getOrCreateDB } = require("../../../../utils/functions.js");
+import { getOrCreateDB } from "../../../../utils/functions.js";
 
 export async function POST({ params, request }) {
   const user = await getSession(request);

@@ -1,3 +1,4 @@
+import pkg from '../../package.json' assert { type: 'json' };
 import guilds from "../utils/models/guilds.js";
 import { levels, missingPerms, regExp, getOrCreateDB } from "../utils/functions.js";
 import { PermissionsBitField, EmbedBuilder } from "discord.js";
@@ -51,7 +52,7 @@ export default async function messageCreate(client, message) {
         {  name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.PUBLIC_URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
       })
       .setFooter({
-        text: client.lang.events.message.isMentioned.footer + require("../../package.json").version,
+        text: client.lang.events.message.isMentioned.footer + pkg.version,
         iconURL: client.user.displayAvatarURL({ extension: "webp"})
       })
       .setTimestamp()

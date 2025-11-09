@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '../..');
 const filePath = join(__dirname, "events");
 const eventFiles = readdirSync(filePath);
+import pkg from '../../package.json' assert { type: 'json' };
 export async function run(client, message) {
   const actividad = moment
       .duration(client.uptime)
@@ -21,7 +22,6 @@ export async function run(client, message) {
       (acc, guildCount) => acc + guildCount,
       0
     ),
-    modulos = require("../../package.json"),
     cpu = `${Math.round(process.cpuUsage().user / 1024 / 1024)}%`,
     memory = `${Math.round(
       (process.memoryUsage().heapUsed / 1024 / 1024).toString().slice(0, 6)
@@ -46,10 +46,10 @@ export async function run(client, message) {
         \n**${actividad}** ${lang.uptime}
         \n**${Math.round(message.client.ws.ping)}ms** Ping
         \n**${voz}** ${lang.connections.toLocaleString()}
-        \n**${modulos.version}** ${lang.version}
+        \n**${pkg.version}** ${lang.version}
         \n**${version}** Discord.JS\n**${client.prefix}** Prefix
         \n**${memory}** ${lang.usage}
-        \n**${cpu}** CPU\n**${modulos.engines.node}** Node`,
+        \n**${cpu}** CPU\n**${pkg.engines.node}** Node`,
         inline: true, },
         { name: "❔ LINKS",
         value: `>>> [Invite](${invite})
