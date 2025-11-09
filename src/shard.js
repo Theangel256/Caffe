@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import dbConnect from './utils/db.js';
 import { loadHandlers } from './utils/handlers.js';
