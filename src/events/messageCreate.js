@@ -4,7 +4,7 @@ import { PermissionsBitField, EmbedBuilder } from "discord.js";
 import moment from "moment";
 import "moment-duration-format";
 import { joinVoiceChannel, VoiceConnectionStatus, entersState } from "@discordjs/voice";
-export default async (client, message) => {
+export default async function messageCreate(client, message) {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;
   if (message.author.bot) return;

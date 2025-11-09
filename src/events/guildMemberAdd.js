@@ -1,7 +1,7 @@
 import guildSystem from "../utils/models/guilds.js";
 import { getOrCreateDB } from "../utils/functions.js";
 import { AttachmentBuilder, EmbedBuilder } from "discord.js";
-export default async (client, member) => {
+export default async function guildMemberAdd(client, member) {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: member.guild.id });
   const { channelLogs, rolauto, channelWelcome, welcomeBackground } = guildsDB;
   const canal = client.channels.resolve(channelLogs);

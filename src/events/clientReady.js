@@ -1,5 +1,4 @@
-import warns from "../utils/models/warns.js";
-export default async (client) => {
+export default async function clientReady(client) {
   const statues = [
     `$help | ${(await client.ws.fetchClientValues("users.cache.size"))
       .reduce((acc, guildCount) => acc + guildCount, 0)

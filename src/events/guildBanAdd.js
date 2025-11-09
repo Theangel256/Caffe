@@ -1,6 +1,6 @@
 import guildSystem from "../utils/models/guilds.js";
 import { getOrCreateDB } from "../utils/functions.js";
-export default async (client, guild, user) => {
+export default async function guildBanAdd(client, guild, user) {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: guild.id });
   const { channelLogs } = guildsDB;
   const canal = client.channels.resolve(channelLogs);

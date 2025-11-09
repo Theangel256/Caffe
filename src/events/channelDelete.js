@@ -1,6 +1,6 @@
 import guildSystem from "../utils/models/guilds.js";
 import { getOrCreateDB } from "../utils/functions.js";
-export default async (client, channel) => {
+export default async function channelDelete(client, channel) {
   if (channel.type === "dm") return;
     const guildsDB = await getOrCreateDB(guildSystem, { guildID: channel.guild.id });
   const { channelLogs } = guildsDB;

@@ -1,6 +1,6 @@
 import guildSystem from "../utils/models/guilds.js";
 import { getOrCreateDB } from "../utils/functions.js";
-export default async (client, oldMessage, newMessage) => {
+export default async function messageUpdate(client, oldMessage, newMessage) {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: oldMessage.guild.id });
   const { channelLogs } = guildsDB;
   if (oldMessage.content === newMessage.content) return;
