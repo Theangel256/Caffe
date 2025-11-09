@@ -15,8 +15,11 @@ module.exports = async (client) => {
       .reduce((acc, guildCount) => acc + guildCount, 0)
       .toLocaleString()} users!`,
     "Theangel256 Studios V" + require("../../package.json").version,
-    `${process.env.PUBLIC_URL}/discord"`,
-    `${process.env.PUBLIC_URL}/add"`,
+    `https://theangel256.dev`,
+    `${substr(process.env.PUBLIC_URL, -8)}/discord"`,
+    `${substr(process.env.PUBLIC_URL, -8)}/add"`,
+    `${substr(process.env.PUBLIC_URL, -8)}/support"`,
+    `Serving ${client.guilds.cache.size.toLocaleString()} servers!`,
   ];
   setInterval(() => {
   const status = statues[Math.floor(Math.random() * statues.length)];
