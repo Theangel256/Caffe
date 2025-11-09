@@ -1,6 +1,6 @@
 export default async function clientReady(client) {
   const statues = [
-    `$help | ${(await client.ws.fetchClientValues("users.cache.size"))
+    `$help | ${(await client.shard.fetchClientValues("users.cache.size"))
       .reduce((acc, guildCount) => acc + guildCount, 0)
       .toLocaleString()} users!`,
     "Theangel256 Studios V" + require("../../package.json").version,
