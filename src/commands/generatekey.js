@@ -1,10 +1,10 @@
 import { generateKey, getOrCreateDB } from "../utils/functions.js";
 import keySystem from "../utils/models/keys.js";
   
-export async function run(client, message) {
+export async function run(client, message, lang) {
   const license = generateKey();
   const keysDB = await getOrCreateDB(keySystem, { guildID: message.guild.id }, { enable: false });
-  if (!keysDB) return message.channel.send(client.lang.dbError);
+  if (!keysDB) return message.channel.send(lang.dbError);
   
   keysDB.license = license;
   await keysDB.save();

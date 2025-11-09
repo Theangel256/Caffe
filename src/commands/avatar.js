@@ -1,8 +1,8 @@
 import { getMember } from "../utils/functions.js";
 import { EmbedBuilder, PermissionsBitField } from "discord.js";
-export function run(client, message, args) {
+export function run(client, message, args, lang) {
+  lang = lang.commands.avatar
   const member = getMember(message, args, true),
-    lang = client.lang.commands.avatar,
     embed = new EmbedBuilder()
       .setImage(member.user.displayAvatarURL({ extension: "png", size: 2048 }))
       .setColor(member.displayHexColor)

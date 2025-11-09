@@ -1,10 +1,10 @@
 import economySystem from "../utils/models/users.js";
 import { getOrCreateDB } from "../utils/functions.js";
-export async function run(client, message) {
-  const lang = client.lang.commands.daily;
+export async function run(client, message, lang) {
   const reward = 1200; // Daily reward amount
   const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
-  if(!economy) return message.channel.send(client.lang.dbError)
+  if(!economy) return message.channel.send(lang.dbError)
+    lang = lang.commands.daily;
     if (economy.canClaimDaily) {
       economy.money += 100;
       economy.lastDaily = new Date();

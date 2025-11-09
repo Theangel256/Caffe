@@ -184,7 +184,7 @@ export async function run(client, message, args) {
     var member = getMember(message, args.slice(0, 1), false);
     if (!member) return message.channel.send("Invalid member!");
     const warns = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: message.author.id });
-    if (!warns) return message.channel.send(client.lang.dbError);
+    if (!warns) return message.channel.send(lang.dbError);
     const { warnings, reasons } = warns;
     const newWarnings = warnings + 1;
     const reason = args.slice(1).join(" ") || "Sin razón especificada";
@@ -224,7 +224,7 @@ export async function run(client, message, args) {
       }
     } catch (err) {
       console.error(err);
-      return message.channel.send(client.lang.dbError);
+      return message.channel.send(lang.dbError);
     }
     */
   }

@@ -1,20 +1,20 @@
 import { getMember, getOrCreateDB } from "../utils/functions.js";
 import users from "../utils/models/users.js";
-export async function run(client, message, args) {
-	const lang = client.lang.commands.marry;
+export async function run(client, message, args, lang) {
 	const member = getMember(message, args, false);
 	const usersDB = await getOrCreateDB(users, { userID: message.author.id });
-	if (!usersDB) return message.channel.send(client.lang.dbError);
+	if (!usersDB) return message.channel.send(lang.dbError);
 	let { marryId, marryTag } = usersDB;
 	if (marryId) return message.channel.send(lang.already_married.replace(/{esposaTag}/gi, marryTag));
 	console.log("RESULT:", member?.user?.tag, "AUTHOR:", message.author.tag);
 
-	if(!member) return message.channel.send(client.lang.no_user);
+	if(!member) return message.channel.send(lang.no_user);
 	if(member.user.bot) return message.channel.send(lang.bot);
 	if(member.user.id === message.author.id) return message.channel.send(lang.yourself);
 
 	const memberDB = await getOrCreateDB(users, { userID: member.user.id });
-	if (!memberDB) return message.channel.send(client.lang.dbError);
+	if (!memberDB) return message.channel.send(lang.dbError);
+	lang = lang.commands.marry;
 	if (memberDB.marryId) return message.channel.send(lang.another_married);
 	message.channel.send(lang.request.replace(/{user.username}/gi, member.user.username).replace(/{author.username}/gi, message.author.username));
 	const filter = m => m.author.id === member.user.id && (m.content && (m.content.toLowerCase().startsWith('yes') || m.content.toLowerCase().startsWith('no')));
@@ -37,7 +37,7 @@ export async function run(client, message, args) {
 	} else if (collected.first().content.toLowerCase() === 'no') {
 		return message.channel.send(lang.unsucess.replace(/{user.username}/gi, member.user.username).replace(/{author.username}/gi, message.author.username));
 	}
-	}).catch(() => message.channel.send(client.lang.commands.marry.expired.replace(/{user.username}/gi, member.user.username)));
+	}).catch(() => message.channel.send(lang.expired.replace(/{user.username}/gi, member.user.username)));
 };
 export const help = {
   name: "marry",

@@ -1,7 +1,7 @@
 import { PermissionsBitField } from "discord.js";
 
-export function run(client, message, args) {
-  const lang = client.lang.commands.eightBall;
+export function run(client, message, args, lang) {
+  lang = lang.commands.eightBall;
   const pregunta = args.join(" ");
   const result = Math.floor(Math.random() * lang.ball.length);
   const embed = {

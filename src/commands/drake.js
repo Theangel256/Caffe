@@ -2,9 +2,9 @@ import Canvas from "canvas";
 import { getMember } from "../utils/functions.js";
 import { AttachmentBuilder } from "discord.js";
 import { PermissionsBitField } from "discord.js";
-export async function run(client, message, args) {
+export async function run(client, message, args, lang) {
   const member = getMember(message, args, false);
-  if (!member) return message.channel.send(client.lang.no_user);
+  if (!member) return message.channel.send(lang.no_user);
 
   const canvas = Canvas.createCanvas(1080, 970);
   const ctx = canvas.getContext("2d");

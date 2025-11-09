@@ -10,7 +10,7 @@ export async function getOrCreateDB(model, query, defaults = {}) {
       { $setOnInsert: { ...defaults, ...query } },
       { new: true, upsert: true }
     );
-    console.log(`[DB] Creado: ${model.modelName} para ${query.guildID || query.userID}`);
+    console.log(`[DB] Buscar: ${model.modelName} para ${query.guildID || query.userID}`);
     return doc;
   } catch (err) {
     console.error(`Error en getOrCreate con modelo ${model.modelName}:`, err);
@@ -51,7 +51,7 @@ export function getMember(message, args, autor = true, argIndex = 0) {
   
     return result || (autor ? message.member : null);
   }
-export function missingPerms(client, member, perms = Array) {
+export function missingPerms(client, member, perms = Array, lang) {
     if (!member || !member.permissions || typeof member.permissions.missing !== 'function') {
       console.error("¡'member' inválido o sin permisos definidos!", member);
       return "Permissions not allowed";
@@ -64,7 +64,7 @@ export function missingPerms(client, member, perms = Array) {
           .replace(/\b(\w)/g, (char) => char.toUpperCase())}\``);
 
     return missingPerms.length > 1
-      ? client.lang.missingPerms
+      ? lang.missingPerms
           .replace(/{missingPerms0}/gi, missingPerms.slice(0, -1).join(", "))
           .replace(/{missingPerms1}/gi, missingPerms.slice(-1)[0])
       : missingPerms[0];
@@ -85,7 +85,7 @@ export function generateKey(length = 30) {
     }
     return password;
   }
-export async function regExp(client, message) {
+export async function regExp(client, message, lang) {
     if (
       /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord\.com\/invite)\/.+[a-z]/gim.test(
         message.content
@@ -108,12 +108,12 @@ export async function regExp(client, message) {
           const { warnings } = warnsDB;
           const newWarnings = warnings + 1;
           const embed = new EmbedBuilder()
-            .setAuthor({ name: client.lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), iconURL: message.author.displayAvatarURL({ extension: "webp" })})
-            .setDescription(`${client.lang.events.message.ant.reason} ${client.lang.events.message.ant.warn}`);
+            .setAuthor({ name: lang.events.message.ant.warned.replace(/{author.tag}/gi, message.author.tag), iconURL: message.author.displayAvatarURL({ extension: "webp" })})
+            .setDescription(`${lang.events.message.ant.reason} ${lang.events.message.ant.warn}`);
           if (message.deletable) message.delete();
           await warnsDB.updateOne({ warnings: newWarnings });
           message.channel.send({ embeds: [embed] });
-          message.author.send(`You've been warned on ${message.guild.name} with reason: ${client.lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`).catch(() => { null;});
+          message.author.send(`You've been warned on ${message.guild.name} with reason: ${lang.events.message.ant.warn}. You have ${newWarnings} warning(s).`).catch(() => { null;});
           try {
             if (role && roletime <= newWarnings) {
               await member.roles.add(roleid, "Too many warnings");
@@ -134,10 +134,10 @@ export async function regExp(client, message) {
             .setColor("RED")
             .setDescription("**Warn**")
             .addFields(
-              { name: "「:boy:」" + client.lang.events.message.ant.author, value: message.author.tag },
-              { name: "「:speech_balloon:」" + client.lang.events.message.ant.reason, value: client.lang.events.message.ant.warn },
-              { name: "「:closed_book:」" + client.lang.events.message.ant.warns, value: warnings.toString() },
-              { name: "「:fleur_de_lis:️」" + client.lang.events.message.ant.moderator, value: "Bot" });
+              { name: "「:boy:」" + lang.events.message.ant.author, value: message.author.tag },
+              { name: "「:speech_balloon:」" + lang.events.message.ant.reason, value: lang.events.message.ant.warn },
+              { name: "「:closed_book:」" + lang.events.message.ant.warns, value: warnings.toString() },
+              { name: "「:fleur_de_lis:️」" + lang.events.message.ant.moderator, value: "Bot" });
           if (!canal) return;
           canal.send({ embeds: [embed2] });
         } catch (error) {

@@ -3,12 +3,12 @@ import Canvas from "canvas";
 import { AttachmentBuilder, PermissionsBitField } from "discord.js";
 import { getMember, getRank, getOrCreateDB } from "../utils/functions.js";
 Canvas.registerFont("Arial.ttf", { family: "Arial" });
-export async function run(client, message, args) {
+export async function run(client, message, args, lang) {
   const member = getMember(message, args, true);
   if (member.user.bot)
     return message.channel.send("los bots no tienen niveles");
   const levels = await getOrCreateDB(levelSystem, { guildID: message.guild.id, userID: message.author.id });
-  if(!levels) return message.channel.send(client.lang.dbError)
+  if(!levels) return message.channel.send(lang.dbError)
   const { xp, lvl } = levels;
   const usuarios = await getRank(await levelSystem.find(), message);
   let rank = usuarios.findIndex((u) => u[0] == member.user.tag);

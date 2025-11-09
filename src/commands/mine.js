@@ -1,10 +1,10 @@
 import econonomySystem from "../utils/models/users.js";
 import { getOrCreateDB } from "../utils/functions.js";
 import { EmbedBuilder } from "discord.js";
-export async function run(client, message) {
+export async function run(client, message, lang) {
   const reward = 150;
     const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
-    if (!economy) return message.channel.send(client.lang.dbError);
+    if (!economy) return message.channel.send(lang.dbError);
     economy.money += reward;
     await economy.save();
     const embed = new EmbedBuilder()

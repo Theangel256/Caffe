@@ -9,23 +9,22 @@ import { StreamType,
   VoiceConnectionStatus,
   entersState
  } from '@discordjs/voice';
-export async function run(client, message, args) {
+export async function run(client, message, args, lang) {
   let msg;
-    const queue = client.queue, 
-    lang = client.lang.commands.play,
+    const queue = client.queue,
     searchString = args.join(" "),
     url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : ""
     const userVoiceChannel = message.member.voice.channel;
     const botVoiceChannel = message.guild.members.me.voice.channel;
 
-    if (!userVoiceChannel) return message.channel.send(client.lang.music.needJoin);
+    if (!userVoiceChannel) return message.channel.send(lang.music.needJoin);
 
     if (botVoiceChannel && userVoiceChannel.id !== botVoiceChannel.id)
-      return message.channel.send(client.lang.music.alreadyPlaying.replace(/{channel}/gi, botVoiceChannel.name));
+      return message.channel.send(lang.music.alreadyPlaying.replace(/{channel}/gi, botVoiceChannel.name));
 
     if (!botVoiceChannel) await client.joinVoiceChannel(userVoiceChannel);
-
-  if (!searchString) return message.reply(lang.no_args);
+    lang = lang.commands.play
+    if (!searchString) return message.reply(lang.no_args);
   /*
 	if(url.match(/^https?:\/\/((www|beta)\.)?youtube\.com\/playlist(.*)$/)) {
 		const playlist = await youtube.getPlaylist(url);

@@ -1,10 +1,10 @@
 import economySystem from "../utils/models/users.js";
 import { getMember, getOrCreateDB } from "../utils/functions.js";
-export async function run(client, message, args) {
-  const lang = client.lang.commands.balance;
+export async function run(client, message, args, lang) {
   const member = getMember(message, args, true);
   const economy = await getOrCreateDB(economySystem, { userID: member.user.id });
-  if (!economy) return message.channel.send(client.lang.dbError);
+  if (!economy) return message.channel.send(lang.dbError);
+  lang = lang.commands.balance;
   message.channel.send(
     message.author.id === member.user.id
       ? lang.no_user.replace(/{money}/gi, economy.money.toLocaleString())
