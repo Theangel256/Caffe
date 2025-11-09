@@ -36,18 +36,22 @@ export async function loadCommands(client) {
     }
   }
 }
-
 export async function loadEvents(client) {
-  const eventFiles = readdirSync(eventPath)
-    .filter(file => file.endsWith('.js'))
-    .filter(file => !file.startsWith('.'));
-
-  for (const file of eventFiles) {
+  const files = readdirSync(eventPath).filter(f => f.endsWith('.js'));
+  for (const file of files) {
+    const filePath = join(eventPath, file);
     // @vite-ignore
-    const filePath = new URL(file, `file://${eventPath}/`).href;
-    const event = await import(filePath);
+    const eventModule = await import(`file://${filePath}`);
 
+    const event = eventModule.default || eventModule;
     const eventName = file.split('.').shift();
+
+    // VERIFICA QUE SEA FUNCIÓN
+    if (typeof event !== 'function') {
+      console.warn(`[EVENT] ${eventName} no exporta una función`);
+      continue;
+    }
+
     client.on(eventName, event.bind(null, client));
     console.log(`[EVENT] Cargado: ${eventName}`);
   }
