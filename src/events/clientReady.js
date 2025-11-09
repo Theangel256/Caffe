@@ -1,15 +1,5 @@
-const warns = require("../utils/models/warns");
+import warns from "../utils/models/warns.js";
 export default async (client) => {
-  setInterval(async function () {
-    const allData = await warns.find();
-    allData.map(async (a) => {
-      if (a.time < Date.now()) {
-        const member = client.guilds.resolve(a.guildID).member(a.userID);
-        member.roles.remove(a.rolID);
-        await warns.deleteOne({ userID: a.userID });
-      }
-    });
-  }, 15000);
   const statues = [
     `$help | ${(await client.ws.fetchClientValues("users.cache.size"))
       .reduce((acc, guildCount) => acc + guildCount, 0)

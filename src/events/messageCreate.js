@@ -1,9 +1,9 @@
-const moment = require("moment");
-require("moment-duration-format");
-const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions.js");
-const guilds = require("../utils/models/guilds");
-const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require("@discordjs/voice");
-const { PermissionsBitField, EmbedBuilder } = require("discord.js");
+import guilds from "../utils/models/guilds.js";
+import { levels, missingPerms, regExp, getOrCreateDB } from "../utils/functions.js";
+import { PermissionsBitField, EmbedBuilder } from "discord.js";
+import moment from "moment";
+import "moment-duration-format";
+import { joinVoiceChannel, VoiceConnectionStatus, entersState } from "@discordjs/voice";
 export default async (client, message) => {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;

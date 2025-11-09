@@ -10,7 +10,7 @@ const userSchema = new Schema({
   reputation: { type: Number, default: 0, },
   personalText: { type: String, default: null },
   repCooldown: { type: Number, default: 0 },
-}, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 userSchema.virtual('isMarried').get(function() {
   return this.marryId !== null;

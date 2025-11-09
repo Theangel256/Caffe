@@ -1,7 +1,6 @@
-const guildSystem = require("../utils/models/guilds");
-const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
-const { getOrCreateDB } = require('../utils/functions.js');
-const Zeew = require("zeew");
+import guildSystem from "../utils/models/guilds.js";
+import { getOrCreateDB } from "../utils/functions.js";
+import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 export default async (client, member) => {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: member.guild.id });
   const { channelLogs, rolauto, channelWelcome, welcomeBackground } = guildsDB;
@@ -34,7 +33,7 @@ export default async (client, member) => {
   } catch (e) {
     new Error("Missing Permissions");
   }
-
+/*
   const fondo = welcomeBackground.exists()
     ? welcomeBackground
     : "https://i.imgur.com/yS9KGBK.jpg";
@@ -51,4 +50,5 @@ export default async (client, member) => {
   const attachment = new AttachmentBuilder(img, "img.gif");
   const welcome = client.channels.resolve(channelWelcome);
   if (welcome) return welcome.send(attachment);
+*/
 };

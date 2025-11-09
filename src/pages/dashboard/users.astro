@@ -1,0 +1,222 @@
+---
+export const prerender = false;
+
+import Head from "../../components/_head.astro";
+import Navbar from "../../components/navbar.astro";
+import User from '../../utils/models/users.js';
+
+// --- Autenticación ---
+const user = Astro.locals.user;
+if (!user) return Astro.redirect('/api/signin');
+
+// --- Solo admins ---
+const member = await globalThis.client?.guilds.cache.get('TU_GUILD_ID')?.members.fetch(user.id).catch(() => null);
+if (!member?.permissions.has('Administrator')) {
+  return Astro.redirect('/error404');
+}
+
+// --- Cargar datos ---
+let totalUsers = 0;
+let topOldest = [];
+let topRichest = [];
+let topRep = [];
+let newestUser = null;
+
+try {
+  const users = await User.find().sort({ createdAt: 1 }).lean();
+
+  totalUsers = users.length;
+
+  // Top 10 más antiguos
+  topOldest = users.slice(0, 10).map(u => ({
+    username: u.userID, // Puedes mapear userID → username con cache
+    joined: new Date(u.createdAt).toLocaleDateString('es-ES'),
+    days: Math.floor((Date.now() - u.createdAt) / 86400000)
+  }));
+
+  // Top 10 con más dinero
+  topRichest = (await User.find().sort({ money: -1 }).limit(10).lean()).map(u => ({
+    username: u.userID,
+    money: u.money.toLocaleString()
+  }));
+
+  // Top 10 con más reputación
+  topRep = (await User.find().sort({ reputation: -1 }).limit(10).lean()).map(u => ({
+    username: u.userID,
+    rep: u.reputation.toLocaleString()
+  }));
+
+  // Usuario más nuevo
+  const newest = await User.findOne().sort({ createdAt: -1 }).lean();
+  if (newest) {
+    newestUser = {
+      username: newest.userID,
+      joined: new Date(newest.createdAt).toLocaleString('es-ES')
+    };
+  }
+} catch (err) {
+  console.error('[Users Dashboard] DB Error:', err);
+}
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <Head title="Caffe Dashboard - Usuarios" />
+    <style>
+      :root {
+        --bg: #111;
+        --card: #1a1a1a;
+        --accent: #00d4aa;
+        --text: #eee;
+      }
+      body { background: var(--bg); color: var(--text); font-family: system-ui; margin: 0; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+      .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
+      .card h2 {
+        margin: 0 0 1rem;
+        color: var(--accent);
+        font-size: 1.4rem;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 0.5rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+      }
+      th, td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #333;
+      }
+      th {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      tr:hover {
+        background: rgba(0, 212, 170, 0.1);
+      }
+      .stat {
+        font-size: 2rem;
+        color: var(--accent);
+        font-weight: bold;
+        text-align: center;
+        margin: 1rem 0;
+      }
+      .badge {
+        background: var(--accent);
+        color: #000;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <Navbar user={user} textLogin={user.username} />
+
+    <div class="container">
+      <h1 style="text-align: center; color: var(--accent); margin: 2rem 0;">
+        Estadísticas de Usuarios
+      </h1>
+
+      <div class="grid">
+        <!-- Total usuarios -->
+        <div class="card">
+          <h2>Total de Usuarios</h2>
+          <div class="stat">{totalUsers.toLocaleString()}</div>
+        </div>
+
+        <!-- Usuario más nuevo -->
+        {newestUser && (
+          <div class="card">
+            <h2>Usuario Más Nuevo</h2>
+            <p><strong>{newestUser.username}</strong></p>
+            <p>Se unió: {newestUser.joined}</p>
+          </div>
+        )}
+      </div>
+
+      <div class="grid">
+        <!-- Top 10 más antiguos -->
+        <div class="card">
+          <h2>Top 10 Más Antiguos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Días en el bot</th>
+                <th>Desde</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topOldest.map((u, i) => (
+                <tr>
+                  <td><span class="badge">{i + 1}</span></td>
+                  <td>{u.username}</td>
+                  <td>{u.days}</td>
+                  <td>{u.joined}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Top 10 más ricos -->
+        <div class="card">
+          <h2>Top 10 Más Ricos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Monedas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topRichest.map((u, i) => (
+                <tr>
+                  <td><span class="badge">{i + 1}</span></td>
+                  <td>{u.username}</td>
+                  <td>{u.money}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Top 10 con más reputación -->
+        <div class="card">
+          <h2>Top 10 Más Populares</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Reputación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topRep.map((u, i) => (
+                <tr>
+                  <td><span class="badge">{i + 1}</span></td>
+                  <td>{u.username}</td>
+                  <td>{u.rep}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
