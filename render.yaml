@@ -3,7 +3,7 @@ services:
     name: caffe-bot-astro
     env: node
     region: oregon
-    plan: starter
+    plan: standard  # Recomendado para bots con sharding
 
     buildCommand: npm install && npx astro build
 
@@ -19,13 +19,23 @@ services:
         manager.on('shardCreate', shard => {
           console.log(\`Shard \${shard.id} creado\`);
           shard.on('ready', () => console.log(\`Shard \${shard.id} listo\`));
-          shard.on('death', () => console.log(\`Shard \${shard.id} murió\`, shard));
+          shard.on('death', () => {
+            console.log(\`Shard \${shard.id} murió, reiniciando...\`);
+            manager.spawn(shard.id);
+          });
         });
       "
 
+    # CORREGIDO: Lista de variables
     envVars:
-      NODE_VERSION: "20.17.0"
-      PORT: "10000"
+      - key: NODE_VERSION
+        value: "20.17.0"
+      - key: PORT
+        value: "10000"
+      - key: DISCORD_TOKEN
+        fromSecret: DISCORD_TOKEN
+      - key: MONGODB_URI
+        fromSecret: MONGODB_URI
 
     healthCheckPath: /api/health
     autoDeploy: true
