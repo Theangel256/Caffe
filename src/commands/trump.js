@@ -1,7 +1,7 @@
 import { AttachmentBuilder, PermissionsBitField } from "discord.js";
-import Jimp from "jimp";
 export async function run(client, message, args) {
   if (!args[0]) return message.channel.send("Pon algo");
+  const Jimp = await import('jimp');
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
 
   const meme = await Jimp.read(
