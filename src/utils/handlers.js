@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 // Reemplaza __dirname
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = join(__filename, '..');
+const __dirname = join(__filename, '../..');
 
 // Rutas
 const cmdPath = join(__dirname, 'commands');

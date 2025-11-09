@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 import moment from "moment";
 import "moment-duration-format";
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = join(__filename, '..');
-const filePath = join(__dirname, "..", "events");
+const __dirname = join(__filename, '../..');
+const filePath = join(__dirname, "events");
 const eventFiles = readdirSync(filePath);
 export async function run(client, message) {
   const actividad = moment
