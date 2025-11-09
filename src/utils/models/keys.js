@@ -1,10 +1,10 @@
-const { model: Model, Schema } = require("mongoose");
+import { model as Model, Schema } from "mongoose";
 
 const schema = new Schema({
   guildID: { type: String, required: true, unique: true }, // Se asegura de que sea único
-  enable: { type: Boolean, required: true },
-  license: { type: String },
+  enable: { type: Boolean, required: true, default: false },
+  license: { type: String, required: true, default: ""},
   time: { type: Number },
 });
 
-module.exports = Model("keys", schema);
+export default Model("keys", schema);

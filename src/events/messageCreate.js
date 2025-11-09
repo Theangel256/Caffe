@@ -4,7 +4,7 @@ const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functi
 const guilds = require("../utils/models/guilds");
 const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require("@discordjs/voice");
 const { PermissionsBitField, EmbedBuilder } = require("discord.js");
-module.exports = async (client, message) => {
+export default async (client, message) => {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;
   if (message.author.bot) return;

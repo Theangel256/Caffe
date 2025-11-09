@@ -1,22 +1,23 @@
 const cooldownniveles = new Map();
-const levelSystem = require("./models/levels");
-const warnMembers = require("./models/warns");
-const guildSystem = require("./models/guilds");
-const { EmbedBuilder } = require('discord.js');
-const getOrCreateDB = async (model, query, defaults = {}) => {
+import levelSystem from "./models/levels.js";
+import warnMembers from "./models/warns.js";
+import guildSystem from "./models/guilds.js";
+import { EmbedBuilder } from 'discord.js';
+export async function getOrCreateDB(model, query, defaults = {}) {
   try {
     const doc = await model.findOneAndUpdate(
       query,
       { $setOnInsert: { ...defaults, ...query } },
       { new: true, upsert: true }
     );
+    console.log(`[DB] Creado: ${model.modelName} para ${query.guildID || query.userID}`);
     return doc;
   } catch (err) {
     console.error(`Error en getOrCreate con modelo ${model.modelName}:`, err);
-    return null;
+    throw err;
   }
 };
-const getRank = async (users, message) => {
+export async function getRank(users, message) {
     const list = [];
     for (const id of users) {
       const user = message.guild.members.cache.has(id.userID)
@@ -29,7 +30,7 @@ const getRank = async (users, message) => {
     });
     return list;
   }
-const getMember = (message, args, autor = true, argIndex = 0) => {
+export function getMember(message, args, autor = true, argIndex = 0) {
     const members = message.guild.members.cache;
   
     let searchRaw = Array.isArray(args)
@@ -50,7 +51,7 @@ const getMember = (message, args, autor = true, argIndex = 0) => {
   
     return result || (autor ? message.member : null);
   }
-const missingPerms = (client, member, perms = Array) => {
+export function missingPerms(client, member, perms = Array) {
     if (!member || !member.permissions || typeof member.permissions.missing !== 'function') {
       console.error("¡'member' inválido o sin permisos definidos!", member);
       return "Permissions not allowed";
@@ -68,7 +69,7 @@ const missingPerms = (client, member, perms = Array) => {
           .replace(/{missingPerms1}/gi, missingPerms.slice(-1)[0])
       : missingPerms[0];
   }
-const generateKey = (length = 30) => {
+export function generateKey(length = 30) {
     var lowercase = "abcdefghijklmnopqrstuvwxyz";
     var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var digits = "0123456789";
@@ -84,7 +85,7 @@ const generateKey = (length = 30) => {
     }
     return password;
   }
-const regExp = async (client, message) => {
+export async function regExp(client, message) {
     if (
       /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord\.com\/invite)\/.+[a-z]/gim.test(
         message.content
@@ -145,7 +146,7 @@ const regExp = async (client, message) => {
       }
     }
   }
-const levels = async (message) => {
+export async function levels(message) {
     if (cooldownniveles.has(message.guild.id + message.author.id)) {
       const time = cooldownniveles.get(message.guild.id + message.author.id);
       if (Date.now() < time) return;
@@ -162,6 +163,3 @@ const levels = async (message) => {
     cooldownniveles.set(message.guild.id + message.author.id, Date.now() + 7000);
     return message;
   }
-module.exports = {
-  getOrCreateDB, getRank, getMember, missingPerms, generateKey, regExp, levels
-};

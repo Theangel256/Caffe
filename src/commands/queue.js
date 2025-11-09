@@ -1,5 +1,6 @@
-const { EmbedBuilder } = require("discord.js");
-module.exports.run = (client, message, args) => {
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
+
+export function run(client, message, args) {
   const serverQueue = client.queue.get(message.guild.id);
   if (!serverQueue) return message.channel.send(client.lang.music.noQueue);
 
@@ -61,12 +62,12 @@ module.exports.run = (client, message, args) => {
   }
   message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "queue",
   description: "Ve la cola de canciones de el servidor",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
-  clientPerms: ["EMBED_LINKS"],
+  clientPerms: [PermissionsBitField.Flags.EmbedLinks],
   ownerOnly: false,
 };

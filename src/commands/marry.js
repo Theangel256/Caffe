@@ -1,6 +1,6 @@
-const { getMember, getOrCreateDB } = require("../utils/functions.js");
-const users = require("../utils/models/users");
-module.exports.run = async (client, message, args) => {
+import { getMember, getOrCreateDB } from "../utils/functions.js";
+import users from "../utils/models/users.js";
+export async function run(client, message, args) {
 	const lang = client.lang.commands.marry;
 	const member = getMember(message, args, false);
 	const usersDB = await getOrCreateDB(users, { userID: message.author.id });
@@ -39,16 +39,16 @@ module.exports.run = async (client, message, args) => {
 	}
 	}).catch(() => message.channel.send(client.lang.commands.marry.expired.replace(/{user.username}/gi, member.user.username)));
 };
-module.exports.help = {
+export const help = {
   name: "marry",
   description: "Podras casarte con un miembro con este comando",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,
 };
-module.exports.limits = {
+export const limits = {
   rateLimit: 3,
   cooldown: 120000,
 };

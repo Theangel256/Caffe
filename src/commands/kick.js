@@ -1,5 +1,6 @@
-const { getMember } = require("../utils/functions.js");
-module.exports.run = (client, message, args) => {
+import { getMember } from "../utils/functions.js";
+  
+export async function run(client, message, args) {
   const member = getMember(message, args, false);
   let reason = args.slice(1).join(" ");
 
@@ -23,11 +24,11 @@ module.exports.run = (client, message, args) => {
       .replace(/{reason}/gi, reason)
   );
 };
-module.exports.help = {
+export const help = {
   name: "kick",
   description: "Expulsa a alguien que odies con este comando!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: ["KICK_MEMBERS"],
   clientPerms: ["KICK_MEMBERS"],
   ownerOnly: false,

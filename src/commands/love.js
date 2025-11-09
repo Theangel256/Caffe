@@ -1,7 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
-const { getMember, getOrCreateDB } = require("../utils/functions.js");
-const users = require("../utils/models/users");
-module.exports.run = async (client, message, args) => {
+import { EmbedBuilder } from "discord.js";
+import { getMember, getOrCreateDB } from "../utils/functions.js";
+import users from "../utils/models/users.js";
+
+export async function run(client, message, args) {
   const usersDB = await getOrCreateDB(users, { userID: message.author.id });
   if (!usersDB) return message.channel.send(client.lang.dbError);
   const random = Math.ceil(Math.random() * 100);
@@ -51,12 +52,12 @@ module.exports.run = async (client, message, args) => {
     .setColor("#a00f0f");
   message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "love",
   description:
     "Usa este medidor de amor con otro miembro para saber si le eres fiel :3",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: ["EMBED_LINKS"],
   ownerOnly: false,

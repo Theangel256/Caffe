@@ -1,6 +1,6 @@
-const economySystem = require("../utils/models/users");
-const { getMember, getOrCreateDB } = require("../utils/functions.js");
-module.exports.run = async (client, message, args) => {
+import economySystem from "../utils/models/users.js";
+import { getMember, getOrCreateDB } from "../utils/functions.js";
+export async function run(client, message, args) {
   const lang = client.lang.commands.balance;
   const member = getMember(message, args, true);
   const economy = await getOrCreateDB(economySystem, { userID: member.user.id });
@@ -12,12 +12,12 @@ module.exports.run = async (client, message, args) => {
   );
 };
 
-module.exports.help = {
+export const help = {
   name: "balance",
   aliases: ["bal", "money"],
   description: "Muestra el dinero que tienes en el bot",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

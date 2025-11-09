@@ -1,4 +1,4 @@
-module.exports.run = async (client, message) => {
+export async function run(client, message) {
   const fetched = client.queue.get(message.guild.id);
 
   if (!fetched) return message.channel.send(client.lang.music.noQueue);
@@ -14,11 +14,11 @@ module.exports.run = async (client, message) => {
 
   message.channel.send("Canción actual reanudada.");
 };
-module.exports.help = {
+export const help = {
   name: "resume",
   description: "Ya viniste del baño? resume tu lista de canciones",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

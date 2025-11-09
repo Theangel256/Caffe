@@ -1,4 +1,4 @@
-const { model: Model, Schema } = require("mongoose");
+import { model as Model, Schema } from "mongoose";
 
 const schema = new Schema({
   guildID: { type: String, required: true },
@@ -10,4 +10,4 @@ const schema = new Schema({
 // Índice único compuesto para evitar duplicados de userID por guildID
 schema.index({ guildID: 1, userID: 1 }, { unique: true });
 
-module.exports = Model("systemlvl", schema);
+export default Model("systemlvl", schema);

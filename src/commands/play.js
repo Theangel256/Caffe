@@ -1,15 +1,15 @@
-const play_dl = require("play-dl");
-const axios = require("axios");
-const { EmbedBuilder, PermissionsBitField, Colors } = require("discord.js");
-const { StreamType,
+import play_dl from "play-dl";
+import axios from "axios";
+import { EmbedBuilder, PermissionsBitField, Colors } from "discord.js";
+import { StreamType,
   createAudioPlayer,
   createAudioResource,
   NoSubscriberBehavior,
   AudioPlayerStatus,
   VoiceConnectionStatus,
   entersState
- } = require('@discordjs/voice');
-module.exports.run = async (client, message, args) => {
+ } from '@discordjs/voice';
+export async function run(client, message, args) {
   let msg;
     const queue = client.queue, 
     lang = client.lang.commands.play,
@@ -219,11 +219,11 @@ async function searchYouTube(query, maxResults = 5) {
   }
 }
 };
-module.exports.help = {
+export const help = {
   name: "play",
   description: "Reproduce playlist, URL o titulo de tu musica favorita!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [
     PermissionsBitField.Flags.Connect,

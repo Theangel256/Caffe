@@ -1,5 +1,5 @@
-const { EmbedBuilder } = require("discord.js");
-module.exports.run = async (client, message) => {
+import { EmbedBuilder } from "discord.js";
+export async function run(client, message) {
   const reload = new EmbedBuilder()
     .setTitle(":arrows_counterclockwise: | **Recargando el sistema**")
     .setDescription("`Espera 5 Segundos`")
@@ -15,12 +15,12 @@ module.exports.run = async (client, message) => {
     process.exit();
   });
 };
-module.exports.help = {
+export const help = {
   name: "reload",
   aliases: ["rl"],
   description: "Solo Desarrolladores!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: true,

@@ -1,7 +1,8 @@
-const guildSystem = require("../utils/models/guilds.js");
-const warnMembers = require("../utils/models/warns.js");
-const { getMember, getOrCreateDB } = require("../utils/functions.js");
-module.exports.run = async (client, message, args) => {
+import guildSystem from "../utils/models/guilds.js";
+import warnMembers from "../utils/models/warns.js";
+import { getMember, getOrCreateDB } from "../utils/functions.js";
+import { PermissionsBitField } from "discord.js";
+export async function run(client, message, args) {
   if (!args[0]) return message.channel.send("You haven't said anything. Put a member or `set`");
   const guilds = await getOrCreateDB(guildSystem, { guildID: message.guild.id }); 
   if (args[0].toLowerCase() === "set") {
@@ -200,12 +201,12 @@ module.exports.run = async (client, message, args) => {
     }
   }
 };
-module.exports.help = {
+export const help = {
   name: "warn",
   description: "Sanciona a un miembro mal portado :/",
 };
-module.exports.requirements = {
-  userPerms: ["BAN_MEMBERS"],
+export const requirements = {
+  userPerms: [PermissionsBitField.Flags.BanMembers],
   clientPerms: [],
   ownerOnly: false,
 };

@@ -1,4 +1,4 @@
-const { model: Model, Schema } = require("mongoose");
+import { model as Model, Schema } from "mongoose";
 
 const schema = new Schema({
   guildID: { type: String, required: true, unique: true }, // Se asegura de que sea único
@@ -9,8 +9,8 @@ const schema = new Schema({
   channelGoodbye: { type: String, default: "" },
   goodbyeBackground: { type: String, default: "" },
   welcomeBackground: { type: String, default: "" },
-  roleid: { type: String },
-  rolauto: { type: String },
+  roleid: { type: String, default: "" },
+  rolauto: { type: String, default: "" },
   kick: { type: Boolean, default: false, required: true },
   warningKickCounter: { type: Number, default: 0 },
   ban: { type: Boolean, default: false, required: true },
@@ -19,4 +19,4 @@ const schema = new Schema({
   warningRoleCounter: { type: Number, default: 0 },
 });
 
-module.exports = Model("guilds", schema);
+export default Model("guilds", schema);

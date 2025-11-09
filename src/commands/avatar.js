@@ -1,6 +1,6 @@
-const { getMember } = require("../utils/functions.js");
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
-module.exports.run = (client, message, args) => {
+import { getMember } from "../utils/functions.js";
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
+export function run(client, message, args) {
   const member = getMember(message, args, true),
     lang = client.lang.commands.avatar,
     embed = new EmbedBuilder()
@@ -13,18 +13,18 @@ module.exports.run = (client, message, args) => {
       });
   message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "avatar",
   description: "Muestra el avatar que tienes actualmente",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [
     PermissionsBitField.Flags.EmbedLinks
   ],
   ownerOnly: false,
 };
-module.exports.limits = {
+export const limits = {
   rateLimit: 3,
   cooldown: 20000,
 };

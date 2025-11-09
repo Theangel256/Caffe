@@ -1,5 +1,5 @@
-const { EmbedBuilder } = require("discord.js");
-module.exports.run = (client, message, args) => {
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
+export async function run(client, message, args) {
   if (message.deletable) message.delete();
   if (!args[0]) return message.channel.send("Nada para decir? `Ej: /say Hola o /say embed Hola o /say image url.com`")
     .then((m) => m.delete({ timeout: 5000 }));
@@ -58,13 +58,13 @@ module.exports.run = (client, message, args) => {
     }
   }
 };
-module.exports.help = {
+export const help = {
   name: "say",
   description:
     "Tienes algo que decir pero no quieres que te critiquen? usa este comando!",
 };
-module.exports.requirements = {
-  userPerms: ["MANAGE_MESSAGES"],
+export const requirements = {
+  userPerms: [PermissionsBitField.Flags.ManageMessages],
   clientPerms: [],
   ownerOnly: false,
 };

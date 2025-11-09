@@ -1,4 +1,5 @@
-module.exports.run = async (client, message) => {
+import { PermissionsBitField } from "discord.js";
+export async function run(client, message) {
   const fetched = client.queue.get(message.guild.id);
 
   if (!message.member.voice.channel)
@@ -24,13 +25,11 @@ module.exports.run = async (client, message) => {
   if (fetched.songs[0].author.id === message.author.id) {
     message.channel.send(":white_check_mark: Cancion Saltada!");
     return await skip(fetched);
-  } else if (message.member.permissions.has("MANAGE_MESSAGES")) {
-    message.channel.send(":white_check_mark:Un DJ a Saltado la Cancion!");
+  } else if (message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+    message.channel.send(":white_check_mark:El DJ a Saltado la Cancion!");
     return await skip(fetched);
   } else if (fetched.songs[0].vote.length >= required) {
-    message.channel.send(
-      `:white_check_mark: Votos ${fetched.songs[0].vote.length}/${required} requeridos, cancion Saltada!`
-    );
+    message.channel.send(`:white_check_mark: Votos ${fetched.songs[0].vote.length}/${required} requeridos, cancion Saltada!`);
     return await skip(fetched);
   }
   message.channel.send(
@@ -40,12 +39,12 @@ module.exports.run = async (client, message) => {
 async function skip(queue) {
   await queue.connection.dispatcher.end();
 }
-module.exports.help = {
+export const help = {
   name: "skip",
   description:
     "cansado de escuchar musica aburrida para esperar la favorita? esta es la perfecta opcion!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

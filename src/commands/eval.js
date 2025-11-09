@@ -1,4 +1,4 @@
-module.exports.run = (client, message, args) => {
+export async function run(client, message, args) {
   const limit = 1950;
   try {
     const code = args.join(" ");
@@ -16,12 +16,12 @@ module.exports.run = (client, message, args) => {
     message.channel.send(`\`ERROR\` \`\`\`js\n${err}\n\`\`\``);
   }
 };
-module.exports.help = {
+export const help = {
   name: "eval",
   aliases: ["e"],
   description: "Solo Desarrolladores!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: true,

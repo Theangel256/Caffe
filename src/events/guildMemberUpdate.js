@@ -1,6 +1,6 @@
 const guildSystem = require("../utils/models/guilds");
 const { getOrCreateDB } = require('../utils/functions.js');
-module.exports = async (client, oldMember, newMember) => {
+export default async (client, oldMember, newMember) => {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: oldMember.guild.id });
   const { channelLogs } = guildsDB;
   if (!oldMember.guild.member(client.user).permissions.has("VIEW_AUDIT_LOG"))

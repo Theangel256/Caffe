@@ -1,4 +1,4 @@
-module.exports.run = (client, message) => {
+  export async function run(client, message) {
   const serverQueue = client.queue.get(message.guild.id);
 
   if (!serverQueue) return message.channel.send(client.lang.music.noQueue);
@@ -14,11 +14,11 @@ module.exports.run = (client, message) => {
 
   return message.channel.send(client.lang.commands.pause.sucess);
 };
-module.exports.help = {
+export const help = {
   name: "pause",
   description: "Vas al baño? pausa tu musica!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

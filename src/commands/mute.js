@@ -2,7 +2,7 @@
 const db = require('quick.db');
 const {getMember} = require("../utils/functions.js");
 const ms = require('ms');
-module.exports.run = async (client, message, args) => {
+export async function run(client, message, args) {
 	const MuteDB = new db.table('systemMute');
 	const guilds = new db.table('guilds');
 	const lang = client.lang.commands.mute;
@@ -52,11 +52,11 @@ module.exports.run = async (client, message, args) => {
 	MuteDB.set(`${message.guild.id}.${message.author.id}`, { rolID: rolMute, time: Date.now() + mutetime })
 	};
 	*/
-module.exports.help = {
+export const help = {
   name: "mute",
   description: "Silencia a un miembro del servidor",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: ["MANAGE_MESSAGES"],
   clientPerms: ["MANAGE_ROLES", "MANAGE_CHANNELS"],
   ownerOnly: false,

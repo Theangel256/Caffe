@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const MONGO_URI = process.env.MONGO_URI;
 
 let cached = global.mongoose;
@@ -27,4 +27,4 @@ async function dbConnect() {
   cached.conn = await cached.promise;
   return cached.conn;
 }
-module.exports = dbConnect;
+export default dbConnect;

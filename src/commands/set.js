@@ -1,5 +1,5 @@
+import { PermissionsBitField } from "discord.js";
 /*
-const db = require('quick.db');
 module.exports.run = async (client, message, args) => {
 	const guilds = new db.table('guilds');
 	const Dashboard = `[Dashboard](${process.env.PUBLIC_URL}/Dashboard/${message.guild.id})`;
@@ -46,13 +46,16 @@ module.exports.run = async (client, message, args) => {
 }
 };
 */
-module.exports.help = {
+export async function run(client, message, args) {
+  return message.channel.send("Este comando solo está disponible en el panel de control: " + process.env.PUBLIC_URL + "/Dashboard/" + message.guild.id);
+}
+export const help = {
   name: "set",
   description:
     "establece todas las opciones que hay para disfrutar de un servidor configurado!",
 };
-module.exports.requirements = {
-  userPerms: ["MANAGE_GUILD"],
+export const requirements = {
+  userPerms: [PermissionsBitField.Flags.ManageGuild],
   clientPerms: [],
   ownerOnly: false,
 };

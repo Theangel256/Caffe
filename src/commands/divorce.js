@@ -1,6 +1,6 @@
-const users = require("../utils/models/users");
-const { getOrCreateDB } = require("../utils/functions.js");
-module.exports.run = async (client, message) => {
+import users from "../utils/models/users.js";
+import { getOrCreateDB } from "../utils/functions.js";
+export async function run(client, message) {
     const usersDB = await getOrCreateDB(users, { userID: message.author.id });
     if (!usersDB) return message.channel.send(client.lang.dbError);
     let { marryId, marryTag } = usersDB;
@@ -11,12 +11,12 @@ module.exports.run = async (client, message) => {
   await users.deleteOne({ marryTag: marryTag, marryId: marryId });
 };
 
-module.exports.help = {
+export const help = {
   name: "divorce",
   description:
     "Usa este comando para divorciarte de quien te hirio, si tienes a alguien que te hirio",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

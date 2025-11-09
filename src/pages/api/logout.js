@@ -1,4 +1,4 @@
-export async function GET(context) {
-  await context.session?.destroy();
-  return context.redirect('/');
+export async function GET({ cookies, redirect }) {
+  cookies.delete('session_data', { path: '/' });
+  return redirect('/');
 }

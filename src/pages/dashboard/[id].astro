@@ -1,87 +1,117 @@
 ---
-export const prerender = false; // No generar estático
+export const prerender = false;
 
 import Head from "../../components/_head.astro";
 import Navbar from "../../components/navbar.astro";
 import PanelData from "../../components/panelData.astro";
 import PanelOpciones from "../../components/panelOpciones.astro";
 
-// Type definitions
-interface GuildData {
-  guild: {
-    id: string;
-    name: string;
-    memberCount: number;
-    channels: number;
-    roles: number;
-    createdAt: Date;
-  };
-  statuses: { online: number; idle: number; dnd: number; offline: number };
-  bans: number | false;
-  db: any; // Adjust based on your DB structure
-}
+// --- Autenticación ---
+const user = Astro.locals.user as any;
+if (!user) return Astro.redirect('/api/signin');
 
-interface DiscordUser {
-  id: string;
-  username: string;
-  avatar: string;
-  guilds?: Array<{
-    id: string;
-    name: string;
-    permissions: number;
-    icon?: string;
-  }>;
-  accessToken?: string;
-}
-
-// Get dynamic ID parameter
 const { id } = Astro.params;
 
-// Authentication and data fetching
-const user = Astro.locals?.user as DiscordUser | undefined;
-if (!user) return Astro.redirect("/api/signin");
-
-let data: GuildData | undefined;
-try {
-  const apiUrl = new URL(`/api/dashboard/${id}`, Astro.url);
-  
-  const res = await fetch(apiUrl);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-  data = await res.json();
-} catch (error) {
-  console.error("Fetch error:", error);
-  return Astro.redirect("/error404");
+// --- Usar el cliente del bot directamente ---
+const client = globalThis.client;
+if (!client?.user) {
+  console.error('[Dashboard] Bot no está listo');
+  return Astro.redirect('/error404');
 }
 
-const db = data?.db;
-const statusCounts = data?.statuses;
-const bans = data?.bans;
+let guild = client.guilds.cache.get(id);
+if (!guild) {
+  guild = await client.guilds.fetch(id).catch(() => null);
+}
+if (!guild) return Astro.redirect('/error404');
 
-// Bot client (ensure it's initialized globally or adjust)
-const bot = globalThis.client;
-const login = Boolean(user);
-const textLogin = login ? user.username : "Login";
-const guild = bot?.guilds.cache.get(id) ?? await bot.guilds.fetch(id).catch(() => null);
+// --- Verificar permisos ---
+const member = await guild.members.fetch(user.id).catch(() => null);
+if (!member || !member.permissions.has('Administrator')) {
+  return Astro.redirect('/error404');
+}
 
-if (!guild) return Astro.redirect("/error404");
+// --- Cargar datos de DB ---
+import { getOrCreateDB } from '../../utils/functions.js';
+import guildSystem from '../../utils/models/guilds.js';
+
+let db, statusCounts, bans;
+try {
+  db = await getOrCreateDB(guildSystem, { guildID: id });
+
+  const members = await guild.members.fetch();
+  statusCounts = { online: 0, idle: 0, dnd: 0, offline: 0 };
+  members.forEach(m => {
+    const s = m.presence?.status;
+    if (s && s in statusCounts) statusCounts[s]++;
+  });
+
+  bans = false;
+  if (guild.members.me?.permissions.has('BanMembers')) {
+    bans = (await guild.bans.fetch()).size;
+  }
+} catch (err) {
+  console.error('[Dashboard] DB Error:', err);
+  return Astro.redirect('/error404');
+}
+
+const textLogin = user.username;
 ---
 
 <!DOCTYPE html>
 <html lang="es">
   <head>
     <Head title={`Caffe Dashboard - ${guild.name}`} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .error {
+        color: #e74c3c;
+        background: #2d1b1b;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        font-family: monospace;
+      }
+      .loading {
+        text-align: center;
+        padding: 2rem;
+        color: #aaa;
+      }
+    </style>
   </head>
   <body data-spy="scroll" data-target="#data">
     <Navbar guild={guild} user={user} textLogin={textLogin} />
-    <PanelData guild={guild} bans={bans} statusCounts={statusCounts} />
+
+    <!-- Panel de datos -->
+    <PanelData
+      guild={guild}
+      bans={bans}
+      statusCounts={statusCounts}
+    />
+
+    <!-- Panel de opciones -->
     <PanelOpciones guild={guild} />
+
+    <!-- Información adicional -->
+    <section style="margin: 2rem; padding: 1.5rem; background: #1a1a1a; border-radius: 12px;">
+      <h1 style="margin: 0 0 1rem; color: #00d4aa;">{guild.name}</h1>
+      <p><strong>Miembros:</strong> { guild.memberCount.toLocaleString()}</p>
+      <p><strong>Canales:</strong> {guild.channels.cache.size}</p>
+      <p><strong>Roles:</strong> {guild.roles.cache.size}</p>
+      <p><strong>Creado:</strong> {new Date(guild.createdAt).toLocaleDateString('es-ES')}</p>
+
+      {bans !== false && (
+        <p><strong>Baneados:</strong> {bans}</p>
+      )}
+
+      <details style="margin-top: 1rem;">
+        <summary style="cursor: pointer; color: #00d4aa;">Ver DB completa</summary>
+        <pre style="background: #111; padding: 1rem; border-radius: 8px; overflow: auto; font-size: 0.9rem;">
+{JSON.stringify(db, null, 2)}
+        </pre>
+      </details>
+    </section>
+
     <script src="/js/hidden.js" is:inline></script>
   </body>
 </html>
-
-<!-- Render additional guild info below the components -->
-<h1>{data?.guild.name || 'Unknown Guild'}</h1>
-<p>Miembros: {data?.guild.memberCount || 0}</p>
-<p>Canales: {data?.guild.channels || 0}</p>
-<p>Roles: {data?.guild.roles || 0}</p>

@@ -1,4 +1,4 @@
-module.exports.run = async (client, message) => {
+export async function run(client, message) {
   const lang = client.lang.commands.move,
     serverQueue = client.queue.get(message.guild.id);
 
@@ -20,11 +20,11 @@ module.exports.run = async (client, message) => {
     `${lang.sucess} **${message.member.voice.channel.name}**`
   );
 };
-module.exports.help = {
+export const help = {
   name: "move",
   description: "Mueveme de canal cuando este reproduciendo musica",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: ["CONNECT"],
   ownerOnly: false,

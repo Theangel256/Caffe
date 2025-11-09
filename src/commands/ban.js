@@ -1,6 +1,6 @@
-const { PermissionsBitField } = require("discord.js");
-const { getMember } = require("../utils/functions.js");
-module.exports.run = (client, message, args) => {
+import { PermissionsBitField } from "discord.js";
+import { getMember } from "../utils/functions.js";
+export function run(client, message, args) {
   const member = getMember(message, args, false),
     lang = client.lang.commands.ban;
   let reason = args.slice(1).join(" ");
@@ -24,11 +24,11 @@ module.exports.run = (client, message, args) => {
       .replace(/{reason}/gi, reason),
   });
 };
-module.exports.help = {
+export const help = {
   name: "ban",
   description: "Banea a una persona con este comando",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [ 
     PermissionsBitField.Flags.BanMembers
     ],

@@ -1,5 +1,6 @@
-const { getMember } = require("../utils/functions.js");
-module.exports.run = (client, message, args) => {
+import { PermissionsBitField } from "discord.js";
+import { getMember } from "../utils/functions.js";
+export async function run(client, message, args) {
   const cooldown = new client.database("cooldownmute"),
     tomute = getMember(message, args, false);
 
@@ -12,12 +13,12 @@ module.exports.run = (client, message, args) => {
   tomute.roles.remove(muterole.id);
   message.channel.send(`${tomute.user.tag} Ha sido desmuteado!`);
 };
-module.exports.help = {
+export const help = {
   name: "unmute",
   description: "te excediste de tiempo? desilencia a un usuario",
 };
-module.exports.requirements = {
-  userPerms: ["MANAGE_MESSAGES"],
+export const requirements = {
+  userPerms: [PermissionsBitField.Flags.ManageMessages],
   clientPerms: [],
   ownerOnly: false,
 };

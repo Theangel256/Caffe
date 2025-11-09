@@ -1,4 +1,6 @@
-module.exports.run = (client, message, args) => {
+import { PermissionsBitField } from "discord.js";
+
+export async function run(client, message, args) {
   const user = args[0];
 
   if (!user) return message.reply(" Ingrese una ID del usuario baneado.");
@@ -14,12 +16,12 @@ module.exports.run = (client, message, args) => {
     `Se ha removido la sanción al usuario: **${user.username}**`
   );
 };
-module.exports.help = {
+export const help = {
   name: "unban",
   description: "te arrepentiste de banear a alguien? usa este comando",
 };
-module.exports.requirements = {
-  userPerms: ["BAN_MEMBERS"],
+export const requirements = {
+  userPerms: [PermissionsBitField.Flags.BanMembers],
   clientPerms: [],
   ownerOnly: false,
 };

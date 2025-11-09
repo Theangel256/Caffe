@@ -1,11 +1,11 @@
-const { AttachmentBuilder } = require("discord.js");
-const Jimp = require("jimp");
-module.exports.run = async (client, message, args) => {
+import { AttachmentBuilder, PermissionsBitField } from "discord.js";
+import Jimp from "jimp";
+export async function run(client, message, args) {
   if (!args[0]) return message.channel.send("Pon algo");
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
 
   const meme = await Jimp.read(
-    "https://media.discordapp.net/attachments/359425464885837827/593819763797393438/TrumpApi.png"
+    "https://www.nicepng.com/png/detail/436-4362490_trump-clipart-thumbs-up-transparent-png-stickpng-trump.png"
   );
 
   const realtext = getWellText(args.slice(0).join(" "), 14, 88);
@@ -24,14 +24,14 @@ module.exports.run = async (client, message, args) => {
 
   await message.channel.send(attachment);
 };
-module.exports.help = {
+export const help = {
   name: "trump",
   aliases: [],
   description: "nueva regla de trump!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
-  clientPerms: ["ATTACH_FILES"],
+  clientPerms: [PermissionsBitField.Flags.AttachFiles],
   ownerOnly: false,
 };
 /**

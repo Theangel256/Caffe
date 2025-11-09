@@ -1,11 +1,14 @@
-const { readdirSync } = require("fs");
-const { join } = require("path");
+import {PermissionsBitField, version} from "discord.js";
+import { readdirSync } from "fs";
+import { join } from 'path';
+import { fileURLToPath } from 'url';
+import moment from "moment";
+import "moment-duration-format";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = join(__filename, '../..');
 const filePath = join(__dirname, "..", "events");
-const Discord = require("discord.js");
 const eventFiles = readdirSync(filePath);
-const moment = require("moment");
-require("moment-duration-format");
-module.exports.run = async (client, message) => {
+export async function run(client, message) {
   const actividad = moment
       .duration(client.uptime)
       .format(" D [d], H [hrs], m [m], s [s]"),
@@ -44,7 +47,7 @@ module.exports.run = async (client, message) => {
         \n**${Math.round(message.client.ws.ping)}ms** Ping
         \n**${voz}** ${lang.connections.toLocaleString()}
         \n**${modulos.version}** ${lang.version}
-        \n**${Discord.version}** Discord.JS\n**${client.prefix}** Prefix
+        \n**${version}** Discord.JS\n**${client.prefix}** Prefix
         \n**${memory}** ${lang.usage}
         \n**${cpu}** CPU\n**${modulos.engines.node}** Node`,
         inline: true, },
@@ -60,13 +63,13 @@ module.exports.run = async (client, message) => {
 });
   message.channel.send(main);
 };
-module.exports.help = {
+export const help = {
   name: "stats",
   aliases: ["botinfo", "info", "bot", "botstats"],
   description: "ve mi estadisticas para estar al tanto de mi cuidado <3",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
-  clientPerms: ["EMBED_LINKS"],
+  clientPerms: [PermissionsBitField.Flags.EmbedLinks],
   ownerOnly: false,
 };

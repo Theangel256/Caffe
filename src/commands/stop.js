@@ -1,4 +1,4 @@
-module.exports.run = async (client, message) => {
+export async function run(client, message) {
   const serverQueue = client.queue.get(message.guild.id);
   if (!message.member.voice.channel)
     return message.channel.send(
@@ -25,12 +25,12 @@ module.exports.run = async (client, message) => {
   serverQueue.songs[0].voteStop.push(message.member.id);
 
   if (message.member.permissions.has("MANAGE_MESSAGES")) {
-    skip(serverQueue);
+    stop(serverQueue);
     return message.channel.send(
       ":white_check_mark:Un DJ a Borrado la lista de Canciones!"
     );
   } else if (serverQueue.songs[0].voteStop.length >= required) {
-    skip(serverQueue);
+    stop(serverQueue);
     return message.channel.send(
       `:white_check_mark: Votos ${serverQueue.songs[0].voteStop.length}/${required} requeridos, cola finalizada!`
     );
@@ -39,15 +39,15 @@ module.exports.run = async (client, message) => {
     `Voto para finalizar la cola ${serverQueue.songs[0].voteStop.length}/${required} requeridos.`
   );
 };
-async function skip(queue) {
+async function stop(queue) {
   queue.songs = [];
   await queue.connection.dispatcher.end();
 }
-module.exports.help = {
+export const help = {
   name: "stop",
   description: "ya no quieres escuchar musica? esta es la perfecta opcion!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

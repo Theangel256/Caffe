@@ -1,4 +1,4 @@
-const { model: Model, Schema } = require("mongoose");
+import { model as Model, Schema } from "mongoose";
 
 const schema = new Schema({
     guildID: { type: String, required: true },
@@ -10,6 +10,4 @@ const schema = new Schema({
 // Índice compuesto único para evitar que un usuario tenga más de un documento por servidor
 schema.index({ guildID: 1, userID: 1 }, { unique: true });
 
-const model = new Model("warnMembers", schema);
-
-module.exports = model;
+export default Model("warnMembers", schema);

@@ -1,5 +1,5 @@
 const warns = require("../utils/models/warns");
-module.exports = async (client) => {
+export default async (client) => {
   setInterval(async function () {
     const allData = await warns.find();
     allData.map(async (a) => {
@@ -11,7 +11,7 @@ module.exports = async (client) => {
     });
   }, 15000);
   const statues = [
-    `$help | ${(await client.shard.fetchClientValues("users.cache.size"))
+    `$help | ${(await client.ws.fetchClientValues("users.cache.size"))
       .reduce((acc, guildCount) => acc + guildCount, 0)
       .toLocaleString()} users!`,
     "Theangel256 Studios V" + require("../../package.json").version,

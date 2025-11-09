@@ -1,6 +1,4 @@
-const { wait } = require("./es");
-
-module.exports = {
+export default {
   no_reason: "Break the rules",
   no_user: "**:grey_exclamation:** | Mention someone",
   wait: "**:grey_exclamation: |** You have to wait **{duration}** to be able to use this command again",

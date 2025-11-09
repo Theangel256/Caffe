@@ -1,17 +1,14 @@
 import { defineMiddleware } from 'astro/middleware';
-import { parse, serialize } from 'cookie';
-import { sign, unsign } from 'cookie-signature';
+import { unsign } from 'cookie-signature';
 
 const RATE_LIMIT_COOKIE = 'rate_limit';
 const RATE_LIMIT_WINDOW = 2000; // 2 seconds
 const RATE_LIMIT_MAX = 5; // Max requests per window
-const SESSION_SECRET = process.env.SESSION_SECRET || 'your-32-char-secret'; // Fallback for dev
+const SESSION_SECRET = process.env.SESSION_SECRET || 'your-32-char-secret';
 
 export const onRequest = defineMiddleware(async (context, next) => {
   // Rate Limiting
-  const cookieHeader = context.request.headers.get('cookie') || '';
-  const cookies = parse(cookieHeader);
-  let rateLimitData = cookies[RATE_LIMIT_COOKIE] ? JSON.parse(cookies[RATE_LIMIT_COOKIE]) : { count: 0, last: 0 };
+  let rateLimitData = context.cookies.get(RATE_LIMIT_COOKIE)?.json() || { count: 0, last: 0 };
   const now = Date.now();
 
   if (rateLimitData.last && now - rateLimitData.last < RATE_LIMIT_WINDOW) {
@@ -23,22 +20,22 @@ export const onRequest = defineMiddleware(async (context, next) => {
     rateLimitData = { count: 1, last: now };
   }
 
-  const signedRateLimit = serialize(RATE_LIMIT_COOKIE, JSON.stringify(rateLimitData), {
+  context.cookies.set(RATE_LIMIT_COOKIE, rateLimitData, {
     path: '/',
     httpOnly: true,
     maxAge: RATE_LIMIT_WINDOW / 1000,
     sameSite: 'lax',
-    ...(process.env.NODE_ENV === 'production' && { secure: true, domain: new URL(process.env.PUBLIC_URL).hostname }),
+    secure: import.meta.env.PROD
   });
-  context.response?.headers?.append('Set-Cookie', signedRateLimit);
 
   // Session Management
-  const sessionCookie = cookies.session_data || '';
+  const sessionCookie = context.cookies.get('session_data')?.value || '';
   let sessionData = null;
   const unsignedSession = unsign(sessionCookie, SESSION_SECRET);
   if (unsignedSession !== false) {
     try {
       sessionData = JSON.parse(unsignedSession);
+      console.log('Session loaded:', sessionData.username); // DEBUG
     } catch (e) {
       console.error('Invalid session data:', e);
     }
@@ -69,10 +66,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   return response;
 });
 
+// getSession (opcional, para usar en rutas)
 export async function getSession(context: any) {
-  const cookieHeader = context.request.headers.get('cookie') || '';
-  const cookies = parse(cookieHeader);
-  const sessionCookie = cookies.session_data || '';
+  const sessionCookie = context.cookies.get('session_data')?.value || '';
   const unsignedSession = unsign(sessionCookie, SESSION_SECRET);
   if (unsignedSession !== false) {
     try {
@@ -92,12 +88,12 @@ declare module 'astro' {
       id: string;
       username: string;
       avatar: string;
+      accessToken?: string;
       guilds?: Array<{
         id: string;
         name: string;
         permissions: number;
       }>;
-      accessToken?: string;
     } | null;
   }
 }

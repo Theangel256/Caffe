@@ -2,7 +2,7 @@ const guildSystem = require("../utils/models/guilds");
 const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const { getOrCreateDB } = require('../utils/functions.js');
 const Zeew = require("zeew");
-module.exports = async (client, member) => {
+export default async (client, member) => {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: member.guild.id });
   const { channelLogs, rolauto, channelWelcome, welcomeBackground } = guildsDB;
   const canal = client.channels.resolve(channelLogs);

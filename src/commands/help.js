@@ -1,6 +1,6 @@
-const { PermissionsBitField } = require("discord.js");
+import { PermissionsBitField } from "discord.js";
 
-module.exports.run = (client, message, args) => {
+export async function run(client, message, args) {
   let embed = {
     color: 0x00ffff,
     author: {
@@ -26,13 +26,13 @@ module.exports.run = (client, message, args) => {
   return message.channel.send({ embeds: [embed] });
 };
 
-module.exports.help = {
+export const help = {
   name: "help",
   aliases: ["cmds", "commands"],
   description: "obten ayuda de cuantos y cuales son los comandos de Caffe!",
 };
 
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [
     PermissionsBitField.Flags.SendMessages,

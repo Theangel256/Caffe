@@ -1,9 +1,9 @@
-const levelSystem = require("../utils/models/levels");;
-const Canvas = require("canvas");
-const { AttachmentBuilder } = require("discord.js");
-const { getMember, getRank, getOrCreateDB } = require("../utils/functions.js");
+import levelSystem from "../utils/models/levels.js";
+import Canvas from "canvas";
+import { AttachmentBuilder, PermissionsBitField } from "discord.js";
+import { getMember, getRank, getOrCreateDB } from "../utils/functions.js";
 Canvas.registerFont("Arial.ttf", { family: "Arial" });
-module.exports.run = async (client, message, args) => {
+export async function run(client, message, args) {
   const member = getMember(message, args, true);
   if (member.user.bot)
     return message.channel.send("los bots no tienen niveles");
@@ -74,12 +74,12 @@ module.exports.run = async (client, message, args) => {
 
   message.channel.send({ files: [attachment]});
 };
-module.exports.help = {
+export const help = {
   name: "rank",
   description: "Muestra una carta con todos los datos de tu nivel",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
-  clientPerms: ["ATTACH_FILES"],
+  clientPerms: [PermissionsBitField.Flags.AttachFiles],
   ownerOnly: false,
 };
