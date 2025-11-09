@@ -1,5 +1,5 @@
 import users from "../utils/models/users.js";
-import { getMember, getorCreateDB } from "../utils/functions.js";
+import { getMember, getOrCreateDB } from "../utils/functions.js";
 export async function run(client, message, args) {
 	const economy = await getOrCreateDB(users, { userID: message.author.id });
 	const member = getMember(message, args, false);
