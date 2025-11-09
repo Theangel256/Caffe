@@ -3,7 +3,7 @@ services:
     name: caffe-bot-astro
     env: node
     region: oregon
-    plan: standard  # Recomendado para bots con sharding
+    plan: free  # Recomendado para bots con sharding
 
     buildCommand: npm install && npx astro build
 
