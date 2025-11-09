@@ -16,9 +16,9 @@ module.exports = async (client) => {
       .toLocaleString()} users!`,
     "Theangel256 Studios V" + require("../../package.json").version,
     `https://theangel256.dev`,
-    `${substr(process.env.PUBLIC_URL, -8)}/discord"`,
-    `${substr(process.env.PUBLIC_URL, -8)}/add"`,
-    `${substr(process.env.PUBLIC_URL, -8)}/support"`,
+    `${process.env.PUBLIC_URL}/discord"`.substring(8),
+    `${process.env.PUBLIC_URL}/add"`.substring(8),
+    `${process.env.PUBLIC_URL}/support"`.substring(8),
     `Serving ${client.guilds.cache.size.toLocaleString()} servers!`,
   ];
   setInterval(() => {
