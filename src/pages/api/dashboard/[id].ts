@@ -1,5 +1,5 @@
 import { APIContext } from 'astro';
-import { PermissionFlagsBits } from 'discord.js';
+import { ChannelType, PermissionFlagsBits } from 'discord.js';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { getOrCreateDB } = require("../../../utils/functions.js");
@@ -30,7 +30,7 @@ interface GuildData {
 export async function GET(context: APIContext) {
   const { params } = context;
   const idserver = params.id;
-  const user = context.locals.user as DiscordUser | undefined;
+  const user = context.locals?.user as DiscordUser | undefined;
 
   if (!user) {
     return new Response('Unauthorized', { status: 401 });
