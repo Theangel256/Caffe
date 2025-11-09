@@ -1,8 +1,6 @@
 import { APIContext } from 'astro';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const { client } = require("../../../shard.js");
-const levels = require("../../../utils/models/levels.js");
+import client from "../../../shard.js";
+import levels from '../../../utils/models/levels.js';
 
 interface LeaderboardUser {
   id: string;

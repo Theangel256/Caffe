@@ -1,6 +1,7 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
-module.exports.run = (client, message, args) => {
-  const lang = client.lang.commands.eightBall;
+import { PermissionsBitField } from "discord.js";
+
+export function run(client, message, args, lang) {
+  lang = lang.commands.eightBall;
   const pregunta = args.join(" ");
   const result = Math.floor(Math.random() * lang.ball.length);
   const embed = {
@@ -14,18 +15,19 @@ module.exports.run = (client, message, args) => {
   if (!pregunta[0]) return message.channel.send(lang.no_args);
   message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+
+export const help = {
   name: "8ball",
   description: "Preguntale algo a Caffedivinius",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [
     PermissionsBitField.Flags.EmbedLinks,
   ],
   ownerOnly: false,
 };
-module.exports.limits = {
+export const limits = {
   rateLimit: 3,
   cooldown: 20000,
 };

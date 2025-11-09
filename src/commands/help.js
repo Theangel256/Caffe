@@ -1,6 +1,7 @@
-const { PermissionsBitField } = require("discord.js");
+import { PermissionsBitField } from "discord.js";
+import pkg from '../../package.json' assert { type: 'json' };
 
-module.exports.run = (client, message, args) => {
+export async function run(client, message, args) {
   let embed = {
     color: 0x00ffff,
     author: {
@@ -17,7 +18,7 @@ module.exports.run = (client, message, args) => {
   } else {
     embed.author.name = `Help | ${client.user.username}`;
     embed.footer = {
-      text: `${process.env.PUBLIC_URL} V${require("../../package.json").version}`,
+      text: `${process.env.PUBLIC_URL} V${pkg.version}`,
       icon_url: client.user.displayAvatarURL({ extension: "webp"})
     };
     embed.description = client.commands.map((cmd) => cmd.help.name).join(", ");
@@ -26,13 +27,13 @@ module.exports.run = (client, message, args) => {
   return message.channel.send({ embeds: [embed] });
 };
 
-module.exports.help = {
+export const help = {
   name: "help",
   aliases: ["cmds", "commands"],
   description: "obten ayuda de cuantos y cuales son los comandos de Caffe!",
 };
 
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [
     PermissionsBitField.Flags.SendMessages,

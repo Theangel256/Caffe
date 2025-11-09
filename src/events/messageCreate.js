@@ -1,10 +1,11 @@
-const moment = require("moment");
-require("moment-duration-format");
-const { levels, missingPerms, regExp, getOrCreateDB } = require("../utils/functions.js");
-const guilds = require("../utils/models/guilds");
-const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require("@discordjs/voice");
-const { PermissionsBitField, EmbedBuilder } = require("discord.js");
-module.exports = async (client, message) => {
+import pkg from '../../package.json' assert { type: 'json' };
+import guilds from "../utils/models/guilds.js";
+import { levels, missingPerms, regExp, getOrCreateDB } from "../utils/functions.js";
+import { PermissionsBitField, EmbedBuilder } from "discord.js";
+import moment from "moment";
+import "moment-duration-format";
+import { joinVoiceChannel, VoiceConnectionStatus, entersState } from "@discordjs/voice";
+export default async function messageCreate(client, message) {
   if (message.channel.type === "dm") return;
   if (!message.guild) return;
   if (message.author.bot) return;
@@ -12,7 +13,14 @@ module.exports = async (client, message) => {
   const guildsDB = await getOrCreateDB(guilds, { guildID: message.guild.id });
   const { prefix, language } = guildsDB;
   client.prefix = prefix;
-  client.lang = require(`../utils/languages/${language}.js`);
+  const langCode = language || 'en';
+  let lang;
+  try {
+    lang = await import(`../utils/languages/${langCode}.js`)
+      .then(m => m.default);
+  } catch {
+    lang = await import(`../utils/languages/en.js`)
+  }
   
   client.joinVoiceChannel = async function (channel) {
   try {
@@ -47,11 +55,11 @@ module.exports = async (client, message) => {
     const embed = new EmbedBuilder()
       .addFields(
         { name: `:gear: | Prefix`, value: `> \`${client.prefix}\`` },
-        {  name: `:satellite: | \`${client.prefix}\`Help`, value: client.lang.events.message.isMentioned.field1 },
-        {  name: `❔ | ${client.lang.events.message.isMentioned.field2}`, value: `>>> [${client.lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.PUBLIC_URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
+        {  name: `:satellite: | \`${client.prefix}\`Help`, value: lang.events.message.isMentioned.field1 },
+        {  name: `❔ | ${lang.events.message.isMentioned.field2}`, value: `>>> [${lang.events.message.isMentioned.invite}](${invite})\n[Discord](${process.env.PUBLIC_URL}/discord)\n[Twitter](https://twitter.com/Theangel256)`
       })
       .setFooter({
-        text: client.lang.events.message.isMentioned.footer + require("../../package.json").version,
+        text: lang.events.message.isMentioned.footer + pkg.version,
         iconURL: client.user.displayAvatarURL({ extension: "webp"})
       })
       .setTimestamp()
@@ -59,7 +67,7 @@ module.exports = async (client, message) => {
     message.channel
       .send({ embeds: [embed] })
   }
-  regExp(client, message);  
+  regExp(client, message, lang);  
   if (!message.content.startsWith(client.prefix)) return levels(message);
   console.log(message.content); 
   const args = message.content.slice(client.prefix.length).trim().split(/ +/g);
@@ -70,13 +78,13 @@ module.exports = async (client, message) => {
   if (!botPerms.has(PermissionsBitField.Flags.SendMessages)) return;
   
   if (cmd.requirements.ownerOnly && !process.env.owners.includes(message.author.id))
-    return message.reply(client.lang.only_developers);
+    return message.reply(lang.only_developers);
 
   if (cmd.requirements.userPerms && !message.member.permissions.has(cmd.requirements.userPerms))
-    return message.reply(client.lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms)));
+    return message.reply(lang.userPerms.replace(/{function}/gi, missingPerms(client, message.member, cmd.requirements.userPerms, lang)));
 
   if (cmd.requirements.clientPerms && !botPerms.has(cmd.requirements.clientPerms))
-    return message.reply(client.lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.members.me, cmd.requirements.clientPerms)));
+    return message.reply(lang.clientPerms.replace(/{function}/gi, missingPerms(client, message.guild.members.me, cmd.requirements.clientPerms, lang)));
 
   if (cmd.limits) {
     const key = `${command}-${message.author.id}`;
@@ -92,7 +100,7 @@ module.exports = async (client, message) => {
     if (recentUses.length >= rateLimit) {
       const nextAvailable = cooldown - (now - recentUses[0]);
       const duracion = moment.duration(nextAvailable).format("D [d], H [hrs], m [m], s [s]");
-      return message.channel.send(client.lang.wait.replace(/{duration}/gi, duracion));
+      return message.channel.send(lang.wait.replace(/{duration}/gi, duracion));
     }
   
     // Guardamos el uso actual
@@ -110,5 +118,5 @@ module.exports = async (client, message) => {
     }, cooldown);
   }
 
-  cmd.run(client, message, args);
+  cmd.run(client, message, args, lang);
 };

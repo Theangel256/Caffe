@@ -1,8 +1,7 @@
-const Zeew = require("zeew");
-const guildSystem = require("../utils/models/guilds");
-const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
-const { getOrCreateDB } = require('../utils/functions.js');
-module.exports = async (client, member) => {
+import guildSystem from "../utils/models/guilds.js";
+import { getOrCreateDB } from "../utils/functions.js";
+import { AttachmentBuilder, EmbedBuilder } from "discord.js";
+export default async function guildMemberRemove(client, member) {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: member.guild.id });
   const { channelLogs, goodbyeBackground, channelGoodbye } = guildsDB;
   const canal = client.channels.resolve(channelLogs);
@@ -29,6 +28,7 @@ module.exports = async (client, member) => {
     )
     .addField("**「:robot:」• Bot?**", robot[member.user.bot], true);
   canal.send(logEmbed);
+  /*
   const fondo = goodbyeBackground.exists()
     ? goodbyeBackground
     : "https://i.imgur.com/yS9KGBK.jpg";
@@ -45,4 +45,5 @@ module.exports = async (client, member) => {
   const attachment = new AttachmentBuilder(img, "img.gif");
   const goodbye = client.channels.resolve(channelGoodbye);
   if (goodbye) return goodbye.send(attachment);
+  */
 };

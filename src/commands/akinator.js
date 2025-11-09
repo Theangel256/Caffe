@@ -1,6 +1,6 @@
-const { PermissionsBitField } = require("discord.js");
-const mech_aki = require("mech-aki");
-module.exports.run = async (client, message) => {
+import { PermissionsBitField } from "discord.js";
+import mech_aki from "mech-aki";
+export async function run(client, message) {
   const akinator = new mech_aki("es");
   let pregunta = await akinator.empezar().catch((err) => {
     console.log(err);
@@ -55,19 +55,19 @@ module.exports.run = async (client, message) => {
   msg.delete();
   message.reply(embed);
 };
-module.exports.help = {
+export const help = {
   name: "akinator",
   aliases: ["aki"],
   description: "Deja que Akinator descubra lo que hay en tu mente",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [
     PermissionsBitField.Flags.EmbedLinks
   ],
   ownerOnly: false,
 };
-module.exports.limits = {
+export const limits = {
   rateLimit: 3,
   cooldown: 20000,
 };

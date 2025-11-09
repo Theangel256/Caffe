@@ -1,4 +1,4 @@
-module.exports.run = async (client, message, args) => {
+export async function run(client, message, args) {
   const serverQueue = client.queue.get(message.guild.id);
 
   if (!serverQueue)
@@ -21,11 +21,11 @@ module.exports.run = async (client, message, args) => {
     return message.channel.send("El volumen debe estar entre **0 a 5**");
   }
 };
-module.exports.help = {
+export const help = {
   name: "volume",
   description: "cambia el volumen de tu musica!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   no_reason: "Incumplimiento de las reglas!",
   no_user: "**:grey_exclamation:** | Menciona a alguien",
   wait: "**:grey_exclamation: |** Tienes que esperar **{duration}** para poder volver a usar este comando",

@@ -1,6 +1,6 @@
-const guildSystem = require("../utils/models/guilds");
-const { getOrCreateDB } = require('../utils/functions.js');
-module.exports = async (client, role) => {
+import guildSystem from "../utils/models/guilds.js";
+import { getOrCreateDB } from "../utils/functions.js";
+export default async function roleCreate(client, role) {
   const guildsDB = await getOrCreateDB(guildSystem, { guildID: role.guild.id });
   const { channelLogs } = guildsDB;
   const logginChannel = client.channels.resolve(channelLogs);

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   set: {
     embed: {
       author: "{user.username} You should use it as follows.",
@@ -23,8 +23,9 @@ module.exports = {
   currencies: ":dollar: Currencies",
   lvl: ":sparkles: Level",
   rep: "<:rep:741355268625006694> Reputation",
-  married: ":heart: Married to",
-  marriedOf: "Nobody",
+  maritalStatus: ":heart: Marital status",
+  married: ":heart: Married with {partner.username}",
+  notMarried: "Single",
   trophies: "<:trofeo:741356106353213560> Trophies",
   trophiesOf: "Nothing",
   beta: "System in beta",

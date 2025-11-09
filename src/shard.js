@@ -1,6 +1,7 @@
-require('dotenv').config();
-const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-const dbConnect = require('./utils/db.js');
+import 'dotenv/config';
+import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
+import dbConnect from './utils/db.js';
+import { loadHandlers } from './utils/handlers.js';
 
 const client = new Client({
   intents: [
@@ -18,17 +19,15 @@ const client = new Client({
   allowedMentions: { parse: ['users'], repliedUser: false },
 });
 
-client.commands = new Collection();
-client.aliases = new Collection();
 client.limits = new Collection();
 client.queue = new Collection();
-
+globalThis.client = client;
+dbConnect();
 startShard();
 
 async function startShard() {
   try {
-    await dbConnect();
-    require('./utils/handlers.js').run(client);
+    await loadHandlers(client);
 
     process.on('unhandledRejection', err => console.error('Unhandled Rejection:', err));
     process.on('uncaughtException', err => console.error('Uncaught Exception:', err));
@@ -40,4 +39,4 @@ async function startShard() {
   }
 }
 // Exportamos client para endpoints que lo necesiten
-module.exports = client;
+export default client;

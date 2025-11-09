@@ -1,5 +1,5 @@
-const { EmbedBuilder, ALLOWED_EXTENSIONS } = require("discord.js");
-module.exports.run = async (client, message) => {
+import { EmbedBuilder } from "discord.js";
+export async function run(client, message) {
   const guild = message.guild,
     features = {
       ANIMATED_ICON: "Icono animado",
@@ -86,12 +86,12 @@ module.exports.run = async (client, message) => {
       .setColor(0x00ffff);
   message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "server-info",
   aliases: ["server", "guild"],
   description: "Muestra toda la informacion del servidor!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

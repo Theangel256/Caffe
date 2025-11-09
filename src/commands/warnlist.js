@@ -1,7 +1,6 @@
-const getRank = require("../utils/functions.js");
-const warnMembers = require("../utils/models/warns");
-const { EmbedBuilder } = require('discord.js')
-module.exports.run = async (client, message, args) => {
+import { PermissionsBitField, EmbedBuilder } from "discord.js";
+import warnMembers from "../utils/models/warns.js";
+export async function run(client, message, args) {
   const warnList = await warnMembers.find({
   guildID: message.guild.id,
   warnings: { $gt: 0 } // solo los que tengan 1 o más advertencias
@@ -42,12 +41,12 @@ module.exports.run = async (client, message, args) => {
   );
   return message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "warnlist",
   description: "Muestra la lista de usuarios mal portados :/",
 };
-module.exports.requirements = {
-  userPerms: ["MANAGE_MESSAGES"],
-  clientPerms: ["EMBED_LINKS"],
+export const requirements = {
+  userPerms: [PermissionsBitField.Flags.ManageMessages],
+  clientPerms: [PermissionsBitField.Flags.EmbedLinks],
   ownerOnly: false,
 };

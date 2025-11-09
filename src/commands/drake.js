@@ -1,9 +1,10 @@
-const { getMember } = require("../utils/functions.js");
-const Canvas = require("canvas");
-const { AttachmentBuilder } = require("discord.js");
-module.exports.run = async (client, message, args) => {
+import Canvas from "canvas";
+import { getMember } from "../utils/functions.js";
+import { AttachmentBuilder } from "discord.js";
+import { PermissionsBitField } from "discord.js";
+export async function run(client, message, args, lang) {
   const member = getMember(message, args, false);
-  if (!member) return message.channel.send(client.lang.no_user);
+  if (!member) return message.channel.send(lang.no_user);
 
   const canvas = Canvas.createCanvas(1080, 970);
   const ctx = canvas.getContext("2d");
@@ -24,13 +25,13 @@ module.exports.run = async (client, message, args) => {
   );
   message.channel.send({ files: [attachment] });
 };
-module.exports.help = {
+export const help = {
   name: "drake",
   description:
     "Usa este comando para decidir quien acepta el rapero drake o quien no!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
-  clientPerms: ["ATTACH_FILES"],
+  clientPerms: [PermissionsBitField.Flags.AttachFiles],
   ownerOnly: false,
 };

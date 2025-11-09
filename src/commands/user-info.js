@@ -1,6 +1,6 @@
-const { getMember } = require("../utils/functions.js");
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
-module.exports.run = (client, message, args) => {
+import { getMember } from "../utils/functions.js";
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
+export async function run(client, message, args) {
   const usuario = getMember(message, args, true),
     color = {
       online: "#00c903",
@@ -78,13 +78,13 @@ module.exports.run = (client, message, args) => {
 })
   return message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "user-info",
   aliases: ["user"],
   description: "toda la informacion sobre un usuario mencionado",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
-  clientPerms: ["EMBED_LINKS"],
+  clientPerms: [PermissionsBitField.Flags.EmbedLinks],
   ownerOnly: false,
 };

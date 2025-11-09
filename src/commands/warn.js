@@ -1,7 +1,8 @@
-const guildSystem = require("../utils/models/guilds.js");
-const warnMembers = require("../utils/models/warns.js");
-const { getMember, getOrCreateDB } = require("../utils/functions.js");
-module.exports.run = async (client, message, args) => {
+import guildSystem from "../utils/models/guilds.js";
+import warnMembers from "../utils/models/warns.js";
+import { getMember, getOrCreateDB } from "../utils/functions.js";
+import { PermissionsBitField } from "discord.js";
+export async function run(client, message, args) {
   if (!args[0]) return message.channel.send("You haven't said anything. Put a member or `set`");
   const guilds = await getOrCreateDB(guildSystem, { guildID: message.guild.id }); 
   if (args[0].toLowerCase() === "set") {
@@ -152,11 +153,38 @@ module.exports.run = async (client, message, args) => {
       console.error(e);
     }
   } else {
+    const target = getMember(message, args.slice(0, 1), false);
+    if (!target) return message.reply('Menciona a alguien.');
+    const reason = args.slice(1).join(' ') || 'Sin razón';
+    const duration = 10 * 60 * 1000; // 10 minutos
+    const muteRole = message.guild.roles.cache.find(r => r.name === 'Muted') || await message.guild.roles.create({
+      name: 'Muted',
+      reason: 'Rol de mute automático'
+    });
+    let warn = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: target.id });
+    warn.warnings += 1;
+    warn.reasons.push(reason);
+    warn.muteUntil = new Date(Date.now() + duration);
+    warn.muteRoleID = muteRole.id;
+    
+    await warn.save(); // ← Aquí se dispara el post('save')
+    await target.roles.add(muteRole).catch(() => {});
+    const embed = new EmbedBuilder()
+    .setTitle('Usuario Advertido')
+    .setDescription(`${target} ha sido muteado por ${duration / 60000} minutos.`)
+    .addFields(
+      { name: 'Razón', value: reason },
+      { name: 'Advertencias', value: warn.warnings.toString() }
+    )
+    .setColor('#ff0000');
+    
+    message.channel.send({ embeds: [embed] });
+    /*
     // Aqui viene lo importante, warn <member> <reason>.
     var member = getMember(message, args.slice(0, 1), false);
     if (!member) return message.channel.send("Invalid member!");
     const warns = await getOrCreateDB(warnMembers, { guildID: message.guild.id, userID: message.author.id });
-    if (!warns) return message.channel.send(client.lang.dbError);
+    if (!warns) return message.channel.send(lang.dbError);
     const { warnings, reasons } = warns;
     const newWarnings = warnings + 1;
     const reason = args.slice(1).join(" ") || "Sin razón especificada";
@@ -196,16 +224,17 @@ module.exports.run = async (client, message, args) => {
       }
     } catch (err) {
       console.error(err);
-      return message.channel.send(client.lang.dbError);
+      return message.channel.send(lang.dbError);
     }
+    */
   }
 };
-module.exports.help = {
+export const help = {
   name: "warn",
   description: "Sanciona a un miembro mal portado :/",
 };
-module.exports.requirements = {
-  userPerms: ["BAN_MEMBERS"],
+export const requirements = {
+  userPerms: [PermissionsBitField.Flags.BanMembers],
   clientPerms: [],
   ownerOnly: false,
 };

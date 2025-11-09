@@ -1,8 +1,8 @@
-const keySystem = require("../utils/models/keys");;
-const { getOrCreateDB } = require("../utils/functions.js");
-module.exports.run = async (client, message, args) => {
+import keySystem from "../utils/models/keys.js";
+import { getOrCreateDB } from "../utils/functions.js";
+export async function run(client, message, args, lang) {
   const keysDB = await getOrCreateDB(keySystem, { guildID: message.guild.id }, { enable: false, license: "" });
-  if (!keysDB) return message.channel.send(client.lang.dbError);
+  if (!keysDB) return message.channel.send(lang.dbError);
 
   if (!args[0]) return message.channel.send({content: `Tienes que otorgarme una licencia para poder validar tu subscripcion\nPuedes obtenerla [Aquí](${process.env.PUBLIC_URL}/premium)`,});
 
@@ -15,11 +15,11 @@ module.exports.run = async (client, message, args) => {
     return message.channel.send("Licencia invalida!");
   }
 };
-module.exports.help = {
+export const help = {
   name: "activatekey",
   description: "",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: true,

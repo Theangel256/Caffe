@@ -1,10 +1,10 @@
-const economySystem = require("../utils/models/users");
-const { getOrCreateDB } = require("../utils/functions.js");
-const { EmbedBuilder } = require("discord.js");
-module.exports.run = async (client, message) => {
+import econonomySystem from "../utils/models/users.js";
+import { getOrCreateDB } from "../utils/functions.js";
+import { EmbedBuilder } from "discord.js";
+export async function run(client, message, lang) {
   const reward = 150;
     const economy = await getOrCreateDB(economySystem, { userID: message.author.id });
-    if (!economy) return message.channel.send(client.lang.dbError);
+    if (!economy) return message.channel.send(lang.dbError);
     economy.money += reward;
     await economy.save();
     const embed = new EmbedBuilder()
@@ -13,16 +13,16 @@ module.exports.run = async (client, message) => {
     .setColor(message.guild.members.me.displayHexColor);
     return message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "mine",
   description: "trabaja duro para conseguir dinero!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: ["EMBED_LINKS"],
   ownerOnly: false,
 };
-module.exports.limits = {
+export const limits = {
   rateLimit: 1,
   cooldown: 300000,
 };

@@ -1,10 +1,10 @@
-module.exports.run = async (client, message) => {
+export async function run(client, message, lang) {
   const fetched = client.queue.get(message.guild.id);
 
-  if (!fetched) return message.channel.send(client.lang.music.noQueue);
+  if (!fetched) return message.channel.send(lang.music.noQueue);
 
   if (!message.member.voice.channel)
-    return message.channel.send(client.lang.music.needJoin);
+    return message.channel.send(lang.music.needJoin);
 
   if (!fetched.connection.dispatcher.paused)
     return message.channel.send("La musica no esta pausada");
@@ -14,11 +14,11 @@ module.exports.run = async (client, message) => {
 
   message.channel.send("Canción actual reanudada.");
 };
-module.exports.help = {
+export const help = {
   name: "resume",
   description: "Ya viniste del baño? resume tu lista de canciones",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [],
   ownerOnly: false,

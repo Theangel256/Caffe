@@ -1,31 +1,30 @@
-const play_dl = require("play-dl");
-const axios = require("axios");
-const { EmbedBuilder, PermissionsBitField, Colors } = require("discord.js");
-const { StreamType,
+import play_dl from "play-dl";
+import axios from "axios";
+import { EmbedBuilder, PermissionsBitField, Colors } from "discord.js";
+import { StreamType,
   createAudioPlayer,
   createAudioResource,
   NoSubscriberBehavior,
   AudioPlayerStatus,
   VoiceConnectionStatus,
   entersState
- } = require('@discordjs/voice');
-module.exports.run = async (client, message, args) => {
+ } from '@discordjs/voice';
+export async function run(client, message, args, lang) {
   let msg;
-    const queue = client.queue, 
-    lang = client.lang.commands.play,
+    const queue = client.queue,
     searchString = args.join(" "),
     url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : ""
     const userVoiceChannel = message.member.voice.channel;
     const botVoiceChannel = message.guild.members.me.voice.channel;
 
-    if (!userVoiceChannel) return message.channel.send(client.lang.music.needJoin);
+    if (!userVoiceChannel) return message.channel.send(lang.music.needJoin);
 
     if (botVoiceChannel && userVoiceChannel.id !== botVoiceChannel.id)
-      return message.channel.send(client.lang.music.alreadyPlaying.replace(/{channel}/gi, botVoiceChannel.name));
+      return message.channel.send(lang.music.alreadyPlaying.replace(/{channel}/gi, botVoiceChannel.name));
 
     if (!botVoiceChannel) await client.joinVoiceChannel(userVoiceChannel);
-
-  if (!searchString) return message.reply(lang.no_args);
+    lang = lang.commands.play
+    if (!searchString) return message.reply(lang.no_args);
   /*
 	if(url.match(/^https?:\/\/((www|beta)\.)?youtube\.com\/playlist(.*)$/)) {
 		const playlist = await youtube.getPlaylist(url);
@@ -219,11 +218,11 @@ async function searchYouTube(query, maxResults = 5) {
   }
 }
 };
-module.exports.help = {
+export const help = {
   name: "play",
   description: "Reproduce playlist, URL o titulo de tu musica favorita!",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
   clientPerms: [
     PermissionsBitField.Flags.Connect,

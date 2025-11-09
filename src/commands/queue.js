@@ -1,19 +1,20 @@
-const { EmbedBuilder } = require("discord.js");
-module.exports.run = (client, message, args) => {
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
+
+export function run(client, message, args, lang) {
   const serverQueue = client.queue.get(message.guild.id);
-  if (!serverQueue) return message.channel.send(client.lang.music.noQueue);
+  if (!serverQueue) return message.channel.send(lang.music.noQueue);
 
   const queue = serverQueue.songs,
     page = parseInt(queue.length / 10),
     embed = new EmbedBuilder()
-      .setTitle(client.lang.commands.queue.embed.title.replace(/{guild.name}/gi, message.guild.name))
+      .setTitle(lang.commands.queue.embed.title.replace(/{guild.name}/gi, message.guild.name))
       .setColor("#0099ff")
       .setThumbnail(message.guild.iconURL({ extension: "webp"}));
   if (queue.length < 10) {
     const lista = [];
     for (let i = 0; i < queue.length; i++) {
       lista.push(
-        client.lang.commands.queue.embed.description
+        lang.commands.queue.embed.description
           .replace(/{i}/gi, i + 1)
           .replace(/{title}/gi, queue[i].title)
           .replace(/{url}/gi, queue[i].url)
@@ -33,7 +34,7 @@ module.exports.run = (client, message, args) => {
       numero = 0;
     }
     embed.setFooter(
-      client.lang.commands.queue.page
+      lang.commands.queue.page
         .replace(/{seleccion}/gi, numero)
         .replace(/{page}/gi, page)
     );
@@ -45,12 +46,12 @@ module.exports.run = (client, message, args) => {
       }
       if (i + numero + 1 > queue.length) {
         return message.channel.send(
-          client.lang.commands.queue.max.replace(/{seleccion}/gi, numero)
+          lang.commands.queue.max.replace(/{seleccion}/gi, numero)
         );
       }
 
       uwu.push(
-        client.lang.commands.queue.embed.description
+        lang.commands.queue.embed.description
           .replace(/{i}/gi, i + numero + 1)
           .replace(/{title}/gi, queue[i + numero].title)
           .replace(/{url}/gi, queue[i + numero].url)
@@ -61,12 +62,12 @@ module.exports.run = (client, message, args) => {
   }
   message.channel.send({ embeds: [embed] });
 };
-module.exports.help = {
+export const help = {
   name: "queue",
   description: "Ve la cola de canciones de el servidor",
 };
-module.exports.requirements = {
+export const requirements = {
   userPerms: [],
-  clientPerms: ["EMBED_LINKS"],
+  clientPerms: [PermissionsBitField.Flags.EmbedLinks],
   ownerOnly: false,
 };

@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: caffe-bot
+    env: node
+    region: oregon
+    plan: free  # Recomendado para bots con sharding
+
+    buildCommand: npm install && npx astro build
+
+    startCommand: |
+      node dist/server/entry.mjs & node -e "
+        const { ShardingManager } = require('discord.js');
+        const manager = new ShardingManager('./src/shard.js', {
+          token: process.env.DISCORD_TOKEN,
+          totalShards: 'auto',
+          shardArgs: ['--max-old-space-size=2048']
+        });
+        manager.spawn();
+        manager.on('shardCreate', shard => {
+          console.log(\`Shard \${shard.id} creado\`);
+          shard.on('ready', () => console.log(\`Shard \${shard.id} listo\`));
+          shard.on('death', () => {
+            console.log(\`Shard \${shard.id} murió, reiniciando...\`);
+            manager.spawn(shard.id);
+          });
+        });
+      "
+    envVars:
+      - key: NODE_VERSION
+        value: "20.17.0"
+      - key: PORT
+        value: "10000"
+    healthCheckPath: /api/health
+    autoDeploy: true
