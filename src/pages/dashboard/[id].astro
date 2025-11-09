@@ -38,17 +38,20 @@ interface DiscordUser {
 const { id } = Astro.params;
 
 // Authentication and data fetching
-const user = Astro.locals.user as DiscordUser | undefined;
+const user = Astro.locals?.user as DiscordUser | undefined;
 if (!user) return Astro.redirect("/api/signin");
 
 let data: GuildData | undefined;
 try {
-  const res = await fetch(`/api/dashboard/${id}`);
-  if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  const apiUrl = new URL(`/api/dashboard/${id}`, Astro.url);
+  
+  const res = await fetch(apiUrl);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
   data = await res.json();
 } catch (error) {
-  console.error('Fetch error:', error);
-  return Astro.redirect("/error404"); // Fallback if API fails
+  console.error("Fetch error:", error);
+  return Astro.redirect("/error404");
 }
 
 const db = data?.db;
