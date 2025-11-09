@@ -12,7 +12,7 @@ export default async function messageCreate(client, message) {
   const guildsDB = await getOrCreateDB(guilds, { guildID: message.guild.id });
   const { prefix, language } = guildsDB;
   client.prefix = prefix;
-  client.lang = require(`../utils/languages/${language}.js`);
+  client.lang = await import(`../utils/languages/${language}.js`);
   
   client.joinVoiceChannel = async function (channel) {
   try {
