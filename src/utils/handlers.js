@@ -20,9 +20,10 @@ export async function loadCommands(client) {
     .filter(file => !file.startsWith('.')); // Ignora .DS_Store, etc.
 
   for (const file of commandFiles) {
+    const filePath = join(cmdPath, file);
+    const url = new URL(`file://${filePath}`).href;
     // @vite-ignore
-    const filePath = new URL(file, `file://${cmdPath}/`).href;
-    const command = await import(filePath);
+    const command = await import(url);
 
     if (command.help?.name) {
       client.commands.set(command.help.name, command);
@@ -40,8 +41,9 @@ export async function loadEvents(client) {
   const files = readdirSync(eventPath).filter(f => f.endsWith('.js'));
   for (const file of files) {
     const filePath = join(eventPath, file);
+    const url = new URL(`file://${filePath}`).href;
     // @vite-ignore
-    const eventModule = await import(`file://${filePath}`);
+    const eventModule = await import(url);
 
     const event = eventModule.default || eventModule;
     const eventName = file.split('.').shift();
