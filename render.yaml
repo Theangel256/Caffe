@@ -25,17 +25,10 @@ services:
           });
         });
       "
-
-    # CORREGIDO: Lista de variables
     envVars:
       - key: NODE_VERSION
         value: "20.17.0"
       - key: PORT
         value: "10000"
-      - key: DISCORD_TOKEN
-        fromSecret: DISCORD_TOKEN
-      - key: MONGODB_URI
-        fromSecret: MONGODB_URI
-
     healthCheckPath: /api/health
     autoDeploy: true
