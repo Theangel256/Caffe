@@ -1,6 +1,4 @@
-![Caffe](https://github.com/user-attachments/assets/824acb32-8a41-4e42-b2f2-ce7fd2653d24)
-# Dashboard
-https://caffe-bot.onrender.com/
+![Caffe](https://github.com/user-attachments/assets/019287e3-202f-4e52-9412-e3e641fe1938)
 # Caffe
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-100%25-blue)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
