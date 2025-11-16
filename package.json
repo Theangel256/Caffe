@@ -7,7 +7,7 @@
     "build": "astro build && npm run copy:assets",
     "preview": "astro preview",
     "start": "node src/index.js",
-    "copy:assets": "copyfiles -u 2 \"src/server/commands/**/*\" \"src/server/events/**/*\" dist/server/",
+    "copy:assets": "node src/utils/copy-assets.js",
     "dev": "astro dev --port 4321",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -47,7 +47,6 @@
     "zeew": "^2.1.6"
   },
   "devDependencies": {
-    "@types/cookie-signature": "^1.1.2",
-    "copyfiles": "^2.4.1"
+    "@types/cookie-signature": "^1.1.2"
   }
 }
