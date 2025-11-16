@@ -23,7 +23,6 @@ client.limits = new Collection();
 client.queue = new Collection();
 dbConnect();
 startShard();
-globalThis.client = client;
 
 async function startShard() {
   try {
