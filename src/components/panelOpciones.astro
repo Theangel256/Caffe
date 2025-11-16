@@ -2,10 +2,7 @@
 const { guild, db } = Astro.props;
 import { ChannelType, PermissionFlagsBits } from "discord.js";
 import guildSystem from "../utils/models/guilds.js";
-const bot = globalThis.client;
-
-
-
+import client from "../shard.js";
 ---
 
 <section id="panel-options">
@@ -66,7 +63,7 @@ const bot = globalThis.client;
               <option value="no_select" disabled selected>Seleccione un canal.</option>
               { guild.channels.cache
               .filter(ch => ch.type === ChannelType.GuildText)
-              .filter(ch => ch.permissionsFor(bot.user)?.has(PermissionFlagsBits.SendMessages))
+              .filter(ch => ch.permissionsFor(client.user)?.has(PermissionFlagsBits.SendMessages))
               .map(lc => {
               <option value={lc.id}>#{lc.name}</option>
             })
@@ -95,7 +92,7 @@ const bot = globalThis.client;
               <option value="no_select" disabled selected>Seleccione un canal.</option>
               { guild.channels.cache
               .filter(ch => ch.type === ChannelType.GuildText)
-              .filter(ch => ch.permissionsFor(bot.user)?.has(PermissionFlagsBits.SendMessages))
+              .filter(ch => ch.permissionsFor(client.user)?.has(PermissionFlagsBits.SendMessages))
               .map(lc => {
               <option value={lc.id}>#{lc.name}</option>
             })
@@ -127,7 +124,7 @@ const bot = globalThis.client;
               { guild.channels.cache
               .filter(ch => ch.type === ChannelType.GuildText)
               .filter(ch => {
-                const perms = ch.permissionsFor(bot?.user);
+                const perms = ch.permissionsFor(client.user);
                 return perms?.has(PermissionFlagsBits.SendMessages);
               })
               .map(lc => {
