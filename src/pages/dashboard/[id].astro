@@ -5,16 +5,15 @@ import Head from "../../components/_head.astro";
 import Navbar from "../../components/navbar.astro";
 import PanelData from "../../components/panelData.astro";
 import PanelOpciones from "../../components/panelOpciones.astro";
-
+import client from "../../shard.js"
 // --- Autenticación ---
-const user = Astro.locals.user as any;
+const user = Astro.props.user;
 if (!user) return Astro.redirect('/api/signin');
 
 const { id } = Astro.params;
 
 // --- Usar el cliente del bot directamente ---
-const client = globalThis.client;
-if (!client?.user) {
+if (!client.user) {
   console.error('[Dashboard] Bot no está listo');
   return Astro.redirect('/error404');
 }
