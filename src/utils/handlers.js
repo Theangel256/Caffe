@@ -27,7 +27,6 @@ export async function loadCommands(client) {
 
     if (command.help?.name) {
       client.commands.set(command.help.name, command);
-      console.log(`[CMD] Cargado: ${command.help.name}`);
 
       if (command.help.aliases) {
         for (const alias of command.help.aliases) {
@@ -36,6 +35,7 @@ export async function loadCommands(client) {
       }
     }
   }
+  console.log(`[CMDS] Cargados: ${commandFiles.length}`);
 }
 export async function loadEvents(client) {
   const files = readdirSync(eventPath).filter(f => f.endsWith('.js'));
@@ -55,8 +55,8 @@ export async function loadEvents(client) {
     }
 
     client.on(eventName, event.bind(null, client));
-    console.log(`[EVENT] Cargado: ${eventName}`);
   }
+  console.log(`[EVENTS] Cargados: ${files.length}`);
 }
 
 // Carga automática
