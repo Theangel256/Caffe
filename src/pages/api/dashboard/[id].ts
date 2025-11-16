@@ -1,25 +1,30 @@
 // src/pages/api/dashboard/[id].ts
+import type { APIRoute } from 'astro';
 import { ChannelType, PermissionFlagsBits } from 'discord.js';
-import { getOrCreateDB } from '../../../utils/functions.js';
-import guildSystem from '../../../utils/models/guilds.js';
 import client from '../../../shard.js';
+import guildSystem from '../../../utils/models/guilds.js';
+import { getOrCreateDB } from '../../../utils/functions.js';
 
-export const GET = async ({ params, locals }) => {
+export const GET: APIRoute = async ({ params, locals }) => {
   const user = locals.user;
   console.log('[API Dashboard] Usuario:', user?.username || 'NO AUTENTICADO');
-
-  if (!user) {
+  if (!user?.id) {
     return new Response('Unauthorized', { status: 401 });
   }
-
   const idserver = params.id;
+  if (!idserver) {
+    return new Response('Bad Request: Missing guild ID', { status: 400 });
+  }
   let guild = client.guilds.cache.get(idserver);
   if (!guild) {
-    guild = await client.guilds.fetch(idserver).catch(() => null);
+    try {
+      guild = await client.guilds.fetch(idserver);
+    } catch (err) {
+      console.warn(`[Dashboard] Guild no encontrado: ${idserver}`);
+    }
   }
-
   if (!guild) {
-    if (!client.user) return new Response("Bot not ready", { status: 500 });
+    if (!client.user?.id) { return new Response('Bot not ready', { status: 500 }); }
     const invite = `https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8&guild_id=${idserver}`;
     return new Response(null, { status: 302, headers: { Location: invite } });
   }
@@ -28,9 +33,17 @@ export const GET = async ({ params, locals }) => {
   if (!member || !member.permissions.has(PermissionFlagsBits.Administrator)) {
     return new Response(null, { status: 302, headers: { Location: '/error404' } });
   }
-
-  const db = await getOrCreateDB(guildSystem, { guildID: idserver });
-  if (!db) throw new Error("DB error");
+  const defaultDB = {
+    guildID: idserver,
+    prefix: '$',
+  };
+  let db;
+  try {
+    db = await getOrCreateDB(guildSystem, { guildID: idserver }, defaultDB);
+  } catch (err) {
+    console.error('[DB] Error al cargar guild:', err);
+    return new Response('Database error', { status: 500 });
+  }
 
   const members = await guild.members.fetch();
   const statuses = { online: 0, idle: 0, dnd: 0, offline: 0 };
@@ -57,7 +70,24 @@ export const GET = async ({ params, locals }) => {
     },
     statuses,
     bans,
-    db,
+    config: {
+      guildID: idserver,
+      prefix: db.prefix || '$',
+      language: db.language || 'en',
+      channelLogs: db.channelLogs || "",
+      channelWelcome: db.channelWelcome || null,
+      channelGoodbye: db.channelGoodbye || null,
+      goodbyeBackground: db.goodbyeBackground || null,
+      welcomeBackground: db.welcomeBackground || null,
+      roleid: db.roleid || "",
+      rolauto: db.rolauto || "",
+      kick: db.kick || false,
+      warningKickCounter: db.warningKickCounter || 0,
+      ban: db.ban || false,
+      warningBanCounter: db.warningBanCounter || 0,
+      role: db.role || false,
+      warningRoleCounter: db.warningRoleCounter || 0,
+    },
   }), {
     headers: { 'Content-Type': 'application/json' }
   });

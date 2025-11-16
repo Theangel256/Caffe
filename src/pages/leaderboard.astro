@@ -15,10 +15,9 @@ interface DiscordUser {
     accessToken?: string;
 }
 
-const user = Astro.locals.user as DiscordUser | undefined;
-if (!user) {
-    return Astro.redirect('/api/signin');
-}
+const user = Astro.locals?.user as DiscordUser | undefined;
+
+if (!user?.accessToken) return Astro.redirect("/api/signin");
 
 let guilds: Array<{
     id: string;
@@ -164,7 +163,7 @@ const allGuilds = guilds || [];
                                         />
                                     ) : (
                                         <img
-                                            src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
+                                            src="https://i.imgur.com/BVCnrpcl.png"
                                             alt={guild.name}
                                         />
                                     )}

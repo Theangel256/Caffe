@@ -26,103 +26,93 @@ interface DiscordUser {
   id: string;
   username: string;
   avatar: string;
+  guilds?: Array<{
+    id: string;
+    name: string;
+    permissions: number;
+    icon?: string; // Optional icon field
+  }>;
   accessToken?: string;
 }
 
 // Get dynamic ID parameter and base URL
 const { id } = Astro.params;
-const baseURL = Astro.site ? new URL(Astro.site).origin : 'http://localhost:3000'; // Fallback for dev
+const baseUrl = Astro.url.origin;
 
 // Authentication and data fetching
 const user = Astro.locals.user as DiscordUser | undefined;
 if (!user) return Astro.redirect("/api/signin");
 
-let data: LeaderboardResponse | undefined;
+let data: LeaderboardResponse | undefined = undefined;
+let fetchError: string | undefined = undefined;
+
 try {
-  const res = await fetch(`${baseURL}/api/leaderboard/${id}`);
-  if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  const res = await fetch(`${baseUrl}/api/leaderboard/${id}`, {
+    headers: {
+      Authorization: `Bearer ${user.accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`HTTP ${res.status} - ${res.statusText}${text ? `: ${text}` : ''}`);
+  }
+
   data = await res.json();
-} catch (error) {
-  console.error('Fetch error:', error);
-  return Astro.redirect("/error404");
+} catch (err: any) {
+  console.error('[Leaderboard] fetch failed:', err);
+  fetchError = err.message;
 }
-
-const { guild, users } = data || { guild: { id, name: 'Unknown Guild' }, users: [] };
+const { guild = { id, name: 'Unknown Guild' }, users = [] } = data ?? {};
 ---
-
-<html lang="en">
-  <head>
-    <Head title={`Leaderboard — ${guild.name}`}>></Head>
-    <style>
-      body {
-        background: #0d1117;
-        color: #fff;
-        font-family: "Inter", sans-serif;
-        margin: 0;
-        padding: 2rem;
-      }
-      h1 {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 10px;
-        overflow: hidden;
-        background-color: #161b22;
-      }
-      th, td {
-        padding: 1rem;
-        text-align: left;
-      }
-      th {
-        background-color: #21262d;
-        color: #c9d1d9;
-      }
-      tr:nth-child(even) {
-        background-color: #1e2329;
-      }
-      img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        vertical-align: middle;
-        margin-right: 10px;
-      }
-      .user {
-        display: flex;
-        align-items: center;
-      }
-      .rank {
-        font-weight: bold;
-        color: #58a6ff;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>🏆 Leaderboard — {guild.name}</h1>
+<head>
+  <Head title={`Leaderboard - ${guild.name}`} />
+  <link rel="stylesheet" href="/css/leaderboard.css" />
+</head>
+<main class="container mx-auto p-4 max-w-4xl">
+<div class="container">
+  <h1>Leaderboard - {guild.name} <small>#{guild.id}</small></h1>
+  <div class="table-container">
     <table>
       <thead>
         <tr>
-          <th>Rank</th>
+          <th>#</th>
           <th>User</th>
           <th>Level</th>
           <th>XP</th>
         </tr>
       </thead>
       <tbody>
-        {users.map((user, index) => (
+        {fetchError ? (
+          <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded mb-6">
+            <strong>Failed to load leaderboard:</strong> {fetchError}
+            <br />
+            <a href="/leaderboard" class="underline">← Back to leaderboard</a>
+          </div>
+          ) : null}
+        {users.map((u, i) => (
           <tr>
-            <td class="rank">#{index + 1}</td>
-            <td class="user">
-              {user.avatar && <img src={user.avatar} alt="Avatar" />} {user.name}
+            <td>{i + 1}</td>
+            <td class="user-cell">
+              <img
+                src={u.avatar
+                  ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=40`
+                  : `https://cdn.discordapp.com/embed/avatars/${Number(u.id) % 5}.png`
+                }
+                alt={u.name}
+                class="user-avatar"
+              />
+              <span class="user-name">{u.name}</span>
             </td>
-            <td>{user.lvl}</td>
-            <td>{user.xp}</td>
+            <td class="level">{u.lvl}</td>
+            <td class="xp">{u.xp.toLocaleString()}</td>
           </tr>
         ))}
       </tbody>
     </table>
-  </body>
-</html>
+  </div>
+
+  {users.length === 0 && <p style="text-align: center; margin-top: 2rem; opacity: 0.7;">No hay usuarios en el leaderboard aún.</p>}
+</div>
+</main>

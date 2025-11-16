@@ -4,9 +4,10 @@
   "description": "A bot whitout feelings",
   "main": "src/index.js",
   "scripts": {
-    "build": "astro build",
+    "build": "astro build && npm run copy:assets",
     "preview": "astro preview",
     "start": "node src/index.js",
+    "copy:assets": "node src/utils/copy-assets.js",
     "dev": "astro dev --port 4321",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

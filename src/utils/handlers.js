@@ -2,6 +2,7 @@ import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
+import { copyAssets } from "./copy-assets.js";
 
 const currentFile = fileURLToPath(import.meta.url);
 const currentDir   = join(currentFile, '..');           // folder of this file
@@ -23,6 +24,7 @@ export async function loadCommands(client) {
     if (err.code === 'ENOENT') {
       console.warn(`[CMDS] Folder not found: ${cmdPath}`);
       console.warn('[CMDS]   → Run the copy-commands build step or add the folder.');
+      copyAssets()
     } else {
       throw err;
     }

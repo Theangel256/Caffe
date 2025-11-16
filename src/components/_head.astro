@@ -1,39 +1,26 @@
 ---
 const { title = Astro.props.title ?? "Caffe - The Discord Bot", favicon = "https://i.imgur.com/RALQsX4.png", url = process.env.PUBLIC_URL } = Astro.props;
-import "../public/css/global.css";
 ---
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
-  <link rel="icon" href="/favicon.ico" />
-</head>
-
-<meta charset="utf-8" />
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-/>
-<meta name="keywords" content="Caffe-Bot" />
-<meta property="og:type" content="website" />
-<meta name="distribution" content="global" />
-<meta name="theme-color" content="#7289da" />
-<meta property="og:url" content={url} />
-<meta property="og:title" content="Caffe Website"/>
-<meta property="og:site_name" content="Caffe" />
-<meta property="og:description" content="Dashboard del bot caffe" />
-<meta property="og:image" content={favicon} />
-<meta
-  name="description"
+  <link id="favicon" rel="icon" type="image/x-icon" href={favicon}/>
+  <link rel="preload" href="/css/global.css" as="style" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <meta name="keywords" content="Caffe-Bot" />
+  <meta property="og:type" content="website" />
+  <meta name="distribution" content="global" />
+  <meta name="theme-color" content="#7289da" />
+  <meta property="og:url" content={url} />
+  <meta property="og:title" content="Caffe Website"/>
+  <meta property="og:site_name" content="Caffe" />
+  <meta property="og:description" content="Dashboard del bot caffe" />
+  <meta property="og:image" content={favicon} />
+  <meta name="description"
   content='Construye el mejor servidor de Discord con el bot caffe, podrás cambiar el prefix por default, configurar los eventos de registro comúnmente llamados "Logs", establecer el canal de bienvenida, y establecer un rol auto asignable para los nuevos usuarios'
 />
-<link
-  id="favicon"
-  rel="icon"
-  type="image/x-icon"
-  href={favicon}
-/>
-<title>{title}</title>
+</head>
 <link
   rel="stylesheet"
   href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -68,9 +55,4 @@ import "../public/css/global.css";
   src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
   integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
   crossorigin="anonymous"
-></script>
-<script
-  data-ad-client="ca-pub-4110975912924799"
-  async
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
 ></script>
