@@ -1,183 +1,241 @@
 ---
+import { ChannelType, PermissionFlagsBits } from 'discord.js';
+import client from '../shard.js';
+
+interface Props {
+  guild: any;
+  config: {
+    prefix: string;
+    language: string;
+    welcomeChannel?: string;
+    goodbyeChannel?: string;
+    logChannel?: string;
+    autoRole?: string;
+  };
+}
+
 const { guild, config } = Astro.props;
-import { ChannelType, PermissionFlagsBits } from "discord.js";
-import guildSystem from "../utils/models/guilds.js";
-import client from "../shard.js";
+
+// Filtrar canales de texto con permiso de enviar mensajes
+const textChannels = guild.channels.cache
+  .filter((ch: any) => ch.type === ChannelType.GuildText)
+  .filter((ch: any) => ch.permissionsFor(client.user)?.has(PermissionFlagsBits.SendMessages))
+  .sort((a: any, b: any) => a.position - b.position);
+
+// Filtrar roles válidos (por debajo del rol del bot)
+const validRoles = guild.roles.cache
+  .filter((r: any) => r.id !== guild.id)
+  .filter((r: any) => r.comparePositionTo(guild.members.me?.roles.highest || 0) < 0)
+  .sort((a: any, b: any) => b.position - a.position);
+
+// Helper: ¿existe configuración?
+const hasConfig = (field: string) => config[field] && config[field] !== 'no_select';
+
+// Helper: obtener nombre de canal
+const getChannelName = (id: string) => textChannels.get(id)?.name || 'Desconocido';
+
+// Helper: obtener nombre de rol
+const getRoleName = (id: string) => validRoles.get(id)?.name || 'Desconocido';
 ---
 
-<section id="panel-options">
-  <h3>Opciones de configuración</h3>
-  <form method="post" action={`/api/dashboard/${guild.id}/prefix`}>
-    <input type="text" name="newPrefix" placeholder="Nuevo prefijo" />
-    <button type="submit">Guardar prefijo</button>
-  </form>
-</section>
+<style>
+  .panel {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl;
+  }
+  .form-group {
+    @apply flex flex-col gap-3;
+  }
+  .select-wrapper {
+    @apply relative;
+  }
+  select {
+    @apply w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white 
+           focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all
+           appearance-none cursor-pointer pr-10;
+  }
+  select option {
+    @apply bg-gray-900 text-white;
+  }
+  .select-arrow {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400;
+  }
+  .btn {
+    @apply px-5 py-2.5 rounded-lg font-medium transition-all duration-200 
+           flex items-center gap-2 shadow-md;
+  }
+  .btn-primary {
+    @apply bg-cyan-600 hover:bg-cyan-700 text-white;
+  }
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white;
+  }
+  .input-prefix {
+    @apply px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white
+           focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all
+           placeholder:text-gray-500;
+  }
+  .h2-title {
+    @apply text-xl font-bold text-cyan-400 mb-4 flex items-center gap-2;
+  }
+</style>
 
+<div class="space-y-8">
+  <!-- PREFIX -->
+  <section class="panel">
+    <h3 class="h2-title">
+      <i class="material-icons text-cyan-400">tag</i>
+      Prefijo del Servidor
+    </h3>
+    <form method="POST" action={`/api/dashboard/${guild.id}/prefix`} class="form-group">
+      <input
+        type="text"
+        name="newPrefix"
+        placeholder={`Actual: ${config.prefix}`}
+        class="input-prefix"
+        maxlength="5"
+        required
+      />
+      <button type="submit" class="btn btn-primary">
+        <i class="material-icons">save</i> Guardar
+      </button>
+    </form>
+  </section>
 
-<div id="section-opciones" class="container">
-  <br>
-  <h2 class="h2-perfil"><b>Prefix del servidor</b></h2>
-  <form class="col s12 needs-validation" method="post" id="prefix" action={`/dashboard/${guild.id}/prefix`} novalidate>
-    <div class="form-row">
-      <div class="form-group row">
-        <div class="input-group mb-2">
-          <i class="material-icons right">info_outline</i>
-          <input id="icon_prefix" type="text" name="newPrefix" class="form-control"
-            placeholder={`Prefix Actual: ${config.prefix}`} aria-label="Prefix" aria-describedby="button-addon2">
-        </div>
-        <div class="input-field col s12">
-          <button class="btn btn-secondary waves-effect waves-light" type="submit" id="prefixSave" name="action">Guardar
-            <i class="material-icons right">send</i>
-          </button>
-        </div>
+  <!-- LANGUAGE -->
+  <section class="panel">
+    <h3 class="h2-title">
+      <i class="material-icons text-cyan-400">language</i>
+      Idioma
+    </h3>
+    <form method="POST" action={`/api/dashboard/${guild.id}/lang`} class="form-group">
+      <div class="select-wrapper">
+        <select name="language" required>
+          <option value="" disabled selected>
+            Actual: {config.language === 'en' ? 'English' : 'Español'}
+          </option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+        <i class="material-icons select-arrow">arrow_drop_down</i>
       </div>
-    </div>
-  </form>
-  <h2 class="h2-perfil"><b>Language</b></h2>
-  <form class="col s12" method="post" id="lang" action={`/dashboard/${guild.id}/lang`}>
-    <div class="row">
-      <div class="input-field col s6">
-        <div class="form-row">
-          <div class="form-group">
-            <select id="select-channel" name="language" class="custom-select">
-              <option value="no_select" disabled selected>Lenguaje Actual: {config.language === "en" ? "English" : "Español"}</option>
-              <option value="en">English</option>
-              <option value="es">Español</option>
-            </select>
-            <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
-              name="action">Guardar
-              <i class="material-icons right">done</i>
-            </button>
-          </div>
-        </div>
+      <button type="submit" class="btn btn-primary mt-2">
+        <i class="material-icons">done</i> Guardar
+      </button>
+    </form>
+  </section>
+
+  <!-- WELCOME -->
+  <section class="panel">
+    <h3 class="h2-title">
+      <i class="material-icons text-cyan-400">waving_hand</i>
+      Canal de Bienvenida
+    </h3>
+    <form method="POST" action={`/api/dashboard/${guild.id}/welcome`} class="form-group">
+      <div class="select-wrapper">
+        <select name="channel_ID" required>
+          <option value="" disabled selected>
+            {config.welcomeChannel ? `#${getChannelName(config.welcomeChannel)}` : 'Selecciona un canal'}
+          </option>
+          {textChannels.map((ch: any) => (
+            <option value={ch.id}>#{ch.name}</option>
+          ))}
+        </select>
+        <i class="material-icons select-arrow">arrow_drop_down</i>
       </div>
-    </div>
-  </form>
-  <h2 class="h2-perfil"><b>Bienvenida</b></h2>
-  <form class="col s12" method="post" id="welcome" action={`/dashboard/${guild.id}/welcome`}>
-    <div class="row">
-      <div class="input-field col s6">
-        <div class="form-row">
-          <div class="form-group">
-            <select id="select-channel" name="channel_ID" class="custom-select">
-              <option value="no_select" disabled selected>Seleccione un canal.</option>
-              { guild.channels.cache
-              .filter(ch => ch.type === ChannelType.GuildText)
-              .filter(ch => ch.permissionsFor(client.user)?.has(PermissionFlagsBits.SendMessages))
-              .map(lc => {
-              <option value={lc.id}>#{lc.name}</option>
-            })
-            </select>
-            <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
-              name="action">Guardar
-              <i class="material-icons right">done</i>
+      <div class="flex gap-2 mt-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="material-icons">save</i> Guardar
+        </button>
+        {hasConfig('welcomeChannel') && (
+          <form method="POST" action={`/api/dashboard/${guild.id}/welcome`} class="inline">
+            <input type="hidden" name="reset" value="true" />
+            <button type="submit" class="btn btn-danger">
+              <i class="material-icons">clear</i> Reestablecer
             </button>
-            {guildSystem.exists({ channelWelcome: config.channelWelcome }) && (
-            <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
-              name="action">Reestablecer<i class="material-icons right">clear</i>
-            </button>
-            )}
-          </div>
-        </div>
+          </form>
+        )}
       </div>
-    </div>
-  </form>
-  <h2 class="h2-perfil"><b>Despedida</b></h2>
-  <form class="col s12" method="post" id="goodbye" action={`/dashboard/${guild.id}/goodbye`}>
-    <div class="row">
-      <div class="input-field col s6">
-        <div class="form-row">
-          <div class="form-group">
-            <select id="select-channel" name="channelID" class="custom-select">
-              <option value="no_select" disabled selected>Seleccione un canal.</option>
-              { guild.channels.cache
-              .filter(ch => ch.type === ChannelType.GuildText)
-              .filter(ch => ch.permissionsFor(client.user)?.has(PermissionFlagsBits.SendMessages))
-              .map(lc => {
-              <option value={lc.id}>#{lc.name}</option>
-            })
-            </select>
-            <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
-              name="action">Guardar
-              <i class="material-icons right">done</i>
-            </button>
-            if(guildSystem.where('channelGoodbye').exists()) {
-            <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
-              name="action">Reestablecer
-              <i class="material-icons right">clear</i>
-            </button>
-            }
-          }
-          </div>
-        </div>
+    </form>
+  </section>
+
+  <!-- GOODBYE -->
+  <section class="panel">
+    <h3 class="h2-title">
+      <i class="material-icons text-cyan-400">mood_bad</i>
+      Canal de Despedida
+    </h3>
+    <form method="POST" action={`/api/dashboard/${guild.id}/goodbye`} class="form-group">
+      <div class="select-wrapper">
+        <select name="channelID" required>
+          <option value="" disabled selected>
+            {config.goodbyeChannel ? `#${getChannelName(config.goodbyeChannel)}` : 'Selecciona un canal'}
+          </option>
+          {textChannels.map((ch: any) => (
+            <option value={ch.id}>#{ch.name}</option>
+          ))}
+        </select>
+        <i class="material-icons select-arrow">arrow_drop_down</i>
       </div>
-    </div>
-  </form>
-  <h2 class="h2-perfil"><b>Logs ᴮᴱᵀᴬ</h2></b>
-  <form class="col s12" method="post" id="logs" action={`/dashboard/${guild.id}/logs`}>
-    <div class="row">
-      <div class="input-field col s6">
-        <div class="form-row">
-          <div class="form-group">
-            <select id="select-channel" name="logs_ID" class="custom-select">
-              <option value="no_select" disabled selected>Seleccione un canal.</option>
-              { guild.channels.cache
-              .filter(ch => ch.type === ChannelType.GuildText)
-              .filter(ch => {
-                const perms = ch.permissionsFor(client.user);
-                return perms?.has(PermissionFlagsBits.SendMessages);
-              })
-              .map(lc => {
-                <option value={lc.id}>#{lc.name}</option>
-            })
-            </select>
-            <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Enviar"
-              name="action">Guardar
-              <i class="material-icons right">done</i>
+      <div class="flex gap-2 mt-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="material-icons">save</i> Guardar
+        </button>
+        {hasConfig('goodbyeChannel') && (
+          <form method="POST" action={`/api/dashboard/${guild.id}/goodbye`} class="inline">
+            <input type="hidden" name="reset" value="true" />
+            <button type="submit" class="btn btn-danger">
+              <i class="material-icons">clear</i> Reestablecer
             </button>
-            if(guildSystem.where('channelLogs').exists()) {
-            <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
-              name="action">Reestablecer
-              <i class="material-icons right">clear</i>
+          </form>
+        )}
+      </div>
+    </form>
+  </section>
+
+  <!-- LOGS -->
+  <section class="panel">
+    <h3 class="h2-title">
+      <i class="material-icons text-cyan-400">receipt_long</i>
+      Canal de Logs (Beta)
+    </h3>
+    <form method="POST" action={`/api/dashboard/${guild.id}/logs`} class="form-group">
+      <div class="select-wrapper">
+        <select name="logs_ID" required>
+          <option value="" disabled selected>
+            {config.logChannel ? `#${getChannelName(config.logChannel)}` : 'Selecciona un canal'}
+          </option>
+          {textChannels.map((ch: any) => (
+            <option value={ch.id}>#{ch.name}</option>
+          ))}
+        </select>
+        <i class="material-icons select-arrow">arrow_drop_down</i>
+      </div>
+      <div class="flex gap-2 mt-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="material-icons">save</i> Guardar
+        </button>
+        {hasConfig('logChannel') && (
+          <form method="POST" action={`/api/dashboard/${guild.id}/logs`} class="inline">
+            <input type="hidden" name="reset" value="true" />
+            <button type="submit" class="btn btn-danger">
+              <i class="material-icons">clear</i> Reestablecer
             </button>
-            }
-          }
-          </div>
-        </div>
+          </form>
+        )}
       </div>
-    </div>
-  </form>
-  <h2 class="h2-perfil"><b>Selección de un rol autoasignable para los nuevos usuarios</b></h2>
-  <form class="col s12" method="post" id="rolauto" action={`/dashboard/${guild.id}/rolauto`}>
-    <div class="row">
-      <div class="input-field col s6">
-        <div class="form-row">
-          <div class="form-group">
-            <i class="material-icons prefix">account_circle</i>
-            <select id="select-channel" name="rol_ID" class="custom-select">
-              <option value="no_select" disabled selected>Seleccione un rol.</option>
-              {
-              guild.roles.cache.filter(rol => rol.id !== guild.id).map(r => {
-                if (r.comparePositionTo(guild.members.me.roles.highest) > 0) return;
-                <option value={r.id}>{r.name}</option>
-              })
-            }
-            </select>
-            <div class="input-field col s12">
-              <button class="btn btn-secondary waves-effect waves-light" type="submit" id="btn_Guardar"
-                name="action">Guardar
-                <i class="material-icons right">send</i>
-              </button>
-              { (await guildSystem.exists({ roleid: { $exists: true, $ne: null } })) && (
-                <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
-                  name="action">Reestablecer
-                  <i class="material-icons right">clear</i>
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+    </form>
+  </section>
+
+  <!-- AUTO ROLE -->
+  <section class="panel">
+    <h3 class="h2-title">
+      <i class="material-icons text-cyan-400">person_add</i>
+      Rol Autoasignable
+    </h3>
+    <form method="POST" action={`/api/dashboard/${guild.id}/rolauto`} class="form-group">
+      <div class="select-wrapper">
+        <select name="rol_ID" required>
+          <option value="" disabled selected>
+            {config.autoRole ? `${getRoleName(config.autoRole)}` : 'Selecciona un rol'}
+          </option>
+         
