@@ -4,7 +4,7 @@ import { unsign } from 'cookie-signature';
 const RATE_LIMIT_COOKIE = 'rate_limit';
 const RATE_LIMIT_WINDOW = 2000; // 2 seconds
 const RATE_LIMIT_MAX = 5; // Max requests per window
-const SESSION_SECRET = process.env.SESSION_SECRET || 'your-32-char-secret';
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 export const onRequest = defineMiddleware(async (context, next) => {
   // Rate Limiting
