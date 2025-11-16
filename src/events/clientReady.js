@@ -1,7 +1,5 @@
 import pkg from '../../package.json' assert { type: 'json' };
-import { loadHandlers } from './utils/handlers.js';
 export default async function clientReady(client) {
-  await loadHandlers(client);
   const statues = [
     `$help | ${(await client.shard.fetchClientValues("users.cache.size"))
       .reduce((acc, guildCount) => acc + guildCount, 0)

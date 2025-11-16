@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import dbConnect from './utils/db.js';
-
+import { loadHandlers } from './utils/handlers.js';
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -25,6 +25,7 @@ startShard();
 
 async function startShard() {
   try {
+    
     process.on('unhandledRejection', err => console.error('Unhandled Rejection:', err));
     process.on('uncaughtException', err => console.error('Uncaught Exception:', err));
 
@@ -34,5 +35,6 @@ async function startShard() {
     process.exit(1);
   }
 }
+  await loadHandlers(client);
 // Exportamos client para endpoints que lo necesiten
 export default client;
