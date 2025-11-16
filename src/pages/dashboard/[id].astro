@@ -6,6 +6,7 @@ import Navbar from "../../components/navbar.astro";
 import PanelData from "../../components/panelData.astro";
 import PanelOpciones from "../../components/panelOpciones.astro";
 import client from "../../shard.js"
+const { guild, config } = Astro.props;
 // --- Autenticación ---
 const user = Astro.locals?.user;
 if (!user) return Astro.redirect('/api/signin');
@@ -18,10 +19,6 @@ if (!client.user) {
   return Astro.redirect('/error404');
 }
 
-let guild = client.guilds.cache.get(id);
-if (!guild) {
-  guild = await client.guilds.fetch(id).catch(() => null);
-}
 if (!guild) return Astro.redirect('/error404');
 
 // --- Verificar permisos ---
@@ -89,7 +86,7 @@ const textLogin = user.username;
     />
 
     <!-- Panel de opciones -->
-    <PanelOpciones guild={guild} />
+    <PanelOpciones guild={guild} config={config} />
 
     <!-- Información adicional -->
     <section style="margin: 2rem; padding: 1.5rem; background: #1a1a1a; border-radius: 12px;">
