@@ -20,7 +20,6 @@ const client = new Client({
 
 client.limits = new Collection();
 client.queue = new Collection();
-globalThis.client = client;
 dbConnect();
 startShard();
 

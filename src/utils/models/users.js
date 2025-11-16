@@ -32,5 +32,5 @@ userSchema.virtual('partner', {
 
 // Ejemplo de índice compuesto si necesitas búsquedas combinadas
 // schema.index({ marryTag: 1, marryId: 1 }, { unique: true });
-export default Model('users', userSchema);
+export default Model("users", userSchema);
 

@@ -1,0 +1,184 @@
+---
+import Header from '../components/_head.astro';
+import Navbar from '../components/navbar.astro';
+
+interface DiscordUser {
+    id: string;
+    username: string;
+    avatar: string;
+    guilds?: Array<{
+        id: string;
+        name: string;
+        permissions: number;
+        icon?: string;
+    }>;
+    accessToken?: string;
+}
+
+const user = Astro.locals.user as DiscordUser | undefined;
+if (!user) {
+    return Astro.redirect('/api/signin');
+}
+
+let guilds: Array<{
+    id: string;
+    name: string;
+    permissions: number;
+    icon?: string;
+}> = [];
+
+if (user.accessToken) {
+    const guildsRes = await fetch('https://discord.com/api/users/@me/guilds', {
+        headers: { Authorization: `Bearer ${user.accessToken}` },
+    });
+    if (guildsRes.ok) {
+        guilds = await guildsRes.json();
+    }
+}
+
+const allGuilds = guilds || [];
+---
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <Header title="Caffe - Leaderboards" />
+        <style>
+            .leaderboard-container {
+                min-height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 2rem;
+            }
+
+            .leaderboard-content {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .welcome-section {
+                text-align: center;
+                color: white;
+                margin-bottom: 3rem;
+            }
+
+            .welcome-section h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .user-card {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+                margin-bottom: 2rem;
+                color: white;
+            }
+
+            .user-card img {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border: 3px solid white;
+            }
+
+            .guilds-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1.5rem;
+                margin-top: 2rem;
+            }
+
+            .guild-card {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 1.5rem;
+                text-align: center;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .guild-card:hover {
+                transform: translateY(-5px);
+                background: rgba(255, 255, 255, 0.2);
+                border-color: rgba(255, 255, 255, 0.4);
+            }
+
+            .guild-card img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                margin-bottom: 1rem;
+                border: 2px solid white;
+            }
+
+            .guild-card h3 {
+                color: white;
+                font-size: 1rem;
+                margin: 0.5rem 0;
+                word-break: break-word;
+            }
+
+            .empty-state {
+                color: white;
+                text-align: center;
+                padding: 3rem;
+                font-size: 1.1rem;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+        </style>
+    </head>
+    <body>
+        <Navbar user={user} />
+        <div class="leaderboard-container">
+            <div class="leaderboard-content">
+                <div class="welcome-section">
+                    <h1>Leaderboards</h1>
+                    <p>Select a server to view its leaderboard</p>
+                </div>
+
+                <div class="user-card">
+                    <img
+                        src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+                        alt={user.username}
+                    />
+                    <span>Welcome back, <strong>{user.username}</strong>!</span>
+                </div>
+
+                <div class="guilds-grid">
+                    {allGuilds.length > 0 ? (
+                        allGuilds.map(guild => (
+                            <a href={`/leaderboard/${guild.id}`}>
+                                <div class="guild-card">
+                                    {guild.icon ? (
+                                        <img
+                                            src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`}
+                                            alt={guild.name}
+                                        />
+                                    ) : (
+                                        <img
+                                            src="https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
+                                            alt={guild.name}
+                                        />
+                                    )}
+                                    <h3>{guild.name}</h3>
+                                </div>
+                            </a>
+                        ))
+                    ) : (
+                        <div class="empty-state">
+                            <p>No servers available. Join a Discord server first!</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

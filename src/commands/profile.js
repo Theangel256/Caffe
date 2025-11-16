@@ -13,7 +13,7 @@ export async function run(client, message, args) {
 
 // Cargar idioma
   const langCode = users.language || 'en';
-  const lang = await import(`../languages/profile.${langCode}.js`).then(m => m.default);
+  const lang = await import(`../utils/languages/profile.${langCode}.js`).then(m => m.default);
 
   // === COMANDO: profile set ===
   if (args[0]?.toLowerCase() === 'set') {
@@ -36,7 +36,7 @@ export async function run(client, message, args) {
       if (!['es', 'en'].includes(args[2].toLowerCase())) return message.channel.send(lang.lang.helper);
       users.language = args[2].toLowerCase();
       await users.save();
-      const newLang = await import(`../languages/profile.${users.language}.js`).then(m => m.default);
+      const newLang = await import(`../utils/languages/profile.${users.language}.js`).then(m => m.default);
       return message.channel.send(newLang.lang.success.replace(/{args}/gi, args[2]));
     }
 

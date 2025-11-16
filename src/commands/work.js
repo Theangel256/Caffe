@@ -2,7 +2,7 @@ import { PermissionsBitField } from "discord.js";
 import { getOrCreateDB } from "../utils/functions.js";
 import users from "../utils/models/users.js";
 export async function run(client, message) {
-  const economy = getOrCreateDB(users, "economy", { userID: message.author.id });
+  const economy = getOrCreateDB(users, { userID: message.author.id });
 
   let elements = ['100','75', '50'];
   let cacthElements = elements[Math.floor(elements.length * Math.random())];
