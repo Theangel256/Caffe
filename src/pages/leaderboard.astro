@@ -15,7 +15,7 @@ interface DiscordUser {
     accessToken?: string;
 }
 
-const user = Astro.locals.user as DiscordUser | undefined;
+const user = Astro.locals?.user as DiscordUser | undefined;
 
 if (!user?.accessToken) return Astro.redirect("/api/signin");
 
