@@ -21,6 +21,12 @@ export const GET: APIRoute = async ({ params, request }) => {
   const { id } = params;
   if (!id) return new Response('Bad Request', { status: 400 });
 
+  let guild = client.guilds.cache.get(id);
+  if (!guild) {
+    guild = await client.guilds.fetch(id).catch(() => null);
+  }
+
+
   const users = await levels.find({ guildID: id });
   const sortedUsers = users
     .map((user) => [user.userID, user.lvl, user.xp])
@@ -43,7 +49,7 @@ export const GET: APIRoute = async ({ params, request }) => {
     })
   );
   return new Response(
-    JSON.stringify({ guild: { id: id, name: `Server ${id}` }, users: enrichedUsers }),
+    JSON.stringify({ guild, users: enrichedUsers }),
     { headers: { 'Content-Type': 'application/json' } }
   );
 };
