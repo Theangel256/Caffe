@@ -1,6 +1,7 @@
 import { APIRoute } from 'astro';
 import client from "../../../shard.js";
 import levels from '../../../utils/models/levels.js';
+import { getOrCreateDB } from "../../../utils/functions.js"
 
 export const GET: APIRoute = async ({ params, request }) => {
   const auth = request.headers.get('Authorization');
@@ -26,9 +27,9 @@ export const GET: APIRoute = async ({ params, request }) => {
     guild = await client.guilds.fetch(id).catch(() => null);
   }
 
-
-  const users = await levels.find({ guildID: id });
-  const sortedUsers = users
+  const db = await getOrCreateDB(levels, { guildID: id });
+  if (!db) throw new Error("DB error");
+  const sortedUsers = db
     .map((user) => [user.userID, user.lvl, user.xp])
     .sort((a, b) => b[1] - a[1] || b[2] - a[2]);
 

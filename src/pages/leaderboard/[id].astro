@@ -68,59 +68,12 @@ const { guild = { id, name: 'Unknown Guild' }, users = [] } = data ?? {};
 ---
 <head>
   <Head title={`Leaderboard - ${guild.name}`} />
-  <style>
-      body {
-        background: #0d1117;
-        color: #fff;
-        font-family: "Inter", sans-serif;
-        margin: 0;
-        padding: 2rem;
-      }
-      h1 {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 10px;
-        overflow: hidden;
-        background-color: #161b22;
-      }
-      th, td {
-        padding: 1rem;
-        text-align: left;
-      }
-      th {
-        background-color: #21262d;
-        color: #c9d1d9;
-      }
-      tr:nth-child(even) {
-        background-color: #1e2329;
-      }
-      img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        vertical-align: middle;
-        margin-right: 10px;
-      }
-      .user {
-        display: flex;
-        align-items: center;
-      }
-      .rank {
-        font-weight: bold;
-        color: #58a6ff;
-      }
-    </style>
+  <link rel="stylesheet" href="/css/leaderboard.css" />
 </head>
 <main class="container mx-auto p-4 max-w-4xl">
-  <h1 class="text-3xl font-bold mb-2">
-    Leaderboard - {guild.name}
-    <span class="text-sm font-normal text-gray-500">#{guild.id}</span>
-  </h1>
-
+<div class="container">
+  <h1>Leaderboard - {guild.name} <small>#{guild.id}</small></h1>
+  <div class="table-container">
   {fetchError ? (
     <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded mb-6">
       <strong>Failed to load leaderboard:</strong> {fetchError}
@@ -128,43 +81,38 @@ const { guild = { id, name: 'Unknown Guild' }, users = [] } = data ?? {};
       <a href="/leaderboard" class="underline">← Back to leaderboard</a>
     </div>
   ) : null}
-
-  {users.length > 0 ? (
-    <div class="overflow-x-auto shadow-md rounded-lg">
-      <table class="min-w-full bg-white">
-        <thead class="bg-gray-100 text-gray-700">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Level</th>
+          <th>XP</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map((u, i) => (
           <tr>
-            <th class="px-4 py-3 text-left">#</th>
-            <th class="px-4 py-3 text-left">User</th>
-            <th class="px-4 py-3 text-center">Level</th>
-            <th class="px-4 py-3 text-center">XP</th>
+            <td>{i + 1}</td>
+            <td class="user-cell">
+              <img
+                src={u.avatar
+                  ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.webp?size=40`
+                  : `https://cdn.discordapp.com/embed/avatars/${Number(u.id) % 5}.png`
+                }
+                alt={u.name}
+                class="user-avatar"
+              />
+              <span class="user-name">{u.name}</span>
+            </td>
+            <td class="level">{u.lvl}</td>
+            <td class="xp">{u.xp.toLocaleString()}</td>
           </tr>
-        </thead>
-        <tbody class="text-gray-800">
-          {users.map((u, i) => (
-            <tr class="border-b hover:bg-gray-50">
-              <td class="px-4 py-3 font-medium">#{i + 1}</td>
-              <td class="px-4 py-3 flex items-center gap-3">
-                <img
-                  src={
-                    u.avatar
-                      ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.webp?size=40`
-                      : `https://cdn.discordapp.com/embed/avatars/${Number(u.id) % 5}.png`
-                  }
-                  alt={u.name}
-                  class="w-10 h-10 rounded-full"
-                  loading="lazy"
-                />
-                <span class="font-medium">{u.name}</span>
-              </td>
-              <td class="px-4 py-3 text-center">{u.lvl}</td>
-              <td class="px-4 py-3 text-center">{u.xp.toLocaleString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  ) : (
-    <p class="text-gray-600 italic">No users on the leaderboard yet.</p>
-  )}
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {users.length === 0 && <p style="text-align: center; margin-top: 2rem; opacity: 0.7;">No hay usuarios en el leaderboard aún.</p>}
+</div>
 </main>

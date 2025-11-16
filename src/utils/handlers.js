@@ -2,7 +2,7 @@ import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
-import { copyAssets } from "../utils/copy-assets.js";
+import { copyAssets } from "./copy-assets.js";
 
 const currentFile = fileURLToPath(import.meta.url);
 const currentDir   = join(currentFile, '..');           // folder of this file
