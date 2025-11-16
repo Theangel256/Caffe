@@ -16,9 +16,8 @@ interface DiscordUser {
 }
 
 const user = Astro.locals.user as DiscordUser | undefined;
-if (!user) {
-    return Astro.redirect('/api/signin');
-}
+
+if (!user?.accessToken) return Astro.redirect("/api/signin");
 
 let guilds: Array<{
     id: string;

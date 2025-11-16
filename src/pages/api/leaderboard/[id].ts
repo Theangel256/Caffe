@@ -1,46 +1,25 @@
-import { APIContext } from 'astro';
+import { APIRoute } from 'astro';
 import client from "../../../shard.js";
 import levels from '../../../utils/models/levels.js';
 
-interface LeaderboardUser {
-  id: string;
-  name: string;
-  avatar: string;
-  lvl: number;
-  xp: number;
-}
-
-interface DiscordUser {
-  id: string;
-  username: string;
-  avatar: string;
-  accessToken?: string;
-}
-
-interface GuildData {
-  id: string;
-  name: string;
-}
-
-export async function GET(context: APIContext) {
-  const { params } = context;
-  const id = params.id;
-  const user = context.locals.user as DiscordUser | undefined;
-
-  if (!user) {
+export const GET: APIRoute = async ({ params, request }) => {
+  const auth = request.headers.get('Authorization');
+  if (!auth?.startsWith('Bearer ')) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  const guild = client.guilds.cache.get(id) || (await client.guilds.fetch(id).catch(() => null));
-  if (!guild) {
-    return new Response('Guild not found', { status: 404 });
-  }
+  const token = auth.split(' ')[1];
 
-  const members = await guild.members.fetch();
-  const member = members.get(user.id);
-  if (!member || !member.permissions.has(8)) { // Admin permission check
-    return new Response('Unauthorized', { status: 403 });
-  }
+  // Validar token con Discord
+  const userRes = await fetch('https://discord.com/api/users/@me', {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  if (!userRes.ok) return new Response('Invalid token', { status: 401 });
+  const user = await userRes.json();
+
+  const { id } = params;
+  if (!id) return new Response('Bad Request', { status: 400 });
 
   const users = await levels.find({ guildID: id });
   const sortedUsers = users
@@ -63,9 +42,8 @@ export async function GET(context: APIContext) {
       }
     })
   );
-
   return new Response(
-    JSON.stringify({ guild: { id: guild.id, name: guild.name }, users: enrichedUsers }),
+    JSON.stringify({ guild: { id: id, name: `Server ${id}` }, users: enrichedUsers }),
     { headers: { 'Content-Type': 'application/json' } }
   );
-}
+};
