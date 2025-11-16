@@ -1,10 +1,11 @@
+import { ComponentType } from 'discord.js';
 import { cp } from 'fs/promises';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
-async function copyAssets() {
+export async function copyAssets() {
   const srcFolders = ['commands', 'events'];
   const baseSrc = join(__dirname, '..', 'src');
   const baseDist = join(__dirname, '..', 'dist');
