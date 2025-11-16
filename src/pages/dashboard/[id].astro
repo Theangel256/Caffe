@@ -7,7 +7,7 @@ import PanelData from "../../components/panelData.astro";
 import PanelOpciones from "../../components/panelOpciones.astro";
 import client from "../../shard.js"
 // --- Autenticación ---
-const user = Astro.props.user;
+const user = Astro.locals?.user;
 if (!user) return Astro.redirect('/api/signin');
 
 const { id } = Astro.params;

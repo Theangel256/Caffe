@@ -35,7 +35,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (unsignedSession !== false) {
     try {
       sessionData = JSON.parse(unsignedSession);
-      console.log('Session loaded:', sessionData.username); // DEBUG
+      console.log('Session loaded:', sessionData); // DEBUG
     } catch (e) {
       console.error('Invalid session data:', e);
     }

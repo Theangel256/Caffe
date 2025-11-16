@@ -10,7 +10,7 @@ const user = Astro.locals.user;
 if (!user) return Astro.redirect('/api/signin');
 
 // --- Solo admins ---
-const member = await globalThis.client?.guilds.cache.get('TU_GUILD_ID')?.members.fetch(user.id).catch(() => null);
+const member = await globalThis.client?.guilds.cache.get('1365881248089640991')?.members.fetch(user.id).catch(() => null);
 if (!member?.permissions.has('Administrator')) {
   return Astro.redirect('/error404');
 }
