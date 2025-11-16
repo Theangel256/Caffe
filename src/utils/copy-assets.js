@@ -1,4 +1,3 @@
-import { ComponentType } from 'discord.js';
 import { cp } from 'fs/promises';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
