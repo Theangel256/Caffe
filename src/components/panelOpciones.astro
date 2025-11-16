@@ -1,5 +1,5 @@
 ---
-const { guild, db } = Astro.props;
+const { guild, config } = Astro.props;
 import { ChannelType, PermissionFlagsBits } from "discord.js";
 import guildSystem from "../utils/models/guilds.js";
 import client from "../shard.js";
@@ -23,7 +23,7 @@ import client from "../shard.js";
         <div class="input-group mb-2">
           <i class="material-icons right">info_outline</i>
           <input id="icon_prefix" type="text" name="newPrefix" class="form-control"
-            placeholder={`Prefix Actual: ${db.prefix}`} aria-label="Prefix" aria-describedby="button-addon2">
+            placeholder={`Prefix Actual: ${config.prefix}`} aria-label="Prefix" aria-describedby="button-addon2">
         </div>
         <div class="input-field col s12">
           <button class="btn btn-secondary waves-effect waves-light" type="submit" id="prefixSave" name="action">Guardar
@@ -40,7 +40,7 @@ import client from "../shard.js";
         <div class="form-row">
           <div class="form-group">
             <select id="select-channel" name="language" class="custom-select">
-              <option value="no_select" disabled selected>Lenguaje Actual: {db.language === "en" ? "English" : "Español"}</option>
+              <option value="no_select" disabled selected>Lenguaje Actual: {config.language === "en" ? "English" : "Español"}</option>
               <option value="en">English</option>
               <option value="es">Español</option>
             </select>
@@ -72,7 +72,7 @@ import client from "../shard.js";
               name="action">Guardar
               <i class="material-icons right">done</i>
             </button>
-            {guildSystem.exists({ channelWelcome: db.channelWelcome }) && (
+            {guildSystem.exists({ channelWelcome: config.channelWelcome }) && (
             <button class="btn btn-danger waves-effect waves-light" type="submit" id="btn_Remover"
               name="action">Reestablecer<i class="material-icons right">clear</i>
             </button>
