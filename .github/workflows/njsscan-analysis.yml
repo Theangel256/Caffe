@@ -2,6 +2,9 @@
 # nodejsscan is a static security code scanner that finds insecure code patterns in your Node.js applications
 
 name: njsscan sarif
+permissions:
+  contents: read
+  security-events: write
 
 on:
   push:
